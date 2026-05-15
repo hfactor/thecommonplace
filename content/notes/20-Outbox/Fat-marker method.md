@@ -9,4 +9,4 @@ The constraint is a communication tool as much as a process tool. A rough sketch
 
 ### Source
 - [[Shape Up]]
-- [Fatmarker for Figma](https://www.figma.com/community/file/1319266134930460405)
+- [Fatmarker Template I made for Figma](https://www.figma.com/community/file/1319266134930460405)
