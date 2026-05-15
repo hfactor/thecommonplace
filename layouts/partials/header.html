@@ -1,0 +1,19 @@
+<header class="hdr">
+  <a class="hdr-logo" href="{{ .Site.Home.RelPermalink }}">
+    {{- with resources.Get "img/hiran-head.svg" -}}
+    <span class="hdr-logo-mark">{{ .Content | safeHTML }}</span>
+    {{- end -}}
+  </a>
+  {{ if not .IsHome }}
+  <div class="hdr-title-group">
+    <div class="hdr-filter" id="hdrFilter">
+      <button class="hdr-filter-btn" id="hdrFilterBtn" onclick="toggleHdrFilter()">
+        <span id="hdrFilterLabel"></span>
+        <span class="hdr-filter-chevron"><svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1L5 5L9 1"/></svg></span>
+      </button>
+      <div class="hdr-filter-panel" id="hdrFilterPanel"></div>
+      <div class="hdr-filter-overlay" id="hdrFilterOverlay" onclick="closeHdrFilter()"></div>
+    </div>
+  </div>
+  {{ end }}
+</header>

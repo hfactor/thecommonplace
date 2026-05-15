@@ -1,0 +1,42 @@
+baseURL = "https://hiran.in"
+locale = "en-us"
+title = "Hiran Venugopalan"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+ignoreFiles = [
+  "/content/notes/.obsidian/.*",
+  "/content/notes/00-Inbox/.*",
+  "/content/notes/30-Log/.*",
+  "/content/notes/40-Private/.*",
+  "/content/notes/AGENTS\\.md"
+]
+
+[permalinks]
+  notes     = "/note/:slug"
+  reading   = "/reading/:slug"
+  bookmarks = "/bookmarks/:slug"
+
+[params]
+  tagline       = "Product Designer"
+  description   = "Personal website of Hiran Venugopalan, product designer based in Bengaluru, India. Fifteen years designing products, building teams, and working across design, FOSS, and typography."
+  keywords      = "product designer, UX design, open source design, FOSS, Malayalam typography, typeface designer, Bengaluru, India, Hiran Venugopalan"
+  ogImage       = "/img/og-image.png"
+  twitterHandle = "hfactor"
+
+  [params.sections.notes]
+    render = true
+  [params.sections.projects]
+    render = true
+  [params.sections.reading]
+    render = true
+  [params.sections.bookmarks]
+    render = false
+  [params.sections.things]
+    render = false
+  [params.sections.uses]
+    render = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]

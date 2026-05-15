@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{- $books := where hugo.Data.antilibrary "title" "ne" "" -}}
+{{- $books  = sort $books "date" "desc" -}}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+
+      {{ partial "page-avatar.html" . }}
+      <div class="page-title-row">
+        <a class="sp-index-btn notes-nav" href="{{ .Site.Home.RelPermalink }}"><span class="sp-index-arrow">←</span> Home</a>
+        <h1 class="note-title">{{ .Title }}</h1>
+      </div>
+
+      {{ with .Content }}
+      <p class="notes-intro">{{ . | plainify }}</p>
+      {{ end }}
+
+      <ul class="notes-list anti-list">
+        {{- range $books -}}
+        <li class="notes-list-item">
+          <span class="anti-title">{{ .title }}</span>
+          {{- if .author -}}<span class="anti-author">{{ .author }}</span>{{- end -}}
+        </li>
+        {{- end -}}
+      </ul>
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+{{ end }}

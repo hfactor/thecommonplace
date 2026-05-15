@@ -1,0 +1,77 @@
+{{ define "main" }}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading page-wide">
+
+      {{ partial "page-avatar.html" . }}
+      <h1 class="note-title">{{ .Title }}</h1>
+
+      <p class="uses-intro sp-text">Things I use regularly. Starred items are ones I'd actively recommend.</p>
+
+      {{- $things := sort hugo.Data.things "date" "desc" -}}
+      {{- $order  := slice "Brewing" "Analog" "Carry" "Audio" "Device" "Other" -}}
+
+      {{/* Collect only categories that actually have items */}}
+      {{- $activeCats := slice -}}
+      {{- range $order -}}
+        {{- $cat := . -}}
+        {{- range $things -}}
+          {{- if and (eq (.subCategory | default "Other") $cat) (not (in $activeCats $cat)) -}}
+            {{- $activeCats = $activeCats | append $cat -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{/* Filter pills */}}
+      <div class="page-filters" id="uses-filters">
+        <button class="page-filter-btn is-active" data-cat="all">All</button>
+        {{- range $activeCats -}}
+        <button class="page-filter-btn" data-cat="{{ . }}">{{ . }}</button>
+        {{- end -}}
+      </div>
+
+      {{/* Flat grid — all items, each card carries its category */}}
+      <div class="uses-grid">
+        {{- range $things -}}
+        {{- $cat   := .subCategory | default "Other" -}}
+        {{- $isRec := eq (lower (printf "%v" (default "" .recommended))) "yes" -}}
+        <div class="uses-card{{ if $isRec }} uses-card--rec{{ end }}" data-cat="{{ $cat }}">
+          <a class="uses-card-img-wrap" href="{{ .href }}" target="_blank" rel="noopener">
+            {{ if .image }}<img class="uses-card-img" src="{{ .image }}" alt="{{ .title }}" loading="lazy">{{ end }}
+          </a>
+          <div class="uses-card-body">
+            <div class="uses-card-title-row">
+              <a class="uses-card-title" href="{{ .href }}" target="_blank" rel="noopener">{{ .title }}</a>
+              {{ if $isRec }}<span class="card-rec">✦</span>{{ end }}
+            </div>
+            {{ with .note }}<p class="uses-card-note">{{ . }}</p>{{ end }}
+            <div class="uses-card-footer">
+              <span class="uses-card-cat">{{ $cat }}</span>
+              {{ with .date }}<span class="uses-card-date">{{ dateFormat "Jan 2006" . }}</span>{{ end }}
+            </div>
+          </div>
+        </div>
+        {{- end -}}
+      </div>
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+<script>
+(function () {
+  var btns   = document.querySelectorAll('#uses-filters .page-filter-btn');
+  var cards  = document.querySelectorAll('.uses-grid .uses-card[data-cat]');
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var cat = btn.getAttribute('data-cat');
+      btns.forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      cards.forEach(function (c) {
+        c.hidden = !(cat === 'all' || c.getAttribute('data-cat') === cat);
+      });
+    });
+  });
+}());
+</script>
+{{ end }}

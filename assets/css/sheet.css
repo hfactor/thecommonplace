@@ -1,0 +1,29 @@
+.sheet-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: var(--z-sheet); display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.sheet-overlay.open { display: flex; animation: fade-in 0.16s ease; }
+.sheet { width: 100%; max-width: 540px; background: var(--bg); border-radius: var(--r) var(--r) 0 0; border-top: 1px solid var(--border); max-height: 80vh; overflow-y: auto; animation: slide-up 0.26s cubic-bezier(0.4,0,0.2,1); padding-bottom: env(safe-area-inset-bottom, var(--space-6)); }
+.sheet-handle { width: 40px; height: 4px; border-radius: var(--r-2); background: var(--border); margin: var(--space-3) auto 0; }
+.sheet-inner { padding: 20px 22px var(--space-6); }
+@media (max-width: 639px) {
+  .sheet-inner { padding-bottom: 80px; }
+}
+@media (min-width: 640px) {
+  .sheet-inner { padding: var(--space-6) var(--space-8) var(--space-12); }
+}
+
+.sh-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: var(--space-4); position: relative; }
+.sh-cover { width: 72px; height: 96px; object-fit: cover; border-radius: var(--r-xs); flex-shrink: 0; background: var(--surface2); box-shadow: -2px 2px 8px rgba(0,0,0,0.16); display: block; }
+[data-theme="ink"] .sh-cover { box-shadow: -2px 2px 8px rgba(0,0,0,0.5); }
+.sh-cover-blank { width: 72px; height: 96px; background: var(--surface2); border-radius: var(--r-xs); flex-shrink: 0; }
+.sh-info { display: flex; flex-direction: column; gap: var(--space-1); padding-top: 2px; flex: 1; }
+.sh-title { font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); }
+.sh-meta { font-size: var(--text-sm); color: var(--ink2); }
+.sh-date { font-size: var(--text-sm); color: var(--ink2); }
+.sh-rule { border: none; border-top: 1px solid var(--border-light); margin: 14px 0; }
+.sh-body { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-prose); }
+.sh-body a { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast); }
+.sh-body a:hover { color: var(--accent); }
+.sh-ext { position: absolute; top: 0; right: 0; }
+
+/* sh-row as a link (bookmarks) */
+a.sh-row { text-decoration: none; color: inherit; display: flex; }
+a.sh-row:hover .sh-title { color: var(--accent); }

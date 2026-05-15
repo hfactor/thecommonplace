@@ -1,0 +1,36 @@
+projects:
+  - name: Grandhrapura
+    url: https://gpura.org/
+    description: Design Revamp and Advance Search
+
+    maintainers:
+      - name: Shiju Alex
+        github: 
+        image: https://indicarchive.org/content/images/2026/04/shiju-alex-photo.jpg
+
+    designers:
+      - name: Hiran Venugopalan
+        github: hfactor
+
+  - name: Olam
+    url: https://olam.in/
+    description: UX for multidimensional dictonary data
+    maintainers:
+      - name: Kailash Nadh
+        github: knadh
+
+    designers:
+      - name: Hiran Venugopalan
+        github: hfactor
+
+  - name: Storyweavers
+    url: https://storyweaver.org.in/en
+    description: Improved UX to accomodate multi-license
+
+    maintainers:
+      - name: Amna Singh
+        github: 
+
+    designers:
+      - name: John Paul Xavier
+        github: 

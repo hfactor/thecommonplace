@@ -1,0 +1,105 @@
+:root {
+  /* ── Typefaces ──────────────────────────────────── */
+  --font:         'Public Sans', -apple-system, sans-serif;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+
+  /* ── Type scale · Major Second (1.125) · 14px base ─ */
+  --text-sm:   clamp(12px, calc(11.67px + 0.10vw), 13px);
+  --text-base: clamp(14px, calc(13.67px + 0.10vw), 15px);
+  --text-md:   clamp(15px, calc(14.33px + 0.21vw), 16px);
+  --text-lg:   clamp(16px, calc(15.33px + 0.21vw), 18px);
+  --text-xl:   clamp(18px, calc(17.33px + 0.21vw), 20px);
+  --text-2xl:  clamp(20px, calc(18.67px + 0.42vw), 22px);
+  --text-3xl:  clamp(22px, calc(20px   + 0.63vw),  28px);
+
+  /* ── Weights ────────────────────────────────────── */
+  --weight-normal:   400;
+  --weight-semibold: 500;
+
+  /* ── Line heights ───────────────────────────────── */
+  --lh-display: 1.2;
+  --lh-tight:   1.35;
+  --lh-relaxed: 1.6;
+  --lh-prose:   1.75;
+
+  /* ── Border radius ──────────────────────────────── */
+  --r-2:    2px;
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r:      12px;
+  --r-pill: 20px;
+  --r-full: 50%;
+
+  /* ── Layout ─────────────────────────────────────── */
+  --col-w:  280px;
+  --hdr-h:  48px;
+  --peek:   calc(33vw);
+  --gap:    28px;
+  --gap-sm: 20px;
+
+  /* ── Spacing scale ──────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Z-index layers ─────────────────────────────── */
+  --z-elevated: 10;
+  --z-header:   20;
+  --z-chip:     30;
+  --z-tooltip:  50;
+  --z-sheet:    100;
+  --z-panel:    150;
+  --z-fab:      200;
+  --z-modal:    400;
+
+  /* ── Transitions ────────────────────────────────── */
+  --dur-fast: 0.12s;
+  --dur-base: 0.2s;
+
+  /* ── Shadows ────────────────────────────────────── */
+  --shadow-sm:  0 2px 12px rgba(0,0,0,0.08);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.12);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.18);
+  --overlay:    rgba(0,0,0,0.30);
+
+  /* ── Mac traffic-light dots (bookmark card) ─────── */
+  --mac-dot-red:    #ff5f57;
+  --mac-dot-yellow: #febc2e;
+  --mac-dot-green:  #28c840;
+}
+
+/* ── Chalk — light ──────────────────────────────────── */
+[data-theme="chalk"] {
+  --bg:            #ffffff;
+  --surface:       #fafafa;
+  --surface2:      #f3f3f3;
+  --ink:           #111111;
+  --ink2:          #555555;
+  --border:        #e0e0e0;
+  --border-light:  #efefef;
+  --accent:        #113e9f;
+  --accent-subtle: rgba(91, 143, 255, 0.15);
+}
+
+/* ── Ink — dark ─────────────────────────────────────── */
+[data-theme="ink"] {
+  --bg:            #0f0f0f;
+  --surface:       #1a1a1a;
+  --surface2:      #242424;
+  --ink:           #ededed;
+  --ink2:          #aaaaaa;
+  --border:        #2e2e2e;
+  --border-light:  #222222;
+  --accent:        #5b8fff;
+  --accent-subtle: rgba(91, 143, 255, 0.15);
+
+  --shadow-sm:  0 2px 12px rgba(0,0,0,0.40);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.45);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.50);
+  --overlay:    rgba(0,0,0,0.55);
+}

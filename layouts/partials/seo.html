@@ -1,0 +1,95 @@
+{{- $isHome  := .IsHome -}}
+{{- $siteName := site.Title -}}
+{{- $tagline  := site.Params.tagline -}}
+
+{{- /* Title */}}
+{{- $title := printf "%s — %s" .Title $siteName -}}
+{{- if $isHome -}}{{- $title = printf "%s — %s" $siteName $tagline -}}{{- end -}}
+
+{{- /* Description: page-level → site fallback → summary fallback */}}
+{{- $desc := .Params.description | default site.Params.description -}}
+{{- if and (not .Params.description) (not $isHome) .Summary -}}
+  {{- $desc = .Summary | plainify | htmlUnescape | truncate 160 -}}
+{{- end -}}
+
+{{- /* OG image — absolute URL */}}
+{{- $image := .Params.ogImage | default site.Params.ogImage | default "" -}}
+{{- $image  = $image | absURL -}}
+
+{{- /* Keywords */}}
+{{- $keywords := .Params.keywords | default site.Params.keywords -}}
+
+{{- /* Twitter handle */}}
+{{- $twh := printf "@%s" (site.Params.twitterHandle | default "") -}}
+
+<!-- Primary -->
+<meta name="description" content="{{ $desc }}">
+{{ with $keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
+<meta name="author" content="Hiran Venugopalan">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Open Graph -->
+<meta property="og:type"        content="{{ if $isHome }}website{{ else }}article{{ end }}">
+<meta property="og:url"         content="{{ .Permalink }}">
+<meta property="og:title"       content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:image"       content="{{ $image }}">
+<meta property="og:site_name"   content="{{ $siteName }}">
+<meta property="og:locale"      content="en_IN">
+
+<!-- Twitter -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:creator"     content="{{ $twh }}">
+<meta name="twitter:site"        content="{{ $twh }}">
+<meta name="twitter:title"       content="{{ $title }}">
+<meta name="twitter:description" content="{{ $desc }}">
+<meta name="twitter:image"       content="{{ $image }}">
+
+{{ if $isHome }}
+<!-- JSON-LD: Person -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Hiran Venugopalan",
+  "jobTitle": "Product Designer",
+  "url": "https://hiran.in",
+  "email": "mailto:hiran.v@gmail.com",
+  "description": {{ site.Params.description | jsonify }},
+  "sameAs": [
+    "https://twitter.com/hfactor",
+    "https://hiran.substack.com"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bengaluru",
+    "addressCountry": "IN"
+  },
+  "knowsAbout": ["Product Design", "UX Design", "Open Source Software", "Typography", "Malayalam Computing"]
+}
+</script>
+{{ else if eq .Section "notes" }}
+<!-- JSON-LD: Article (notes) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ $desc | jsonify }},
+  "url": {{ .Permalink | jsonify }},
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  {{ with .Lastmod }}"dateModified": "{{ .Format "2006-01-02" }}",{{ end }}
+  "author": {
+    "@type": "Person",
+    "name": "Hiran Venugopalan",
+    "url": "https://hiran.in"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Hiran Venugopalan",
+    "url": "https://hiran.in"
+  }
+}
+</script>
+{{ end }}

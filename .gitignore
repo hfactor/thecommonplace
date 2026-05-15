@@ -1,0 +1,16 @@
+/public/
+.hugo_build.lock
+.DS_Store
+.claude/
+
+# Private note folders
+/content/notes/00-Inbox/
+/content/notes/30-Log/
+/content/notes/40-Private/
+/content/notes/.obsidian/
+/content/notes/AGENTS.md
+
+# Projects — to be shared later
+/layouts/_default/projects.html
+/layouts/projects/
+/content/projects/

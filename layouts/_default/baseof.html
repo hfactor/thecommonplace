@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="chalk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{{ if .IsHome }}{{ site.Title }} — {{ site.Params.tagline }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
+{{ partial "seo.html" . }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet">
+{{ $css := slice
+  (resources.Get "css/tokens.css")
+  (resources.Get "css/layout.css")
+  (resources.Get "css/header.css")
+  (resources.Get "css/cards.css")
+  (resources.Get "css/sheet.css")
+  (resources.Get "css/panel.css")
+  (resources.Get "css/list.css")
+  (resources.Get "css/animations.css")
+  (resources.Get "css/home.css")
+  (resources.Get "css/pages.css")
+  | resources.Concat "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="/feed.xml">
+</head>
+<body>
+{{ block "main" . }}{{ end }}
+{{ partial "sheet.html" . }}
+{{ partial "fab.html" . }}
+{{ $js := slice
+  (resources.Get "js/theme.js")
+  (resources.Get "js/main.js")
+  (resources.Get "js/search.js")
+  (resources.Get "js/notes.js")
+  (resources.Get "js/sheet.js")
+  (resources.Get "js/panel.js")
+  | resources.Concat "js/bundle.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}"></script>
+</body>
+</html>

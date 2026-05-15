@@ -1,0 +1,410 @@
+/* ─── Homepage shell ─────────────────────────────── */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* Logo strip */
+.home-nav {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--gap-sm);
+  flex-shrink: 0;
+}
+@media (min-width: 640px) {
+  .home-nav { padding: 20px var(--gap); }
+}
+
+/* Centered body */
+.home-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4vh var(--gap-sm) 4vh;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .home-body { padding: 4vh var(--gap) 5vh; }
+}
+
+/* ─── Text ───────────────────────────────────────── */
+.home-p {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-normal);
+  color: var(--ink);
+  line-height: var(--lh-prose);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.home-p2,
+.home-p3 {
+  margin-top: var(--gap);
+}
+@media (min-width: 640px) {
+  .home-p { font-size: var(--text-2xl); }
+}
+
+/* Avatar on reading pages — small, static, links home */
+.page-avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  margin: 0 0 20px -10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.page-avatar img,
+.page-avatar svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Avatar mark — grows into photo on hover */
+.home-avatar {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  margin-left: -8px;
+  margin-right: 2px;
+  margin-bottom: var(--space-4);
+  flex-shrink: 0;
+  cursor: default;
+  z-index: 1;
+  transition: transform 0.32s cubic-bezier(0.34, 1.15, 0.64, 1),
+              border-radius 0.28s ease;
+}
+.home-avatar svg {
+  width: 60px; height: 60px; display: block;
+  transition: opacity 0.18s ease;
+}
+/* Photo sits on top, invisible until hover */
+.home-avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.22s ease 0.06s;
+}
+.home-avatar:hover {
+  transform: scale(1.6);
+  border-radius: var(--r-2);
+  z-index: var(--z-header);
+}
+.home-avatar:hover .home-avatar-img { opacity: 1; }
+.home-avatar:hover svg { opacity: 0; }
+
+/* Touch devices — disable the expand animation entirely */
+@media (hover: none) {
+  .home-avatar:hover { transform: none; border-radius: var(--r-sm); }
+  .home-avatar:hover .home-avatar-img { opacity: 0; }
+  .home-avatar:hover svg { opacity: 1; }
+}
+
+/* Entrance animation */
+.home-avatar {
+  opacity: 0;
+  animation: homeFadeIn 0.5s ease 0s both;
+}
+@keyframes homeFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.home-p1 {
+  opacity: 0;
+  animation: homeSlideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
+.home-p2 {
+  opacity: 0;
+  animation: homeSlideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+.home-p3 {
+  opacity: 0;
+  animation: homeSlideUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.27s both;
+}
+@keyframes homeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Inline links */
+.home-link {
+    color: var(--ink);
+    text-decoration: none;
+    padding: var(--space-1);
+    border-radius: var(--r-xs);
+    background-color: var(--accent-subtle);
+    transition: text-decoration-color .18s, text-underline-offset .18s, background-color .2s ease;
+}
+
+.home-link:hover {
+    color: var(--accent);
+}
+
+/* ─── Email copy button ───────────────────────────── */
+.home-email-wrap {
+  position: relative;
+  display: inline;
+}
+
+.home-email {
+  font-family: var(--font);
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--ink);
+  background-color: var(--accent-subtle);
+  border: none;
+  padding: var(--space-1);
+  margin: 0 -4px;
+  cursor: pointer;
+  border-radius: var(--r-xs);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+.home-email:hover {
+  color: var(--accent);
+}
+
+/* Tooltip — appears above on copy */
+.home-email-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  background: var(--bg);
+  color: var(--ink2);
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  padding: 5px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.home-email-tip.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.tip-check {
+  color: var(--accent);
+  font-weight: var(--weight-semibold);
+  margin-right: 3px;
+}
+
+/* ─── Everything link + zig-zag pill reveal ──────── */
+.ev-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+/* Plain text link — matches home-link style */
+.ev-pill {
+  color: var(--ink);
+  font-weight: inherit;
+  text-decoration: none;
+  border-radius: var(--r-xs);
+  padding: var(--space-1);
+  margin: 0 -4px;
+  background-color: var(--accent-subtle);
+  transition: background-color 0.2s ease;
+}
+.ev-wrap:hover .ev-pill {
+  color: var(--accent);
+}
+
+/* Zero-size pivot anchored just above the text */
+.ev-deck {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: var(--z-chip);
+}
+/* Hover bridge — fills gap so mouse can reach cards */
+.ev-deck::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: -80px;
+  width: 160px;
+  height: 12px;
+}
+
+/* Cards — emerge from pivot in a zig-zag column */
+.ev-card {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  white-space: nowrap;
+  padding: var(--space-1) 11px 5px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  text-decoration: none;
+
+  /* Closed: invisible, collapsed at pivot */
+  opacity: 0;
+  transform: translateX(-50%) translateY(4px) scale(0.88);
+
+  /* Stagger: lower --i animates first */
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1) calc(var(--i, 0) * 0.05s),
+    opacity   0.2s  ease                              calc(var(--i, 0) * 0.05s);
+}
+
+.ev-wrap:hover .ev-deck { pointer-events: none; }
+
+/* Arc spread for 3 badges */
+.ev-wrap:hover .ev-card:nth-child(1) { opacity:1; transform: translateX(calc(-50% - 72px)) translateY(-44px) rotate(-8deg)  scale(1); }
+.ev-wrap:hover .ev-card:nth-child(2) { opacity:1; transform: translateX(calc(-50% +  4px)) translateY(-68px) rotate( 2deg)  scale(1); }
+.ev-wrap:hover .ev-card:nth-child(3) { opacity:1; transform: translateX(calc(-50% + 72px)) translateY(-44px) rotate(+8deg)  scale(1); }
+
+.ev-card:hover { color: var(--ink); border-color: var(--ink2); }
+
+/* ─── Working Notes cursor caret ─────────────── */
+.wn-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 1.5px;
+  height: 0.85em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: -0.05em;
+  opacity: 0;
+}
+.wn-cursor:hover::after {
+  opacity: 1;
+  animation: wn-blink 1s step-end infinite;
+}
+@keyframes wn-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─── This&That → Subscribe text swap ───────────── */
+.tt-link {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  padding: 0 4px;
+}
+.tt-default {
+  display: inline;
+  transition: opacity 0.15s ease;
+}
+.tt-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--accent);
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+.tt-link:hover .tt-default { opacity: 0; }
+.tt-link:hover .tt-hover { opacity: 1; transform: translateY(0); }
+/* fade out the ext-link icon when subscribe text is showing */
+.tt-link[href^="http"]::after { transition: opacity 0.15s ease; }
+.tt-link:hover[href^="http"]::after { opacity: 0; }
+
+/* ─── This & That hover logo tooltip ─────────────── */
+.tnt-wrap {
+  position: relative;
+  display: inline-block;
+}
+.tnt-tip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px) scale(.92);
+    opacity: 0;
+    transition: opacity .18s ease, transform .22s cubic-bezier(.34,1.2,.64,1);
+    z-index: var(--z-header);
+}
+
+.tnt-tip svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.tnt-wrap:hover .tnt-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* ─── This & That static logo ────────────────────── */
+.tnt-logo-static {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0;
+  opacity: 0.7;
+}
+
+.tnt-logo-svg {
+  display: inline-flex;
+  align-items: center;
+}
+.tnt-logo-svg svg {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
+
+
+/* ─── WoW logo hover on "think and work" ─────────── */
+.wow-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.wow-logo {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(0.92);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: var(--z-elevated);
+}
+.wow-logo svg {
+  display: block;
+  height: 28px;
+  width: auto;
+  border-radius: var(--r-xs);
+}
+
+.wow-wrap:hover .wow-logo {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}

@@ -1,0 +1,11 @@
+{{- $notes := slice -}}
+{{- range (where .Site.RegularPages "Section" "notes").ByDate.Reverse -}}
+  {{- $notes = $notes | append (dict
+    "url"    .RelPermalink
+    "title"  .Title
+    "pinned" (default false .Params.pinned)
+  ) -}}
+{{- end -}}
+<script>
+const NOTES_DATA = {{ $notes | jsonify | safeJS }};
+</script>

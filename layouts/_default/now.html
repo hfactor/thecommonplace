@@ -1,0 +1,48 @@
+{{ define "main" }}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+
+      {{ partial "page-avatar.html" . }}
+      <div class="page-title-row">
+        <a class="sp-index-btn notes-nav" href="{{ .Site.Home.RelPermalink }}"><span class="sp-index-arrow">←</span> Home</a>
+        <h1 class="note-title">{{ .Title }}</h1>
+      </div>
+      {{ if or .Params.footer .Params.updated }}
+      <p class="now-meta sp-text">{{ if .Params.footer }}{{ .Params.footer | markdownify | replaceRE `^<p>|</p>\s*$` "" | safeHTML }} {{ end }}{{ if .Params.updated }}Last updated {{ .Params.updated }}.{{ end }}</p>
+      {{ end }}
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      {{- $reading := where .Site.RegularPages "Params.status" "reading" -}}
+      {{- if $reading -}}
+      <div class="now-reading">
+        <div class="now-reading-header">
+          <div class="now-reading-label">Currently Reading</div>
+          <a class="now-reading-link" href="{{ "reading" | relURL }}">All reading →</a>
+        </div>
+        <div class="now-reading-grid">
+          {{- range $reading -}}
+          <div class="now-book">
+            <div class="now-book-cover">
+              {{ if .Params.image }}
+              <img src="{{ .Params.image }}" alt="{{ .Title }}">
+              {{ else }}
+              <div class="now-book-blank"></div>
+              {{ end }}
+              <div class="card-spine"></div>
+            </div>
+            <div class="now-book-title">{{ .Title }}</div>
+            {{ with .Params.author }}<div class="now-book-author">{{ . }}</div>{{ end }}
+          </div>
+          {{- end -}}
+        </div>
+      </div>
+      {{- end -}}
+
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,88 @@
+{{- $months := dict -}}
+{{- range .Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if and $s (or (eq $s "reading") (eq $s "bookmarks")) (ne .Params.status "reading") -}}
+    {{- $key := dateFormat "2006-01" .Date -}}
+    {{- $uid := printf "%s/%s" $s .File.ContentBaseName -}}
+    {{- $day := int (dateFormat "2" .Date) -}}
+    {{- $content := printf "%s" .Content -}}
+
+    {{- $entry := dict
+      "uid" $uid
+      "type" $s
+      "day" $day
+      "title" .Title
+      "date" (dateFormat "Jan 2, 2006" .Date)
+      "content" $content
+    -}}
+
+    {{- if eq $s "reading" -}}
+      {{- $entry = merge $entry (dict
+        "author"      (default "" .Params.author)
+        "localTitle"  (default "" .Params.localTitle)
+        "language"    (default "" .Params.language)
+        "genre"       (default "" .Params.genre)
+        "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
+        "image"       (default "" .Params.image)
+        "link"        (default "" .Params.link)
+        "permalink"   .RelPermalink
+      ) -}}
+    {{- else if eq $s "bookmarks" -}}
+      {{- $href   := default "" .Params.href -}}
+      {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
+      {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
+      {{- $entry = merge $entry (dict
+        "domain"  $domain
+        "href"    $href
+        "summary" (printf "%s" (.Summary | default ""))
+      ) -}}
+    {{- end -}}
+
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+
+
+{{- range hugo.Data.newsletter -}}
+  {{- $url   := .url -}}
+  {{- $img   := "" -}}
+  {{- $title := default "" .title -}}
+  {{- if .image -}}{{- $img = .image -}}{{- end -}}
+  {{- if and (not $img) (not $title) -}}
+    {{- $opts := dict "headers" (dict "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36") -}}
+    {{- $r := try (resources.GetRemote $url $opts) -}}
+    {{- if not $r.Err -}}
+      {{- with $r.Value -}}
+        {{- $html := .Content -}}
+        {{- $m := findRE `property="og:image"\s+content="([^"]+)"` $html 1 -}}
+        {{- if not $m -}}{{- $m = findRE `content="([^"]+)"\s+property="og:image"` $html 1 -}}{{- end -}}
+        {{- if $m -}}{{- $img = replaceRE `.*content="([^"]+)".*` "$1" (index $m 0) -}}{{- end -}}
+        {{- $mt := findRE `property="og:title"\s+content="([^"]+)"` $html 1 -}}
+        {{- if not $mt -}}{{- $mt = findRE `content="([^"]+)"\s+property="og:title"` $html 1 -}}{{- end -}}
+        {{- if $mt -}}{{- $title = replaceRE `.*content="([^"]+)".*` "$1" (index $mt 0) -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $t    := time .date -}}
+  {{- $key  := dateFormat "2006-01" $t -}}
+  {{- $slug := replaceRE `^.*/p/([^/?#]+).*$` "$1" $url -}}
+  {{- $uid  := printf "newsletter/%s" $slug -}}
+  {{- $entry := dict "uid" $uid "type" "newsletter" "day" (int (dateFormat "2" $t)) "url" $url "image" $img "title" $title -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+<script>
+const BASE_PATH = "{{ .Site.Home.RelPermalink }}";
+const DATA = {{ $months | jsonify | safeJS }};
+{{- $about    := .Site.GetPage "/about" -}}
+{{- $now      := .Site.GetPage "/now" -}}
+{{- $colophon := .Site.GetPage "/colophon" -}}
+const PAGE_CONTENT = {
+  about:    {{ dict "title" "About" "content" (printf "%s" ($about.Content | default "")) "footer" (default "" $about.Params.footer) | jsonify | safeJS }},
+  now:      {{ dict "title" "Now"   "content" (printf "%s" ($now.Content   | default "")) "updated" (default "" $now.Params.updated) "footer" (default "" $now.Params.footer) | jsonify | safeJS }},
+  colophon: {{ dict "title" "Colophon" "content" (printf "%s" ($colophon.Content | default "")) | jsonify | safeJS }}
+};
+</script>

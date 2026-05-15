@@ -1,0 +1,29 @@
+.l-row { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding: 14px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.l-row:last-child { border-bottom: none; }
+.l-title { font-size: var(--text-md); color: var(--ink2); font-weight: var(--weight-normal); flex: 1; min-width: 0; line-height: var(--lh-tight); display: flex; align-items: center; gap: var(--space-1); transition: color 0.15s; }
+.l-row:hover .l-title { color: var(--ink); }
+.l-tag { font-size: var(--text-sm); color: var(--ink2); font-weight: var(--weight-normal); flex-shrink: 0; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+.l-ext { display: inline-flex; align-items: center; opacity: 0.5; }
+
+/* Newsletter: arrow hidden by default, floats in on row hover */
+.l-row[data-type="newsletter"] .l-ext {
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.34,1.2,0.64,1);
+}
+.l-row[data-type="newsletter"]:hover .l-ext {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Constrain and center list on large screens */
+@media (min-width: 1024px) {
+  .l-view { padding-left: max(var(--gap), calc((100% - 900px) / 2)) !important; padding-right: max(var(--gap), calc((100% - 900px) / 2)) !important; }
+}
+
+/* Cursor-following tooltip */
+#lTip { position: fixed; width: 150px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--bg); box-shadow: var(--shadow-md); overflow: hidden; opacity: 0; pointer-events: none; z-index: calc(var(--z-sheet) - 10); transition: opacity var(--dur-fast); }
+#lTip.show { opacity: 1; }
+.l-tip-img { width: 100%; aspect-ratio: 2/3; background: var(--surface2); overflow: hidden; }
+.l-tip-img.wide { aspect-ratio: 16/9; }
+.l-tip-img img { width: 100%; height: 100%; object-fit: cover; display: block; }

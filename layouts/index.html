@@ -1,0 +1,46 @@
+{{ define "main" }}
+<div class="home-page">
+  <div class="home-body">
+{{- with resources.Get "img/hiran-head.svg" -}}<span class="home-avatar">{{ .Content | safeHTML }}<img class="home-avatar-img" src="assets/img/hiran.png" alt="Hiran Venugopalan"></span>{{- end -}}  
+    <p class="home-p home-p1">
+      <b>Hiran Venugopalan.</b> 
+      Product designer, maker, and coffee brewer.
+      I’ve spent years designing digital products, building teams from the ground up,
+      shaping products across startups, enterprises, 
+      and FOSS, and projects across mediums.
+    </p>
+
+    <p class="home-p home-p2">
+      This is home to
+      <span class="ev-wrap">
+        <a class="ev-pill" href="{{ "everything" | relURL }}">Everything</a>
+        <span class="ev-deck" aria-hidden="true">
+          {{- $views := where (where hugo.Data.views "id" "ne" "all") "id" "ne" "writing" -}}
+          {{- range $i, $v := $views -}}
+            {{- $path := $v.id -}}
+            {{- if eq $v.id "writing" -}}{{- $path = "notes" -}}{{- end -}}
+            <span class="ev-card" style="--i:{{ $i }}">{{ $v.label }}</span>
+          {{- end -}}
+        </span>
+      </span>  , my commonplace, and
+      <a class="home-link wn-cursor" href="{{ "notes" | relURL }}">Working Notes</a> 
+      where ideas in progress are shared.
+      <!-- comment , and
+      <a class="home-link" href="/projects">Projects</a> where experiments, and side builds come to life. -->
+      I also send <a class="home-link tt-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener"><span class="tt-default">This&amp;That</span><span class="tt-hover">Subscribe</span></a>
+      , curated finds and interviews on how creative people work.</p>
+
+    <p class="home-p home-p3">
+      I enjoy meeting people who are building, exploring, or figuring things out.
+       If you’d like to connect, we can 
+      <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">meet over coffee</a>
+      in Bengaluru, or
+      <span class="home-email-wrap">
+        <button class="home-email" onclick="copyEmail(this)">email me</button>
+        <span class="home-email-tip"><span class="tip-check">✓</span> Copied</span>
+      </span>.
+    </p>
+  </div>
+  {{ partial "site-footer.html" . }}
+</div>
+{{ end }}

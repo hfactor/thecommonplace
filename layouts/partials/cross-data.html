@@ -1,0 +1,22 @@
+{{- $entries := dict -}}
+{{- range (where .Site.RegularPages "Section" "reading") -}}
+  {{- $uid := printf "reading/%s" .File.ContentBaseName -}}
+  {{- $entry := dict
+    "uid"         $uid
+    "type"        "reading"
+    "title"       .Title
+    "author"      (default "" .Params.author)
+    "localTitle"  (default "" .Params.localTitle)
+    "language"    (default "" .Params.language)
+    "genre"       (default "" .Params.genre)
+    "recommended" (default false .Params.recommended)
+    "image"       (default "" .Params.image)
+    "link"        (default "" .Params.link)
+    "content"     (printf "%s" .Content)
+    "date"        (dateFormat "Jan 2, 2006" .Date)
+  -}}
+  {{- $entries = merge $entries (dict $uid $entry) -}}
+{{- end -}}
+<script>
+const CROSS_DATA = {{ $entries | jsonify | safeJS }};
+</script>

@@ -1,0 +1,8 @@
+{{- $href := .Destination -}}
+{{- if hasPrefix $href "http" -}}
+  {{- $sep := "?" -}}
+  {{- if strings.Contains $href "?" -}}{{- $sep = "&" -}}{{- end -}}
+  <a href="{{ $href }}{{ $sep }}ref=hiran.in" target="_blank" rel="noopener"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- else -}}
+  <a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}

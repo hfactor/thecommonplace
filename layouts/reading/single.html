@@ -1,0 +1,4 @@
+{{ define "main" }}
+{{ partial "calendar-page.html" . }}
+<script>window.__OPEN_UID__ = "reading/{{ .File.ContentBaseName }}";</script>
+{{ end }}

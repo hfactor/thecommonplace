@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+
+      {{ partial "page-avatar.html" . }}
+      <div class="page-title-row">
+        <a class="sp-index-btn notes-nav" href="{{ .Site.Home.RelPermalink }}"><span class="sp-index-arrow">←</span> Home</a>
+        <h1 class="note-title">{{ .Title }}</h1>
+      </div>
+      {{ if .Params.updated }}<p class="sp-updated">Updated {{ .Params.updated }}</p>{{ end }}
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      {{ if .Params.footer }}<p class="sp-footer">{{ .Params.footer | markdownify }}</p>{{ end }}
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+{{ end }}

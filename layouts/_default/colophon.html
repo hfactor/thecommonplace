@@ -1,0 +1,59 @@
+{{ define "main" }}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+
+      {{ partial "page-avatar.html" . }}
+      <div class="page-title-row">
+        <a class="sp-index-btn notes-nav" href="{{ .Site.Home.RelPermalink }}"><span class="sp-index-arrow">←</span> Home</a>
+        <h1 class="note-title">{{ .Title }}</h1>
+      </div>
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      <div class="colo-grid">
+        {{ range hugo.Data.colophon.tools }}
+        <a class="colo-card" href="{{ .url }}" target="_blank" rel="noopener">
+          <div class="colo-name">{{ .name }}</div>
+          <div class="colo-desc">{{ .description }}</div>
+        </a>
+        {{ end }}
+      </div>
+
+      {{ with hugo.Data.colophon.people_heading }}<div class="colo-section-label">{{ . }}</div>{{ end }}
+      {{ with hugo.Data.colophon.people_intro }}<div class="sp-text colo-people-intro">{{ . | markdownify }}</div>{{ end }}
+      <div class="people-badges" id="peopleBadges">
+        {{ range hugo.Data.colophon.people }}
+          {{- $href := "" -}}
+          {{- if .website -}}{{- $href = .website -}}{{- else if .github -}}{{- $href = printf "https://github.com/%s" .github -}}{{- end -}}
+          <a class="people-badge{{ if not $href }} people-badge-plain{{ end }}"
+             {{ if $href }}href="{{ $href }}" target="_blank" rel="noopener"{{ end }}>
+            {{ if .image }}
+            <img class="people-avatar" src="{{ .image }}" alt="{{ .name }}">
+            {{ else if .github }}
+            <img class="people-avatar" src="https://github.com/{{ .github }}.png?size=64" alt="{{ .name }}">
+            {{ else }}
+            <div class="people-avatar-init">{{ substr .name 0 1 }}</div>
+            {{ end }}
+            <div class="people-tip">{{ .name }}</div>
+          </a>
+        {{ end }}
+      </div>
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+<script>
+(function () {
+  var el = document.getElementById('peopleBadges');
+  if (!el) return;
+  var items = Array.from(el.children);
+  for (var i = items.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    el.appendChild(items[j]);
+    items.splice(j, 1);
+  }
+}());
+</script>
+{{ end }}

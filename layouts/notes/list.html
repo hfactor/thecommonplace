@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="app" data-page="notes">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+
+      {{ partial "page-avatar.html" . }}
+      <div class="page-title-row">
+        <a class="sp-index-btn notes-nav" href="{{ relURL "" }}"><span class="sp-index-arrow">←</span> Home</a>
+        <h1 class="note-title">{{ .Title }}</h1>
+      </div>
+
+      {{ with .Content }}
+      <div class="note-content sp-text">{{ . }}</div>
+      {{ end }}
+
+    </div>
+    {{ partial "site-footer.html" . }}
+  </div>
+</div>
+{{ partial "notes-data.html" . }}
+{{ end }}

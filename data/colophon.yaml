@@ -1,0 +1,149 @@
+tools:
+  - name: Hugo
+    url: https://gohugo.io
+    description: The base. Recently moved here from Jekyll. This is faster, cleaner, and easier to extend.
+
+  - name: GitHub Pages
+    url: https://pages.github.com
+    description: Hosting. Quietly publishes every commit without getting in the way.
+
+  - name: Namecheap
+    url: https://www.namecheap.com
+    description: Domain registrar. Where this little corner of the internet lives.
+
+  - name: Claude Code
+    url: https://claude.ai
+    description: My current co-worker for building, experimenting, and figuring things out.
+
+  - name: Visual Studio Code
+    url: https://code.visualstudio.com
+    description: Code editor. Where the manual edits still happen, usually when tokens run out.
+
+  - name: Obsidian
+    url: https://obsidian.md
+    description: Writing app. My Content Management System. Notes, drafts, everything.
+
+  - name: MarkTable
+    url: https://github.com/stultus/marktable
+    description: A tool I built. Because not every YAML, Markdown file deserves line-by-line editing.
+
+  - name: Public Sans
+    url: https://fonts.google.com/specimen/Public+Sans
+    description: Body typeface. Personal favourite for its clean readability.
+
+  - name: Bricolage Grotesque
+    url: https://fonts.google.com/specimen/Bricolage+Grotesque
+    description: Display typeface. Adds just enough character without shouting.
+
+people_heading: "People Behind This Place"
+people_intro: "This place carries the influence of many people. Some believed in me early, some opened doors, challenged my thinking, reviewed my work, fixed bugs, and quietly shaped how this website evolved. Some are mentors. Some are collaborators. Some are friends. Some may never know how much they influenced what you see here. If your face is missing, please [open an issue](https://github.com/hfactor/commonplace/issues/new)."
+
+people:
+  - name: Praveen j4v4m4n
+    github: pravi
+
+  - name: Pramode C E
+    github: pcein
+
+  - name: Anivar Aravind
+    github: anivar
+
+  - name: Hussain K H
+    image: https://upload.wikimedia.org/wikipedia/commons/c/cb/Rachana_Hussain.jpeg
+
+  - name: Narayana Bhattathiri
+    image: https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Narayana_Bhattathiri_01_at_SMC_Annual_Meet_2014.jpg/500px-Narayana_Bhattathiri_01_at_SMC_Annual_Meet_2014.jpg
+
+  - name: Santosh Thottingal
+    github: santhoshtr
+
+  - name: Hrishikesh Bhaskaran
+    github: stultus
+    website: https://stultus.in/
+
+  - name: Labeeb Mattra
+    github: lebmatter
+
+  - name: Anish Sheela
+    github: anishsheela
+
+  - name: Ashik Salahudeen
+    github: aashiks
+
+  - name: Tejas Dinkar
+    github: gja
+
+  - name: Ershad K
+    github: ershad
+
+  - name: Asim K T
+    github: asimkt
+
+  - name: Anand Subramanian
+    image: https://theanand.com/wp-content/uploads/2019/11/photo6228535232081013083-e1574104783560.jpg
+    website: https://theanand.com/
+
+  - name: Orion C Jose
+    github: orioncjose
+
+  - name: Binny V A
+    github: binnyva
+    website: https://binnyva.com/
+
+  - name: Baiju Muthukadan
+    github: baijum
+    
+  - name: Melvin Thambi
+    image: https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F2025027929369939968%2Fga6kWajq_400x400.jpg
+    website: https://www.melvinthambi.com/
+
+  - name: Sinu John
+    github: sinujohn91
+    
+  - name: Kailash Nadh
+    github: knadh
+    website: https://nadh.in/
+
+  - name: Muneef Hameed
+    github: muneef
+
+  - name: Nandaja
+    github: nandajavarma
+
+  - name: Anoop Sethumadhavan
+    github: anoopsethu
+
+  - name: Andy Matuschak
+    github: andymatuschak
+
+  - name: Derek Sivers
+    github: sivers
+    website: https://sive.rs/
+
+  - name: Ajay Menon
+    github: ajaymenon0
+    website: https://ajm0.dev/
+
+  - name: Abhinav K E
+    github: Abhinav-K-E
+
+  - name: Kavya Manohar
+    github: kavyamanohar
+
+  - name: Manuel Moreale
+    github: manuelmoreale
+
+  - name: Maggie Appleton
+    github: MaggieAppleton
+
+  - name: Jishnu Mohan
+    github: jishnu7
+    website: https://j15h.nu/
+
+  - name: Rasmus Andersson
+    github: rsms
+    website: https://rsms.me/
+
+
+
+  

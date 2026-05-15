@@ -1,0 +1,11 @@
+- id: all
+  label: Everything
+
+- id: reading
+  label: Reading
+
+- id: bookmarks
+  label: Bookmarks
+
+- id: newsletter
+  label: Newsletter
