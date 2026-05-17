@@ -1,5 +1,5 @@
 ---
 title: Uses
-description: "Things Hiran uses — gear, tools, and daily carry."
+description: "Things I keep coming back to. Some chosen carefully, some by accident, all earning their place."
 layout: uses
 ---

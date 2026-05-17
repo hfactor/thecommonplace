@@ -11,6 +11,7 @@ body::after { content: ''; position: fixed; inset: 0; background: radial-gradien
 button { font-family: var(--font); }
 
 .app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+.app-gallery { height: 100dvh; overflow-y: auto; overflow-x: hidden; }
 
 .content { flex: 1; overflow: hidden; position: relative; }
 

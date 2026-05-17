@@ -27,7 +27,7 @@ ignoreFiles = [
   [params.sections.notes]
     render = true
   [params.sections.projects]
-    render = true
+    render = false
   [params.sections.reading]
     render = true
   [params.sections.bookmarks]
