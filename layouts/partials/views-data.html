@@ -1,3 +1,10 @@
 <script>
-const VIEWS_CFG = {{ hugo.Data.views | jsonify | safeJS }};
+{{- $views := slice (dict "id" "all" "label" "Everything") -}}
+{{- range hugo.Data.types -}}
+  {{- if .in_everything -}}
+    {{- $views = $views | append (dict "id" .id "label" .label) -}}
+  {{- end -}}
+{{- end -}}
+const TYPES_CFG = {{ hugo.Data.types | jsonify | safeJS }};
+const VIEWS_CFG = {{ $views | jsonify | safeJS }};
 </script>

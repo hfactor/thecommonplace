@@ -1,0 +1,45 @@
+# Content types — drives the Explore panel navigation and JS rendering.
+# id:            URL slug and filter key
+# in_everything: whether this type appears in the Explore dropdown
+# card_template: named rendering template — book | browser | newsletter | product
+# view_mode:     dedicated page view — cal | gallery
+# on_click:      what happens when a card/row is clicked — sheet | external | page
+
+- id: reading
+  label: Reading
+  in_everything: true
+  card_template: book
+  view_mode: cal
+  on_click: sheet
+
+- id: bookmarks
+  label: Bookmarks
+  in_everything: true
+  card_template: browser
+  view_mode: cal
+  on_click: sheet
+
+- id: newsletter
+  label: Newsletter
+  in_everything: true
+  card_template: newsletter
+  view_mode: cal
+  on_click: external
+
+- id: uses
+  label: Uses
+  in_everything: true
+  card_template: product
+  view_mode: gallery
+  on_click: external
+
+- id: projects
+  label: Projects
+  in_everything: false
+  card_template: product
+  view_mode: gallery
+  on_click: page
+
+- id: notes
+  label: Notes
+  in_everything: false

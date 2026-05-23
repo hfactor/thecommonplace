@@ -1,4 +1,4 @@
-.l-row { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding: 14px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.l-row { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding: 14px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; text-decoration: none; }
 .l-row:last-child { border-bottom: none; }
 .l-title { font-size: var(--text-md); color: var(--ink2); font-weight: var(--weight-normal); flex: 1; min-width: 0; line-height: var(--lh-tight); display: flex; align-items: center; gap: var(--space-1); transition: color 0.15s; }
 .l-row:hover .l-title { color: var(--ink); }

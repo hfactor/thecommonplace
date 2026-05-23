@@ -2,7 +2,7 @@
 <div class="app app-gallery">
   <div class="gallery-grid uses-gallery">
 
-    <div class="gallery-hd" id="uses-hd">
+    <div class="gallery-hd">
       {{ partial "page-avatar.html" . }}
 
       <div class="gallery-hd-spacer"></div>
@@ -10,62 +10,25 @@
         <h1 class="gallery-hd-title">{{ .Title }}</h1>
         {{ with .Description }}<p class="gallery-hd-desc">{{ . }}</p>{{ end }}
       </div>
-
-      {{- $things := sort hugo.Data.things "date" "desc" -}}
-      {{- $order  := slice "Brewing" "Analog" "Carry" "Audio" "Device" "Other" -}}
-      {{- $activeCats := slice -}}
-      {{- range $order -}}
-        {{- $cat := . -}}
-        {{- range $things -}}
-          {{- if and (eq (.subCategory | default "Other") $cat) (not (in $activeCats $cat)) -}}
-            {{- $activeCats = $activeCats | append $cat -}}
-          {{- end -}}
-        {{- end -}}
-      {{- end -}}
-
-      <div class="gallery-hd-filters" id="uses-filters">
-        <button class="gallery-hd-filter is-active" data-cat="all">All</button>
-        {{- range $activeCats -}}
-        <button class="gallery-hd-filter" data-cat="{{ . }}">{{ . }}</button>
-        {{- end -}}
-      </div>
+      <div class="gallery-hd-spacer"></div>
     </div>
 
     {{- $things := sort hugo.Data.things "date" "desc" -}}
     {{- range $things -}}
     {{- $cat   := .subCategory | default "Other" -}}
     {{- $isRec := eq (lower (printf "%v" (default "" .recommended))) "yes" -}}
-    <a class="uc" href="{{ .href }}" target="_blank" rel="noopener" data-cat="{{ $cat }}">
+    <a class="uc" href="{{ .href }}" target="_blank" rel="noopener">
       {{ if $isRec }}<span class="uc-rec-badge">✦</span>{{ end }}
       <div class="uc-img">
         {{ if .image }}<img src="{{ .image }}" alt="{{ .title }}" loading="lazy">{{ end }}
       </div>
       <div class="uc-body">
         <span class="uc-title">{{ .title }}</span>
-        <div class="uc-body-sub">
-          <span class="uc-meta">{{ $cat }}{{ with .date }} · {{ dateFormat "2006" . }}{{ end }}</span>
-          {{ with .note }}<p class="uc-note">{{ . }}</p>{{ end }}
-        </div>
+        <span class="uc-meta">{{ $cat }}{{ with .date }} · {{ dateFormat "2006" . }}{{ end }}</span>
       </div>
     </a>
     {{- end -}}
 
   </div>
 </div>
-<script>
-(function () {
-  var btns  = document.querySelectorAll('#uses-filters .gallery-hd-filter');
-  var cards = document.querySelectorAll('.uses-gallery .uc[data-cat]');
-  btns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var cat = btn.getAttribute('data-cat');
-      btns.forEach(function (b) { b.classList.remove('is-active'); });
-      btn.classList.add('is-active');
-      cards.forEach(function (c) {
-        c.hidden = !(cat === 'all' || c.getAttribute('data-cat') === cat);
-      });
-    });
-  });
-}());
-</script>
 {{ end }}

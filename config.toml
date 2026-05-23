@@ -31,12 +31,12 @@ ignoreFiles = [
   [params.sections.reading]
     render = true
   [params.sections.bookmarks]
-    render = false
+    render = true
   [params.sections.things]
     render = false
   [params.sections.uses]
     render = true
 
 [outputs]
-  home = ["HTML", "RSS"]
+  home    = ["HTML", "RSS"]
   section = ["HTML", "RSS"]

@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (input) input.addEventListener('input', e => _renderNotesResults(e.target.value));
 
   document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); fabNotesSearch(); }
     if (e.key === 'Escape') closeNotesSearch();
   });
 });

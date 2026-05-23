@@ -245,8 +245,8 @@
   content: '';
   position: absolute;
   bottom: -8px;
-  left: -80px;
-  width: 160px;
+  left: -60px;
+  width: 120px;
   height: 12px;
 }
 
@@ -275,16 +275,20 @@
 
   /* Stagger: lower --i animates first */
   transition:
-    transform 0.35s cubic-bezier(0.34, 1.1, 0.64, 1) calc(var(--i, 0) * 0.05s),
-    opacity   0.2s  ease                              calc(var(--i, 0) * 0.05s);
+    transform 0.3s cubic-bezier(0.34, 1.55, 0.64, 1) calc(var(--i, 0) * 0.04s),
+    opacity   0.15s ease                              calc(var(--i, 0) * 0.04s);
 }
 
 .ev-wrap:hover .ev-deck { pointer-events: none; }
 
-/* Arc spread for 3 badges */
-.ev-wrap:hover .ev-card:nth-child(1) { opacity:1; transform: translateX(calc(-50% - 72px)) translateY(-44px) rotate(-8deg)  scale(1); }
-.ev-wrap:hover .ev-card:nth-child(2) { opacity:1; transform: translateX(calc(-50% +  4px)) translateY(-68px) rotate( 2deg)  scale(1); }
-.ev-wrap:hover .ev-card:nth-child(3) { opacity:1; transform: translateX(calc(-50% + 72px)) translateY(-44px) rotate(+8deg)  scale(1); }
+/* Exploding gift box — tight burst, each card a different direction */
+.ev-wrap:hover .ev-card:nth-child(1) { opacity:1; transform: translateX(calc(-50% - 36px)) translateY(-28px) rotate(-20deg) scale(1); }
+.ev-wrap:hover .ev-card:nth-child(2) { opacity:1; transform: translateX(calc(-50% -  8px)) translateY(-68px) rotate( 10deg) scale(1); }
+.ev-wrap:hover .ev-card:nth-child(3) { opacity:1; transform: translateX(calc(-50% + 32px)) translateY(-38px) rotate( 18deg) scale(1); }
+.ev-wrap:hover .ev-card:nth-child(4) { opacity:1; transform: translateX(calc(-50% - 50px)) translateY(-58px) rotate(-28deg) scale(1); }
+.ev-wrap:hover .ev-card:nth-child(5) { opacity:1; transform: translateX(calc(-50% + 46px)) translateY(-64px) rotate( 24deg) scale(1); }
+/* 6th+ card if ever added */
+.ev-wrap:hover .ev-card:nth-child(6) { opacity:1; transform: translateX(calc(-50% +  6px)) translateY(-82px) rotate( -8deg) scale(1); }
 
 .ev-card:hover { color: var(--ink); border-color: var(--ink2); }
 

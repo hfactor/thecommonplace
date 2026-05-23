@@ -1,50 +1,60 @@
 {{- $months := dict -}}
+
+{{/* ── Reading ───────────────────────────────────────── */}}
 {{- range .Site.RegularPages -}}
   {{- $s := .Section -}}
-  {{- if and $s (or (eq $s "reading") (eq $s "bookmarks")) (ne .Params.status "reading") -}}
+  {{- if and (eq $s "reading") (ne .Params.status "reading") (ne .Params.layout "listing") -}}
     {{- $key := dateFormat "2006-01" .Date -}}
-    {{- $uid := printf "%s/%s" $s .File.ContentBaseName -}}
-    {{- $day := int (dateFormat "2" .Date) -}}
-    {{- $content := printf "%s" .Content -}}
-
+    {{- $uid := printf "reading/%s" .File.ContentBaseName -}}
     {{- $entry := dict
-      "uid" $uid
-      "type" $s
-      "day" $day
-      "title" .Title
-      "date" (dateFormat "Jan 2, 2006" .Date)
-      "content" $content
+      "uid"         $uid
+      "type"        "reading"
+      "day"         (int (dateFormat "2" .Date))
+      "title"       .Title
+      "date"        (dateFormat "Jan 2, 2006" .Date)
+      "author"      (default "" .Params.author)
+      "localTitle"  (default "" .Params.localTitle)
+      "language"    (default "" .Params.language)
+      "genre"       (default "" .Params.genre)
+      "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
+      "image"       (default "" .Params.image)
+      "link"        (default "" .Params.link)
+      "content"     (printf "%s" .Content)
+      "permalink"   .RelPermalink
     -}}
-
-    {{- if eq $s "reading" -}}
-      {{- $entry = merge $entry (dict
-        "author"      (default "" .Params.author)
-        "localTitle"  (default "" .Params.localTitle)
-        "language"    (default "" .Params.language)
-        "genre"       (default "" .Params.genre)
-        "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
-        "image"       (default "" .Params.image)
-        "link"        (default "" .Params.link)
-        "permalink"   .RelPermalink
-      ) -}}
-    {{- else if eq $s "bookmarks" -}}
-      {{- $href   := default "" .Params.href -}}
-      {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
-      {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
-      {{- $entry = merge $entry (dict
-        "domain"  $domain
-        "href"    $href
-        "summary" (printf "%s" (.Summary | default ""))
-      ) -}}
-    {{- end -}}
-
     {{- $existing := slice -}}
     {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
     {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
   {{- end -}}
 {{- end -}}
 
+{{/* ── Bookmarks ──────────────────────────────────────── */}}
+{{- range .Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "bookmarks" -}}
+    {{- $key  := dateFormat "2006-01" .Date -}}
+    {{- $uid  := printf "bookmarks/%s" .File.ContentBaseName -}}
+    {{- $href   := default "" .Params.href -}}
+    {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
+    {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
+    {{- $entry := dict
+      "uid"     $uid
+      "type"    "bookmarks"
+      "day"     (int (dateFormat "2" .Date))
+      "title"   .Title
+      "date"    (dateFormat "Jan 2, 2006" .Date)
+      "domain"  $domain
+      "href"    $href
+      "content" (printf "%s" .Content)
+      "summary" (printf "%s" (.Summary | default ""))
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
 
+{{/* ── Newsletter ─────────────────────────────────────── */}}
 {{- range hugo.Data.newsletter -}}
   {{- $url   := .url -}}
   {{- $img   := "" -}}
@@ -65,8 +75,8 @@
       {{- end -}}
     {{- end -}}
   {{- end -}}
-  {{- $t    := time .date -}}
-  {{- $key  := dateFormat "2006-01" $t -}}
+  {{- $t   := time .date -}}
+  {{- $key := dateFormat "2006-01" $t -}}
   {{- $slug := replaceRE `^.*/p/([^/?#]+).*$` "$1" $url -}}
   {{- $uid  := printf "newsletter/%s" $slug -}}
   {{- $entry := dict "uid" $uid "type" "newsletter" "day" (int (dateFormat "2" $t)) "url" $url "image" $img "title" $title -}}
@@ -74,6 +84,52 @@
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
   {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
 {{- end -}}
+
+{{/* ── Uses (things.yaml) ────────────────────────────── */}}
+{{- range hugo.Data.things -}}
+  {{- $t   := time (printf "%v" .date) -}}
+  {{- $key := dateFormat "2006-01" $t -}}
+  {{- $uid := printf "uses/%s" (urlize .title) -}}
+  {{- $isRec := eq (lower (printf "%v" (default "" .recommended))) "yes" -}}
+  {{- $entry := dict
+    "uid"         $uid
+    "type"        "uses"
+    "day"         (int (dateFormat "2" $t))
+    "title"       (default "" .title)
+    "subCategory" (default "Other" .subCategory)
+    "date"        (dateFormat "Jan 2, 2006" $t)
+    "year"        (dateFormat "2006" $t)
+    "href"        (default "" .href)
+    "image"       (default "" .image)
+    "recommended" $isRec
+    "note"        (default "" .note)
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+
+{{/* ── Projects ───────────────────────────────────────── */}}
+{{- range where .Site.RegularPages "Section" "projects" -}}
+  {{- $key := dateFormat "2006-01" .Date -}}
+  {{- $uid := printf "projects/%s" .File.ContentBaseName -}}
+  {{- $entry := dict
+    "uid"       $uid
+    "type"      "projects"
+    "day"       (int (dateFormat "2" .Date))
+    "title"     .Title
+    "date"      (dateFormat "Jan 2, 2006" .Date)
+    "year"      (dateFormat "Jan 2006" .Date)
+    "cover"     (default "" .Params.cover)
+    "tagline"   (default "" .Params.tagline)
+    "href"      (default "" .Params.href)
+    "permalink" .RelPermalink
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+
 <script>
 const BASE_PATH = "{{ .Site.Home.RelPermalink }}";
 const DATA = {{ $months | jsonify | safeJS }};

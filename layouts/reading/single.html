@@ -1,4 +1,7 @@
 {{ define "main" }}
 {{ partial "calendar-page.html" . }}
-<script>window.__OPEN_UID__ = "reading/{{ .File.ContentBaseName }}";</script>
+<script>
+window.__OPEN_UID__ = "reading/{{ .File.ContentBaseName }}";
+window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {} };
+</script>
 {{ end }}

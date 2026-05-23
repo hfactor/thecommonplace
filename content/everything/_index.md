@@ -1,3 +1,5 @@
 ---
-title: "Everything"
+title: Everything
+layout: listing
+viewMode: cal
 ---

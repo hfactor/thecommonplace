@@ -6,20 +6,24 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 const kFull  = k => { const [y,m] = k.split('-'); return `${MONTHS[+m-1]} ${y}`; };
 
 let viewMode = 'card';
-let activeFilter = () => true;
 let filteredKeys = [];
 let currentIdx = 0;
 
-const isPanel = e => false;
-const isRec   = e => e.recommended;
+const isRec = e => e.recommended;
+const typeCfg = type => (typeof TYPES_CFG !== 'undefined' ? TYPES_CFG : []).find(t => t.id === type) || {};
 
 function entryMatches(e) {
-  if (!activeFilter(e)) return false;
-  if (recFilter && !isRec(e)) return false;
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    const haystack = [e.title, e.author, e.summary, e.domain, e.meta, e.subCategory].filter(Boolean).join(' ').toLowerCase();
-    if (!haystack.includes(q)) return false;
+  // Type + field filters from __LISTING__ (set per page)
+  if (typeof window.__LISTING__ !== 'undefined') {
+    const L = window.__LISTING__;
+    if (L.type && e.type !== L.type) return false;
+    // On unfiltered views, skip types not flagged in_everything
+    if (!L.type && !typeCfg(e.type).in_everything) return false;
+    const f = L.filters || {};
+    if (f.language    && e.language !== f.language)     return false;
+    if (f.genre       && e.genre    !== f.genre)        return false;
+    if (f.recommended && !isRec(e))                     return false;
+    if (f.year        && e.year     !== String(f.year)) return false;
   }
   return true;
 }
@@ -32,24 +36,40 @@ function setViewMode(mode) {
   show();
 }
 
+const isGalleryPage = () =>
+  typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.viewMode === 'gallery';
+
+const isGalleryMode = () => isGalleryPage() && viewMode !== 'list';
+
 function rebuild() {
-  const allKeys = Object.keys(DATA).sort().reverse();
-  filteredKeys = allKeys.filter(k => (DATA[k] || []).some(e => entryMatches(e)));
+  filteredKeys = Object.keys(DATA).sort().reverse()
+    .filter(k => (DATA[k] || []).some(e => entryMatches(e)));
   currentIdx = 0;
-  buildMobile();
-  buildDesktop();
+  if (!isGalleryPage()) { buildMobile(); buildDesktop(); updateLatest(); }
   show();
-  updateLatest();
 }
 
 function show() {
+  const lView = document.getElementById('lView');
+  if (isGalleryPage()) {
+    const grid = document.getElementById('galleryGrid');
+    if (viewMode === 'list') {
+      // Keep grid visible (gallery-hd stays) — only hide the product cards
+      grid?.querySelectorAll('.gc').forEach(c => { c.style.display = 'none'; });
+      grid?.classList.add('list-mode');
+      lView.style.display = 'block'; buildList();
+    } else {
+      grid?.querySelectorAll('.gc').forEach(c => { c.style.display = ''; });
+      grid?.classList.remove('list-mode');
+      lView.style.display = 'none'; buildGallery();
+    }
+    return;
+  }
   const mWrap = document.getElementById('mWrap');
   const dCols = document.getElementById('dCols');
-  const lView = document.getElementById('lView');
   const desk  = window.innerWidth >= 640;
   if (viewMode === 'list') {
-    mWrap.style.display = 'none'; dCols.style.display = 'none'; lView.style.display = 'block';
-    buildList();
+    mWrap.style.display = 'none'; dCols.style.display = 'none'; lView.style.display = 'block'; buildList();
   } else {
     lView.style.display = 'none';
     if (desk) { mWrap.style.display = 'none'; dCols.style.display = 'flex'; }
@@ -69,11 +89,14 @@ function goLatest() {
 }
 
 function cardHTML(e, idx) {
-  const uid   = e.uid;
-  const si    = `style="--i:${idx || 0}"`;
+  const uid  = e.uid;
+  const si   = `style="--i:${idx || 0}"`;
+  const cfg  = typeCfg(e.type);
+  const tmpl = cfg.card_template || e.type;
   const recEl = isRec(e) ? `<span class="card-rec">✦</span>` : '';
 
-  if (e.type === 'reading') {
+  // ── book: reading ────────────────────────────────────────────
+  if (tmpl === 'book') {
     const title = e.localTitle || e.title;
     const img   = e.image
       ? `<img class="card-cover-img" src="${e.image}" alt="${title}">`
@@ -81,13 +104,15 @@ function cardHTML(e, idx) {
     return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div></div><div class="card-below"><span class="card-title">${title}</span>${recEl}</div></div>`;
   }
 
-  if (e.type === 'bookmarks') {
+  // ── browser: bookmarks ───────────────────────────────────────
+  if (tmpl === 'browser') {
     const noteEl = e.summary ? `<div class="bm-note">${e.summary}</div>` : '';
     const dots   = `<div class="bm-dots"><span></span><span></span><span></span></div>`;
     return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-bar">${dots}<span class="bm-url">${e.domain || ''}</span><a class="bm-ext" href="${withRef(e.href)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a></div><div class="bm-body"><div class="bm-title">${e.title}</div>${noteEl}</div></div></div>`;
   }
 
-  if (e.type === 'newsletter') {
+  // ── newsletter ───────────────────────────────────────────────
+  if (tmpl === 'newsletter') {
     const rots = [-2.8, -2.0, -1.4, 1.2, 1.8, 2.6];
     const rh   = [...uid].reduce((a, c) => a + c.charCodeAt(0), 0);
     const rot  = rots[rh % rots.length];
@@ -95,6 +120,28 @@ function cardHTML(e, idx) {
     return `<a class="card nl-card-wrap" href="${withRef(e.url)}" target="_blank" rel="noopener" style="--i:${idx||0};--rot:${rot}deg"><div class="nl-card">${img}</div><span class="nl-card-ext">${ICO.ext}</span></a>`;
   }
 
+  // ── product: uses / projects / any gallery type ───────────────
+  if (tmpl === 'product') {
+    const src     = e.image || e.cover || '';
+    const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
+    const rec     = isRec(e) ? `<span class="gc-rec">✦</span>` : '';
+    const meta    = e.subCategory || e.year || '';
+    const tagline = (e.tagline || e.note) ? `<span class="gc-tagline">${e.tagline || e.note}</span>` : '';
+    const onClick = cfg.on_click || 'sheet';
+    let attrs;
+    if (onClick === 'external') {
+      attrs = `href="${withRef(e.href || e.url || '')}" target="_blank" rel="noopener"`;
+    } else if (onClick === 'page') {
+      attrs = e.permalink
+        ? `href="${e.permalink}"`
+        : (e.href ? `href="${withRef(e.href)}" target="_blank" rel="noopener"` : '');
+    } else {
+      attrs = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
+    }
+    return `<a class="gc" data-type="${e.type}" ${attrs} ${si}><div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></a>`;
+  }
+
+  // ── fallback ─────────────────────────────────────────────────
   return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-title">${e.title}</div></div></div>`;
 }
 
@@ -132,35 +179,59 @@ const LIST_TAG = {
   reading:    e => e.genre || '',
   bookmarks:  () => 'Bookmark',
   newsletter: () => 'Newsletter',
+  uses:       e => e.subCategory || 'Uses',
+  projects:   () => 'Project',
 };
+
+function listRowHTML(e, i) {
+  S[e.uid] = e;
+  const title   = e.localTitle || e.title || '';
+  const tag     = (LIST_TAG[e.type] || (() => ''))(e);
+  const rec     = isRec(e) ? ' ✦' : '';
+  const tipImg  = e.image || e.cover || '';
+  const wide    = ['projects', 'bookmarks', 'newsletter'].includes(e.type) ? 'wide' : '';
+  const dataImg = tipImg ? `data-img="${tipImg}" data-wide="${wide}"` : '';
+  const dataUid = `data-uid="${e.uid}"`;
+
+  // Resolve href/external from on_click config
+  const onClick = typeCfg(e.type).on_click || 'sheet';
+  let href = null, external = false;
+  if (onClick === 'external') {
+    href = withRef(e.href || e.url || '');
+    external = true;
+  } else if (onClick === 'page') {
+    href = e.permalink || (e.href ? withRef(e.href) : null);
+    external = !e.permalink && !!e.href;
+  }
+  // sheet: href stays null — show ext icon if entry has an outbound href (e.g. bookmarks)
+  const ext  = (external || !!e.href) ? `<span class="l-ext">${ICO.ext}</span>` : '';
+  const body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
+
+  if (href) {
+    const attrs = external ? `href="${href}" target="_blank" rel="noopener"` : `href="${href}"`;
+    return `<a class="l-row" data-type="${e.type}" ${dataUid} ${dataImg} ${attrs} style="--i:${i}">${body}</a>`;
+  }
+  return `<div class="l-row" data-type="${e.type}" ${dataUid} ${dataImg} style="--i:${i}" onclick="openSheet(this.dataset.uid)">${body}</div>`;
+}
+
 function buildList() {
-  const hasAny = filteredKeys.some(k => (DATA[k] || []).some(e => entryMatches(e)));
-  if (!hasAny) { document.getElementById('lView').innerHTML = emptyState(); return; }
-  document.getElementById('lView').innerHTML = filteredKeys.map(k => {
+  const lView = document.getElementById('lView');
+  const groupBy = (typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.groupBy) || 'month';
+  const allEntries = filteredKeys.flatMap(k =>
+    (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => a.day - b.day)
+  );
+  if (!allEntries.length) { lView.innerHTML = emptyState(); return; }
+
+  if (groupBy === 'none') {
+    lView.innerHTML = allEntries.map((e, i) => listRowHTML(e, i)).join('');
+    return;
+  }
+
+  // Default: group by month
+  lView.innerHTML = filteredKeys.map(k => {
     const entries = (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => a.day - b.day);
     if (!entries.length) return '';
-    const rows = entries.map((e, i) => {
-      S[e.uid] = e;
-      const title   = e.localTitle || e.title || '';
-      const tag     = (LIST_TAG[e.type] || (() => ''))(e);
-      const rec     = isRec(e) ? ' ✦' : '';
-      const isExt   = e.type === 'newsletter' || e.type === 'bookmarks';
-      const extIcon = isExt ? `<span class="l-ext">${ICO.ext}</span>` : '';
-      const action  = e.type === 'newsletter' ? `window.open('${withRef(e.url)}','_blank')`
-                    : isPanel(e) ? `openPanel(this.dataset.uid)` : `openSheet(this.dataset.uid)`;
-      const tipWide = ['notes','projects','bookmarks','newsletter'].includes(e.type) ? 'wide' : '';
-      const dataImg = e.image ? `data-img="${e.image}" data-wide="${tipWide}"` : '';
-      const dataUid = `data-uid="${e.uid}"`;
-
-      // Newsletter: title left, "Month Year" right with arrow (arrow animates in on hover)
-      if (e.type === 'newsletter') {
-        const nlTitle = title || e.url;
-        return `<div class="l-row" data-type="newsletter" ${dataUid} ${dataImg} style="--i:${i}" onclick="${action}"><div class="l-title">${nlTitle}${extIcon}</div><div class="l-tag">Newsletter</div></div>`;
-      }
-
-      return `<div class="l-row" ${dataUid} ${dataImg} style="--i:${i}" onclick="${action}"><div class="l-title">${title}${rec}${extIcon}</div><div class="l-tag">${tag}</div></div>`;
-    }).join('');
-    return `<div><div class="l-month-label">${kFull(k)}</div>${rows}</div>`;
+    return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
   }).join('');
 }
 
@@ -170,15 +241,27 @@ function openEntryByUid(uid) {
   if (isPanel(e)) openPanel(uid); else openSheet(uid);
 }
 
+function buildGallery() {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  grid.querySelectorAll('.gc').forEach(c => c.remove());
+
+  const all = Object.values(DATA).flat()
+    .filter(e => entryMatches(e))
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+  if (!all.length) { grid.insertAdjacentHTML('beforeend', emptyState()); return; }
+
+  all.forEach((e, i) => {
+    S[e.uid] = e;
+    const html = cardHTML(e, i);
+    if (html) grid.insertAdjacentHTML('beforeend', html);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof DATA === 'undefined') return;
   Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
-  const _pathFilter = PATH_TO_FILTER[window.location.pathname.replace(/\/$/, '')];
-  if (_pathFilter) {
-    activePills.add(_pathFilter);
-    buildActiveFilter();
-    _syncFilterItems();
-  }
   rebuild();
 
   if (typeof window.__OPEN_UID__ !== 'undefined') {
@@ -186,19 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('popstate', () => {
-    if (document.getElementById('sidePanel').classList.contains('open')) {
-      closePanel(true);
-      return;
+    if (document.getElementById('sidePanel')?.classList.contains('open')) {
+      closePanel(true); return;
     }
-    if (document.getElementById('sheetOverlay').classList.contains('open')) {
-      closeSheet(true);
-      return;
+    if (document.getElementById('sheetOverlay')?.classList.contains('open')) {
+      closeSheet(true); return;
     }
-    activePills.clear();
-    const f = PATH_TO_FILTER[window.location.pathname.replace(/\/$/, '')];
-    if (f) activePills.add(f);
-    buildActiveFilter();
-    _syncFilterItems();
     rebuild();
   });
 
@@ -253,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   document.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); fabToggleFilter(); }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); fabToggleExplore(); }
     if (e.key === 'Escape') { closeSheet(); closePanel(); }
   });
 

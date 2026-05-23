@@ -15,11 +15,12 @@
       <span class="ev-wrap">
         <a class="ev-pill" href="{{ "everything" | relURL }}">Everything</a>
         <span class="ev-deck" aria-hidden="true">
-          {{- $views := where (where hugo.Data.views "id" "ne" "all") "id" "ne" "writing" -}}
-          {{- range $i, $v := $views -}}
-            {{- $path := $v.id -}}
-            {{- if eq $v.id "writing" -}}{{- $path = "notes" -}}{{- end -}}
-            <span class="ev-card" style="--i:{{ $i }}">{{ $v.label }}</span>
+          {{- $i := 0 -}}
+          {{- range hugo.Data.types -}}
+            {{- if .in_everything -}}
+              <span class="ev-card" style="--i:{{ $i }}">{{ .label }}</span>
+              {{- $i = add $i 1 -}}
+            {{- end -}}
           {{- end -}}
         </span>
       </span>  , my commonplace, and

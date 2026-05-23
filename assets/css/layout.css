@@ -27,6 +27,8 @@ button { font-family: var(--font); }
 .d-col:last-child { border-right: none; }
 /* List view */
 .l-view { display: none; height: 100%; overflow-y: auto; padding: 0 var(--gap-sm) 100px; }
+/* In gallery context the outer .app-gallery scrolls; let l-view flow naturally */
+.app-gallery .l-view { height: auto; padding: 0 10px 80px; }
 
 /* Month labels */
 .month-label {
@@ -42,10 +44,12 @@ button { font-family: var(--font); }
 @media (max-width: 639px) {
   .m-panel { padding: var(--gap) var(--gap) 100px; }
   .m-panel .month-label { margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border-light); }
-  .m-panel .card { margin-bottom: 24px; width: 100%; }
+  .m-panel .card,
+  .m-panel .gc { margin-bottom: 24px; width: 100%; }
   .m-panel .nl-card-wrap { width: 100%; }
   /* No pointer events on cards while the track is scrolling horizontally */
   .m-track.is-scrolling .card,
+  .m-track.is-scrolling .gc,
   .m-track.is-scrolling .nl-card-wrap { pointer-events: none; }
 }
 

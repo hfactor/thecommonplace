@@ -1,33 +1,5 @@
-<div class="fab" id="fab">
-  {{/* Notes context: Search + Randomise */}}
-  <button class="fab-btn" id="fabNotesSearchBtn" onclick="fabNotesSearch()" aria-label="Search notes" data-tooltip="Search" style="display:none"></button>
-  <span class="fab-sep" id="fabNotesSep1" style="display:none"></span>
-  <button class="fab-btn" id="fabRandomBtn" onclick="fabRandomNote()" aria-label="Random note" data-tooltip="Random note" style="display:none"></button>
-  <span class="fab-sep" id="fabNotesSep2" style="display:none"></span>
-  {{/* Everything context: Filter + View */}}
-  <button class="fab-btn" id="fabFilterBtn" onclick="fabToggleFilter()" aria-label="Filter" data-tooltip="Filter" style="display:none"></button>
-  <span class="fab-sep" id="fabFilterSep" style="display:none"></span>
-  <button class="fab-btn" id="fabViewBtn" onclick="fabToggleView()" aria-label="Toggle view" style="display:none"></button>
-  <span class="fab-sep" id="fabViewSep" style="display:none"></span>
-  {{/* Always: Theme */}}
-  <button class="fab-btn" id="fabThemeBtn" onclick="fabToggleTheme()" aria-label="Toggle theme"></button>
+{{/* Explore dropdown panel — included by data page layouts */}}
+<div class="fab-panel" id="fabExplorePanel">
+  <div class="fab-panel-inner" id="fabExploreItems"></div>
 </div>
-
-{{/* FAB filter panel (everything page) */}}
-<div class="fab-panel" id="fabFilterPanel">
-  <div class="fab-panel-inner" id="fabFilterItems"></div>
-</div>
-
 <div class="fab-panel-overlay" id="fabPanelOverlay" onclick="closeFabPanels()"></div>
-
-{{/* Notes search modal */}}
-<div class="nsm" id="notesSearchModal" onclick="if(event.target===this)closeNotesSearch()">
-  <div class="nsm-card">
-    <div class="nsm-input-wrap">
-      <span class="nsm-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
-      <input class="nsm-input" id="notesSearchInput" placeholder="Search notes…" autocomplete="off" spellcheck="false">
-      <button class="nsm-close" onclick="closeNotesSearch()" aria-label="Close">✕</button>
-    </div>
-    <div class="nsm-results" id="notesSearchResults"></div>
-  </div>
-</div>

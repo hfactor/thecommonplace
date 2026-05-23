@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{ if eq .Params.viewMode "gallery" }}
+  {{ partial "gallery-page.html" . }}
+{{ else }}
+  {{ partial "calendar-page.html" . }}
+{{ end }}
+<script>
+window.__LISTING__ = {
+  type:    {{ with .Params.listingType }}{{ . | jsonify | safeJS }}{{ else }}null{{ end }},
+  viewMode:{{ with .Params.viewMode }}{{ . | jsonify | safeJS }}{{ else }}"cal"{{ end }},
+  filters: {{ with .Params.filters }}{{ . | jsonify | safeJS }}{{ else }}{}{{ end }},
+  groupBy: {{ with .Params.listGroupBy }}{{ . | jsonify | safeJS }}{{ else }}"month"{{ end }}
+};
+</script>
+{{ end }}

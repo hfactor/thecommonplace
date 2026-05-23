@@ -167,3 +167,30 @@
   image: https://m.media-amazon.com/images/I/51uYKcxs6KL._SX679_.jpg
   recommended: yes
   note: The only watch I own.
+
+- title: PG Desk Writing Notepads
+  subCategory: Analog
+  date: 2023-11-11
+  href: https://amzn.to/4fA3iaw
+  image: https://m.media-amazon.com/images/I/71B+NfwS59L._SL1500_.jpg
+  recommended: yes
+  note: For jotting
+
+- title: iPhone 15
+  subCategory: Device
+  date: 2023-10-10
+  href: https://support.apple.com/en-in/111831
+  image:   https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/iphone_15_hero.png
+  recommended: yes
+  note: Personal phone. Highly addicted to it.
+
+- title: Cube Pomodoro Timer
+  subCategory: Device
+  date: 2026-01-10
+  href: https://amzn.to/42MdTI5
+  image: https://m.media-amazon.com/images/I/6157Fmim+RL._SL1500_.jpg
+  recommended: yes
+  note: Pomorodo timer. Worth the price. I use it to take breaks between sessions.
+
+
+
