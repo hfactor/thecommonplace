@@ -29,7 +29,6 @@ function openSheet(uid) {
     <div class="sh-body">${body}</div>`;
   } else if (e.type === 'bookmarks') {
     const bUrl = withRef(e.href);
-    // Whole row is the link — use a <span> for the icon so there's no nested <a>
     const bExtIcon = e.href ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
     html = `<a class="sh-row" href="${bUrl}" target="_blank" rel="noopener"><div class="sh-info">
       <div class="sh-title">${e.title}</div>
@@ -38,6 +37,35 @@ function openSheet(uid) {
     </div>${bExtIcon}</a>
     <div class="sh-rule"></div>
     <div class="sh-body">${e.content || ''}</div>`;
+
+  } else if (e.type === 'uses') {
+    const img = e.image
+      ? `<img class="sh-cover sh-cover-sq" src="${e.image}" alt="${e.title}">`
+      : `<div class="sh-cover sh-cover-sq"></div>`;
+    const extIcon = e.href ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
+    const rowTag  = e.href ? 'a' : 'div';
+    const rowAttr = e.href ? ` href="${withRef(e.href)}" target="_blank" rel="noopener"` : '';
+    const meta    = [e.subCategory, e.date].filter(Boolean).join(' · ');
+    html = `<${rowTag} class="sh-row"${rowAttr}>${img}<div class="sh-info">
+      <div class="sh-title">${e.title}${e.recommended ? ' ✦' : ''}</div>
+      <div class="sh-meta">${meta}</div>
+    </div>${extIcon}</${rowTag}>
+    ${e.note ? `<div class="sh-rule"></div><div class="sh-body">${e.note}</div>` : ''}`;
+
+  } else if (e.type === 'projects') {
+    const img = e.cover
+      ? `<img class="sh-cover sh-cover-wide" src="${e.cover}" alt="${e.title}">`
+      : `<div class="sh-cover sh-cover-wide"></div>`;
+    const rUrl    = e.permalink || e.href || null;
+    const extIcon = rUrl ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
+    const rowTag  = rUrl ? 'a' : 'div';
+    const rowAttr = rUrl ? ` href="${rUrl}"` : '';
+    html = `<${rowTag} class="sh-row"${rowAttr}>${img}<div class="sh-info">
+      <div class="sh-title">${e.title}</div>
+      ${e.tagline ? `<div class="sh-meta">${e.tagline}</div>` : ''}
+      <div class="sh-date">${e.year || e.date || ''}</div>
+    </div>${extIcon}</${rowTag}>
+    ${e.content ? `<div class="sh-rule"></div><div class="sh-body">${e.content}</div>` : ''}`;
   }
 
   const inner = document.getElementById('sheetInner');
@@ -47,12 +75,17 @@ function openSheet(uid) {
     if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); }
   }, { once: true });
 
-  const permalink = e.permalink || `/${uid}/`;
-  if (!_sheetOpen) {
-    _sheetPrevUrl = window.location.href;
-    history.pushState({ sheet: uid }, '', permalink);
-  } else {
-    history.replaceState({ sheet: uid }, '', permalink);
+  // Only push/replace URL when there's a real permalink to navigate to
+  const permalink = e.permalink || null;
+  if (permalink) {
+    if (!_sheetOpen) {
+      _sheetPrevUrl = window.location.href;
+      history.pushState({ sheet: uid }, '', permalink);
+    } else {
+      history.replaceState({ sheet: uid }, '', permalink);
+    }
+  } else if (!_sheetOpen) {
+    _sheetPrevUrl = null; // nothing to restore on close
   }
   _sheetOpen = true;
   document.getElementById('sheetOverlay').classList.add('open');

@@ -39,32 +39,25 @@ function setViewMode(mode) {
 const isGalleryPage = () =>
   typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.viewMode === 'gallery';
 
-const isGalleryMode = () => isGalleryPage() && viewMode !== 'list';
-
 function rebuild() {
   filteredKeys = Object.keys(DATA).sort().reverse()
     .filter(k => (DATA[k] || []).some(e => entryMatches(e)));
   currentIdx = 0;
-  if (!isGalleryPage()) { buildMobile(); buildDesktop(); updateLatest(); }
+  if (isGalleryPage()) {
+    buildGalleryFlow();
+  } else {
+    buildMobile();
+    buildDesktop();
+    updateLatest();
+  }
   show();
 }
 
 function show() {
+  const gFlow = document.getElementById('galleryFlow');
+  if (gFlow) return; // gallery-flow pages manage their own visibility via CSS
+
   const lView = document.getElementById('lView');
-  if (isGalleryPage()) {
-    const grid = document.getElementById('galleryGrid');
-    if (viewMode === 'list') {
-      // Keep grid visible (gallery-hd stays) — only hide the product cards
-      grid?.querySelectorAll('.gc').forEach(c => { c.style.display = 'none'; });
-      grid?.classList.add('list-mode');
-      lView.style.display = 'block'; buildList();
-    } else {
-      grid?.querySelectorAll('.gc').forEach(c => { c.style.display = ''; });
-      grid?.classList.remove('list-mode');
-      lView.style.display = 'none'; buildGallery();
-    }
-    return;
-  }
   const mWrap = document.getElementById('mWrap');
   const dCols = document.getElementById('dCols');
   const desk  = window.innerWidth >= 640;
@@ -128,17 +121,25 @@ function cardHTML(e, idx) {
     const meta    = e.subCategory || e.year || '';
     const tagline = (e.tagline || e.note) ? `<span class="gc-tagline">${e.tagline || e.note}</span>` : '';
     const onClick = cfg.on_click || 'sheet';
-    let attrs;
+    const extHref = e.href || e.url || '';
+    let tag, attrs, extLink = '';
     if (onClick === 'external') {
-      attrs = `href="${withRef(e.href || e.url || '')}" target="_blank" rel="noopener"`;
+      tag   = 'a';
+      attrs = `href="${withRef(extHref)}" target="_blank" rel="noopener"`;
     } else if (onClick === 'page') {
+      tag   = 'a';
       attrs = e.permalink
         ? `href="${e.permalink}"`
-        : (e.href ? `href="${withRef(e.href)}" target="_blank" rel="noopener"` : '');
+        : (extHref ? `href="${withRef(extHref)}" target="_blank" rel="noopener"` : '');
     } else {
-      attrs = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
+      // sheet — use <div> so we can nest a real <a> for the ext icon
+      tag     = 'div';
+      attrs   = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
+      extLink = extHref
+        ? `<a class="gc-ext-link" href="${withRef(extHref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a>`
+        : '';
     }
-    return `<a class="gc" data-type="${e.type}" ${attrs} ${si}><div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></a>`;
+    return `<${tag} class="gc" data-type="${e.type}" ${attrs} ${si}>${extLink}<div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></${tag}>`;
   }
 
   // ── fallback ─────────────────────────────────────────────────
@@ -241,22 +242,23 @@ function openEntryByUid(uid) {
   if (isPanel(e)) openPanel(uid); else openSheet(uid);
 }
 
-function buildGallery() {
-  const grid = document.getElementById('galleryGrid');
-  if (!grid) return;
-  grid.querySelectorAll('.gc').forEach(c => c.remove());
-
-  const all = Object.values(DATA).flat()
-    .filter(e => entryMatches(e))
-    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-
-  if (!all.length) { grid.insertAdjacentHTML('beforeend', emptyState()); return; }
-
-  all.forEach((e, i) => {
-    S[e.uid] = e;
-    const html = cardHTML(e, i);
-    if (html) grid.insertAdjacentHTML('beforeend', html);
+function buildGalleryFlow() {
+  const flow = document.getElementById('galleryFlow');
+  if (!flow) return;
+  // Preserve the static info cell rendered by Hugo
+  const infoCell = flow.querySelector('.gc-info-cell');
+  // Flatten + sort newest first
+  const all = [];
+  filteredKeys.forEach(k => {
+    const [y, m] = k.split('-');
+    (DATA[k] || []).filter(e => entryMatches(e)).forEach(e => {
+      S[e.uid] = e;
+      all.push({ e, ts: new Date(+y, +m - 1, e.day || 1).getTime() });
+    });
   });
+  all.sort((a, b) => b.ts - a.ts);
+  const cards = all.length ? all.map(({ e }, i) => cardHTML(e, i)).join('') : emptyState();
+  flow.innerHTML = (infoCell ? infoCell.outerHTML : '') + cards;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

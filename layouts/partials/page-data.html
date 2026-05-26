@@ -124,6 +124,7 @@
     "tagline"   (default "" .Params.tagline)
     "href"      (default "" .Params.href)
     "permalink" .RelPermalink
+    "content"   (printf "%s" .Content)
   -}}
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

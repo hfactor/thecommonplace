@@ -23,7 +23,7 @@
   label: Newsletter
   in_everything: true
   card_template: newsletter
-  view_mode: cal
+  view_mode: gallery
   on_click: external
 
 - id: uses
@@ -31,14 +31,14 @@
   in_everything: true
   card_template: product
   view_mode: gallery
-  on_click: external
+  on_click: sheet
 
 - id: projects
   label: Projects
   in_everything: false
   card_template: product
   view_mode: gallery
-  on_click: page
+  on_click: sheet
 
 - id: notes
   label: Notes

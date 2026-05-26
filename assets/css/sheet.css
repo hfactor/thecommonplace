@@ -14,6 +14,11 @@
 .sh-cover { width: 72px; height: 96px; object-fit: cover; border-radius: var(--r-xs); flex-shrink: 0; background: var(--surface2); box-shadow: -2px 2px 8px rgba(0,0,0,0.16); display: block; }
 [data-theme="ink"] .sh-cover { box-shadow: -2px 2px 8px rgba(0,0,0,0.5); }
 .sh-cover-blank { width: 72px; height: 96px; background: var(--surface2); border-radius: var(--r-xs); flex-shrink: 0; }
+/* Square cover — uses (product images) */
+.sh-cover-sq { width: 80px; height: 80px; object-fit: contain; padding: 8px; mix-blend-mode: multiply; }
+[data-theme="ink"] .sh-cover-sq { mix-blend-mode: screen; }
+/* Wide cover — projects (landscape) */
+.sh-cover-wide { width: 110px; height: 80px; object-fit: cover; padding: 0; }
 .sh-info { display: flex; flex-direction: column; gap: var(--space-1); padding-top: 2px; flex: 1; }
 .sh-title { font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); }
 .sh-meta { font-size: var(--text-sm); color: var(--ink2); }
