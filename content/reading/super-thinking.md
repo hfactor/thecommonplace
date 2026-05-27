@@ -4,7 +4,7 @@ localTitle:
 author: Gabriel Weinberg
 date: 2022-03-07
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/51Gu4AGxNGL.jpg
 link: https://amzn.to/3ZBlwjw

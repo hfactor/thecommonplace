@@ -11,7 +11,7 @@
 }
 
 .sh-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: var(--space-4); position: relative; }
-.sh-cover { width: 72px; height: 96px; object-fit: cover; border-radius: var(--r-xs); flex-shrink: 0; background: var(--surface2); box-shadow: -2px 2px 8px rgba(0,0,0,0.16); display: block; }
+.sh-cover { width: 72px; height: 96px; object-fit: cover; border-radius: var(--r-xs); flex-shrink: 0; box-shadow: -2px 2px 8px rgba(0,0,0,0.16); display: block; }
 [data-theme="ink"] .sh-cover { box-shadow: -2px 2px 8px rgba(0,0,0,0.5); }
 .sh-cover-blank { width: 72px; height: 96px; background: var(--surface2); border-radius: var(--r-xs); flex-shrink: 0; }
 /* Square cover — uses (product images) */

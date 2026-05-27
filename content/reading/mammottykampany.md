@@ -4,7 +4,7 @@ localTitle: മമ്മുട്ടിക്കമ്പനി
 author: Bipin Chandhran
 date: 2025-12-07
 language: Malayalam
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/51vvzg1D3iL.jpg
 link: https://amzn.to/46opXkQ

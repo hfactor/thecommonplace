@@ -4,7 +4,7 @@ localTitle:
 author: Rajiv Vijayakar
 date: 2024-07-16
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41jfKFt-98L.jpg
 link: https://amzn.to/4cTgXos

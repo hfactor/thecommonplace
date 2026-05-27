@@ -4,7 +4,7 @@ localTitle:
 author: James Clear
 date: 2022-06-13
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/51LTCXyBRwL.jpg
 link: https://amzn.to/49kZtB8

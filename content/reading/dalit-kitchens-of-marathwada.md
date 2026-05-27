@@ -4,7 +4,7 @@ localTitle:
 author: Shahu Patole
 date: 2024-10-04
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/81PnVSadX2L._SY522_.jpg
 link: 

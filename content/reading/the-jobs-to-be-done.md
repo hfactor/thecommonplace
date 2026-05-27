@@ -4,7 +4,7 @@ localTitle:
 author: Jim Kalbach
 date: 2024-04-13
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41Bifyc5wkL.jpg
 link: https://amzn.to/4fZlLuy

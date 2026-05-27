@@ -4,7 +4,7 @@ localTitle:
 author: Austin Kleon
 date: 2022-01-09
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/4197gi5QozL.jpg
 link: https://amzn.to/3zLK2Ey

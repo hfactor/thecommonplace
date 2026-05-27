@@ -1,67 +1,171 @@
-/* ─── Top header bar ─────────────────────────────── */
-.hdr {
-  display: flex;
-  align-items: center;
-  height: var(--hdr-h);
-  flex-shrink: 0;
-  padding: 0 var(--gap-sm);
-  background: var(--bg);
+
+/* ─── Floating Pill Header ────────────────────────── */
+.pill-hdr {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: var(--z-header);
-  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--surface2);
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-sm);
+  max-width: calc(100vw - 24px);
+  /* No overflow:hidden — allows ph-scroll to scroll within the pill.
+     Background is still clipped to border-radius per CSS spec. */
 }
 
-@media (min-width: 640px) {
-  .hdr { padding: 0 var(--gap); }
-}
-
-.hdr-home {
+/* ── Logo ─────────────────────────────────────────── */
+.ph-logo {
   display: flex;
   align-items: center;
   flex-shrink: 0;
   text-decoration: none;
+  padding: 5px 8px;
 }
-
-.hdr-logo-mark {
-  width: 32px;
-  height: 32px;
+.ph-logo-mark {
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--r-full);
   flex-shrink: 0;
 }
-.hdr-logo-mark svg { width: 32px; height: 32px; display: block; }
+.ph-logo-mark svg { width: 26px; height: 26px; display: block; }
 
-.hdr-actions {
+/* ── Center ───────────────────────────────────────── */
+.ph-center {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;        /* clips scroll container to pill bounds */
+  border-right: 1px solid var(--border);
+}
+
+/* Scrollable strip used inside ph-center for pills / nav links */
+.ph-scroll {
   display: flex;
   align-items: center;
   gap: 1px;
-  margin-left: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px;
+  min-width: 0;
+}
+.ph-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Type label (section / everything state) ─────── */
+.ph-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0;
 }
 
-.hdr-btn {
-  width: 30px;
-  height: 30px;
+
+/* ── Label as link (section state with subtypeBase) ── */
+.ph-label-link {
+  text-decoration: none;
+  color: var(--ink);
+  transition: color var(--dur-fast);
+}
+.ph-label-link:hover { color: var(--accent); }
+
+/* Separator after label — align-self: stretch makes border span full pill height */
+.ph-label,
+.ph-label-link {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+  border-right: 1px solid var(--border);
+}
+
+/* ── Back button (section state) ──────────────────── */
+.ph-back {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--ink2);
+  margin: 0 2px 0 4px;
+  border-radius: var(--r-full);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.ph-back:hover { color: var(--ink); background: var(--surface); }
+
+/* ── Shared pill style (nav + type + subtype) ─────── */
+.ph-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 11px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: transparent;
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.ph-pill:hover  { color: var(--ink); background: var(--surface); }
+.ph-pill.active { color: var(--ink); background: var(--bg); }
+
+/* ── Right actions ────────────────────────────────── */
+.ph-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 4px;
+  gap: 1px;
+}
+
+/* All buttons inside the pill */
+.ph-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 8px;
   border: none;
   background: transparent;
   color: var(--ink2);
+  font-family: var(--font);
+  font-size: var(--text-sm);
   cursor: pointer;
-  border-radius: var(--r-full);
-  transition: color var(--dur-fast), background var(--dur-fast);
+  border-radius: var(--r-pill);
+  white-space: nowrap;
   flex-shrink: 0;
+  transition: color var(--dur-fast), background var(--dur-fast);
 }
-.hdr-btn:hover  { color: var(--ink); background: var(--surface2); }
-.hdr-btn.active { color: var(--accent); }
-.hdr-btn.disabled { opacity: 0.25; pointer-events: none; }
+.ph-btn:hover  { color: var(--ink); background: var(--surface); }
+.ph-btn.active { color: var(--ink); }
 
-/* ─── Latest chip ────────────────────────────────── */
+/* Icon-only pill buttons (view, theme) */
+.ph-icon {
+  width: 30px;
+  padding: 0;
+}
+
+/* ─── Latest chip ─────────────────────────────────── */
 .latest-chip {
   position: fixed;
-  top: calc(var(--hdr-h) + 10px);
+  top: calc(var(--hdr-h) + 6px);
   left: 50%;
   transform: translateX(-50%);
   background: var(--ink);
@@ -78,67 +182,7 @@
 .latest-chip.visible { display: block; }
 @media (max-width: 639px) { .latest-chip { display: none !important; } }
 
-/* ─── Explore dropdown panel ─────────────────────── */
-.fab-panel {
-  position: fixed;
-  top: calc(var(--hdr-h) + 4px);
-  right: var(--gap-sm);
-  width: 200px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow-md);
-  z-index: var(--z-fab);
-  overflow: hidden;
-  display: none;
-  flex-direction: column;
-}
-.fab-panel.open { display: flex; }
-
-@media (min-width: 640px) {
-  .fab-panel { right: var(--gap); }
-}
-
-.fab-panel-inner {
-  display: flex;
-  flex-direction: column;
-  max-height: 280px;
-  overflow-y: auto;
-  padding: var(--space-1) 0;
-}
-
-.fab-filter-item,
-.fab-panel-item {
-  display: block;
-  width: 100%;
-  text-align: left;
-  font-family: var(--font);
-  font-size: var(--text-base);
-  color: var(--ink2);
-  padding: 10px var(--space-4);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.1s;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fab-filter-item:hover,
-.fab-panel-item:hover  { background: var(--surface2); color: var(--ink); }
-.fab-filter-item.active,
-.fab-panel-item.active { color: var(--accent); font-weight: var(--weight-semibold); }
-
-.fab-panel-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: calc(var(--z-fab) - 1);
-}
-.fab-panel-overlay.open { display: block; }
-
-/* ─── Global footer ──────────────────────────────── */
+/* ─── Global footer ───────────────────────────────── */
 .site-footer {
   display: flex;
   align-items: center;
@@ -158,7 +202,7 @@
 .sf-theme { border: none; background: none; cursor: pointer; color: var(--ink2); display: flex; align-items: center; padding: 0; transition: color var(--dur-fast); }
 .sf-theme:hover { color: var(--ink); }
 
-/* ─── Notes reader ───────────────────────────────── */
+/* ─── Notes reader ────────────────────────────────── */
 .note-title {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
@@ -175,7 +219,7 @@
 .note-backlink-item:hover { color: var(--accent); border-color: var(--border); background: var(--surface2); }
 @media (max-width: 639px) { .note-backlinks-grid { grid-template-columns: 1fr; } }
 
-/* ─── Notes search modal ─────────────────────────── */
+/* ─── Notes search modal ──────────────────────────── */
 .nsm {
   display: none;
   position: fixed;
@@ -251,7 +295,7 @@
 .nsm-item:hover { background: var(--surface2); color: var(--ink); }
 .nsm-empty { padding: 20px var(--space-4); font-size: var(--text-base); color: var(--ink2); text-align: center; }
 
-/* ─── Index / back nav ───────────────────────────── */
+/* ─── Index / back nav ────────────────────────────── */
 .sp-index-btn {
   display: inline-flex;
   align-items: center;

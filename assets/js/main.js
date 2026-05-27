@@ -20,10 +20,12 @@ function entryMatches(e) {
     // On unfiltered views, skip types not flagged in_everything
     if (!L.type && !typeCfg(e.type).in_everything) return false;
     const f = L.filters || {};
-    if (f.language    && e.language !== f.language)     return false;
-    if (f.genre       && e.genre    !== f.genre)        return false;
-    if (f.recommended && !isRec(e))                     return false;
-    if (f.year        && e.year     !== String(f.year)) return false;
+    if (f.language    && e.language    !== f.language)    return false;
+    if (f.genre       && e.genre       !== f.genre)       return false;
+    if (f.category    && e.category    !== f.category)    return false;
+    if (f.subcategory && e.subCategory !== f.subcategory) return false;
+    if (f.recommended && !isRec(e))                       return false;
+    if (f.year        && e.year        !== String(f.year)) return false;
   }
   return true;
 }
@@ -139,7 +141,8 @@ function cardHTML(e, idx) {
         ? `<a class="gc-ext-link" href="${withRef(extHref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a>`
         : '';
     }
-    return `<${tag} class="gc" data-type="${e.type}" ${attrs} ${si}>${extLink}<div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></${tag}>`;
+    const subcat = e.subCategory || e.category || e.genre || '';
+    return `<${tag} class="gc" data-type="${e.type}" data-subcat="${subcat}" ${attrs} ${si}>${extLink}<div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></${tag}>`;
   }
 
   // ── fallback ─────────────────────────────────────────────────
@@ -178,9 +181,9 @@ function buildDesktop() {
 
 const LIST_TAG = {
   reading:    e => e.genre || '',
-  bookmarks:  () => 'Bookmark',
+  bookmarks:  e => e.category || '',
   newsletter: () => 'Newsletter',
-  uses:       e => e.subCategory || 'Uses',
+  uses:       e => e.subCategory || '',
   projects:   () => 'Project',
 };
 
@@ -331,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   document.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); fabToggleExplore(); }
     if (e.key === 'Escape') { closeSheet(); closePanel(); }
   });
 

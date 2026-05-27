@@ -4,7 +4,7 @@ localTitle:
 author: Gautam Baid
 date: 2023-12-11
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41qKAsmtygL.jpg
 link: https://amzn.to/4gLtMmN

@@ -32,7 +32,7 @@
 
   /* ── Layout ─────────────────────────────────────── */
   --col-w:  280px;
-  --hdr-h:  48px;
+  --hdr-h:  64px;
   --peek:   calc(33vw);
   --gap:    28px;
   --gap-sm: 20px;
@@ -96,7 +96,7 @@
   --border:        #2e2e2e;
   --border-light:  #222222;
   --accent:        #5b8fff;
-  --accent-subtle: rgba(91, 143, 255, 0.15);
+  --accent-subtle: rgba(91, 143, 255, 0.30);
 
   --shadow-sm:  0 2px 12px rgba(0,0,0,0.40);
   --shadow-md:  0 4px 20px rgba(0,0,0,0.45);

@@ -4,7 +4,7 @@ localTitle:
 author: Alan Cooper
 date: 2022-11-03
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41L3lFMRWgS.jpg
 link: https://amzn.to/41doRqr

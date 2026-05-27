@@ -4,7 +4,7 @@ localTitle:
 author: Tarana Husain Khan, Claire Chambers, Siobhan Lambert-Hurley
 date: 2024-10-23
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/81B08ZONFFL._SY522_.jpg
 link: https://amzn.to/3RgNCig

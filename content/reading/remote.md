@@ -4,7 +4,7 @@ localTitle:
 author: David Heinemeier Hansson
 date: 2024-03-03
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41BvQsIufOL.jpg
 link: https://amzn.to/49qgsSG

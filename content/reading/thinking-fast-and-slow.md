@@ -4,7 +4,7 @@ localTitle:
 author: Daniel Kahneman
 date: 2022-02-14
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41ALfsawZDL.jpg
 link: https://amzn.to/3ZCBGJN

@@ -4,7 +4,7 @@ localTitle: വായനക്കാരൻ എം.ടി
 author: RAJAGOPALAN E P
 date: 2024-06-04
 language: Malayalam
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://www.mbibooks.com/mbibooks_details/uploads/2023/07/Vayanakkaran-MT-1st-edition-cover-front-416x655.jpg
 link: https://www.mbibooks.com/product/vaayanakkaaran-m-t/

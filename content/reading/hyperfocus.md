@@ -4,7 +4,7 @@ localTitle:
 author: Chris Bailey
 date: 2023-01-03
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/515uuOq3YnL.jpg
 link: https://amzn.to/49kPhIQ

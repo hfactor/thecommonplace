@@ -4,7 +4,7 @@ localTitle:
 author: Ali Abdaal
 date: 2024-05-11
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41KohFLjmAL.jpg
 link: https://amzn.to/3ZdBmkd

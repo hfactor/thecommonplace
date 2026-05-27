@@ -4,7 +4,7 @@ localTitle:
 author: Scott Adams
 date: 2022-02-05
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/51RbUFnJWgL.jpg
 link: https://amzn.to/3ZArH7v

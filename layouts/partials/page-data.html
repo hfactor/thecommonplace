@@ -38,15 +38,16 @@
     {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
     {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
     {{- $entry := dict
-      "uid"     $uid
-      "type"    "bookmarks"
-      "day"     (int (dateFormat "2" .Date))
-      "title"   .Title
-      "date"    (dateFormat "Jan 2, 2006" .Date)
-      "domain"  $domain
-      "href"    $href
-      "content" (printf "%s" .Content)
-      "summary" (printf "%s" (.Summary | default ""))
+      "uid"      $uid
+      "type"     "bookmarks"
+      "day"      (int (dateFormat "2" .Date))
+      "title"    .Title
+      "date"     (dateFormat "Jan 2, 2006" .Date)
+      "domain"   $domain
+      "href"     $href
+      "category" (default "" .Params.category)
+      "content"  (printf "%s" .Content)
+      "summary"  (printf "%s" (.Summary | default ""))
     -}}
     {{- $existing := slice -}}
     {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

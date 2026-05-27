@@ -4,7 +4,7 @@ localTitle:
 author: Fraser Doherty MBE
 date: 2024-04-01
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41y9MrO9cuL.jpg
 link: https://amzn.to/4eJfhQb

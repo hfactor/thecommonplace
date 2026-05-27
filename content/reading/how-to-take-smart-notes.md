@@ -4,7 +4,7 @@ localTitle:
 author: Sonke Ahrens
 date: 2022-01-11
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41hqY19S9rL.jpg
 link: https://amzn.to/3Mnc7oB

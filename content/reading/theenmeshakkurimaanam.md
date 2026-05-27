@@ -4,7 +4,7 @@ localTitle: തീൻമേശക്കുറിമാനം
 author: Lipin Raj M P
 date: 2023-08-29
 language: Malayalam
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/513lBdlvA7L.jpg
 link: https://amzn.to/3TnXJQG

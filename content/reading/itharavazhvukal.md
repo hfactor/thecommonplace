@@ -4,7 +4,7 @@ localTitle: ഇതരവാഴ്‌വുകള്‍
 author: V K Sreeraman
 date: 2024-05-13
 language: Malayalam
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://www.mbibooks.com/mbibooks_details/uploads/2017/09/Itharavazvukal-4th-Edn-Front-Cover.jpg
 link: https://www.mbibooks.com/product/itharavazhvukal-150/

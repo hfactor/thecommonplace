@@ -4,7 +4,7 @@ localTitle:
 author: Thatcher Wine
 date: 2024-09-12
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/41YJVEwTrhL.jpg
 link: https://amzn.to/40883zZ

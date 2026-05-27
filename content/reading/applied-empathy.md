@@ -4,7 +4,7 @@ localTitle:
 author: Michael Ventura
 date: 2023-12-12
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/51uAEte7wrL.jpg
 link: https://amzn.to/3BpjNod

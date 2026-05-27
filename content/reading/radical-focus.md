@@ -4,7 +4,7 @@ localTitle:
 author: Christina R Wodtke
 date: 2022-11-11
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://m.media-amazon.com/images/I/411mvzRwwbL.jpg
 link: https://amzn.to/3OGgLyW

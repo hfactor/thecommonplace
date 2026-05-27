@@ -10,7 +10,7 @@ body::after { content: ''; position: fixed; inset: 0; background: radial-gradien
 .d-cols::-webkit-scrollbar { display: block; height: 3px; }
 button { font-family: var(--font); }
 
-.app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+.app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; padding-top: var(--hdr-h); }
 .app-gallery { height: 100dvh; overflow-y: auto; overflow-x: hidden; }
 
 .content { flex: 1; overflow: hidden; position: relative; }

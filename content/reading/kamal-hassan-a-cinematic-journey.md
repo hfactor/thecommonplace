@@ -4,7 +4,7 @@ localTitle:
 author: Krishnan Hariharan
 date: 2024-07-25
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41wKuJTo1gL.jpg
 link: https://amzn.to/3WEqoBO

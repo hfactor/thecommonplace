@@ -4,7 +4,7 @@ localTitle:
 author: Krish Ashok
 date: 2024-08-17
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/51hSH9AJVnL.jpg
 link: https://amzn.to/47oPbi8

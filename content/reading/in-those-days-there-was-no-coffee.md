@@ -4,7 +4,7 @@ localTitle:
 author: Venkatachalapathy
 date: 2025-02-07
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/512hVWjO95L.jpg
 link: https://www.amazon.in/Those-Coffee-Writings-Cultural-History/dp/8190618695/ref=sr_1_1?crid=2XRWJYUIDJSPT&dib=eyJ2IjoiMSJ9.mCLJRovf8fP4AUGGjRNdkg.Swsgnl_NO3Q_oIceDFFWQ75GZYKhgfl2SiYDiMsZxfw&dib_tag=se

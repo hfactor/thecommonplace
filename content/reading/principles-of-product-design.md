@@ -4,7 +4,7 @@ localTitle:
 author: Aarron Walter
 date: 2022-07-20
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41P5tn9-I2L.jpg
 link: https://amzn.to/3ZCIC9M

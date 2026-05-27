@@ -1,6 +1,60 @@
+{{- /* ── Context & type label ─────────────────────────────── */ -}}
+{{- $ctx          := "section" -}}
+{{- $typeLabel    := "" -}}
+{{- $subtypeField := "genre" -}}
+{{- $subtypeBase  := "" -}}
+{{- if not .Params.listingType -}}
+  {{- $ctx = "everything" -}}
+{{- else -}}
+  {{- range hugo.Data.types -}}
+    {{- if eq .id $.Params.listingType -}}{{- $typeLabel = .label -}}{{- end -}}
+  {{- end -}}
+  {{- if eq .Params.listingType "bookmarks" -}}
+    {{- $subtypeField = "category" -}}
+    {{- $subtypeBase  = "/bookmarks/" -}}
+  {{- else if eq .Params.listingType "reading" -}}
+    {{- $subtypeField = "genre" -}}
+    {{- $subtypeBase  = "/reading/" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* ── Collect subtypes ────────────────────────────────── */ -}}
+{{- $subtypes := slice -}}
+{{- if eq .Params.listingType "reading" -}}
+  {{- range .Site.RegularPages -}}
+    {{- if and (eq .Section "reading") (ne .Params.status "reading") -}}
+      {{- with .Params.genre -}}
+        {{- if not (in $subtypes .) -}}{{- $subtypes = $subtypes | append . -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- else if eq .Params.listingType "bookmarks" -}}
+  {{- range where .Site.RegularPages "Section" "bookmarks" -}}
+    {{- with .Params.category -}}
+      {{- if not (in $subtypes .) -}}{{- $subtypes = $subtypes | append . -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* ── Active subtype & context-aware back href ────────── */ -}}
+{{- $activeSubtype := "" -}}
+{{- with .Params.filters -}}
+  {{- $activeSubtype = index . $subtypeField | default "" -}}
+{{- end -}}
+{{- $backHref := "/everything" -}}
+
 <div class="app">
 
-{{ partial "header.html" (dict "page" . "ctx" "data") }}
+{{ partial "header.html" (dict
+  "page"          .
+  "ctx"           $ctx
+  "typeLabel"     $typeLabel
+  "subtypes"      ($subtypes | sort)
+  "subtypeField"  $subtypeField
+  "subtypeBase"   $subtypeBase
+  "activeSubtype" $activeSubtype
+  "backHref"      $backHref
+) }}
 
 <div class="latest-chip" id="latestChip" onclick="goLatest()">↑ Latest</div>
 
@@ -11,7 +65,6 @@
 </main>
 
 {{ partial "data-panel.html" . }}
-{{ partial "fab.html" . }}
 
 {{ partialCached "page-data.html" . "global" }}
 </div>

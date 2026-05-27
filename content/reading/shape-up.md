@@ -4,7 +4,7 @@ localTitle:
 author: Katherine Applegate
 date: 2022-02-21
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://assets.literal.club/cover/5/ckmq22oqo23531ibk06thufmr.jpg
 link: https://basecamp.com/shapeup

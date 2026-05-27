@@ -4,7 +4,7 @@ localTitle:
 author: Jonathan Courtney
 date: 2022-03-22
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://assets.literal.club/2/ckw4w14287156421fbd77lm689a.jpg?size=600
 link: https://www.workshopperplaybook.com/book-choice

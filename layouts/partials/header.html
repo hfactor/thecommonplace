@@ -1,39 +1,98 @@
 {{/*
-  Universal top-bar header.
-  Call with a context dict:
-    {{ partial "header.html" (dict "page" . "ctx" "data") }}   – explore + view + theme
-    {{ partial "header.html" (dict "page" . "ctx" "notes") }}  – search + random + theme
-*/}}
-{{- $page := .page -}}
-{{- $ctx  := .ctx | default "data" -}}
+  Floating pill header.
 
-<header class="hdr">
-  <a class="hdr-home" href="{{ $page.Site.Home.RelPermalink }}" aria-label="Home">
-    {{- with resources.Get "img/hiran-head.svg" -}}<span class="hdr-logo-mark">{{ .Content | safeHTML }}</span>{{- end -}}
+  ctx="home"       — Logo | Everything · Notes | theme
+  ctx="everything" — Logo | "Everything" | sep | Reading Bookmarks Uses | sep | view | theme
+  ctx="section"    — Logo | "Reading"    | sep | ← | Everything · Fiction... | sep | view | theme
+  ctx="gallery"    — Logo | "Uses"       | sep | ← | Subtype pills (JS) | sep | theme  (no view toggle)
+  ctx="notes"      — Logo | Search · Random | theme
+
+  Extra params for section/gallery:
+    typeLabel     string    — e.g. "Reading"
+    subtypes      []string  — subtype values
+    subtypeField  string    — DATA field (genre | category | subCategory)
+    subtypeBase   string    — URL prefix for link pills; empty = JS onclick
+    activeSubtype string    — currently active value (empty = Everything)
+    backHref      string    — back link href (default /everything)
+*/}}
+{{- $page          := .page -}}
+{{- $ctx           := .ctx | default "everything" -}}
+{{- $typeLabel     := .typeLabel | default "" -}}
+{{- $subtypes      := .subtypes | default slice -}}
+{{- $subtypeField  := .subtypeField | default "subCategory" -}}
+{{- $subtypeBase   := .subtypeBase | default "" -}}
+{{- $activeSubtype := .activeSubtype | default "" -}}
+{{- $backHref      := .backHref | default "/everything" -}}
+
+<header class="pill-hdr" id="pillHdr">
+
+  {{/* ── Logo ──────────────────────────────────────── */}}
+  <a class="ph-logo" href="{{ $page.Site.Home.RelPermalink }}" aria-label="Home">
+    {{- with resources.Get "img/hiran-head.svg" -}}<span class="ph-logo-mark">{{ .Content | safeHTML }}</span>{{- end -}}
   </a>
 
-  <div class="hdr-actions">
-    {{- if eq $ctx "notes" -}}
-    <button class="hdr-btn" onclick="fabNotesSearch()" aria-label="Search notes">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    </button>
-    <button class="hdr-btn" onclick="fabRandomNote()" aria-label="Random note">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="11" height="11" rx="2"/><circle cx="4.5" cy="4.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="4.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="7" cy="7" r="0.8" fill="currentColor" stroke="none"/><circle cx="4.5" cy="9.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="9.5" r="0.8" fill="currentColor" stroke="none"/></svg>
-    </button>
-    {{- else if eq $ctx "gallery" -}}
-    <button class="hdr-btn" id="fabExploreBtn" onclick="fabToggleExplore()" aria-label="Explore">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9L7 11.5L12 9"/><path d="M2 6.5L7 9L12 6.5"/><path d="M7 2.5L12 5L7 7.5L2 5L7 2.5Z"/></svg>
-    </button>
-    {{- else -}}
-    <button class="hdr-btn" id="fabExploreBtn" onclick="fabToggleExplore()" aria-label="Explore">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9L7 11.5L12 9"/><path d="M2 6.5L7 9L12 6.5"/><path d="M7 2.5L12 5L7 7.5L2 5L7 2.5Z"/></svg>
-    </button>
-    <button class="hdr-btn" id="fabViewBtn" onclick="fabToggleView()" aria-label="Toggle view">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="1.5" y1="3.5" x2="12.5" y2="3.5"/><line x1="1.5" y1="7" x2="12.5" y2="7"/><line x1="1.5" y1="10.5" x2="12.5" y2="10.5"/></svg>
-    </button>
+  {{/* ── Center ──────────────────────────────────────── */}}
+  <div class="ph-center" id="phCenter">
+
+    {{- if eq $ctx "home" -}}
+
+      <div class="ph-scroll">
+        <a class="ph-pill" href="{{ "everything" | relURL }}">Everything</a>
+        <a class="ph-pill" href="{{ "notes" | relURL }}">Notes</a>
+      </div>
+
+    {{- else if eq $ctx "everything" -}}
+
+      <span class="ph-label">Everything</span>
+
+      <div class="ph-scroll" id="phTypesWrap">
+        {{- range hugo.Data.types -}}
+          {{- if .in_everything -}}
+            <a class="ph-pill" href="{{ .id | relURL }}">{{ .label }}</a>
+          {{- end -}}
+        {{- end -}}
+      </div>
+
+    {{- else if or (eq $ctx "section") (eq $ctx "gallery") -}}
+
+      <a class="ph-back" href="/everything" aria-label="Back">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2L3.5 6L7.5 10"/></svg>
+      </a>
+      {{- if $subtypeBase -}}
+        <a class="ph-label ph-label-link" href="{{ $subtypeBase }}">{{ $typeLabel }}</a>
+      {{- else -}}
+        <span class="ph-label">{{ $typeLabel }}</span>
+      {{- end -}}
+      {{- if $subtypes -}}
+        <div class="ph-scroll ph-subtypes" id="phSubtypesWrap">
+          {{- range $subtypes -}}
+            <a class="ph-pill{{ if eq . $activeSubtype }} active{{ end }}" href="{{ $subtypeBase }}{{ . | urlize }}">{{ . }}</a>
+          {{- end -}}
+        </div>
+      {{- end -}}
+
+    {{- else if eq $ctx "notes" -}}
+
+      <div class="ph-scroll">
+        <button class="ph-btn" onclick="fabNotesSearch()" aria-label="Search">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Search
+        </button>
+        <button class="ph-btn" onclick="fabRandomNote()" aria-label="Random">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="11" height="11" rx="2"/><circle cx="4.5" cy="4.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="4.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="7" cy="7" r="0.8" fill="currentColor" stroke="none"/><circle cx="4.5" cy="9.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="9.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+          Random
+        </button>
+      </div>
+
     {{- end -}}
-    <button class="hdr-btn" id="fabThemeBtn" onclick="fabToggleTheme()" aria-label="Toggle theme">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="2.5"/><line x1="7" y1="1" x2="7" y2="2.5"/><line x1="7" y1="11.5" x2="7" y2="13"/><line x1="1" y1="7" x2="2.5" y2="7"/><line x1="11.5" y1="7" x2="13" y2="7"/><line x1="3.05" y1="3.05" x2="4.1" y2="4.1"/><line x1="9.9" y1="9.9" x2="10.95" y2="10.95"/><line x1="9.9" y1="4.1" x2="10.95" y2="3.05"/><line x1="3.05" y1="10.95" x2="4.1" y2="9.9"/></svg>
-    </button>
   </div>
+
+  {{/* ── Right ──────────────────────────────────────── */}}
+  <div class="ph-right">
+    {{- if or (eq $ctx "everything") (eq $ctx "section") -}}
+      <button class="ph-btn ph-icon" id="phViewBtn" onclick="fabToggleView()" aria-label="Toggle view"></button>
+    {{- end -}}
+    <button class="ph-btn ph-icon" id="phThemeBtn" onclick="fabToggleTheme()" aria-label="Toggle theme"></button>
+  </div>
+
 </header>

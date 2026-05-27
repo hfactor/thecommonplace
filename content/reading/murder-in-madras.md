@@ -4,7 +4,7 @@ localTitle: മർഡർ ഇൻ മദ്രാസ്
 author: G R Indugopan
 date: 2024-04-25
 language: Malayalam
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: false
 image: https://www.mbibooks.com/mbibooks_details/uploads/2023/05/Murder-in-Madras-Front-Cover-416x656.jpg
 link: https://www.mbibooks.com/product/550360/

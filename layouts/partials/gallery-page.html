@@ -1,6 +1,34 @@
+{{- /* Type label from types.yaml */ -}}
+{{- $typeLabel := "" -}}
+{{- range hugo.Data.types -}}
+  {{- if eq .id $.Params.listingType -}}{{- $typeLabel = .label -}}{{- end -}}
+{{- end -}}
+
+{{- /* Collect subCategory values from things.yaml */ -}}
+{{- $subtypes := slice -}}
+{{- range hugo.Data.things -}}
+  {{- $cat := .subCategory | default "Other" -}}
+  {{- if not (in $subtypes $cat) -}}{{- $subtypes = $subtypes | append $cat -}}{{- end -}}
+{{- end -}}
+
+{{- /* Active subtype and subtypeBase from page params */ -}}
+{{- $subtypeBase  := printf "/%s/" $.Params.listingType -}}
+{{- $activeSubtype := "" -}}
+{{- with $.Params.filters -}}
+  {{- $activeSubtype = index . "subCategory" | default "" -}}
+{{- end -}}
+
 <div class="app is-gallery">
 
-{{ partial "header.html" (dict "page" . "ctx" "gallery") }}
+{{ partial "header.html" (dict
+  "page"          .
+  "ctx"           "gallery"
+  "typeLabel"     $typeLabel
+  "subtypes"      ($subtypes | sort)
+  "subtypeField"  "subCategory"
+  "subtypeBase"   $subtypeBase
+  "activeSubtype" $activeSubtype
+) }}
 
 <div class="content">
   <div class="gallery-flow" id="galleryFlow">
@@ -12,7 +40,6 @@
 </div>
 
 {{ partial "data-panel.html" . }}
-{{ partial "fab.html" . }}
 
 {{ partialCached "page-data.html" . "global" }}
 </div>

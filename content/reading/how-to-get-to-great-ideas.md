@@ -4,7 +4,7 @@ localTitle:
 author: Dave Birss
 date: 2023-07-30
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41+OnWJqCzL.jpg
 link: https://amzn.to/3QknWiy

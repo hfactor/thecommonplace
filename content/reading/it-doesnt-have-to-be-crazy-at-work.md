@@ -4,7 +4,7 @@ localTitle:
 author: Jason Fried
 date: 2023-09-03
 language: English
-genre: Non-Ficton
+genre: Non-Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/41ffZ9rM48L.jpg
 link: https://amzn.to/4eXdYfH
