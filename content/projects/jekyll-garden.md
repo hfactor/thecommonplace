@@ -2,8 +2,9 @@
 title: "Jekyll Garden"
 date: 2022-03-01
 href: "https://github.com/jekyll-garden/jekyll-garden.github.io"
-cover: null
-tagline: "A Jekyll theme for Obsidian users who wanted to publish their notes without paying for it or starting over."
+cover: "/img/projects/jekyll-garden.png"
+tagline: "Publish your Obsidian notes without paying for it or starting over."
+category: "Community"
 collaborators:
   - name: "Asim KT"
     github: "asimkt"
@@ -11,12 +12,4 @@ collaborators:
     github: "ershad"
 ---
 
-During Covid, Notion was my place for notes and mentoring designers publicly. When that changed, the question was how to keep doing the same thing without depending on another platform. Obsidian had become the note-taking setup by then. Jekyll felt like the right technology to build on. The gap was making Jekyll understand how Obsidian organises and links notes.
-
-Found an existing open source Jekyll project that had the basics. Forked it, stripped it down significantly, and rebuilt it as something a non-technical person could actually set up and use. The goal was simplicity, not features. Wiki-style backlinks, full-text search, dark and light mode, publishing directly to GitHub Pages through an Obsidian vault. When the build hit walls, Asim helped get unstuck on the frontend and Ershad sorted out the Ruby parts that were unfamiliar territory.
-
-The people who ended up using it most were not who was expected. Academic researchers found it and adopted it widely. Emails came in from universities, researchers, writers. A theme built for simplicity found its audience among people doing serious knowledge work, precisely because everything else available was too complicated for what they actually needed.
-
-Feedback came in, a version two followed, more contributors joined. Moved away from it eventually, but it remains one of those projects where the outcome surprised more than the making did.
-
-*[screenshot]*
+I had been using Obsidian as my main note-taking setup and started sharing some of that publicly when I was doing more design mentoring. I wanted my Obsidian documents to go directly to a website without double work, and I was looking for an alternative to Obsidian Publish. Using a static site generator felt like the right answer, so we built a Jekyll theme around that workflow. Wiki-style backlinks, full-text search, dark and light mode, publishing directly to GitHub Pages from your vault. It is still available as a Jekyll theme for anyone who wants to publish their Obsidian notes that way.

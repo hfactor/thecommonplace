@@ -1,18 +1,15 @@
 ---
 title: "Scriptty"
-date: 2026-03-14
+date: 2026-02-01
 href: "https://github.com/stultus/scriptty"
-cover: null
-tagline: "A desktop screenwriting tool built for writers who want to work offline, without subscriptions or distractions."
+cover: "/img/projects/scriptty.png"
+tagline: "An offline screenwriting tool that disappears while you write."
+category: "Tools"
 collaborators:
   - name: "Hrishikesh Bhaskaran"
     github: "stultus"
 ---
 
-Stultus is a writer. He built Scriptty because existing screenwriting tools cost too much, required internet, or weren't built for how writers actually work. A desktop-first, offline tool, from blank page to cinema-ready format.
+Hrishikesh wanted a screenwriting tool that worked offline, without a subscription, and without the compromises that come with software built more around distribution than writing. Malayalam screenwriters especially have always had to pick between fighting a Latin-script tool or using a word processor and losing proper screenplay formatting entirely. He started building Scriptty as the third option and I came in to collaborate on the design.
 
-The design work is about getting out of the way. Cleaning the interface, thinking through the UX so writing stays in focus. The idea belongs entirely to him. The job here is making the tool feel as considered as the writing it holds.
-
-Still in alpha.
-
-*[screenshot]*
+The app supports both Hollywood single-column and Indian two-column formats, has Malayalam input built in so you never have to leave the page to switch scripts, and keeps everything local with no cloud or account required. Available on Mac, Windows, and Linux.

@@ -2,21 +2,16 @@
 title: "Malayaleegraphy"
 date: 2013-02-01
 href: "https://www.facebook.com/malayaleegraphy/"
-cover: null
-tagline: "A two-person experiment in expressive Malayalam typography that ran for four months and gave a generation of designers a new word."
+cover: "/img/projects/malayaleegraphy.png"
+tagline: "Two friends, four months, and a word that stuck."
+category: "Craft"
 collaborators:
   - name: "Orion C Jose"
     github: "orioncjose"
 ---
 
-After attending a Malayalam calligraphy exhibition at IFFK in Thiruvananthapuram, Orion made one poster. A word, set in old script, minimal. The idea was to keep going together.
+Orion and I were working at the same company. I had been making digital typography posters for myself, taking popular Malayalam cinema dialogues and treating them as design objects. Orion was doing something different, hand lettering, more drawn than designed. We started sharing work with each other, giving feedback, pushing back, collaborating without any particular plan and we started posting on our personal Facebook pages and the response was immediate. We turned it into a dedicated page and kept going.
 
-Thirty posters in five days. Film dialogues, Padmarajan lines, young poets. The treatment was minimal, closer to Scandinavian sensibility than anything happening in Malayalam design at the time. Same fonts throughout, the expression coming from scale, weight and placement rather than variety. All published under Creative Commons.
+The content started from our own tastes, books, cinema, things we liked, and drifted toward what the audience was connecting with, popular dialogues, comedy, things that travelled. For us it became its own kind of puzzle, figuring out how to treat a particular piece of text, what medium, what approach. People started asking how we were doing it, what tools, how Malayalam type worked in design. That question came often enough that people started doing it themselves and calling it Malayaleegraphy.
 
-The Facebook page crossed 7,000 likes in five days. Media covered it. Other studios started making their own versions within 48 hours. Narayanan Bhattathiri, the calligrapher whose exhibition started the whole thing, saw the work and said it was good. That response mattered more than the numbers.
-
-It grew to 40,000 followers over the months that followed. Four months after it began, it stopped. One or two pieces after that, then nothing for twelve years.
-
-The word Malayaligraphy stayed. Designers in Kerala use it to describe expressive Malayalam typography as a whole. Most people assume the project ran for years. It ran for four months.
-
-*[poster images]*
+In about three and a half months the page reached 40,000 followers. Media started covering it. We were getting a constant stream of appreciation and attention. The word stayed. Malayaleegraphy is now used broadly to describe expressive Malayalam typography as a practice, which was never something we planned for.

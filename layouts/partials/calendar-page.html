@@ -66,5 +66,5 @@
 
 {{ partial "data-panel.html" . }}
 
-{{ partialCached "page-data.html" . "global" }}
+{{ partialCached "page-data.html" . (.Params.listingType | default "global") }}
 </div>

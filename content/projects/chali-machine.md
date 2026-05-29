@@ -2,8 +2,9 @@
 title: "The Chali Machine"
 date: 2014-07-01
 href: "https://www.behance.net/gallery/40300789/The-Chali-Machine"
-cover: null
-tagline: "A browser-based comic maker for Malayalam, before tools like this existed."
+cover: "/img/projects/chali-machine.png"
+tagline: "A browser comic maker for Malayalam, before tools like this existed."
+category: "Tools"
 collaborators:
   - name: "Orion C Jose"
     github: "orioncjose"
@@ -11,12 +12,10 @@ collaborators:
     github: "stultus"
   - name: "Muneef Hameed"
     github: "muneef"
+  - name: "Labeeb Mattra"
+    github: "lebmatter"
 ---
 
-Adding Malayalam text to an image in 2014 meant opening Illustrator or Photoshop. Tools most people didn't have, couldn't afford, or had no reason to learn. Chali Machine ran in a browser.
+Adding Malayalam text to an image in 2014 meant opening Photoshop or Illustrator, and even then Indic rendering in those tools was unreliable. Chali Machine ran in a browser, had Malayalam fonts and a keyboard built in, and came with around 200 hand-drawn characters from Orion, loosely inspired by Bobanum Moliyum. You could pick a character, type in Malayalam, arrange things, and download. No design background needed, no worrying about whether the text would show up correctly.
 
-A library of 200 hand-drawn figures from a friend who draws cartoons. Malayalam text support already built in. Pick a character, add text, download. The whole thing was closer in spirit to what Canva would later do, but built earlier, smaller, and focused entirely on one language and its people.
-
-It stayed active for three to four years. People used it as their default tool for making Malayalam content. Conversations still come up where someone mentions it as the thing they relied on back then.
-
-*[tool screenshot]*
+This was around the time mobile usage and meme culture were picking up across India, and the tool fit that moment in a way we hadn't entirely planned for. People used it to make comics, graphics, and jokes. It stayed active for a few years after we stopped building it. We later heard from people who were still relying on it, including teachers who needed a straightforward way to create Indic language content and hadn't found anything else that worked as well.

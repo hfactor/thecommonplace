@@ -34,6 +34,7 @@ const emptyState = () => `<div class="empty-state"><div class="empty-state-icon"
 
 function setViewMode(mode) {
   viewMode = mode;
+  if (!isGalleryPage()) localStorage.setItem('viewMode', mode);
   updateFabState();
   show();
 }
@@ -120,8 +121,8 @@ function cardHTML(e, idx) {
     const src     = e.image || e.cover || '';
     const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
     const rec     = isRec(e) ? `<span class="gc-rec">✦</span>` : '';
-    const meta    = e.subCategory || e.year || '';
-    const tagline = (e.tagline || e.note) ? `<span class="gc-tagline">${e.tagline || e.note}</span>` : '';
+    const meta    = e.type === 'projects' ? '' : (e.subCategory || e.year || '');
+    const tagline = e.type === 'projects' && e.tagline ? `<span class="gc-tagline">${e.tagline}</span>` : '';
     const onClick = cfg.on_click || 'sheet';
     const extHref = e.href || e.url || '';
     let tag, attrs, extLink = '';
@@ -193,7 +194,7 @@ function listRowHTML(e, i) {
   const tag     = (LIST_TAG[e.type] || (() => ''))(e);
   const rec     = isRec(e) ? ' ✦' : '';
   const tipImg  = e.image || e.cover || '';
-  const wide    = ['projects', 'bookmarks', 'newsletter'].includes(e.type) ? 'wide' : '';
+  const wide    = ['projects', 'bookmarks', 'newsletter'].includes(e.type) ? 'wide' : e.type === 'uses' ? 'square' : '';
   const dataImg = tipImg ? `data-img="${tipImg}" data-wide="${wide}"` : '';
   const dataUid = `data-uid="${e.uid}"`;
 
@@ -239,6 +240,10 @@ function buildList() {
   }).join('');
 }
 
+function isPanel(e) {
+  return typeCfg(e.type).on_click === 'page';
+}
+
 function openEntryByUid(uid) {
   const e = S[uid];
   if (!e) return;
@@ -267,6 +272,10 @@ function buildGalleryFlow() {
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof DATA === 'undefined') return;
   Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
+  if (!isGalleryPage()) {
+    const saved = localStorage.getItem('viewMode');
+    if (saved) viewMode = saved;
+  }
   rebuild();
 
   if (typeof window.__OPEN_UID__ !== 'undefined') {
@@ -300,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (row.dataset.img !== _tipSrc) {
       _tipSrc = row.dataset.img;
       const imgDiv = lTip.querySelector('.l-tip-img');
-      imgDiv.className = 'l-tip-img' + (row.dataset.wide === 'wide' ? ' wide' : '');
+      imgDiv.className = 'l-tip-img' + (row.dataset.wide === 'wide' ? ' wide' : row.dataset.wide === 'square' ? ' square' : '');
       imgDiv.innerHTML = `<img src="${_tipSrc}" alt="">`;
     }
 

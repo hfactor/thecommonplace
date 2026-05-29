@@ -1,15 +1,14 @@
 ---
 title: "Gundert"
-date: 2019-07-01
+date: 2019-01-01
 href: null
-cover: null
-tagline: "Vectorizing Vattezhuthu glyphs from Hermann Gundert's handwritten notes, making an ancient script visible in digital form."
+cover: "/img/projects/gundert.png"
+tagline: "An ancient script pulled out of handwritten notes and given a digital form."
+category: "Type Design"
 collaborators:
   - name: "Indran"
 ---
 
-Hermann Gundert's handwritten notes contained glyphs of Vattezhuthu, an ancient script with almost no digital presence. Indran spent months vectorizing them, converting historical handwritten marks into clean SVG, glyph by glyph. The mentorship here was in guiding that process: understanding what precision means when the source material is centuries old and the margin for interpretation is almost zero.
+Hermann Gundert's handwritten notes contained glyphs of Vattezhuthu, an ancient script with almost no digital presence. The question was how to bring those glyphs into a website without adding them as static images. The answer was to convert them into a font using Unicode's Private Use Area, which meant the glyphs could behave like text rather than sit as assets on the page.
 
-The output is a web page with the glyphs embedded. Not a font in the conventional sense. Something closer to preservation work.
-
-*[glyph specimen]*
+Indran did the work of going through the notes glyph by glyph, converting centuries-old handwritten marks into clean vectors and then into a font. Every decision about a stroke or curve had to be made with almost no room for interpretation, given what the source material was.

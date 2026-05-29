@@ -19,6 +19,7 @@ function renderNoteWikilinks() {
   if (typeof CROSS_DATA !== 'undefined') {
     Object.values(CROSS_DATA).forEach(e => {
       crossLookup[(e.title || '').toLowerCase()] = e;
+      if (e.localTitle) crossLookup[e.localTitle.toLowerCase()] = e;
       S[e.uid] = e;
     });
   }

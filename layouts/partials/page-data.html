@@ -1,6 +1,8 @@
 {{- $months := dict -}}
+{{- $lt := .Params.listingType | default "" -}}
 
 {{/* ── Reading ───────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "reading") -}}
 {{- range .Site.RegularPages -}}
   {{- $s := .Section -}}
   {{- if and (eq $s "reading") (ne .Params.status "reading") (ne .Params.layout "listing") -}}
@@ -27,8 +29,10 @@
     {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
   {{- end -}}
 {{- end -}}
+{{- end -}}
 
 {{/* ── Bookmarks ──────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "bookmarks") -}}
 {{- range .Site.RegularPages -}}
   {{- $s := .Section -}}
   {{- if eq $s "bookmarks" -}}
@@ -54,8 +58,10 @@
     {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
   {{- end -}}
 {{- end -}}
+{{- end -}}
 
 {{/* ── Newsletter ─────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "newsletter") -}}
 {{- range hugo.Data.newsletter -}}
   {{- $url   := .url -}}
   {{- $img   := "" -}}
@@ -85,8 +91,10 @@
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
   {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
 {{- end -}}
+{{- end -}}
 
 {{/* ── Uses (things.yaml) ────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "uses") -}}
 {{- range hugo.Data.things -}}
   {{- $t   := time (printf "%v" .date) -}}
   {{- $key := dateFormat "2006-01" $t -}}
@@ -109,8 +117,10 @@
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
   {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
 {{- end -}}
+{{- end -}}
 
 {{/* ── Projects ───────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "projects") -}}
 {{- range where .Site.RegularPages "Section" "projects" -}}
   {{- $key := dateFormat "2006-01" .Date -}}
   {{- $uid := printf "projects/%s" .File.ContentBaseName -}}
@@ -130,6 +140,7 @@
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
   {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
 {{- end -}}
 
 <script>

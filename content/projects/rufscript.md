@@ -1,20 +1,13 @@
 ---
 title: "Rufscript"
-date: 2007-10-01
+date: 2006-10-01
 href: "https://fontlibrary.org/en/font/rufscript"
-cover: null
+cover: "/img/projects/rufscript.png"
 tagline: "A classmate's handwriting, turned into a font, shipped inside Linux."
+category: "Type Design"
 collaborators: null
 ---
 
-Before the Malayalam font work, there was a simpler question: can a photo of someone's handwriting become a usable font?
+A classmate had this particular handwriting, individual letters, slightly angular, nothing connecting or running together. At some point the idea came up to turn it into a font. The process was entirely manual, photos of handwritten pages, cropped and zoomed, converted from raster to vector in Inkscape, curves corrected in FontForge. All open source tools.
 
-A classmate wrote with individual letters, slightly angular, nothing running together. Pages of notes that looked like they had a personality. The process was taking photos of those pages, zooming in, cropping, converting raster to vector in Inkscape, correcting curves in FontForge, repeating. The toolchain was entirely open source.
-
-The output was not a complete Latin set. Basic capitals, lowercase, numbers, a few extras. A proof of concept built on a workflow that had never been tested before.
-
-Released it anyway. Within four months, 10,000 direct downloads. Fedora packaged it. Debian. Ubuntu. For a period, a Malayalam comic used it as its default English font.
-
-The repository lived on Savannah. That version is gone now. A second version was never made, and that felt like the right call. Some projects close when they answer the question they were asking.
-
-*[type specimen]*
+It found its way into Fedora, Debian, and Ubuntu packaging. A Malayalam comic used it as their default English font for a while. Within four months of release it had 10,000 direct downloads, which was a surprise for something that started as a small personal experiment.

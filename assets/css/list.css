@@ -25,5 +25,6 @@
 #lTip { position: fixed; width: 150px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--bg); box-shadow: var(--shadow-md); overflow: hidden; opacity: 0; pointer-events: none; z-index: calc(var(--z-sheet) - 10); transition: opacity var(--dur-fast); }
 #lTip.show { opacity: 1; }
 .l-tip-img { width: 100%; aspect-ratio: 2/3; background: var(--surface2); overflow: hidden; }
-.l-tip-img.wide { aspect-ratio: 16/9; }
+.l-tip-img.wide   { aspect-ratio: 16/9; }
+.l-tip-img.square { aspect-ratio: 1/1; }
 .l-tip-img img { width: 100%; height: 100%; object-fit: cover; display: block; }

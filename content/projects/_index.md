@@ -5,11 +5,4 @@ layout: listing
 listingType: projects
 viewMode: gallery
 listGroupBy: none
-build:
-  render: never
-  list: never
-cascade:
-  build:
-    render: never
-    list: never
 ---

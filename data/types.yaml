@@ -35,10 +35,10 @@
 
 - id: projects
   label: Projects
-  in_everything: false
+  in_everything: true
   card_template: product
   view_mode: gallery
-  on_click: sheet
+  on_click: page
 
 - id: notes
   label: Notes

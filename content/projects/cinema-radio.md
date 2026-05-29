@@ -1,16 +1,17 @@
 ---
 title: "Cinema Radio"
-date: 2026-05-20
+date: 2026-05-10
 href: null
-cover: null
-tagline: "A scheduled Malayalam film audio player that works like a TV channel. Tune in and something is already playing."
-collaborators: null
+cover: "/img/projects/cinema-radio.png"
+tagline: "Film audio that runs like a broadcast channel. Tune in, something's already playing."
+category: "Craft"
+collaborators:
+  - name: "Arun Sajeev"
+    github: "arun14949"
 ---
 
-The habit was listening to Malayalam film music while working. TV worked well for this. No choosing, no scrolling, just receiving. YouTube broke it. The search becomes the activity, and the focus goes with it.
+There is something about having a TV running in the background while working. Someone else has already decided what plays, the content is already mid-way through, and you are just receiving it. OTT never quite replicated that. You open it and the picking starts, and the picking takes over.
 
-Cinema Radio runs like a TV channel. A library of Malayalam films organised into bands, each generating a daily schedule through a GitHub Action that runs every morning. Open it at any time and something is already playing, with upcoming slots visible. All listeners are in sync. No video, no scroll, no decisions.
+Cinema Radio works like a broadcast channel. Each band has a curated library as a YAML file and every morning a GitHub Action generates the full day's schedule from it. When you open it, something is already playing from the middle. You cannot rewind or skip. Everyone on the same band is at the same moment.
 
-Built for personal use first. Since the system was already there, it became a small public tool with multiple bands. Each band is a curated YAML file. The library grows through whoever uses it.
-
-*[screenshot]*
+There is also a Mac toolbar app that connects to the same system, so you can tune in without opening a browser. If you want to add a new band or contribute films to an existing one, you can do that directly through the library files, which is how the catalogue has been growing.

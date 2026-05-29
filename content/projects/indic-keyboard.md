@@ -2,17 +2,14 @@
 title: "Indic Keyboard"
 date: 2022-11-01
 href: "https://github.com/hfactor/Indic-Keyboard"
-cover: null
-tagline: "Brand identity for one of the most downloaded open source Indian language keyboards on Android, across four versions over nearly a decade."
+cover: "/img/projects/indic-keyboard.png"
+tagline: "Brand identity for an open source keyboard in 23 Indian languages."
+category: "Community"
 collaborators:
   - name: "Jishnu Mohan"
     github: "jishnu7"
 ---
 
-Jishnu built Indic Keyboard, a free and open source multilingual keyboard for Android supporting 23 Indian languages. The design work came in across all four versions over nearly a decade. Logo, branding, UI direction, each version building on the last.
+Jishnu built Indic Keyboard, a free and open source multilingual keyboard for Android supporting 23 Indian languages. I worked on the brand identity across all four versions over nearly a decade, the logo, visual language, and UI direction, each version building on what came before.
 
-The visual language for multilingual Indian products was sparse at the time. The logo and identity that came out of this work started appearing in references beyond the keyboard itself. How multilingual tools present themselves in India shifted around that period.
-
-10 lakh downloads on the Play Store.
-
-*[logo and UI]*
+The visual approach we developed for Indic Keyboard has since become a familiar pattern. You can see similar design language across translation apps and multilingual products that came later, including from much larger companies. The app has crossed 10 lakh downloads on the Play Store.

@@ -57,12 +57,8 @@
 
       <a class="ph-back" href="/everything" aria-label="Back">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2L3.5 6L7.5 10"/></svg>
-      </a>
-      {{- if $subtypeBase -}}
-        <a class="ph-label ph-label-link" href="{{ $subtypeBase }}">{{ $typeLabel }}</a>
-      {{- else -}}
         <span class="ph-label">{{ $typeLabel }}</span>
-      {{- end -}}
+      </a>
       {{- if $subtypes -}}
         <div class="ph-scroll ph-subtypes" id="phSubtypesWrap">
           {{- range $subtypes -}}

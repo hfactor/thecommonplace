@@ -4,19 +4,31 @@
   {{- if eq .id $.Params.listingType -}}{{- $typeLabel = .label -}}{{- end -}}
 {{- end -}}
 
-{{- /* Collect subCategory values from things.yaml */ -}}
+{{- /* Collect subtypes based on listingType */ -}}
 {{- $subtypes := slice -}}
-{{- range hugo.Data.things -}}
-  {{- $cat := .subCategory | default "Other" -}}
-  {{- if not (in $subtypes $cat) -}}{{- $subtypes = $subtypes | append $cat -}}{{- end -}}
+{{- $activeSubtype := "" -}}
+{{- $subtypeField := "subCategory" -}}
+{{- if eq $.Params.listingType "uses" -}}
+  {{- range hugo.Data.things -}}
+    {{- $cat := .subCategory | default "Other" -}}
+    {{- if not (in $subtypes $cat) -}}{{- $subtypes = $subtypes | append $cat -}}{{- end -}}
+  {{- end -}}
+  {{- with $.Params.filters -}}
+    {{- $activeSubtype = index . "subcategory" | default "" -}}
+  {{- end -}}
+{{- else if eq $.Params.listingType "projects" -}}
+  {{- range .Site.RegularPages -}}
+    {{- if and (eq .Section "projects") .Params.category -}}
+      {{- if not (in $subtypes .Params.category) -}}{{- $subtypes = $subtypes | append .Params.category -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $subtypeField = "category" -}}
+  {{- with $.Params.filters -}}
+    {{- $activeSubtype = index . "category" | default "" -}}
+  {{- end -}}
 {{- end -}}
 
-{{- /* Active subtype and subtypeBase from page params */ -}}
 {{- $subtypeBase  := printf "/%s/" $.Params.listingType -}}
-{{- $activeSubtype := "" -}}
-{{- with $.Params.filters -}}
-  {{- $activeSubtype = index . "subCategory" | default "" -}}
-{{- end -}}
 
 <div class="app is-gallery">
 
@@ -41,5 +53,5 @@
 
 {{ partial "data-panel.html" . }}
 
-{{ partialCached "page-data.html" . "global" }}
+{{ partialCached "page-data.html" . (.Params.listingType | default "global") }}
 </div>

@@ -1,7 +1,4 @@
 
-/* proj-lead lives on the single project page */
-.proj-lead { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); margin-bottom: 28px; }
-
 /* ── Gallery card (uses + projects — cal columns and gallery grid) ────────── */
 .gc {
   display: flex; flex-direction: column;
@@ -13,7 +10,7 @@
 
 .gc-img-wrap { overflow: hidden; flex-shrink: 0; }
 .gc[data-type="uses"]     .gc-img-wrap { aspect-ratio: 1;   padding: 12%; }
-.gc[data-type="projects"] .gc-img-wrap { aspect-ratio: 4/3; padding: 10%; }
+.gc[data-type="projects"] .gc-img-wrap { aspect-ratio: 4/3; padding: 0; }
 
 .gc-img { width: 100%; height: 100%; display: block; mix-blend-mode: multiply; transition: transform 0.35s ease; }
 [data-theme="ink"] .gc-img { mix-blend-mode: screen; }
@@ -25,7 +22,7 @@
 .gc-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 2px; }
 .gc-title { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink); line-height: var(--lh-tight); transition: color var(--dur-fast); }
 .gc-meta  { font-size: var(--text-sm); color: var(--ink2); }
-.gc-tagline { display: none; font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
+.gc-tagline { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
 .gc-title-row { display: flex; align-items: baseline; gap: 4px; }
 .gc-rec { font-size: var(--text-sm); color: var(--ink2); flex-shrink: 0; line-height: 1; }
 

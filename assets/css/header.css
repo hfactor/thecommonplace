@@ -22,7 +22,7 @@
   align-items: center;
   flex-shrink: 0;
   text-decoration: none;
-  padding: 5px 8px;
+  padding: 5px;
 }
 .ph-logo-mark {
   width: 26px;
@@ -43,7 +43,6 @@
   min-width: 0;
   flex: 1;
   overflow: hidden;        /* clips scroll container to pill bounds */
-  border-right: 1px solid var(--border);
 }
 
 /* Scrollable strip used inside ph-center for pills / nav links */
@@ -70,39 +69,32 @@
 }
 
 
-/* ── Label as link (section state with subtypeBase) ── */
-.ph-label-link {
-  text-decoration: none;
-  color: var(--ink);
-  transition: color var(--dur-fast);
-}
-.ph-label-link:hover { color: var(--accent); }
-
-/* Separator after label — align-self: stretch makes border span full pill height */
-.ph-label,
-.ph-label-link {
+/* ── Type label ───────────────────────────────────── */
+.ph-label {
   align-self: stretch;
   display: flex;
   align-items: center;
   padding-right: 8px;
-  border-right: 1px solid var(--border);
 }
 
 /* ── Back button (section state) ──────────────────── */
 .ph-back {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
+  gap: 4px;
   flex-shrink: 0;
   text-decoration: none;
   color: var(--ink2);
-  margin: 0 2px 0 4px;
-  border-radius: var(--r-full);
+  padding: 0 4px;
+  align-self: stretch;
   transition: color var(--dur-fast), background var(--dur-fast);
 }
-.ph-back:hover { color: var(--ink); background: var(--surface); }
+.ph-back:hover { color: var(--ink); background: var(--surface); border-radius: var(--r-pill); }
+.ph-back .ph-label {
+  border-right: none;
+  padding-right: 0;
+  align-self: auto;
+}
 
 /* ── Shared pill style (nav + type + subtype) ─────── */
 .ph-pill {

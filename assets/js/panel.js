@@ -1,7 +1,10 @@
 function parseWikilinks(html) {
   return html.replace(/\[\[([^\]]+)\]\]/g, (_, title) => {
     const key   = title.toLowerCase();
-    const entry = Object.values(S).find(e => (e.title || '').toLowerCase() === key);
+    const entry = Object.values(S).find(e =>
+      (e.title || '').toLowerCase() === key ||
+      (e.localTitle || '').toLowerCase() === key
+    );
     if (!entry) return `<span class="wikilink-dead">${title}</span>`;
     const label = entry.localTitle || title;
     return `<span class="wikilink" data-uid="${entry.uid}">${label}</span>`;

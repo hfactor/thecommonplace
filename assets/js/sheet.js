@@ -70,10 +70,6 @@ function openSheet(uid) {
 
   const inner = document.getElementById('sheetInner');
   inner.innerHTML = html;
-  inner.addEventListener('click', ev => {
-    const wl = ev.target.closest('.wikilink[data-uid]');
-    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); }
-  }, { once: true });
 
   // Only push/replace URL when there's a real permalink to navigate to
   const permalink = e.permalink || null;
@@ -103,3 +99,10 @@ function closeSheet(fromPopstate = false) {
 function closeSheetOutside(ev) {
   if (ev.target === document.getElementById('sheetOverlay')) closeSheet();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('sheetInner')?.addEventListener('click', ev => {
+    const wl = ev.target.closest('.wikilink[data-uid]');
+    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); }
+  });
+});
