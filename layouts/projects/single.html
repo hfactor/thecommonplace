@@ -1,0 +1,65 @@
+{{ define "main" }}
+{{- $projectsPage := .Site.GetPage "/projects" -}}
+
+{{ partial "gallery-page.html" $projectsPage }}
+
+<script>
+window.__LISTING__ = {
+  type:    "projects",
+  viewMode:"gallery",
+  filters: {},
+  groupBy: "none"
+};
+</script>
+
+{{/* Side panel — pre-opened server-side with full project content */}}
+<div class="panel-overlay open" id="panelOverlay" onclick="history.back()"></div>
+<div class="side-panel open" id="sidePanel">
+  <button class="sp-back proj-sp-back" onclick="history.back()" aria-label="Close">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1L10 10M10 1L1 10"/></svg>
+  </button>
+  <div class="sp-body" id="spBody">
+
+    <div class="proj-sp-title-row">
+      <h1 class="sp-title">{{ .Title }}</h1>
+      {{- with .Params.href -}}
+      <a class="proj-sp-ext" href="{{ . }}" target="_blank" rel="noopener" aria-label="View project">
+        <svg width="14" height="14" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      {{- end -}}
+    </div>
+
+    <div class="sp-meta-row">
+      <span class="sp-kicker">{{ .Date | dateFormat "January 2006" }}</span>
+      {{- with .Params.collaborators -}}
+      <span class="sp-meta-sep">·</span>
+      <span class="people-with">with</span>
+      {{- range . -}}
+        {{- $href := "" -}}
+        {{- if .github -}}{{- $href = printf "https://github.com/%s" .github -}}{{- else if .website -}}{{- $href = .website -}}{{- end -}}
+        <a class="people-badge{{ if not $href }} people-badge-plain{{ end }}"
+           {{ if $href }}href="{{ $href }}" target="_blank" rel="noopener"{{ end }}>
+          {{- if .image -}}
+          <img class="people-avatar" src="{{ .image }}" alt="{{ .name }}">
+          {{- else if .github -}}
+          <img class="people-avatar" src="https://github.com/{{ .github }}.png?size=64" alt="{{ .name }}">
+          {{- else -}}
+          <div class="people-avatar-init">{{ substr .name 0 1 }}</div>
+          {{- end -}}
+          <div class="people-tip">{{ .name }}</div>
+        </a>
+      {{- end -}}
+      {{- end -}}
+    </div>
+
+    {{- with .Params.cover -}}
+    <div class="proj-sp-cover">
+      <img src="{{ . }}" alt="{{ $.Title }}">
+    </div>
+    {{- end -}}
+
+    <div class="sp-text">{{ .Content }}</div>
+
+  </div>
+</div>
+{{ end }}

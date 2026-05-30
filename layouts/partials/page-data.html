@@ -124,6 +124,12 @@
 {{- range where .Site.RegularPages "Section" "projects" -}}
   {{- $key := dateFormat "2006-01" .Date -}}
   {{- $uid := printf "projects/%s" .File.ContentBaseName -}}
+  {{- $collabs := slice -}}
+  {{- range .Params.collaborators -}}
+    {{- $src := "" -}}
+    {{- if .image -}}{{- $src = .image -}}{{- else if .github -}}{{- $src = printf "https://github.com/%s.png?size=32" .github -}}{{- end -}}
+    {{- $collabs = $collabs | append (dict "src" $src "name" (default "" .name)) -}}
+  {{- end -}}
   {{- $entry := dict
     "uid"       $uid
     "type"      "projects"
@@ -134,8 +140,10 @@
     "cover"     (default "" .Params.cover)
     "tagline"   (default "" .Params.tagline)
     "href"      (default "" .Params.href)
+    "category"  (default "" .Params.category)
     "permalink" .RelPermalink
     "content"   (printf "%s" .Content)
+    "collabs"   $collabs
   -}}
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

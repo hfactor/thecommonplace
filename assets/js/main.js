@@ -121,8 +121,8 @@ function cardHTML(e, idx) {
     const src     = e.image || e.cover || '';
     const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
     const rec     = isRec(e) ? `<span class="gc-rec">✦</span>` : '';
-    const meta    = e.type === 'projects' ? '' : (e.subCategory || e.year || '');
-    const tagline = e.type === 'projects' && e.tagline ? `<span class="gc-tagline">${e.tagline}</span>` : '';
+    const meta    = e.type === 'projects' ? (e.category || '') : (e.subCategory || e.year || '');
+    const tagline = e.tagline ? `<span class="gc-tagline">${e.tagline}</span>` : '';
     const onClick = cfg.on_click || 'sheet';
     const extHref = e.href || e.url || '';
     let tag, attrs, extLink = '';
@@ -135,7 +135,6 @@ function cardHTML(e, idx) {
         ? `href="${e.permalink}"`
         : (extHref ? `href="${withRef(extHref)}" target="_blank" rel="noopener"` : '');
     } else {
-      // sheet — use <div> so we can nest a real <a> for the ext icon
       tag     = 'div';
       attrs   = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
       extLink = extHref
@@ -242,6 +241,17 @@ function buildList() {
 
 function isPanel(e) {
   return typeCfg(e.type).on_click === 'page';
+}
+
+// JS-based gallery subtype filter (used when URL-based nav would 404)
+function fabGalleryFilter(category, el) {
+  if (typeof window.__LISTING__ === 'undefined') return;
+  if (!window.__LISTING__.filters) window.__LISTING__.filters = {};
+  const isActive = window.__LISTING__.filters.category === category;
+  window.__LISTING__.filters.category = isActive ? '' : category;
+  document.querySelectorAll('#phSubtypesWrap .ph-pill').forEach(p => p.classList.remove('active'));
+  if (!isActive) el.classList.add('active');
+  rebuild();
 }
 
 function openEntryByUid(uid) {
