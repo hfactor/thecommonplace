@@ -4,6 +4,7 @@ date: 2013-02-01
 href: "https://www.facebook.com/malayaleegraphy/"
 cover: "/img/projects/malayaleegraphy.png"
 tagline: "Two friends, four months, and a word that stuck."
+icon: "/img/projects/malayaleegraphy.svg"
 category: "Craft"
 collaborators:
   - name: "Orion C Jose"

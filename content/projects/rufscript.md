@@ -3,7 +3,8 @@ title: "Rufscript"
 date: 2006-10-01
 href: "https://fontlibrary.org/en/font/rufscript"
 cover: "/img/projects/rufscript.png"
-tagline: "A classmate's handwriting, turned into a font, shipped inside Linux."
+tagline: "A classmate's handwriting, turned into a font."
+icon: "/img/projects/rufscript.svg"
 category: "Type Design"
 collaborators: null
 ---

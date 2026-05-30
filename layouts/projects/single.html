@@ -30,33 +30,16 @@ window.__LISTING__ = {
     </div>
 
     <div class="sp-meta-row">
-      <span class="sp-kicker">{{ .Date | dateFormat "January 2006" }}</span>
+      <span>{{ .Date | dateFormat "January 2006" }}</span>
       {{- with .Params.collaborators -}}
-      <span class="sp-meta-sep">·</span>
-      <span class="people-with">with</span>
+      with
       {{- range . -}}
-        {{- $href := "" -}}
-        {{- if .github -}}{{- $href = printf "https://github.com/%s" .github -}}{{- else if .website -}}{{- $href = .website -}}{{- end -}}
-        <a class="people-badge{{ if not $href }} people-badge-plain{{ end }}"
-           {{ if $href }}href="{{ $href }}" target="_blank" rel="noopener"{{ end }}>
-          {{- if .image -}}
-          <img class="people-avatar" src="{{ .image }}" alt="{{ .name }}">
-          {{- else if .github -}}
-          <img class="people-avatar" src="https://github.com/{{ .github }}.png?size=64" alt="{{ .name }}">
-          {{- else -}}
-          <div class="people-avatar-init">{{ substr .name 0 1 }}</div>
-          {{- end -}}
-          <div class="people-tip">{{ .name }}</div>
-        </a>
+        {{- $src := "" -}}
+        {{- if .image -}}{{- $src = .image -}}{{- else if .github -}}{{- $src = printf "https://github.com/%s.png?size=64" .github -}}{{- end -}}
+        {{- if $src -}}<span class="sp-collab"><img class="sp-collab-avatar" src="{{ $src }}" alt="{{ .name }}" loading="lazy"><span class="sp-collab-tip">{{ .name }}</span></span>{{- end -}}
       {{- end -}}
       {{- end -}}
     </div>
-
-    {{- with .Params.cover -}}
-    <div class="proj-sp-cover">
-      <img src="{{ . }}" alt="{{ $.Title }}">
-    </div>
-    {{- end -}}
 
     <div class="sp-text">{{ .Content }}</div>
 

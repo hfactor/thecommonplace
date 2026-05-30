@@ -4,6 +4,7 @@ date: 2026-04-28
 href: "https://github.com/stultus/marktable"
 cover: "/img/projects/marktable.png"
 tagline: "A spreadsheet view for markdown, YAML and JSON files."
+icon: "/img/projects/marktable.svg"
 category: "Tools"
 collaborators:
   - name: "Hrishikesh Bhaskaran"

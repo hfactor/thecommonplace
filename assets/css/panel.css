@@ -23,14 +23,38 @@
 .sp-meta-row {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: var(--space-6);
-}
-.sp-meta-sep {
+  gap: 6px;
+  margin-bottom: 14px;
   font-size: var(--text-sm);
-  color: var(--border);
+  color: var(--ink2);
 }
+.sp-collab {
+  position: relative;
+  display: inline-flex;
+}
+.sp-collab-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.sp-collab-tip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--text-sm);
+  padding: 3px 8px;
+  border-radius: var(--r-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast);
+}
+.sp-collab:hover .sp-collab-tip { opacity: 1; }
 
 /* ─── Project side panel content ──────────────────── */
 .proj-sp-title-row {

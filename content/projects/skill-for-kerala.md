@@ -3,7 +3,8 @@ title: "Skill for Kerala"
 date: 2019-08-01
 href: "https://kdco.info/skillforkerala/"
 cover: "/img/projects/skill-for-kerala.png"
-tagline: "When the floods came back, designers pledged hours instead of money."
+tagline: "Designers pledged hours instead of money."
+icon: "/img/projects/skill-for-kerala.svg"
 category: "Craft"
 collaborators:
   - name: "Kerala Designers Collaborative"
