@@ -13,9 +13,18 @@ window.__LISTING__ = {
 </script>
 
 {{/* Side panel — pre-opened server-side with full project content */}}
-<div class="panel-overlay open" id="panelOverlay" onclick="history.back()"></div>
+<script>
+function projClose() {
+  if (history.length > 1 && document.referrer && document.referrer.startsWith(location.origin)) {
+    history.back();
+  } else {
+    location.href = '{{ $projectsPage.RelPermalink }}';
+  }
+}
+</script>
+<div class="panel-overlay open" id="panelOverlay" onclick="projClose()"></div>
 <div class="side-panel open" id="sidePanel">
-  <button class="sp-back proj-sp-back" onclick="history.back()" aria-label="Close">
+  <button class="sp-back proj-sp-back" onclick="projClose()" aria-label="Close">
     <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1L10 10M10 1L1 10"/></svg>
   </button>
   <div class="sp-body" id="spBody">
