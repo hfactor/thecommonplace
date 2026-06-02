@@ -30,7 +30,7 @@
 
 {{- $subtypeBase  := printf "/%s/" $.Params.listingType -}}
 
-<div class="app is-gallery">
+<div class="app is-gallery{{ with .Params.listingType }} is-{{ . }}{{ end }}">
 
 {{ partial "header.html" (dict
   "page"          .

@@ -84,65 +84,11 @@ function goLatest() {
   updateLatest();
 }
 
-function projIcon(title) {
-  let s = 0;
-  for (let i = 0; i < title.length; i++) s = (s * 31 + title.charCodeAt(i)) >>> 0;
-  const w = '1';
-  const icons = [
-    // 0: Two overlapping squares → octagram
-    `<rect x="8" y="8" width="24" height="24" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <rect x="8" y="8" width="24" height="24" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(45 20 20)"/>
-     <circle cx="20" cy="20" r="3.5" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-    // 1: Flower of Life — 7 circles
-    `<circle cx="20" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="20" cy="13" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="26.06" cy="16.5" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="26.06" cy="23.5" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="20" cy="27" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="13.94" cy="23.5" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="13.94" cy="16.5" r="7" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-    // 2: Star of David (two triangles)
-    `<polygon points="20,5 32.1,27 7.9,27" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <polygon points="20,35 32.1,13 7.9,13" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="20" cy="20" r="3" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-    // 3: Four rotated squares + centre dot
-    `<rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(0 20 20)"/>
-     <rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(22.5 20 20)"/>
-     <rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(45 20 20)"/>
-     <circle cx="20" cy="20" r="3" fill="currentColor"/>`,
-    // 4: Three interlocking circles (Borromean)
-    `<circle cx="20" cy="13" r="9" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="13" cy="25" r="9" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="27" cy="25" r="9" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-    // 5: Art Deco sunburst
-    `<line x1="20" y1="33" x2="5"  y2="8"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="11" y2="6"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="15" y2="5"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="20" y2="5"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="25" y2="5"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="29" y2="6"  stroke="currentColor" stroke-width="${w}"/>
-     <line x1="20" y1="33" x2="35" y2="8"  stroke="currentColor" stroke-width="${w}"/>
-     <path d="M5 8 A17 17 0 0 1 35 8" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-    // 6: 8-point compass star
-    `<path d="M20 4 L22.5 17.5 L36 20 L22.5 22.5 L20 36 L17.5 22.5 L4 20 L17.5 17.5 Z" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <polygon points="20,11 26,20 20,29 14,20" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <circle cx="20" cy="20" r="2.5" fill="currentColor"/>`,
-    // 7: Three rotated pentagons
-    `<polygon points="20,6 29.5,13 26,24.5 14,24.5 10.5,13" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <polygon points="20,6 29.5,13 26,24.5 14,24.5 10.5,13" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(36 20 20)"/>
-     <polygon points="20,6 29.5,13 26,24.5 14,24.5 10.5,13" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(72 20 20)"/>`,
-    // 8: Nested concentric rotated squares
-    `<rect x="5"  y="5"  width="30" height="30" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <rect x="9"  y="9"  width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(22.5 20 20)"/>
-     <rect x="13" y="13" width="14" height="14" fill="none" stroke="currentColor" stroke-width="${w}"/>
-     <rect x="17" y="17" width="6"  height="6"  fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(22.5 20 20)"/>`,
-    // 9: Islamic 12-point — three overlapping squares
-    `<rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(0 20 20)"/>
-     <rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(30 20 20)"/>
-     <rect x="9" y="9" width="22" height="22" fill="none" stroke="currentColor" stroke-width="${w}" transform="rotate(60 20 20)"/>
-     <circle cx="20" cy="20" r="3.5" fill="none" stroke="currentColor" stroke-width="${w}"/>`,
-  ];
-  return `<svg class="gc-proj-icon" viewBox="0 0 40 40" fill="currentColor" xmlns="http://www.w3.org/2000/svg">${icons[s % icons.length]}</svg>`;
+const FLOPPY_LABEL_COLORS = ['#1c3461', '#6b1c24'];
+function floppyLabelColor(title) {
+  let h = 0;
+  for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) >>> 0;
+  return FLOPPY_LABEL_COLORS[h % FLOPPY_LABEL_COLORS.length];
 }
 
 function cardHTML(e, idx) {
@@ -205,12 +151,9 @@ function cardHTML(e, idx) {
     const subcat = e.subCategory || e.category || e.genre || '';
 
     if (e.type === 'projects') {
-      const icon = e.icon
-        ? `<img class="gc-proj-icon" src="${e.icon}" alt="" loading="lazy">`
-        : projIcon(e.title);
-      const desc = e.tagline ? `<p class="gc-proj-desc">${e.tagline}</p>` : '';
-      const typeLabel = 'Project';
-      return `<${tag} class="gc gc-proj" data-type="projects" data-subcat="${subcat}" ${attrs} ${si}><span class="gc-proj-type">${typeLabel}</span><div class="gc-proj-icon-wrap">${icon}</div><div class="gc-proj-body"><span class="gc-proj-title">${e.title}</span>${desc}</div></${tag}>`;
+      const lc   = floppyLabelColor(e.title);
+      const desc = e.tagline ? `<span class="floppy-tagline">${e.tagline}</span>` : '';
+      return `<${tag} class="floppy-card" data-type="projects" data-subcat="${subcat}" ${attrs} ${si}><div class="floppy"><div class="floppy-top"><div class="floppy-tab"></div><div class="floppy-shutter-zone"><div class="floppy-shutter"><div class="floppy-rw"></div></div></div><div class="floppy-tab"></div></div><div class="floppy-divider"></div><div class="floppy-label" style="--lc:${lc}"><div class="floppy-label-stripe"></div><div class="floppy-label-body"><div class="floppy-name">${e.title}</div>${desc}</div></div><div class="floppy-wp-l"></div><div class="floppy-wp-r"></div></div></${tag}>`;
     }
 
     return `<${tag} class="gc" data-type="${e.type}" data-subcat="${subcat}" ${attrs} ${si}>${extLink}<div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></${tag}>`;

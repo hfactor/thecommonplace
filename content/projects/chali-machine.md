@@ -4,7 +4,6 @@ date: 2014-07-01
 href: "https://www.behance.net/gallery/40300789/The-Chali-Machine"
 cover: "/img/projects/chali-machine.png"
 tagline: "A browser comic maker for Malayalam."
-icon: "/img/projects/chali-machine.svg"
 category: "Tools"
 collaborators:
   - name: "Orion C Jose"

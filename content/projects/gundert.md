@@ -4,7 +4,6 @@ date: 2019-01-01
 href: null
 cover: "/img/projects/gundert.png"
 tagline: "Hermann Gundert's Vattezhuthu glyphs, vectorised."
-icon: "/img/projects/gundert.svg"
 category: "Type Design"
 collaborators:
   - name: "Indran"

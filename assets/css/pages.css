@@ -41,6 +41,16 @@
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     padding: var(--gap-sm);
   }
+  /* Projects gallery — floppies with breathing room, not full-bleed */
+  .is-projects .gallery-flow {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
+    gap: 20px;
+    padding: var(--gap);
+    justify-content: center;
+  }
+  .is-projects .floppy-card {
+    padding: 10%;
+  }
 }
 
 /* Info cell — first grid tile, shows page title + description */
@@ -84,53 +94,157 @@
 .is-gallery .gc-img-wrap  { overflow: hidden; }
 .is-gallery .gc:hover .gc-title { color: var(--accent); }
 
-/* Project card */
-.gc.gc-proj {
-  aspect-ratio: 1;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 14px;
-  gap: 10px;
-  background: var(--surface2);
+/* ── Floppy disk card ─────────────────────────────────────────────────────── */
+
+.floppy-card {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  padding-bottom: 10px;
 }
-.gc.gc-proj::before {
-  content: '';
+.floppy-card .floppy {
+  transition: transform 0.2s ease;
+}
+.floppy-card:hover .floppy {
+  transform: translateY(-3px);
+}
+
+/* Outer case */
+.floppy {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200/210;
+  /* top-right chamfer */
+  clip-path: polygon(0 0, 94.5% 0, 100% 5.2%, 100% 100%, 0 100%);
+  background: #3e4049;
+}
+[data-theme="ink"] .floppy { background: #e0ddd6; }
+
+/* Top section — plastic tabs flanking the shutter groove */
+.floppy-top {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent);
-  z-index: 2;
-  border-radius: var(--r) var(--r) 0 0;
+  height: 30.5%;
+  display: flex;
 }
-.is-gallery .gc.gc-proj::before { display: none; }
-.is-gallery .gc-proj-type { display: none; }
-.gc-proj-type {
+.floppy-tab { width: 22%; flex-shrink: 0; }
+
+/* Dark groove the shutter sits in */
+.floppy-shutter-zone {
+  flex: 1;
+  position: relative;
+  background: #16171b;
+  overflow: hidden;
+}
+[data-theme="ink"] .floppy-shutter-zone { background: #b0ada4; }
+
+/* Sliding shutter — metallic on dark case, dark gray on white case */
+.floppy-shutter {
   position: absolute;
-  top: 10px; left: 12px;
+  inset: 0;
+  background: linear-gradient(135deg,
+    #b0b0b0 0%, #d4d4d4 25%, #eaeaea 50%, #c8c8c8 75%, #a8a8a8 100%
+  );
+}
+[data-theme="ink"] .floppy-shutter {
+  background: #46464e;
+}
+
+/* Read window — dark cutout in the metal */
+.floppy-rw {
+  position: absolute;
+  right: 12.5%; top: 15.6%;
+  width: 25%; height: 62.5%;
+  background: #0e0f12;
+  border-radius: 5%;
+}
+[data-theme="ink"] .floppy-rw { background: #d8d4cc; }
+
+/* Divider strip between top and label */
+.floppy-divider {
+  position: absolute;
+  top: 30.5%; left: 0; right: 0;
+  height: 3.8%;
+  background: #2a2b30;
+}
+[data-theme="ink"] .floppy-divider { background: #c4c1b8; }
+
+/* Label sticker */
+.floppy-label {
+  position: absolute;
+  top: 35.2%; left: 5%; right: 5%; bottom: 8.6%;
+  background: #e2dfd2;
+  border-radius: 2%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+[data-theme="ink"] .floppy-label { background: #f0ede6; }
+
+.floppy-label-stripe {
+  height: 9px;
+  flex-shrink: 0;
+  background: var(--lc, #1c3461);
+}
+.floppy-label-body {
+  flex: 1;
+  padding: 6px 8px 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.floppy-name {
   font-size: var(--text-sm);
-  color: var(--accent);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-fast);
-  z-index: 2;
-}
-.gc.gc-proj:hover .gc-proj-type { opacity: 1; }
-.gc-proj-icon-wrap { color: var(--ink); opacity: 0.75; }
-.gc-proj-icon { width: 72px; height: 72px; display: block; object-fit: contain; }
-[data-theme="ink"] .gc-proj-icon { filter: invert(1); }
-.gc-proj-body { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-.gc-proj-title {
-  font-size: var(--text-md);
   font-weight: var(--weight-semibold);
-  color: var(--ink);
-  line-height: var(--lh-tight);
-  transition: color var(--dur-fast);
+  color: #222018;
+  line-height: 1.3;
 }
-.gc.gc-proj:hover .gc-proj-title { color: var(--accent); }
-.gc.gc-proj:hover .gc-proj-icon-wrap { opacity: 1; filter: brightness(0) saturate(100%) invert(23%) sepia(80%) saturate(1200%) hue-rotate(207deg); }
-[data-theme="ink"] .gc.gc-proj:hover .gc-proj-icon-wrap { filter: invert(1) sepia(1) saturate(2) hue-rotate(190deg); }
-.gc-proj-desc { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); margin: 0; }
+.floppy-tagline {
+  font-size: calc(var(--text-sm) - 1px);
+  color: #6a6050;
+  line-height: 1.2;
+  margin-top: 16px;
+}
+
+/* Write-protect tab — bottom left */
+.floppy-wp-l {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 9%; height: 7.6%;
+  background: #2e3038;
+}
+.floppy-wp-l::before {
+  content: '';
+  position: absolute;
+  inset: 15% 10%;
+  background: #22242c;
+  border-radius: 1px;
+}
+
+/* HD density hole — bottom right. Outer matches case; inner square reads as hole. */
+.floppy-wp-r {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 9%; height: 7.6%;
+  background: #3e4049;   /* same as dark case */
+}
+.floppy-wp-r::before {
+  content: '';
+  position: absolute;
+  inset: 12% 8%;
+  background: #0a0b0e;   /* near-black — the hole */
+  border-radius: 1px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+}
+
+[data-theme="ink"] .floppy-wp-l { background: #c4c1b8; }
+[data-theme="ink"] .floppy-wp-l::before { background: #9e9b94; }
+[data-theme="ink"] .floppy-wp-r { background: #e0ddd6; }  /* matches light case */
+[data-theme="ink"] .floppy-wp-r::before {
+  background: #0a0b0e;   /* same near-black hole on light case */
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+}
 
 /* External link icon — top-right corner, appears on gc hover */
 .gc-ext-link {

@@ -4,7 +4,6 @@ date: 2026-05-10
 href: null
 cover: "/img/projects/cinema-radio.png"
 tagline: "Film audio that runs like a broadcast channel."
-icon: "/img/projects/cinema-radio.svg"
 category: "Craft"
 collaborators:
   - name: "Arun Sajeev"

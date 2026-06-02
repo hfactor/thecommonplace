@@ -82,18 +82,19 @@ Folder structure controls visibility:
 - `40-Private/` — excluded
 
 ### Projects (`content/projects/`)
-Markdown files. Currently `render = false` in config — not public yet.
+Markdown files. `render = true` — publicly visible.
 
 | Field | Notes |
 |---|---|
-| `order` | Sort order (ascending) |
 | `title` | |
 | `date` | Year |
 | `href` | External link (optional) |
-| `cover` | Cover image URL (optional) |
-| `tagline` | One-liner for gallery card |
-| `summary` | Lead paragraph on detail page |
-| `with` | Collaborators (text) |
+| `tagline` | One-liner for floppy label |
+| `category` | e.g. Craft, Tool |
+| `collaborators` | List of `{name, github}` — avatar fetched from GitHub |
+
+No `cover` field — images are placed directly in markdown content body.
+Cards render as skeuomorphic floppy disks (CSS-only, no image assets). Label stripe color is deterministic from title hash.
 
 ### Things / Uses (`data/things.yaml`)
 YAML-driven, not markdown content files.
@@ -207,6 +208,12 @@ Note: `--weight-semibold` is actually 500 (medium) — naming predates a heavier
 - `--accent-subtle` — light accent tint for inline link backgrounds
 - `--border`, `--border-light`
 
+**Glass tokens** (per theme — used by `.pill-hdr`):
+- `--glass-bg` — semi-transparent background (dark: white 5%, light: black 4%)
+- `--glass-border` — subtle edge border
+- `--glass-shadow` — inset top-edge highlight + outer drop shadow
+- `--glass-highlight` — `::before` specular gradient, fades from top
+
 ### Link/hover conventions
 - Nav and content links: `--ink2` default → `--ink` on hover
 - Inline text links: `--ink` + `background: var(--accent-subtle)` → `--accent` on hover
@@ -238,9 +245,8 @@ Note: `--weight-semibold` is actually 500 (medium) — naming predates a heavier
 ```
 
 Current state:
-- `notes`, `reading`, `uses` → `render = true`
+- `notes`, `reading`, `uses`, `projects` → `render = true`
 - `bookmarks`, `things` → `render = false`
-- `projects` → `render = false` (content needs cleanup before going public)
 
 `disableKinds = ["taxonomy", "term"]` — no tag/category pages generated.
 

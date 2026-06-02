@@ -4,7 +4,6 @@ date: 2025-12-01
 href: "https://github.com/hfactor/papermaker"
 cover: "/img/projects/papermaker.png"
 tagline: "Digital planners that stay out of the way."
-icon: "/img/projects/papermaker.svg"
 category: "Tools"
 collaborators: null
 ---

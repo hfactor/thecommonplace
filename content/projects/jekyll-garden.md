@@ -4,7 +4,6 @@ date: 2022-03-01
 href: "https://github.com/jekyll-garden/jekyll-garden.github.io"
 cover: "/img/projects/jekyll-garden.png"
 tagline: "Publish your Obsidian notes without paying for it or starting over."
-icon: "/img/projects/jekyll-garden.svg"
 category: "Community"
 collaborators:
   - name: "Asim KT"
