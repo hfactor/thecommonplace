@@ -2,7 +2,7 @@
 title: My Husband & Other Animals
 localTitle:
 author: Janaki Lenin
-date: 2026-05-12
+date: 2026-03-22
 language: English
 genre: Non-Fiction
 recommended: true

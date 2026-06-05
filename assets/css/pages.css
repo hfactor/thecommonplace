@@ -251,14 +251,15 @@
   position: absolute;
   top: 6px; right: 6px;
   width: 22px; height: 22px;
-  background: var(--bg);
-  border-radius: var(--r-xs);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: var(--r-full);
   display: flex; align-items: center; justify-content: center;
-  color: var(--ink2);
+  color: #fff;
   text-decoration: none;
-  opacity: 0;
-  transition: opacity var(--dur-fast), color var(--dur-fast);
+  opacity: 0.75;
+  transition: opacity var(--dur-fast);
   z-index: 1;
 }
-.gc:hover .gc-ext-link         { opacity: 1; }
-.gc-ext-link:hover             { color: var(--ink); }
+.gc:hover .gc-ext-link { opacity: 1; }

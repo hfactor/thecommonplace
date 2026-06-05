@@ -96,7 +96,7 @@ function cardHTML(e, idx) {
   const si   = `style="--i:${idx || 0}"`;
   const cfg  = typeCfg(e.type);
   const tmpl = cfg.card_template || e.type;
-  const recEl = isRec(e) ? `<span class="card-rec">✦</span>` : '';
+  const recEl = isRec(e) ? `<span class="card-rec" data-tooltip="Recommended">✦</span>` : '';
 
   // ── book: reading ────────────────────────────────────────────
   if (tmpl === 'book') {
@@ -104,7 +104,8 @@ function cardHTML(e, idx) {
     const img   = e.image
       ? `<img class="card-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="card-cover-blank"></div>`;
-    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div>${recEl}</div></div>`;
+    const extBadge = e.link ? `<a class="card-ext" href="${withRef(e.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-tooltip="Go to Link">${ICO.ext}</a>` : '';
+    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div></div>${recEl}${extBadge}</div>`;
   }
 
   // ── browser: bookmarks ───────────────────────────────────────

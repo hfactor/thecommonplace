@@ -3,7 +3,8 @@
 .l-title { font-size: var(--text-md); color: var(--ink2); font-weight: var(--weight-normal); flex: 1; min-width: 0; line-height: var(--lh-tight); display: flex; align-items: center; gap: var(--space-1); transition: color 0.15s; }
 .l-row:hover .l-title { color: var(--ink); }
 .l-tag { font-size: var(--text-sm); color: var(--ink2); font-weight: var(--weight-normal); flex-shrink: 0; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
-.l-ext { display: inline-flex; align-items: center; opacity: 0.5; }
+.l-ext { display: inline-flex; align-items: center; opacity: 0.6; transition: opacity 0.15s; }
+.l-row:hover .l-ext { opacity: 1; }
 
 /* Newsletter: arrow hidden by default, floats in on row hover */
 .l-row[data-type="newsletter"] .l-ext {

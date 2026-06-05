@@ -1,6 +1,6 @@
 ---
 title: "Marktable"
-date: 2026-04-28
+date: 2026-04-30
 href: "https://github.com/stultus/marktable"
 cover: "/img/projects/marktable.png"
 tagline: "A spreadsheet view for markdown, YAML and JSON files."

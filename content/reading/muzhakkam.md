@@ -2,7 +2,7 @@
 title: Muzhakkam
 localTitle: മുഴക്കം
 author: P F Mathews
-date: 2026-03-29
+date: 2026-03-19
 language: Malayalam
 genre: Fiction
 recommended: true

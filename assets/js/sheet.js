@@ -9,22 +9,19 @@ function openSheet(uid) {
 
   if (e.type === 'reading') {
     const title   = e.localTitle || e.title;
-    const coverEl = e.image
-      ? `<img class="sh-cover" src="${e.image}" alt="${title}">`
-      : `<div class="sh-cover-blank"></div>`;
-    const meta = [e.author, e.language, e.genre].filter(Boolean).join(' · ');
-    const body = parseWikilinks(e.content || '');
-    const rUrl = e.link || e.url;
-    // Use <span> for icon so there's no nested <a> inside the row link
-    const rExtIcon = rUrl ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
-    const rowTag = rUrl ? `a` : `div`;
-    const rowAttr = rUrl ? ` href="${withRef(rUrl)}" target="_blank" rel="noopener"` : ``;
+    const rUrl    = e.link || e.url;
+    const coverEl = `<div class="sh-cover-wrap">${e.image ? `<img class="sh-cover" src="${e.image}" alt="${title}">` : `<div class="sh-cover-blank"></div>`}</div>`;
+    const meta    = [e.author, e.language, e.genre].filter(Boolean).join(' · ');
+    const body    = parseWikilinks(e.content || '');
+    const extInd  = rUrl ? `<span class="sh-ext-ind">${ICO.ext}</span>` : '';
+    const rowTag  = rUrl ? 'a' : 'div';
+    const rowAttr = rUrl ? ` href="${withRef(rUrl)}" target="_blank" rel="noopener"` : '';
     html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${title}${e.recommended ? ' ✦' : ''}</div>
       ${e.localTitle ? `<div class="sh-meta" style="font-style:italic;">${e.title}</div>` : ''}
       <div class="sh-meta">${meta}</div>
       <div class="sh-date">${e.date || ''}</div>
-    </div>${rExtIcon}</${rowTag}>
+    </div>${extInd}</${rowTag}>
     <div class="sh-rule"></div>
     <div class="sh-body">${body}</div>`;
   } else if (e.type === 'bookmarks') {
@@ -39,32 +36,30 @@ function openSheet(uid) {
     <div class="sh-body">${e.content || ''}</div>`;
 
   } else if (e.type === 'uses') {
-    const img = e.image
-      ? `<img class="sh-cover sh-cover-sq" src="${e.image}" alt="${e.title}">`
-      : `<div class="sh-cover sh-cover-sq"></div>`;
-    const extIcon = e.href ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
+    const imgEl   = e.image ? `<img class="sh-cover sh-cover-sq" src="${e.image}" alt="${e.title}">` : `<div class="sh-cover sh-cover-sq"></div>`;
+    const coverEl = `<div class="sh-cover-wrap">${imgEl}</div>`;
+    const meta    = [e.subCategory, e.date].filter(Boolean).join(' · ');
+    const extInd  = e.href ? `<span class="sh-ext-ind">${ICO.ext}</span>` : '';
     const rowTag  = e.href ? 'a' : 'div';
     const rowAttr = e.href ? ` href="${withRef(e.href)}" target="_blank" rel="noopener"` : '';
-    const meta    = [e.subCategory, e.date].filter(Boolean).join(' · ');
-    html = `<${rowTag} class="sh-row"${rowAttr}>${img}<div class="sh-info">
+    html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${e.title}${e.recommended ? ' ✦' : ''}</div>
       <div class="sh-meta">${meta}</div>
-    </div>${extIcon}</${rowTag}>
+    </div>${extInd}</${rowTag}>
     ${e.note ? `<div class="sh-rule"></div><div class="sh-body">${e.note}</div>` : ''}`;
 
   } else if (e.type === 'projects') {
-    const img = e.cover
-      ? `<img class="sh-cover sh-cover-wide" src="${e.cover}" alt="${e.title}">`
-      : `<div class="sh-cover sh-cover-wide"></div>`;
     const rUrl    = e.permalink || e.href || null;
-    const extIcon = rUrl ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
+    const imgEl   = e.cover ? `<img class="sh-cover sh-cover-wide" src="${e.cover}" alt="${e.title}">` : `<div class="sh-cover sh-cover-wide"></div>`;
+    const coverEl = `<div class="sh-cover-wrap">${imgEl}</div>`;
+    const extInd  = (rUrl && rUrl.startsWith('http')) ? `<span class="sh-ext-ind">${ICO.ext}</span>` : '';
     const rowTag  = rUrl ? 'a' : 'div';
     const rowAttr = rUrl ? ` href="${rUrl}"` : '';
-    html = `<${rowTag} class="sh-row"${rowAttr}>${img}<div class="sh-info">
+    html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${e.title}</div>
       ${e.tagline ? `<div class="sh-meta">${e.tagline}</div>` : ''}
       <div class="sh-date">${e.year || e.date || ''}</div>
-    </div>${extIcon}</${rowTag}>
+    </div>${extInd}</${rowTag}>
     ${e.content ? `<div class="sh-rule"></div><div class="sh-body">${e.content}</div>` : ''}`;
   }
 

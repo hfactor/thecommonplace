@@ -2,7 +2,7 @@
 title: Absolute Jaffar
 localTitle:
 author: Sarnath Banerjee
-date: 2026-03-30
+date: 2026-03-10
 language: English
 genre: Comics
 recommended: true

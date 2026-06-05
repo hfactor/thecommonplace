@@ -2,7 +2,7 @@
 title: Range
 localTitle:
 author: David Epstein
-date: 2026-05-12
+date: 2026-05-01
 language: English
 genre: Non-Fiction
 recommended: false
