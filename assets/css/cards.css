@@ -1,9 +1,7 @@
 /* Shared */
 .card { margin-bottom: 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .card:active { opacity: 0.85; }
-.card-below { padding: var(--space-1)0 var(--space-2); }
-.card-title { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink); line-height: var(--lh-tight); display: inline; }
-.card-rec { font-size: var(--text-sm); color: var(--ink); margin-left: 5px; display: inline; vertical-align: middle; }
+.card-cover .card-rec { position: absolute; top: 6px; right: 6px; font-size: 10px; color: #fff; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: var(--r-full); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .ext-badge { width: 22px; height: 22px; border-radius: var(--r-full); background: var(--surface2); border: 1px solid var(--border-light); display: inline-flex; align-items: center; justify-content: center; color: var(--ink2); cursor: pointer; flex-shrink: 0; transition: background 0.12s; text-decoration: none; }
 .ext-badge:hover { background: var(--border); }
 
@@ -34,7 +32,6 @@
 
 
 @media (max-width: 639px) {
-  .card-title { font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: var(--lh-display); }
   .bm-note { display: none; }
 }
 

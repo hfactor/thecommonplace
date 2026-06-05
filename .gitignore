@@ -3,6 +3,11 @@
 .DS_Store
 .claude/
 
+# Obsidian capture internals
+/content/_templates/
+/content/_scripts/
+content/.obsidian/*
+
 # Private note folders
 /content/notes/00-Inbox/
 /content/notes/30-Log/
@@ -12,3 +17,4 @@
 
 ARCHITECTURE.md
 CLAUDE.md
+

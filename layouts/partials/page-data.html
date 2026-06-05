@@ -5,7 +5,7 @@
 {{- if or (eq $lt "") (eq $lt "reading") -}}
 {{- range .Site.RegularPages -}}
   {{- $s := .Section -}}
-  {{- if and (eq $s "reading") (ne .Params.status "reading") (ne .Params.layout "listing") -}}
+  {{- if and (eq $s "reading") (ne (index .Params "reading-status") "reading") (ne .Params.layout "listing") -}}
     {{- $key := dateFormat "2006-01" .Date -}}
     {{- $uid := printf "reading/%s" .File.ContentBaseName -}}
     {{- $entry := dict

@@ -14,7 +14,7 @@
 
       <div class="sp-text">{{ .Content }}</div>
 
-      {{- $reading := where .Site.RegularPages "Params.status" "reading" -}}
+      {{- $reading := where .Site.RegularPages "Params.reading-status" "reading" -}}
       {{- if $reading -}}
       <div class="now-reading">
         <div class="now-reading-header">

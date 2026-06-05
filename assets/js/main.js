@@ -104,7 +104,7 @@ function cardHTML(e, idx) {
     const img   = e.image
       ? `<img class="card-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="card-cover-blank"></div>`;
-    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div></div><div class="card-below"><span class="card-title">${title}</span>${recEl}</div></div>`;
+    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div>${recEl}</div></div>`;
   }
 
   // ── browser: bookmarks ───────────────────────────────────────

@@ -8,5 +8,5 @@ genre: Fiction
 recommended: true
 image: https://m.media-amazon.com/images/I/718rFJboS-L._SY522_.jpg
 link: https://amzn.to/4uIig2L
-status: reading
+reading-status: reading
 ---

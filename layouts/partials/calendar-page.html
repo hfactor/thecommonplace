@@ -22,7 +22,7 @@
 {{- $subtypes := slice -}}
 {{- if eq .Params.listingType "reading" -}}
   {{- range .Site.RegularPages -}}
-    {{- if and (eq .Section "reading") (ne .Params.status "reading") -}}
+    {{- if and (eq .Section "reading") (ne (index .Params "reading-status") "reading") -}}
       {{- with .Params.genre -}}
         {{- if not (in $subtypes .) -}}{{- $subtypes = $subtypes | append . -}}{{- end -}}
       {{- end -}}
