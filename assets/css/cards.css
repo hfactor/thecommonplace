@@ -31,6 +31,8 @@
 .bm-body { padding: var(--space-4); }
 .bm-title { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-tight); margin-bottom: var(--space-2); }
 .bm-note { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-display); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.bm-note a { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast); }
+.bm-note a:hover { color: var(--accent); }
 
 
 @media (max-width: 639px) {
