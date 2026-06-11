@@ -18,7 +18,6 @@ function openSheet(uid) {
     const rowAttr = rUrl ? ` href="${withRef(rUrl)}" target="_blank" rel="noopener"` : '';
     html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${title}${e.recommended ? ' ✦' : ''}</div>
-      ${e.localTitle ? `<div class="sh-meta" style="font-style:italic;">${e.title}</div>` : ''}
       <div class="sh-meta">${meta}</div>
       <div class="sh-date">${e.date || ''}</div>
     </div>${extInd}</${rowTag}>
