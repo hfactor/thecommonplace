@@ -118,8 +118,6 @@
   clip-path: polygon(0 0, 94.5% 0, 100% 5.2%, 100% 100%, 0 100%);
   background: #3e4049;
 }
-[data-theme="ink"] .floppy { background: #e0ddd6; }
-
 /* Top section — plastic tabs flanking the shutter groove */
 .floppy-top {
   position: absolute;
@@ -136,9 +134,7 @@
   background: #16171b;
   overflow: hidden;
 }
-[data-theme="ink"] .floppy-shutter-zone { background: #b0ada4; }
-
-/* Sliding shutter — metallic on dark case, dark gray on white case */
+/* Sliding shutter */
 .floppy-shutter {
   position: absolute;
   inset: 0;
@@ -146,10 +142,6 @@
     #b0b0b0 0%, #d4d4d4 25%, #eaeaea 50%, #c8c8c8 75%, #a8a8a8 100%
   );
 }
-[data-theme="ink"] .floppy-shutter {
-  background: #46464e;
-}
-
 /* Read window — dark cutout in the metal */
 .floppy-rw {
   position: absolute;
@@ -158,8 +150,6 @@
   background: #0e0f12;
   border-radius: 5%;
 }
-[data-theme="ink"] .floppy-rw { background: #d8d4cc; }
-
 /* Divider strip between top and label */
 .floppy-divider {
   position: absolute;
@@ -167,8 +157,6 @@
   height: 3.8%;
   background: #2a2b30;
 }
-[data-theme="ink"] .floppy-divider { background: #c4c1b8; }
-
 /* Label sticker */
 .floppy-label {
   position: absolute;
@@ -179,8 +167,6 @@
   display: flex;
   flex-direction: column;
 }
-[data-theme="ink"] .floppy-label { background: #f0ede6; }
-
 .floppy-label-stripe {
   height: 9px;
   flex-shrink: 0;
@@ -236,14 +222,6 @@
   background: #0a0b0e;   /* near-black — the hole */
   border-radius: 1px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
-}
-
-[data-theme="ink"] .floppy-wp-l { background: #c4c1b8; }
-[data-theme="ink"] .floppy-wp-l::before { background: #9e9b94; }
-[data-theme="ink"] .floppy-wp-r { background: #e0ddd6; }  /* matches light case */
-[data-theme="ink"] .floppy-wp-r::before {
-  background: #0a0b0e;   /* same near-black hole on light case */
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
 }
 
 /* External link icon — top-right corner, appears on gc hover */

@@ -50,6 +50,12 @@ function projClose() {
       {{- end -}}
     </div>
 
+    {{- with .Params.cover -}}
+    <div class="proj-sp-cover">
+      <img src="{{ . }}" alt="{{ $.Title }}">
+    </div>
+    {{- end -}}
+
     <div class="sp-text">{{ .Content }}</div>
 
   </div>

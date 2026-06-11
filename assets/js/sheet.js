@@ -5,7 +5,6 @@ function openSheet(uid) {
   const e = S[uid];
   if (!e) return;
   let html = '';
-  const extEl = url => url ? `<a class="ext-badge sh-ext" href="${withRef(url)}" target="_blank" rel="noopener">${ICO.ext}</a>` : '';
 
   if (e.type === 'reading') {
     const title   = e.localTitle || e.title;
@@ -21,29 +20,30 @@ function openSheet(uid) {
       <div class="sh-meta">${meta}</div>
       <div class="sh-date">${e.date || ''}</div>
     </div>${extInd}</${rowTag}>
-    <div class="sh-rule"></div>
-    <div class="sh-body">${body}</div>`;
+    ${body ? `<div class="sh-rule"></div><div class="sh-body">${body}</div>` : ''}`;
   } else if (e.type === 'bookmarks') {
-    const bUrl = withRef(e.href);
-    const bExtIcon = e.href ? `<span class="ext-badge sh-ext">${ICO.ext}</span>` : '';
-    html = `<a class="sh-row" href="${bUrl}" target="_blank" rel="noopener"><div class="sh-info">
+    const rUrl    = e.href;
+    const extInd  = rUrl ? `<span class="sh-ext-ind">${ICO.ext}</span>` : '';
+    const rowTag  = rUrl ? 'a' : 'div';
+    const rowAttr = rUrl ? ` href="${withRef(rUrl)}" target="_blank" rel="noopener"` : '';
+    const coverEl = `<div class="sh-cover-wrap"><div class="sh-bm-icon"><div class="sh-bm-bar"><span class="sh-bm-dot"></span><span class="sh-bm-dot"></span><span class="sh-bm-dot"></span></div></div></div>`;
+    html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${e.title}</div>
       <div class="sh-meta">${e.domain || ''}</div>
       <div class="sh-date">${e.date || ''}</div>
-    </div>${bExtIcon}</a>
-    <div class="sh-rule"></div>
-    <div class="sh-body">${e.content || ''}</div>`;
+    </div>${extInd}</${rowTag}>
+    ${e.content ? `<div class="sh-rule"></div><div class="sh-body">${e.content}</div>` : ''}`;
 
   } else if (e.type === 'uses') {
     const imgEl   = e.image ? `<img class="sh-cover sh-cover-sq" src="${e.image}" alt="${e.title}">` : `<div class="sh-cover sh-cover-sq"></div>`;
     const coverEl = `<div class="sh-cover-wrap">${imgEl}</div>`;
-    const meta    = [e.subCategory, e.date].filter(Boolean).join(' · ');
     const extInd  = e.href ? `<span class="sh-ext-ind">${ICO.ext}</span>` : '';
     const rowTag  = e.href ? 'a' : 'div';
     const rowAttr = e.href ? ` href="${withRef(e.href)}" target="_blank" rel="noopener"` : '';
     html = `<${rowTag} class="sh-row"${rowAttr}>${coverEl}<div class="sh-info">
       <div class="sh-title">${e.title}${e.recommended ? ' ✦' : ''}</div>
-      <div class="sh-meta">${meta}</div>
+      <div class="sh-meta">${e.subCategory || ''}</div>
+      <div class="sh-date">${e.date || ''}</div>
     </div>${extInd}</${rowTag}>
     ${e.note ? `<div class="sh-rule"></div><div class="sh-body">${e.note}</div>` : ''}`;
 
