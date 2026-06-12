@@ -27,7 +27,6 @@
 .sh-body { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-prose); }
 .sh-body a { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast); }
 .sh-body a:hover { color: var(--accent); }
-.sh-ext { position: absolute; top: 0; right: 0; }
 .sh-cover-wrap { position: relative; flex-shrink: 0; line-height: 0; align-self: flex-start; }
 .sh-ext-ind {
   display: inline-flex; align-items: center; justify-content: center;
@@ -38,6 +37,9 @@
 .sh-ext-ind svg { width: 14px; height: 14px; }
 a.sh-row:hover .sh-ext-ind { border-color: var(--border); color: var(--ink); }
 
-/* sh-row as a link (bookmarks) */
 a.sh-row { text-decoration: none; color: inherit; display: flex; align-items: center; }
 a.sh-row:hover .sh-title { color: var(--accent); }
+
+.sh-bm-icon { width: 72px; height: 72px; border-radius: var(--r-xs); border: 1px solid var(--border-light); background: var(--surface); overflow: hidden; }
+.sh-bm-bar { background: var(--surface2); border-bottom: 1px solid var(--border-light); padding: 6px 7px; display: flex; gap: 4px; align-items: center; }
+.sh-bm-dot { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--border); flex-shrink: 0; }

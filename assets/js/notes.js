@@ -1,49 +1,19 @@
 'use strict';
 
+/* ── Shared helpers ─────────────────────────────── */
+
 function _isNotesPage() {
   return !!document.querySelector('.app[data-page="notes"]');
 }
 
-function renderNoteWikilinks() {
-  const content = document.querySelector('.note-content');
-  if (!content) return;
-
-  // Notes lookup: title → url
-  const notesLookup = {};
-  if (typeof NOTES_DATA !== 'undefined') {
-    NOTES_DATA.forEach(n => { notesLookup[n.title.toLowerCase()] = n.url; });
-  }
-
-  // Cross-section lookup: title → entry; populate global S so openSheet() works
-  const crossLookup = {};
-  if (typeof CROSS_DATA !== 'undefined') {
-    Object.values(CROSS_DATA).forEach(e => {
-      crossLookup[(e.title || '').toLowerCase()] = e;
-      if (e.localTitle) crossLookup[e.localTitle.toLowerCase()] = e;
-      S[e.uid] = e;
-    });
-  }
-
-  content.innerHTML = content.innerHTML.replace(/\[\[([^\]]+)\]\]/g, (_, title) => {
-    const key = title.toLowerCase();
-    if (notesLookup[key]) {
-      return `<a class="wikilink" href="${notesLookup[key]}">${title}</a>`;
-    }
-    if (crossLookup[key]) {
-      const uid = crossLookup[key].uid;
-      return `<span class="wikilink" data-uid="${uid}" onclick="openSheet('${uid}')">${title}</span>`;
-    }
-    return `<span class="wikilink-dead">${title}</span>`;
-  });
-}
-
 function fabRandomNote() {
   if (typeof NOTES_DATA === 'undefined' || !NOTES_DATA.length) return;
-  const current = window.location.pathname.replace(/\/$/, '');
-  let pool = NOTES_DATA.filter(n => n.url.replace(/\/$/, '') !== current);
-  if (!pool.length) pool = NOTES_DATA;
-  const pick = pool[Math.floor(Math.random() * pool.length)];
-  window.location.href = pick.url;
+  const pick = NOTES_DATA[Math.floor(Math.random() * NOTES_DATA.length)];
+  if (document.getElementById('nlTrack') && S[pick.uid]) {
+    openPanel(pick.uid);
+  } else {
+    window.location.href = pick.url;
+  }
 }
 
 function fabNotesSearch() {
@@ -70,10 +40,94 @@ function _renderNotesResults(query) {
     : `<div class="nsm-empty">No results</div>`;
 }
 
+/* ── Notes list (list page only) ────────────────── */
+
+function initNoteList() {
+  if (typeof NOTES_DATA === 'undefined' || !NOTES_DATA.length) return;
+
+  NOTES_DATA.forEach(n => { S[n.uid] = Object.assign({}, n, { type: 'notes' }); });
+
+  const trackEl = document.getElementById('nlTrack');
+  const wrapEl  = document.getElementById('nlTrackWrap');
+  if (!trackEl || !wrapEl) return;
+
+  const VH     = wrapEl.clientHeight || window.innerHeight;
+  const N      = NOTES_DATA.length;
+  const ITEM_H = 56; // must match .nl-item { height: 56px } in CSS
+
+  const LIST_H = N * ITEM_H;
+
+  // Render 3 copies for seamless infinite loop
+  for (let copy = 0; copy < 3; copy++) {
+    NOTES_DATA.forEach(note => {
+      const el = document.createElement('button');
+      el.className = 'nl-item';
+      el.textContent = note.title;
+      el.dataset.uid  = note.uid;
+      trackEl.appendChild(el);
+    });
+  }
+
+  trackEl.style.height = `${LIST_H * 3}px`;
+
+  // Start: middle copy's first item sits at viewport centre
+  const CY     = VH / 2 - ITEM_H / 2;   // y that means "centred"
+  let offset   = -LIST_H + CY;            // middle copy at centre on load
+
+  let vel      = 0;
+  const FRICTION  = 0.90;
+
+  function wrap() {
+    if (offset < -LIST_H * 2 + CY) offset += LIST_H;
+    if (offset > CY)                offset -= LIST_H;
+  }
+
+  function tick() {
+    vel    *= FRICTION;
+    offset += vel;
+    wrap();
+    trackEl.style.transform = `translateY(${offset}px)`;
+    requestAnimationFrame(tick);
+  }
+
+  // Wheel: push velocity
+  wrapEl.addEventListener('wheel', e => {
+    e.preventDefault();
+    vel -= e.deltaY * 0.35;
+  }, { passive: false });
+
+  // Touch drag
+  let prevTY = 0;
+  wrapEl.addEventListener('touchstart',
+    e => { prevTY = e.touches[0].clientY; }, { passive: true });
+  wrapEl.addEventListener('touchmove', e => {
+    const dy = e.touches[0].clientY - prevTY;
+    prevTY   = e.touches[0].clientY;
+    vel     += dy * 0.4;
+  }, { passive: true });
+
+  // Click → side panel
+  trackEl.addEventListener('click', e => {
+    const item = e.target.closest('.nl-item');
+    if (!item || !item.dataset.uid) return;
+    openPanel(item.dataset.uid);
+  });
+
+  requestAnimationFrame(tick);
+}
+
+/* ── DOMContentLoaded entry ─────────────────────── */
+
 document.addEventListener('DOMContentLoaded', () => {
   if (!_isNotesPage()) return;
 
-  renderNoteWikilinks();
+  if (!document.getElementById('nlTrack')) return;
+  initNoteList();
+  const pending = sessionStorage.getItem('openNote');
+  if (pending && S[pending]) {
+    sessionStorage.removeItem('openNote');
+    openPanel(pending);
+  }
 
   const input = document.getElementById('notesSearchInput');
   if (input) input.addEventListener('input', e => _renderNotesResults(e.target.value));

@@ -1,38 +1,6 @@
 {{ define "main" }}
-<div class="app" data-page="notes">
-
-{{ partial "header.html" (dict "page" . "ctx" "notes") }}
-
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
-
-      <div class="page-title-row">
-        <a class="sp-index-btn notes-nav" href="{{ "notes" | relURL }}"><span class="sp-index-arrow">←</span> Notes</a>
-        <h1 class="note-title">{{ .Title }}</h1>
-      </div>
-
-      <div class="sp-text note-content">{{ .Content }}</div>
-
-      {{- $backlinks := slice -}}
-      {{- range .Site.RegularPages -}}
-        {{- if and (ne .RelPermalink $.RelPermalink) (strings.Contains .RawContent (printf "[[%s]]" $.Title)) -}}
-          {{- $backlinks = $backlinks | append . -}}
-        {{- end -}}
-      {{- end -}}
-      {{- if $backlinks -}}
-      <div class="note-backlinks">
-        <div class="note-backlinks-label">Mentioned in</div>
-        <div class="note-backlinks-grid">
-          {{- range $backlinks -}}
-          <a class="note-backlink-item" href="{{ .RelPermalink }}">{{ .Title }}</a>
-          {{- end -}}
-        </div>
-      </div>
-      {{- end -}}
-
-    </div>
-  </div>
-</div>
-{{ partial "notes-data.html" . }}
-{{ partial "cross-data.html" . }}
+<script>
+  sessionStorage.setItem('openNote', 'note-{{ .File.UniqueID }}');
+  window.location.replace('/notes/');
+</script>
 {{ end }}
