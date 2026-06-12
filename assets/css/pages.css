@@ -102,12 +102,11 @@
   cursor: pointer;
   padding-bottom: 10px;
 }
-.floppy-card .floppy {
-  transition: transform 0.2s ease;
+.floppy-card .floppy-tab {
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.floppy-card:hover .floppy {
-  transform: translateY(-3px);
-}
+.floppy-card:hover .floppy-tab:first-child { width: 8%; }
+.floppy-card:hover .floppy-tab:last-child  { width: 38%; }
 
 /* Outer case */
 .floppy {
@@ -147,9 +146,11 @@
   position: absolute;
   right: 12.5%; top: 15.6%;
   width: 25%; height: 62.5%;
-  background: #0e0f12;
+  background: #3e4049;
   border-radius: 5%;
+  transition: background 0.4s ease;
 }
+.floppy-card:hover .floppy-rw { background: #0e0f12; }
 /* Divider strip between top and label */
 .floppy-divider {
   position: absolute;
