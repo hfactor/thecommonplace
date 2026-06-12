@@ -1,9 +1,12 @@
 {{- $notes := slice -}}
 {{- range (where .Site.RegularPages "Section" "notes").ByDate.Reverse -}}
   {{- $notes = $notes | append (dict
-    "url"    .RelPermalink
-    "title"  .Title
-    "pinned" (default false .Params.pinned)
+    "uid"     (printf "note-%s" .File.UniqueID)
+    "url"     .RelPermalink
+    "title"   .Title
+    "date"    (.Date.Format "Jan 2006")
+    "pinned"  (default false .Params.pinned)
+    "content" .Content
   ) -}}
 {{- end -}}
 <script>

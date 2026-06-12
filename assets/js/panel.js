@@ -18,26 +18,41 @@ let _panelOpen    = false;
 function openPanel(uid) {
   const e = S[uid];
   if (!e) return;
-  const coverEl = e.image ? `<div class="sp-cover"><img src="${e.image}" alt=""></div>` : '';
-  const yearEl  = e.year ? `<div class="sp-updated">${e.year}</div>` : '';
-  const body    = parseWikilinks(e.content || '');
+
+  let html;
+  if (e.type === 'notes') {
+    const body = parseWikilinks(e.content || '');
+    html = `
+      <div class="sp-title">${e.title}</div>
+      ${body ? `<hr class="sp-rule"><div class="sp-text">${body}</div>` : ''}
+      ${e.date ? `<div class="sp-notes-date">Last updated ${e.date}</div>` : ''}
+    `;
+  } else {
+    const coverEl = e.image ? `<div class="sp-cover"><img src="${e.image}" alt=""></div>` : '';
+    const yearEl  = e.year ? `<div class="sp-updated">${e.year}</div>` : '';
+    const body    = parseWikilinks(e.content || '');
+    html = `
+      ${coverEl}
+      <div class="sp-title">${e.title}</div>
+      ${yearEl}
+      <hr class="sp-rule">
+      <div class="sp-text">${body}</div>
+    `;
+  }
 
   const spBody = document.getElementById('spBody');
-  spBody.innerHTML = `
-    ${coverEl}
-    <div class="sp-title">${e.title}</div>
-    ${yearEl}
-    <hr class="sp-rule">
-    <div class="sp-text">${body}</div>
-  `;
+  spBody.innerHTML = html;
   spBody.scrollTop = 0;
   _attachPanelLinkHandlers();
 
-  if (!_panelOpen) {
-    _panelPrevUrl = window.location.href;
-    history.pushState({ panel: uid }, '', `/${uid}/`);
-  } else {
-    history.replaceState({ panel: uid }, '', `/${uid}/`);
+  const pushUrl = e.type === 'notes' ? (e.url || null) : `/${uid}/`;
+  if (pushUrl) {
+    if (!_panelOpen) {
+      _panelPrevUrl = window.location.href;
+      history.pushState({ panel: uid }, '', pushUrl);
+    } else {
+      history.replaceState({ panel: uid }, '', pushUrl);
+    }
   }
 
   _panelOpen = true;
@@ -55,18 +70,14 @@ function closePanel(fromPopstate = false) {
   document.getElementById('sidePanel').classList.remove('open');
 }
 
-function _makeLinksExternal(container) {
-  container.querySelectorAll('a[href^="http"]').forEach(a => {
-    a.setAttribute('target', '_blank');
-    a.setAttribute('rel', 'noopener');
-  });
-}
-
+let _panelHandlerReady = false;
 function _attachPanelLinkHandlers() {
+  if (_panelHandlerReady) return;
+  _panelHandlerReady = true;
   document.getElementById('spBody').addEventListener('click', ev => {
     const wl = ev.target.closest('.wikilink[data-uid]');
-    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); }
+    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); return; }
     const bl = ev.target.closest('.sp-backlink-item[data-uid]');
     if (bl) { ev.preventDefault(); openEntryByUid(bl.dataset.uid); }
-  }, { once: true });
+  });
 }
