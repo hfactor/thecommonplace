@@ -272,7 +272,7 @@ function fabGalleryFilter(category, el) {
 function openEntryByUid(uid) {
   const e = S[uid];
   if (!e) return;
-  if (isPanel(e)) openPanel(uid); else openSheet(uid);
+  if (e.type === 'notes' || isPanel(e)) openPanel(uid); else openSheet(uid);
 }
 
 function buildGalleryFlow() {
