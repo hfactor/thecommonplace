@@ -23,21 +23,25 @@
 .sp-meta-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 14px;
   font-size: var(--text-sm);
   color: var(--ink2);
+  flex-wrap: nowrap;
 }
+.sp-meta-left { display: flex; align-items: center; gap: 5px; flex-shrink: 1; min-width: 0; white-space: nowrap; overflow: hidden; }
 .sp-collab {
   position: relative;
   display: inline-flex;
 }
 .sp-collab-avatar {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
+  border: 1.5px solid var(--bg);
 }
 .sp-collab-tip {
   position: absolute;
@@ -57,27 +61,21 @@
 .sp-collab:hover .sp-collab-tip { opacity: 1; }
 
 /* ─── Project side panel content ──────────────────── */
-.proj-sp-title-row {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  margin-bottom: var(--space-2);
-}
-.proj-sp-ext {
-  display: flex;
+.proj-sp-visit {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  margin-top: 4px;
+  gap: 5px;
+  font-size: var(--text-sm);
   color: var(--ink2);
   text-decoration: none;
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
-  transition: color var(--dur-fast), border-color var(--dur-fast);
+  padding: 4px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
 }
-.proj-sp-ext:hover { color: var(--ink); border-color: var(--ink); }
+.proj-sp-visit:hover { color: var(--ink); border-color: var(--border); background: var(--surface); }
 .proj-sp-cover {
   width: 100%;
   margin: var(--space-6) 0;
@@ -194,7 +192,8 @@
 }
 
 @media (max-width: 639px) {
-  .nl-item { font-size: clamp(17px, 5vw, 26px); }
+  .nl-track { padding-left: clamp(24px, 6vw, 48px); }
+  .nl-item { font-size: clamp(16px, 4.8vw, 24px); }
 }
 
 

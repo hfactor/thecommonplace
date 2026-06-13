@@ -21,7 +21,8 @@
 
 - id: newsletter
   label: Newsletter
-  in_everything: false
+  in_everything: true
+  show_filter: false
   card_template: newsletter
   view_mode: gallery
   on_click: external

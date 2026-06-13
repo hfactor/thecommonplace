@@ -67,10 +67,11 @@
 .bm-note a { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast); }
 .bm-note a:hover { color: var(--accent); }
 
-
 @media (max-width: 639px) {
-  .bm-note { display: none; }
+  .bm-title { font-size: var(--text-sm); }
 }
+
+
 
 
 /* Newsletter card */
@@ -112,3 +113,23 @@
   pointer-events: none;
 }
 .nl-card-wrap:hover .nl-card-ext { opacity: 1; }
+
+/* Touch devices: fire hover effects on tap instead */
+@media (hover: none) {
+  .card:active .card-cover {
+    transform: perspective(700px) rotateY(-6deg) translateY(-2px);
+    box-shadow:
+      -10px 8px 24px rgba(0,0,0,0.28),
+      -2px 2px 6px rgba(0,0,0,0.12),
+      inset -2px 0 4px rgba(0,0,0,0.08);
+  }
+  [data-theme="ink"] .card:active .card-cover {
+    box-shadow:
+      -10px 8px 28px rgba(0,0,0,0.70),
+      -2px 2px 8px rgba(0,0,0,0.40),
+      inset -2px 0 5px rgba(0,0,0,0.30);
+  }
+  .card:active .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
+  .nl-card-wrap:active .nl-card { transform: rotate(0deg) translateY(-2px); box-shadow: var(--shadow-md); }
+  .nl-card-wrap:active .nl-card-ext { opacity: 1; }
+}

@@ -47,7 +47,7 @@
 
       <div class="ph-scroll" id="phTypesWrap">
         {{- range hugo.Data.types -}}
-          {{- if .in_everything -}}
+          {{- if and .in_everything (ne .show_filter false) -}}
             <a class="ph-pill" href="{{ .id | relURL }}">{{ .label }}</a>
           {{- end -}}
         {{- end -}}

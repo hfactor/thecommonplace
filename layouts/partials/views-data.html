@@ -1,7 +1,7 @@
 <script>
 {{- $views := slice (dict "id" "all" "label" "Everything") -}}
 {{- range hugo.Data.types -}}
-  {{- if .in_everything -}}
+  {{- if and .in_everything (ne .show_filter false) -}}
     {{- $views = $views | append (dict "id" .id "label" .label) -}}
   {{- end -}}
 {{- end -}}
