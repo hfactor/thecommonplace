@@ -18,7 +18,7 @@ jobs:
         run: |
           if git rev-parse HEAD~1 >/dev/null 2>&1; then
             FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD \
-              -- 'content/reading/*.md' 'content/bookmarks/*.md' \
+              -- 'content/reading/*.md' \
               | grep -v '_index.md' || true)
           else
             FILES=""
@@ -53,4 +53,4 @@ jobs:
         with:
           name: social-cards
           path: /tmp/social-cards/*.png
-          retention-days: 30
+          retention-days: 90

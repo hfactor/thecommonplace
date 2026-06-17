@@ -84,9 +84,6 @@ body::after{content:'';position:absolute;inset:0;background:${t.bgGradient};poin
 </div>
 
 <div style="flex:1;min-height:40px;"></div>
-<div style="font-size:52px;font-weight:300;color:${t.dot};line-height:1;margin-bottom:20px;">+</div>
-<div style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px;
-  letter-spacing:0.05em;color:${t.brand};">hiran.in</div>
 
 <script>
 const w=document.getElementById('note');
