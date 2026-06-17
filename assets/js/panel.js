@@ -22,9 +22,17 @@ function openPanel(uid) {
   let html;
   if (e.type === 'notes') {
     const body = parseWikilinks(e.content || '');
+    let blHtml = '';
+    if (e.backlinks && e.backlinks.length) {
+      const items = e.backlinks.map(b =>
+        `<span class="note-backlink-item" data-uid="${b.uid}">${b.title}</span>`
+      ).join('');
+      blHtml = `<div class="note-backlinks"><div class="note-backlinks-label">Linked from</div><div class="note-backlinks-grid">${items}</div></div>`;
+    }
     html = `
       <div class="sp-title">${e.title}</div>
       ${body ? `<hr class="sp-rule"><div class="sp-text">${body}</div>` : ''}
+      ${blHtml}
       ${e.date ? `<div class="sp-notes-date">Last updated ${e.date}</div>` : ''}
     `;
   } else {
@@ -77,7 +85,7 @@ function _attachPanelLinkHandlers() {
   document.getElementById('spBody').addEventListener('click', ev => {
     const wl = ev.target.closest('.wikilink[data-uid]');
     if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); return; }
-    const bl = ev.target.closest('.sp-backlink-item[data-uid]');
+    const bl = ev.target.closest('.note-backlink-item[data-uid]');
     if (bl) { ev.preventDefault(); openEntryByUid(bl.dataset.uid); }
   });
 }
