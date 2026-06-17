@@ -5,6 +5,9 @@
   min-height: 100dvh;
   padding-top: var(--hdr-h);
 }
+@media (max-width: 639px) {
+  .home-page { padding-top: var(--space-6); }
+}
 
 /* Logo strip */
 .home-nav {
@@ -28,6 +31,9 @@
   margin: 0 auto;
   width: 100%;
 }
+@media (max-width: 639px) {
+  .home-body { padding: 2vh var(--gap-sm) 2vh; }
+}
 @media (min-width: 640px) {
   .home-body { padding: 4vh var(--gap) 5vh; }
 }
@@ -45,6 +51,10 @@
 .home-p2,
 .home-p3 {
   margin-top: var(--gap);
+}
+@media (max-width: 639px) {
+  .home-p { font-size: var(--text-lg); }
+  .home-p2, .home-p3 { margin-top: var(--space-4); }
 }
 @media (min-width: 640px) {
   .home-p { font-size: var(--text-2xl); }

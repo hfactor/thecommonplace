@@ -2,27 +2,17 @@
   Floating pill header.
 
   ctx="home"       — Logo | Everything · Notes | theme
-  ctx="everything" — Logo | "Everything" | sep | Reading Bookmarks Uses | sep | view | theme
-  ctx="section"    — Logo | "Reading"    | sep | ← | Everything · Fiction... | sep | view | theme
-  ctx="gallery"    — Logo | "Uses"       | sep | ← | Subtype pills (JS) | sep | theme  (no view toggle)
+  ctx="everything" — Logo | "Everything" | type pills | view | theme
+  ctx="section"    — Logo | "Everything" | type pills (active type highlighted) | view | theme
+  ctx="gallery"    — Logo | "Everything" | type pills (active type highlighted) | theme
   ctx="notes"      — Logo | Search · Random | theme
 
   Extra params for section/gallery:
-    typeLabel     string    — e.g. "Reading"
-    subtypes      []string  — subtype values
-    subtypeField  string    — DATA field (genre | category | subCategory)
-    subtypeBase   string    — URL prefix for link pills; empty = JS onclick
-    activeSubtype string    — currently active value (empty = Everything)
-    backHref      string    — back link href (default /everything)
+    activeType    string    — active type id (e.g. "reading", "uses")
 */}}
-{{- $page          := .page -}}
-{{- $ctx           := .ctx | default "everything" -}}
-{{- $typeLabel     := .typeLabel | default "" -}}
-{{- $subtypes      := .subtypes | default slice -}}
-{{- $subtypeField  := .subtypeField | default "subCategory" -}}
-{{- $subtypeBase   := .subtypeBase | default "" -}}
-{{- $activeSubtype := .activeSubtype | default "" -}}
-{{- $backHref      := .backHref | default "/everything" -}}
+{{- $page       := .page -}}
+{{- $ctx        := .ctx | default "everything" -}}
+{{- $activeType := .activeType | default "" -}}
 
 <header class="pill-hdr" id="pillHdr">
 
@@ -41,31 +31,17 @@
         <a class="ph-pill" href="{{ "notes" | relURL }}">Notes</a>
       </div>
 
-    {{- else if eq $ctx "everything" -}}
+    {{- else if or (eq $ctx "everything") (eq $ctx "section") (eq $ctx "gallery") -}}
 
-      <span class="ph-label">Everything</span>
+      <span class="ph-label"><a class="ph-label-link" href="{{ "everything" | relURL }}">Everything</a></span>
 
       <div class="ph-scroll" id="phTypesWrap">
         {{- range hugo.Data.types -}}
           {{- if and .in_everything (ne .show_filter false) -}}
-            <a class="ph-pill" href="{{ .id | relURL }}">{{ .label }}</a>
+            <a class="ph-pill{{ if eq .id $activeType }} active{{ end }}" href="{{ .id | relURL }}">{{ .label }}</a>
           {{- end -}}
         {{- end -}}
       </div>
-
-    {{- else if or (eq $ctx "section") (eq $ctx "gallery") -}}
-
-      <a class="ph-back" href="/everything" aria-label="Back">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2L3.5 6L7.5 10"/></svg>
-        <span class="ph-label">{{ $typeLabel }}</span>
-      </a>
-      {{- if $subtypes -}}
-        <div class="ph-scroll ph-subtypes" id="phSubtypesWrap">
-          {{- range $subtypes -}}
-            <a class="ph-pill{{ if eq . $activeSubtype }} active{{ end }}" href="{{ $subtypeBase }}{{ . | urlize }}">{{ . }}</a>
-          {{- end -}}
-        </div>
-      {{- end -}}
 
     {{- else if eq $ctx "notes" -}}
 
@@ -85,7 +61,7 @@
 
   {{/* ── Right ──────────────────────────────────────── */}}
   <div class="ph-right">
-    {{- if or (eq $ctx "everything") (eq $ctx "section") -}}
+    {{- if or (eq $ctx "everything") (eq $ctx "section") (eq $ctx "gallery") -}}
       <button class="ph-btn ph-icon" id="phViewBtn" onclick="fabToggleView()" aria-label="Toggle view"></button>
     {{- end -}}
     <button class="ph-btn ph-icon" id="phThemeBtn" onclick="fabToggleTheme()" aria-label="Toggle theme"></button>

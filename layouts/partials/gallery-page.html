@@ -1,45 +1,10 @@
-{{- /* Type label from types.yaml */ -}}
-{{- $typeLabel := "" -}}
-{{- range hugo.Data.types -}}
-  {{- if eq .id $.Params.listingType -}}{{- $typeLabel = .label -}}{{- end -}}
-{{- end -}}
-
-{{- /* Collect subtypes based on listingType */ -}}
-{{- $subtypes := slice -}}
-{{- $activeSubtype := "" -}}
-{{- $subtypeField := "subCategory" -}}
-{{- if eq $.Params.listingType "uses" -}}
-  {{- range hugo.Data.things -}}
-    {{- $cat := .subCategory | default "Other" -}}
-    {{- if not (in $subtypes $cat) -}}{{- $subtypes = $subtypes | append $cat -}}{{- end -}}
-  {{- end -}}
-  {{- with $.Params.filters -}}
-    {{- $activeSubtype = index . "subcategory" | default "" -}}
-  {{- end -}}
-{{- else if eq $.Params.listingType "projects" -}}
-  {{- range .Site.RegularPages -}}
-    {{- if and (eq .Section "projects") .Params.category -}}
-      {{- if not (in $subtypes .Params.category) -}}{{- $subtypes = $subtypes | append .Params.category -}}{{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- $subtypeField = "category" -}}
-  {{- with $.Params.filters -}}
-    {{- $activeSubtype = index . "category" | default "" -}}
-  {{- end -}}
-{{- end -}}
-
-{{- $subtypeBase  := printf "/%s/" $.Params.listingType -}}
 
 <div class="app is-gallery{{ with .Params.listingType }} is-{{ . }}{{ end }}">
 
 {{ partial "header.html" (dict
-  "page"          .
-  "ctx"           "gallery"
-  "typeLabel"     $typeLabel
-  "subtypes"      ($subtypes | sort)
-  "subtypeField"  "subCategory"
-  "subtypeBase"   $subtypeBase
-  "activeSubtype" $activeSubtype
+  "page"       .
+  "ctx"        "gallery"
+  "activeType" ($.Params.listingType | default "")
 ) }}
 
 <div class="content">

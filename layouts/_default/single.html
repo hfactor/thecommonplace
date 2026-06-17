@@ -4,10 +4,7 @@
     <div class="notes-reading">
 
       {{ partial "page-avatar.html" . }}
-      <div class="page-title-row">
-        <a class="sp-index-btn notes-nav" href="{{ .Site.Home.RelPermalink }}"><span class="sp-index-arrow">←</span> Home</a>
-        <h1 class="note-title">{{ .Title }}</h1>
-      </div>
+      <h1 class="note-title">{{ .Title }}</h1>
       {{ if .Params.updated }}<p class="sp-updated">Updated {{ .Params.updated }}</p>{{ end }}
 
       <div class="sp-text">{{ .Content }}</div>

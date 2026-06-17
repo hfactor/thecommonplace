@@ -42,8 +42,10 @@ button { font-family: var(--font); }
 .empty-state-icon { font-size: var(--text-2xl); opacity: 0.3; margin-bottom: var(--space-3); }
 
 @media (max-width: 639px) {
+  /* Static pages (now, colophon, about) use .app but have no fixed pill header */
+  .app:not(:has(.pill-hdr)) { padding-top: var(--space-4); }
   .m-panel { padding: var(--gap) var(--gap) 100px; }
-  .m-panel .month-label { margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border-light); }
+  .m-panel .month-label { margin-bottom: 16px; }
   .m-panel .card,
   .m-panel .gc { margin-bottom: 24px; width: 100%; }
   .m-panel .nl-card-wrap { width: 100%; }

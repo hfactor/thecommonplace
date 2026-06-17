@@ -57,35 +57,29 @@ function initNoteList() {
 
   const LIST_H = N * ITEM_H;
 
-  // Render 3 copies for seamless infinite loop
-  for (let copy = 0; copy < 3; copy++) {
-    NOTES_DATA.forEach(note => {
-      const el = document.createElement('button');
-      el.className = 'nl-item';
-      el.textContent = note.title;
-      el.dataset.uid  = note.uid;
-      trackEl.appendChild(el);
-    });
-  }
+  NOTES_DATA.forEach(note => {
+    const el = document.createElement('button');
+    el.className = 'nl-item';
+    el.textContent = note.title;
+    el.dataset.uid  = note.uid;
+    trackEl.appendChild(el);
+  });
 
-  trackEl.style.height = `${LIST_H * 3}px`;
+  trackEl.style.height = `${LIST_H}px`;
 
-  // Start: middle copy's first item sits at viewport centre
-  const CY     = VH / 2 - ITEM_H / 2;   // y that means "centred"
-  let offset   = -LIST_H + CY;            // middle copy at centre on load
+  const CY      = VH / 2 - ITEM_H / 2;
+  const maxOff  = CY;
+  const minOff  = CY - (N - 1) * ITEM_H;
+  let offset    = CY;
 
   let vel      = 0;
-  const FRICTION  = 0.90;
-
-  function wrap() {
-    if (offset < -LIST_H * 2 + CY) offset += LIST_H;
-    if (offset > CY)                offset -= LIST_H;
-  }
+  const FRICTION = 0.90;
 
   function tick() {
     vel    *= FRICTION;
     offset += vel;
-    wrap();
+    if (offset > maxOff) { offset = maxOff; vel = 0; }
+    if (offset < minOff) { offset = minOff; vel = 0; }
     trackEl.style.transform = `translateY(${offset}px)`;
     requestAnimationFrame(tick);
   }
