@@ -8,13 +8,6 @@
 /content/_scripts/
 content/.obsidian/*
 
-# Private note folders
-/content/notes/00-Inbox/
-/content/notes/30-Log/
-/content/notes/40-Private/
-/content/notes/.obsidian/
-/content/notes/AGENTS.md
-
 ARCHITECTURE.md
 CLAUDE.md
 node_modules/

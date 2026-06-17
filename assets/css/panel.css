@@ -185,17 +185,17 @@
 .nl-track:has(.nl-item:hover) .nl-item:hover { opacity: 1; color: var(--ink); }
 
 .sp-notes-date {
-  margin-top: var(--space-10);
+  margin-top: var(--space-6);
   font-size: var(--text-sm);
   color: var(--ink2);
   opacity: 0.6;
 }
 
+
 @media (max-width: 639px) {
   .nl-track { padding-left: clamp(24px, 6vw, 48px); }
   .nl-item { font-size: clamp(16px, 4.8vw, 24px); }
 }
-
 
 /* Colophon cards */
 .colo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--gap); }

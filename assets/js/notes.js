@@ -67,10 +67,10 @@ function initNoteList() {
 
   trackEl.style.height = `${LIST_H}px`;
 
-  const CY      = VH / 2 - ITEM_H / 2;
-  const maxOff  = CY;
-  const minOff  = CY - (N - 1) * ITEM_H;
-  let offset    = CY;
+  const TOP_PAD = 100; // first note below floating header
+  const maxOff  = TOP_PAD;
+  const minOff  = TOP_PAD - (N - 1) * ITEM_H;
+  let offset    = TOP_PAD;
 
   let vel      = 0;
   const FRICTION = 0.90;

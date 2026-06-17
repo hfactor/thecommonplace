@@ -1,12 +1,24 @@
+{{- $allNotes := where .Site.RegularPages "Section" "notes" -}}
 {{- $notes := slice -}}
-{{- range (where .Site.RegularPages "Section" "notes").ByDate.Reverse -}}
+{{- range $allNotes.ByDate.Reverse -}}
+  {{- $thisPage := . -}}
+  {{- $backlinks := slice -}}
+  {{- range $allNotes -}}
+    {{- if and (ne . $thisPage) (in .RawContent (printf "[[%s]]" $thisPage.Title)) -}}
+      {{- $backlinks = $backlinks | append (dict
+        "uid"   (printf "note-%s" .File.UniqueID)
+        "title" .Title
+      ) -}}
+    {{- end -}}
+  {{- end -}}
   {{- $notes = $notes | append (dict
-    "uid"     (printf "note-%s" .File.UniqueID)
-    "url"     .RelPermalink
-    "title"   .Title
-    "date"    (.Date.Format "Jan 2006")
-    "pinned"  (default false .Params.pinned)
-    "content" .Content
+    "uid"       (printf "note-%s" .File.UniqueID)
+    "url"       .RelPermalink
+    "title"     .Title
+    "date"      (.Date.Format "Jan 2006")
+    "pinned"    (default false .Params.pinned)
+    "content"   .Content
+    "backlinks" $backlinks
   ) -}}
 {{- end -}}
 <script>
