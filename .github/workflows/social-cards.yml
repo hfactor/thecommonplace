@@ -1,0 +1,56 @@
+name: Generate Social Cards
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  social-cards:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find new content files
+        id: diff
+        run: |
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD \
+              -- 'content/reading/*.md' \
+              | grep -v '_index.md' || true)
+          else
+            FILES=""
+          fi
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Setup Node
+        if: steps.diff.outputs.files != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        if: steps.diff.outputs.files != ''
+        working-directory: scripts/social-cards
+        run: npm ci && npx playwright install --with-deps chromium
+
+      - name: Generate cards
+        if: steps.diff.outputs.files != ''
+        working-directory: scripts/social-cards
+        env:
+          NEW_FILES: ${{ steps.diff.outputs.files }}
+          REPO_ROOT: ${{ github.workspace }}
+          OUT_DIR: /tmp/social-cards
+        run: node generate.js
+
+      - name: Upload cards
+        if: steps.diff.outputs.files != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-cards
+          path: /tmp/social-cards/*.png
+          retention-days: 90
