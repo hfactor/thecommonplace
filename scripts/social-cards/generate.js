@@ -15,11 +15,13 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
-function extractNote(content) {
-  const first = content.trim().split(/\n\n+/)[0].trim()
-    .replace(/\[\[([^\]]+)\]\]/g, '$1');
-  const words = first.split(/\s+/);
-  return words.length <= MAX_WORDS ? first : words.slice(0, MAX_WORDS).join(' ') + '…';
+function extractNote(content, titleMap = {}) {
+  return content.trim()
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\[\[([^\]|#\n]+)[^\]]*\]\]/g, (_, t) => {
+      const key = t.trim().toLowerCase();
+      return titleMap[key] || t.trim();
+    });
 }
 
 function isRecommended(val) {
@@ -41,28 +43,36 @@ const T = {
 
 function bookHtml(f, note) {
   const t = T;
+  const isMalayalam = f.language === 'Malayalam';
+  const titleFont   = isMalayalam ? "'Manjari',sans-serif" : "'Bricolage Grotesque',sans-serif";
+  const bodyFont    = isMalayalam ? "'Manjari','Public Sans',sans-serif" : "'Public Sans',sans-serif";
+  const extraFont   = isMalayalam
+    ? `<link href="https://fonts.googleapis.com/css2?family=Manjari:wght@100;400;700&display=swap" rel="stylesheet">`
+    : '';
+
   const cover = f.image
     ? `<img src="${esc(f.image)}" style="width:100%;height:100%;object-fit:cover;display:block;">`
     : `<div style="width:100%;height:100%;background:#222;"></div>`;
   const rec = isRecommended(f.recommended)
-    ? `<span style="color:${t.rec};font-size:48px;vertical-align:middle;margin-left:10px;">✦</span>`
+    ? `<span style="color:${t.rec};font-size:40px;vertical-align:middle;margin-left:10px;">✦</span>`
     : '';
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;1,400&family=Bricolage+Grotesque:wght@400;500&display=swap" rel="stylesheet">
+${extraFont}
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:1080px;height:1920px;overflow:hidden;}
 body{
   background:${t.bg};
-  font-family:'Public Sans',sans-serif;
+  font-family:${bodyFont};
   display:flex;flex-direction:column;align-items:center;
   text-align:center;
   padding:260px 120px 200px;
   position:relative;
 }
 body::after{content:'';position:absolute;inset:0;background:${t.bgGradient};pointer-events:none;z-index:0;}
-.note-wrap{width:100%;overflow:hidden;position:relative;margin-top:64px;flex-shrink:0;max-height:460px;}
+.note-wrap{width:100%;flex:1;overflow:hidden;position:relative;margin-top:64px;}
 *{position:relative;z-index:1;}
 </style>
 </head><body>
@@ -74,24 +84,15 @@ body::after{content:'';position:absolute;inset:0;background:${t.bgGradient};poin
     background:linear-gradient(to right,rgba(0,0,0,0.4),transparent);"></div>
 </div>
 
-<div style="font-family:'Bricolage Grotesque',sans-serif;font-size:66px;font-weight:500;
-  color:${t.title};line-height:1.25;margin-bottom:18px;">${esc(f.title)}${rec}</div>
+<div style="font-family:'Bricolage Grotesque',sans-serif;font-size:54px;font-weight:500;
+  color:${t.title};line-height:1.25;margin-bottom:18px;flex-shrink:0;font-family:${titleFont};">${esc(f.localTitle || f.title)}${rec}</div>
 
-<div style="font-size:36px;color:${t.author};">${esc(f.author || '')}</div>
+<div style="font-size:34px;color:${t.author};flex-shrink:0;">${esc(f.author || '')}</div>
 
-<div class="note-wrap" id="note">
-  <div style="font-size:38px;color:${t.note};line-height:1.6;">${esc(note)}</div>
+<div class="note-wrap" id="noteWrap">
+  <div id="noteInner" style="font-size:36px;color:${t.note};line-height:1.65;text-align:left;">${note.split(/\n\n+/).map(p => `<p style="margin-bottom:0.8em">${esc(p.trim())}</p>`).join('')}</div>
 </div>
 
-<div style="flex:1;min-height:40px;"></div>
-
-<script>
-const w=document.getElementById('note');
-if(w.scrollHeight>w.clientHeight){
-  w.style.webkitMaskImage='${t.fadeMask}';
-  w.style.maskImage='${t.fadeMask}';
-}
-</script>
 </body></html>`;
 }
 
@@ -144,6 +145,17 @@ if(w.scrollHeight>w.clientHeight){
 
 async function renderCard(page, html, outPath) {
   await page.setContent(html, { waitUntil: 'networkidle', timeout: 20000 });
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    const wrap  = document.getElementById('noteWrap');
+    const inner = document.getElementById('noteInner');
+    if (!wrap || !inner) return;
+    let size = 36;
+    while (inner.scrollHeight > wrap.clientHeight && size > 18) {
+      size -= 1;
+      inner.style.fontSize = size + 'px';
+    }
+  });
   await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1080, height: 1920 } });
 }
 
@@ -152,6 +164,14 @@ async function main() {
   if (newFiles.length === 0) { console.log('No new content files.'); return; }
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
+
+  /* build wikilink → localTitle map from all reading files */
+  const titleMap = {};
+  const readingDir = path.join(REPO_ROOT, 'content/reading');
+  fs.readdirSync(readingDir).filter(f => f.endsWith('.md') && f !== '_index.md').forEach(f => {
+    const { data } = matter(fs.readFileSync(path.join(readingDir, f), 'utf8'));
+    if (data.title) titleMap[data.title.toLowerCase()] = data.localTitle || data.title;
+  });
 
   const browser = await chromium.launch();
   const page    = await browser.newPage();
@@ -162,17 +182,19 @@ async function main() {
     if (!fs.existsSync(fullPath)) { console.warn(`Not found: ${rel}`); continue; }
 
     const { data: f, content } = matter(fs.readFileSync(fullPath, 'utf8'));
-    const note = extractNote(content);
+
+    if (f.status === 'reading') { console.log(`Skipping ${f.title} — currently reading`); continue; }
+
+    const note = extractNote(content, titleMap);
     if (!note) { console.log(`Skipping ${rel} — no body`); continue; }
 
     const slug = path.basename(rel, '.md');
 
     let html;
-    if (rel.startsWith('content/reading/'))        html = bookHtml(f, note);
-    else if (rel.startsWith('content/bookmarks/')) html = bookmarkHtml(f, note);
+    if (rel.startsWith('content/reading/')) html = bookHtml(f, note);
     else continue;
 
-    console.log(`Generating: ${f.title}`);
+    console.log(`Generating: ${f.localTitle || f.title}`);
     await renderCard(page, html, path.join(OUT_DIR, `${slug}.png`));
   }
 
