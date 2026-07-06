@@ -113,6 +113,7 @@ body:has(#cardView.cv-home) .sh-logo { visibility: hidden; pointer-events: none;
   padding-right: 8px;
 }
 
+
 /* Everything filter */
 .sh-filter { position: relative; }
 .sh-filter-btn {
@@ -232,6 +233,7 @@ body:has(#cardView.cv-home) .sh-logo { visibility: hidden; pointer-events: none;
 
 /* ─── Site footer ─────────────────────────────────── */
 .site-footer { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 0 var(--space-3); padding: 14px var(--gap); margin-top: auto; }
+@media (max-width: 639px) { .site-footer { justify-content: center; } }
 .sf-name { font-size: var(--text-sm); color: var(--ink2); font-weight: var(--weight-semibold); opacity: 0.6; }
 .sf-dot  { font-size: var(--text-sm); color: var(--ink2); opacity: 0.25; }
 .sf-link { font-size: var(--text-sm); color: var(--ink2); text-decoration: none; opacity: 0.6; transition: opacity var(--dur-fast); }

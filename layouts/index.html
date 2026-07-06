@@ -2,34 +2,39 @@
 {{ partial "header.html" (dict "page" . "ctx" "everything" "activeType" "") }}
 
 <div id="cardView" class="cv-home">
-  <div class="home-bio">
-    <div class="home-identity">
-      <div class="home-av">
-        {{- with resources.Get "img/hiran-head.svg" -}}<span class="home-av-svg">{{ .Content | safeHTML }}</span>{{- end -}}
-        <img class="home-av-photo" src="/assets/img/hiran.png" alt="Hiran" loading="eager">
+  <div class="home-main">
+    <div class="home-bio">
+      <div class="home-identity">
+        <div class="home-av">
+          {{- with resources.Get "img/hiran-head.svg" -}}<span class="home-av-svg">{{ .Content | safeHTML }}</span>{{- end -}}
+          <img class="home-av-photo" src="/assets/img/hiran.png" alt="Hiran" loading="eager">
+        </div>
+        <h1 class="home-name">Hiran Venugopalan</h1>
       </div>
-      <h1 class="home-name">Hiran Venugopalan</h1>
+      <div class="home-desc">
+        <p>Designer, maker, coffee brewer. Designing digital products and making things around design, learning, and open communities.</p>
+        <p>I publish <a class="home-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a>, an occasional newsletter featuring curated finds and conversations with creative people about how they work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
+        <p>Always happy to meet new people and have good conversations. <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">Coffee in Bengaluru</a> or <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span> both work.</p>
+      </div>
+      <nav class="home-nav">
+        <a class="home-nav-link" href="{{ "about" | relURL }}">About</a>
+        <a class="home-nav-link" href="{{ "now" | relURL }}">Now Page</a>
+        <a class="home-nav-link" href="{{ "notes" | relURL }}">Working Notes</a>
+        <a class="home-nav-link" href="{{ "projects" | relURL }}">Projects</a>
+      </nav>
     </div>
-    <div class="home-desc">
-      <p>Designer, maker, coffee brewer. Designing digital products and making things around design, learning, and open communities.</p>
-      <p>I publish <a class="home-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a>, an occasional newsletter featuring curated finds and conversations with creative people about how they work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
-      <p>Always happy to meet new people and have good conversations. <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">Coffee in Bengaluru</a> or <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span> both work.</p>
+
+    <div class="home-cv-wrap">
+      <div id="cvTrack"></div>
+      <a class="home-everything-cta" href="{{ "everything" | relURL }}">Everything →</a>
     </div>
-    <nav class="home-nav">
-      <a class="home-nav-link" href="{{ "about" | relURL }}">About</a>
-      <a class="home-nav-link" href="{{ "now" | relURL }}">Now Page</a>
-      <a class="home-nav-link" href="{{ "notes" | relURL }}">Working Notes</a>
-      <a class="home-nav-link" href="{{ "projects" | relURL }}">Projects</a>
-    </nav>
   </div>
-  <div id="cvTrack"></div>
+  {{ partial "site-footer.html" . }}
 </div>
-<div id="lView"></div>
 
 {{ partial "data-panel.html" . }}
-{{ partial "site-footer.html" . }}
 <script>
-window.__LISTING__ = { type: null, viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+window.__LISTING__ = { type: null, viewMode: "cal", filters: {}, groupBy: "month", listOnly: false, homeLimit: 12 };
 </script>
 {{ partialCached "page-data.html" . "global" }}
 {{ end }}

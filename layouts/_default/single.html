@@ -1,6 +1,5 @@
 {{ define "main" }}
-<div class="app">
-  <div class="notes-scroll-area">
+<div class="notes-scroll-area" style="padding-top: var(--hdr-h);">
     <div class="notes-reading">
 
       {{ partial "page-avatar.html" . }}
@@ -13,6 +12,5 @@
 
     </div>
     {{ partial "site-footer.html" . }}
-  </div>
 </div>
 {{ end }}

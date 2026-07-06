@@ -1,5 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: var(--font); font-size: var(--text-base); line-height: 1.5; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+html:has(#cardView.cv-home),
+body:has(#cardView.cv-home) { height: auto; min-height: 100%; }
 body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 120% 50% at 50% 105%, var(--accent-subtle) 0%, transparent 65%); pointer-events: none; z-index: 0; }
 
 /* ── Global scrollbar hiding ─────────────────────── */
@@ -42,13 +44,13 @@ button { font-family: var(--font); }
 
 .cv-label {
   position: absolute;
-  bottom: var(--gap);
+  bottom: 0;
   left: 0;
   font-size: clamp(36px, 6vw, 72px);
   font-weight: var(--weight-semibold);
   letter-spacing: -0.03em;
   color: var(--ink);
-  opacity: 0.04;
+  opacity: 0.05;
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
@@ -66,7 +68,6 @@ button { font-family: var(--font); }
 
 /* ── List view ────────────────────────────────────── */
 #lView { display: none; height: 100%; overflow-y: auto; padding: 0 var(--gap-sm) 100px; }
-body:has(#cardView.cv-home) #lView { height: 100dvh; padding-top: var(--hdr-h); box-sizing: border-box; }
 .app-gallery #lView { height: auto; padding: 0 10px 80px; }
 
 /* Month labels (list view) */
@@ -102,10 +103,11 @@ body:has(#cardView.cv-home) #lView { height: 100dvh; padding-top: var(--hdr-h); 
 #latestChip:hover { color: var(--ink); }
 
 @media (max-width: 639px) {
-  /* Static pages (now, colophon, about) use .app but have no fixed pill header */
-  .app:not(:has(.pill-hdr)) { padding-top: var(--space-4); }
   #cvTrack { padding: 0 var(--gap-sm); }
   .cv-month { padding-right: calc(var(--gap-sm) * 1.5); }
+  /* Section pages: compact card view, vertically centred */
+  #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); }
+  body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
 }
 
 @media (min-width: 1024px) {

@@ -84,7 +84,7 @@
 <div class="app">
 
 {{ partial "header.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
-
+<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">
   <div id="cardView">
@@ -229,4 +229,5 @@
 
 {{ partial "data-panel.html" . }}
 {{ partialCached "page-data.html" . ($lt | default "global") }}
+{{ partial "site-footer.html" . }}
 </div>

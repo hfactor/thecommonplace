@@ -84,9 +84,9 @@
 .panel-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: var(--z-panel); display: none; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .panel-overlay.open { display: block; }
 
-.side-panel { position: fixed; top: 0; bottom: 0; right: 0; width: 100%; background: var(--bg); z-index: calc(var(--z-panel) + 10); transform: translateX(100%); transition: transform 0.36s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,0.18); }
+.side-panel { position: fixed; top: 0; bottom: 0; right: 0; width: 100%; background: var(--bg); z-index: calc(var(--z-panel) + 10); transform: translateX(100%); transition: transform 0.36s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
 @media (min-width: 640px) { .side-panel { width: 85%; } }
-.side-panel.open { transform: translateX(0); }
+.side-panel.open { transform: translateX(0); box-shadow: -8px 0 40px rgba(0,0,0,0.18); }
 
 .sp-hdr { display: flex; align-items: center; padding: var(--space-4) var(--gap); flex-shrink: 0; }
 .sp-back { width: 28px; height: 28px; background: none; border: none; color: var(--ink2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color var(--dur-fast); }

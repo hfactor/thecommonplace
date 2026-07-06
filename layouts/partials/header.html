@@ -32,8 +32,10 @@
             Random
           </button>
         </div>
+      {{- else if eq $ctx "everything" -}}
+      {{- /* Homepage: controls rendered inline in content, not in header */ -}}
       {{- else -}}
-      {{- /* Everything dropdown */ -}}
+      {{- /* Section pages: filter + toggle in header */ -}}
       <div class="sh-filter" id="shFilter">
         <button class="sh-filter-btn" id="shFilterBtn" onclick="toggleHomeFilter(event)" aria-haspopup="listbox" aria-expanded="false">
           <span id="shFilterLabel">{{ $filterLabel }}</span>

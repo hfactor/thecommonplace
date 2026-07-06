@@ -81,12 +81,23 @@ function show() {
   const cv    = document.getElementById('cardView');
   const lView = document.getElementById('lView');
   if (!cv || !lView) return;
+  const isHome = cv.classList.contains('cv-home');
+  const track  = document.getElementById('cvTrack');
   if (viewMode === 'list') {
-    cv.style.display    = 'none';
+    if (isHome) {
+      // Keep bio/controls/nav visible — only hide the scrollable track
+      if (track) track.style.display = 'none';
+    } else {
+      cv.style.display = 'none';
+    }
     lView.style.display = 'block';
     buildList();
   } else {
-    cv.style.display    = '';   /* let CSS apply — flex on homepage via .home-bio sibling */
+    if (isHome) {
+      if (track) track.style.display = '';
+    } else {
+      cv.style.display = '';
+    }
     lView.style.display = 'none';
   }
 }
@@ -248,15 +259,39 @@ function buildCardView() {
     return;
   }
 
-  const months = filteredKeys.map(key => {
-    const entries = (DATA[key] || [])
+  const CUTOFF = 2022;
+  const homeLimit = (typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.homeLimit) || 0;
+  const isHome = !!document.getElementById('cardView')?.classList.contains('cv-home');
+
+  const recentKeys = filteredKeys.filter(k => parseInt(k.split('-')[0], 10) > CUTOFF);
+  const oldKeys    = filteredKeys.filter(k => parseInt(k.split('-')[0], 10) <= CUTOFF);
+
+  let itemCount = 0;
+  const months = recentKeys.map(key => {
+    if (homeLimit && isHome && itemCount >= homeLimit) return '';
+    let entries = (DATA[key] || [])
       .filter(e => entryMatches(e))
       .sort((a, b) => b.day - a.day);
     if (!entries.length) return '';
+    if (homeLimit && isHome) {
+      entries = entries.slice(0, homeLimit - itemCount);
+    }
+    itemCount += entries.length;
     entries.forEach(e => { S[e.uid] = e; });
     const cards = entries.map((e, i) => cardHTML(e, i)).join('');
     return `<div class="cv-month"><div class="cv-label">${kFull(key)}</div><div class="cv-items">${cards}</div></div>`;
   }).filter(Boolean);
+
+  if (!isHome || !homeLimit) {
+    const oldEntries = oldKeys.flatMap(k =>
+      (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day)
+    );
+    if (oldEntries.length) {
+      oldEntries.forEach(e => { S[e.uid] = e; });
+      const cards = oldEntries.map((e, i) => cardHTML(e, i)).join('');
+      months.push(`<div class="cv-month"><div class="cv-label">2022 & Earlier</div><div class="cv-items">${cards}</div></div>`);
+    }
+  }
 
   track.innerHTML = months.length
     ? months.join('')
@@ -325,11 +360,23 @@ function buildList() {
     return;
   }
 
-  lView.innerHTML = filteredKeys.map(k => {
+  const CUTOFF = 2022;
+  const recentKeys = filteredKeys.filter(k => parseInt(k.split('-')[0], 10) > CUTOFF);
+  const oldKeys    = filteredKeys.filter(k => parseInt(k.split('-')[0], 10) <= CUTOFF);
+
+  let html = recentKeys.map(k => {
     const entries = sorted(k);
     if (!entries.length) return '';
     return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
   }).join('');
+
+  if (oldKeys.length) {
+    const oldEntries = oldKeys.flatMap(k => sorted(k));
+    if (oldEntries.length) {
+      html += `<div><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
+    }
+  }
+  lView.innerHTML = html;
 }
 
 function isPanel(e) {
@@ -352,8 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('phViewBtn')?.style.setProperty('display', 'none');
     document.getElementById('cardView')?.style.setProperty('display', 'none');
   } else {
+    const isHome = !!document.getElementById('cardView')?.classList.contains('cv-home');
     const saved = localStorage.getItem('viewMode');
-    if (saved) viewMode = saved;
+    if (saved && !isHome) viewMode = saved;
   }
   rebuild();
 
