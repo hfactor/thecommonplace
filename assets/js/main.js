@@ -1,23 +1,33 @@
-// DATA and PAGE_CONTENT are injected by Hugo via list.html
+// DATA and PAGE_CONTENT are injected by Hugo via listing templates
 
 const S = {};
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const kFull  = k => { const [y,m] = k.split('-'); return `${MONTHS[+m-1]} ${y}`; };
+const kFull  = k => { const [y,m] = k.split('-'); return `${MONTHS[+m-1].slice(0,3)} '${y.slice(2)}`; };
 
 let viewMode = 'card';
 let filteredKeys = [];
-let currentIdx = 0;
 
-const isRec = e => e.recommended;
-const typeCfg = type => (typeof TYPES_CFG !== 'undefined' ? TYPES_CFG : []).find(t => t.id === type) || {};
+const isRec    = e => e.recommended;
+const typeCfg  = type => (typeof TYPES_CFG !== 'undefined' ? TYPES_CFG : []).find(t => t.id === type) || {};
+
+const _urlQ = new URLSearchParams(location.search).get('q') || '';
+
+function injectQBackBtn() {
+  if (!_urlQ) return;
+  const btn = document.createElement('a');
+  btn.className = 'q-back-btn';
+  btn.href = location.pathname;
+  const section = location.pathname.replace(/\//g, '') || 'everything';
+  btn.innerHTML = `← Back to ${section.charAt(0).toUpperCase() + section.slice(1)}`;
+  document.body.appendChild(btn);
+}
+injectQBackBtn();
 
 function entryMatches(e) {
-  // Type + field filters from __LISTING__ (set per page)
   if (typeof window.__LISTING__ !== 'undefined') {
     const L = window.__LISTING__;
     if (L.type && e.type !== L.type) return false;
-    // On unfiltered views, skip types not flagged in_everything
     if (!L.type && !typeCfg(e.type).in_everything) return false;
     const f = L.filters || {};
     if (f.language    && e.language    !== f.language)    return false;
@@ -27,6 +37,16 @@ function entryMatches(e) {
     if (f.recommended && !isRec(e))                       return false;
     if (f.year        && e.year        !== String(f.year)) return false;
   }
+  if (_urlQ) {
+    const q = _urlQ.toLowerCase();
+    if (q === 'recommended') {
+      if (!isRec(e)) return false;
+    } else {
+      const hay = [e.title, e.localTitle, e.author, e.language, e.genre, e.subCategory, e.domain]
+        .filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+  }
   return true;
 }
 
@@ -34,61 +54,77 @@ const emptyState = () => `<div class="empty-state"><div class="empty-state-icon"
 
 function setViewMode(mode) {
   viewMode = mode;
-  if (!isGalleryPage()) localStorage.setItem('viewMode', mode);
+  localStorage.setItem('viewMode', mode);
   updateFabState();
+  // Show bio-hide toggle only in list view
+  const bioToggle = document.getElementById('bioToggleBtn');
+  if (bioToggle) bioToggle.style.display = mode === 'list' ? 'inline-flex' : 'none';
   show();
 }
 
-const isGalleryPage = () =>
-  typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.viewMode === 'gallery';
+function toggleBio() {
+  const layout = document.getElementById('homeLayout');
+  if (!layout) return;
+  layout.classList.toggle('bio-hidden');
+  const btn = document.getElementById('bioToggleBtn');
+  if (btn) btn.textContent = layout.classList.contains('bio-hidden') ? 'Show bio' : 'Hide bio';
+}
 
 function rebuild() {
   filteredKeys = Object.keys(DATA).sort().reverse()
     .filter(k => (DATA[k] || []).some(e => entryMatches(e)));
-  currentIdx = 0;
-  if (isGalleryPage()) {
-    buildGalleryFlow();
-  } else {
-    buildMobile();
-    buildDesktop();
-    updateLatest();
-  }
+  buildCardView();
   show();
 }
 
 function show() {
-  const gFlow = document.getElementById('galleryFlow');
-  if (gFlow) return; // gallery-flow pages manage their own visibility via CSS
-
+  const cv    = document.getElementById('cardView');
   const lView = document.getElementById('lView');
-  const mWrap = document.getElementById('mWrap');
-  const dCols = document.getElementById('dCols');
-  const desk  = window.innerWidth >= 640;
+  if (!cv || !lView) return;
   if (viewMode === 'list') {
-    mWrap.style.display = 'none'; dCols.style.display = 'none'; lView.style.display = 'block'; buildList();
+    cv.style.display    = 'none';
+    lView.style.display = 'block';
+    buildList();
   } else {
+    cv.style.display    = '';   /* let CSS apply — flex on homepage via .home-bio sibling */
     lView.style.display = 'none';
-    if (desk) { mWrap.style.display = 'none'; dCols.style.display = 'flex'; }
-    else       { mWrap.style.display = 'block'; dCols.style.display = 'none'; applyOffset(false); }
   }
 }
 
 function updateLatest() {
-  document.getElementById('latestChip').classList.toggle('visible', currentIdx > 0);
+  const cv   = document.getElementById('cardView');
+  const chip = document.getElementById('latestChip');
+  if (chip && cv) chip.classList.toggle('visible', cv.scrollLeft > 80);
 }
 
 function goLatest() {
-  currentIdx = 0;
-  document.getElementById('mWrap').scrollTo({ left: 0, behavior: 'smooth' });
-  document.getElementById('dCols').scrollLeft = 0;
-  updateLatest();
+  const cv = document.getElementById('cardView');
+  if (cv) cv.scrollTo({ left: 0, behavior: 'smooth' });
 }
 
-const FLOPPY_LABEL_COLORS = ['#1c3461', '#6b1c24'];
+// Persist card scroll position across page navigations (projects)
+const _scrollKey = 'cv-scroll:' + location.pathname;
+document.addEventListener('DOMContentLoaded', () => {
+  const cv = document.getElementById('cardView');
+  if (!cv) return;
+  const saved = sessionStorage.getItem(_scrollKey);
+  if (saved) { cv.scrollLeft = parseInt(saved, 10); sessionStorage.removeItem(_scrollKey); }
+  cv.addEventListener('click', e => {
+    const card = e.target.closest('[data-type="projects"]');
+    if (card) sessionStorage.setItem(_scrollKey, cv.scrollLeft);
+  }, true);
+});
+
+const FLOPPY_LABEL_COLORS = ['#1c3461', '#6b1c24', '#1a4a2e', '#4a2a0a', '#2a1a4a', '#0a3a4a'];
 function floppyLabelColor(title) {
   let h = 0;
   for (let i = 0; i < title.length; i++) h = (h * 31 + title.charCodeAt(i)) >>> 0;
   return FLOPPY_LABEL_COLORS[h % FLOPPY_LABEL_COLORS.length];
+}
+
+// Project-specific hand-drawn marks
+function floppySticker() {
+  return '';
 }
 
 function cardHTML(e, idx) {
@@ -96,26 +132,27 @@ function cardHTML(e, idx) {
   const si   = `style="--i:${idx || 0}"`;
   const cfg  = typeCfg(e.type);
   const tmpl = cfg.card_template || e.type;
-  const recEl = isRec(e) ? `<span class="card-rec" data-tooltip="Recommended">✦</span>` : '';
+  const recEl = isRec(e) ? `<svg class="card-rec" viewBox="0 0 12 28" xmlns="http://www.w3.org/2000/svg" aria-label="Recommended"><path d="M0 0h12v28l-6-6-6 6z" fill="#A67C00"/></svg><span class="card-rec-label">Recommended</span>` : '';
 
-  // ── book: reading ────────────────────────────────────────────
+  // ── book ─────────────────────────────────────────────
   if (tmpl === 'book') {
     const title = e.localTitle || e.title;
     const img   = e.image
       ? `<img class="card-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="card-cover-blank"></div>`;
-    const extBadge = e.link ? `<a class="card-ext" href="${withRef(e.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-tooltip="Go to Link">${ICO.ext}</a>` : '';
-    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div></div>${recEl}${extBadge}</div>`;
+    const extBadge = e.link ? `<a class="card-ext" href="${withRef(e.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a>` : '';
+    // Both recEl and extBadge inside card-cover so they tilt with the 3D hover
+    return `<div class="card" data-uid="${uid}" data-type="${e.type}" ${si} onclick="openSheet(this.dataset.uid)"><div class="card-cover">${img}<div class="card-spine"></div>${recEl}${extBadge}</div></div>`;
   }
 
-  // ── browser: bookmarks ───────────────────────────────────────
+  // ── browser ───────────────────────────────────────────
   if (tmpl === 'browser') {
     const noteEl = e.summary ? `<div class="bm-note">${e.summary}</div>` : '';
     const dots   = `<div class="bm-dots"><span></span><span></span><span></span></div>`;
-    return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-bar">${dots}<span class="bm-url">${e.domain || ''}</span><a class="bm-ext" href="${withRef(e.href)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a></div><div class="bm-body"><div class="bm-title">${e.title}</div>${noteEl}</div></div></div>`;
+    return `<div class="card" data-uid="${uid}" data-type="${e.type}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-bar">${dots}<span class="bm-url">${e.domain || ''}</span><a class="bm-ext" href="${withRef(e.href)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a></div><div class="bm-body"><div class="bm-title">${e.title}</div>${noteEl}</div></div></div>`;
   }
 
-  // ── newsletter ───────────────────────────────────────────────
+  // ── newsletter ────────────────────────────────────────
   if (tmpl === 'newsletter') {
     const rots = [-2.8, -2.0, -1.4, 1.2, 1.8, 2.6];
     const rh   = [...uid].reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -124,7 +161,7 @@ function cardHTML(e, idx) {
     return `<a class="card nl-card-wrap" href="${withRef(e.url)}" target="_blank" rel="noopener" style="--i:${idx||0};--rot:${rot}deg"><div class="nl-card">${img}</div><span class="nl-card-ext">${ICO.ext}</span></a>`;
   }
 
-  // ── product: uses / projects / any gallery type ───────────────
+  // ── product (uses, projects, any gallery type) ────────
   if (tmpl === 'product') {
     const src     = e.image || e.cover || '';
     const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
@@ -138,10 +175,8 @@ function cardHTML(e, idx) {
       tag   = 'a';
       attrs = `href="${withRef(extHref)}" target="_blank" rel="noopener"`;
     } else if (onClick === 'page') {
-      tag   = 'a';
-      attrs = e.permalink
-        ? `href="${e.permalink}"`
-        : (extHref ? `href="${withRef(extHref)}" target="_blank" rel="noopener"` : '');
+      tag   = 'div';
+      attrs = `data-uid="${uid}" onclick="openEntryByUid('${uid}')"`;
     } else {
       tag     = 'div';
       attrs   = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
@@ -151,68 +186,103 @@ function cardHTML(e, idx) {
     }
     const subcat = e.subCategory || e.category || e.genre || '';
 
+    if (e.type === 'uses') {
+      const src = e.image || '';
+      const img = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
+      return `<div class="gc gc--uses" data-type="uses" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="gc-img-wrap">${img}</div><div class="gc-uses-label">${e.title}</div></div>`;
+    }
+
     if (e.type === 'projects') {
-      const lc   = floppyLabelColor(e.title);
-      const desc = e.tagline ? `<span class="floppy-tagline">${e.tagline}</span>` : '';
-      return `<${tag} class="floppy-card" data-type="projects" data-subcat="${subcat}" ${attrs} ${si}><div class="floppy"><div class="floppy-top"><div class="floppy-tab"></div><div class="floppy-shutter-zone"><div class="floppy-shutter"><div class="floppy-rw"></div></div></div><div class="floppy-tab"></div></div><div class="floppy-divider"></div><div class="floppy-label" style="--lc:${lc}"><div class="floppy-label-stripe"></div><div class="floppy-label-body"><div class="floppy-name">${e.title}</div>${desc}</div></div><div class="floppy-wp-l"></div><div class="floppy-wp-r"></div></div></${tag}>`;
+      const lc      = floppyLabelColor(e.title);
+      const desc    = e.tagline ? `<span class="floppy-tagline">${e.tagline}</span>` : '';
+      const sticker = floppySticker(e);
+      return `<${tag} class="floppy-card" data-type="projects" data-subcat="${subcat}" ${attrs} ${si}><div class="floppy"><div class="floppy-top"><div class="floppy-tab"></div><div class="floppy-shutter-zone"><div class="floppy-shutter"><div class="floppy-rw"></div></div></div><div class="floppy-tab"></div></div><div class="floppy-divider"></div><div class="floppy-label" style="--lc:${lc}"><div class="floppy-label-stripe"></div><div class="floppy-label-body">${sticker}<div class="floppy-name">${e.title}</div>${desc}</div></div><div class="floppy-wp-l"></div><div class="floppy-wp-r"></div></div></${tag}>`;
     }
 
     return `<${tag} class="gc" data-type="${e.type}" data-subcat="${subcat}" ${attrs} ${si}>${extLink}<div class="gc-img-wrap">${img}</div><div class="gc-body"><div class="gc-title-row"><span class="gc-title">${e.title}</span>${rec}</div><span class="gc-meta">${meta}</span>${tagline}</div></${tag}>`;
   }
 
-  // ── fallback ─────────────────────────────────────────────────
-  return `<div class="card" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-title">${e.title}</div></div></div>`;
+  // ── fallback ──────────────────────────────────────────
+  return `<div class="card" data-uid="${uid}" data-type="${e.type}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-title">${e.title}</div></div></div>`;
 }
 
-function colContent(key) {
-  return (DATA[key] || [])
-    .filter(e => entryMatches(e))
-    .sort((a, b) => a.day - b.day)
-    .map((e, i) => { S[e.uid] = e; return cardHTML(e, i); })
-    .join('');
+// ── Card view (horizontal month groups) ──────────────────
+
+function activeGroupBy() {
+  // Derive grouping from TYPES_CFG based on the active filter type.
+  // Mixed / everything view defaults to month.
+  const types = filteredKeys.flatMap(k => DATA[k] || []).map(e => e.type);
+  const unique = [...new Set(types)];
+  if (unique.length === 1) {
+    const cfg = typeCfg(unique[0]);
+    return cfg.group_by || 'month';
+  }
+  return 'month';
 }
 
-function buildMobile() {
-  const visible = filteredKeys.filter(k => colContent(k).length > 0);
-  document.getElementById('mTrack').innerHTML = visible.length
-    ? visible.map(k => `<div class="m-panel"><div class="month-label">${kFull(k)}</div>${colContent(k)}</div>`).join('')
-    : `<div class="m-panel">${emptyState()}</div>`;
+function buildCardView() {
+  const track = document.getElementById('cvTrack');
+  if (!track) return;
+
+  const groupBy = activeGroupBy();
+
+  if (groupBy === 'year') {
+    const entries = filteredKeys.flatMap(k =>
+      (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day)
+    );
+    if (!entries.length) { track.innerHTML = `<div class="cv-month">${emptyState()}</div>`; return; }
+    entries.forEach(e => { S[e.uid] = e; });
+    const cutoff = new Date().getFullYear() - 4;
+    const byYear = {};
+    entries.forEach(e => {
+      const y = parseInt(((e.date || '').match(/\d{4}/) || ['0'])[0], 10);
+      const key = y <= cutoff ? `${cutoff} & Earlier` : String(y);
+      if (!byYear[key]) byYear[key] = [];
+      byYear[key].push(e);
+    });
+    const sortKey = k => k.match(/^\d{4}$/) ? parseInt(k, 10) : 0;
+    track.innerHTML = Object.keys(byYear).sort((a, b) => sortKey(b) - sortKey(a)).map(y => {
+      const cards = byYear[y].map((e, i) => cardHTML(e, i)).join('');
+      return `<div class="cv-month"><div class="cv-label">${y}</div><div class="cv-items">${cards}</div></div>`;
+    }).join('');
+    return;
+  }
+
+  const months = filteredKeys.map(key => {
+    const entries = (DATA[key] || [])
+      .filter(e => entryMatches(e))
+      .sort((a, b) => b.day - a.day);
+    if (!entries.length) return '';
+    entries.forEach(e => { S[e.uid] = e; });
+    const cards = entries.map((e, i) => cardHTML(e, i)).join('');
+    return `<div class="cv-month"><div class="cv-label">${kFull(key)}</div><div class="cv-items">${cards}</div></div>`;
+  }).filter(Boolean);
+
+  track.innerHTML = months.length
+    ? months.join('')
+    : `<div class="cv-month">${emptyState()}</div>`;
 }
 
-function goIdx(idx) {
-  const panels = document.getElementById('mTrack').querySelectorAll('.m-panel');
-  if (idx < 0 || idx >= panels.length) return;
-  currentIdx = idx;
-  panels[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-  updateLatest();
-}
-
-function buildDesktop() {
-  const visible = filteredKeys.filter(k => colContent(k).length > 0);
-  document.getElementById('dCols').innerHTML = visible.length
-    ? visible.map(k => `<div class="d-col"><div class="month-label">${kFull(k)}</div>${colContent(k)}</div>`).join('')
-    : `<div class="d-col" style="width:100%;">${emptyState()}</div>`;
-}
+// ── List view ─────────────────────────────────────────────
 
 const LIST_TAG = {
   reading:    e => e.genre || '',
   bookmarks:  e => e.category || '',
   newsletter: () => 'Newsletter',
   uses:       e => e.subCategory || '',
-  projects:   () => 'Project',
+  projects:   () => '',
 };
 
 function listRowHTML(e, i) {
   S[e.uid] = e;
   const title   = e.localTitle || e.title || '';
   const tag     = (LIST_TAG[e.type] || (() => ''))(e);
-  const rec     = isRec(e) ? ' ✦' : '';
-  const tipImg  = e.image || e.cover || '';
+  const rec     = isRec(e) ? '<span class="l-rec">✦</span>' : '';
+  const tipImg  = (e.type === 'reading') ? (e.image || e.cover || '') : '';
   const wide    = ['projects', 'bookmarks', 'newsletter'].includes(e.type) ? 'wide' : e.type === 'uses' ? 'square' : '';
   const dataImg = tipImg ? `data-img="${tipImg}" data-wide="${wide}"` : '';
   const dataUid = `data-uid="${e.uid}"`;
 
-  // Resolve href/external from on_click config
   const onClick = typeCfg(e.type).on_click || 'sheet';
   let href = null, external = false;
   if (onClick === 'external') {
@@ -222,9 +292,9 @@ function listRowHTML(e, i) {
     href = e.permalink || (e.href ? withRef(e.href) : null);
     external = !e.permalink && !!e.href;
   }
-  // sheet: href stays null — show ext icon if entry has an outbound href (e.g. bookmarks)
-  const ext  = (external || !!e.href) ? `<span class="l-ext">${ICO.ext}</span>` : '';
-  const body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
+  const ext = external ? `<span class="l-ext">${ICO.ext}</span>` : '';
+  const tagline  = e.type === 'projects' && e.tagline ? `<div class="l-note">${e.tagline}</div>` : '';
+  const body   = `<div class="l-title">${title}${rec}${ext}</div>${tagline}<div class="l-tag">${tag}</div>`;
 
   if (href) {
     const attrs = external ? `href="${href}" target="_blank" rel="noopener"` : `href="${href}"`;
@@ -235,20 +305,28 @@ function listRowHTML(e, i) {
 
 function buildList() {
   const lView = document.getElementById('lView');
-  const groupBy = (typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.groupBy) || 'month';
-  const allEntries = filteredKeys.flatMap(k =>
-    (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => a.day - b.day)
-  );
+  if (!lView) return;
+  const groupBy = activeGroupBy();
+  const sorted = k => (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day);
+
+  const allEntries = filteredKeys.flatMap(k => sorted(k));
   if (!allEntries.length) { lView.innerHTML = emptyState(); return; }
 
-  if (groupBy === 'none') {
-    lView.innerHTML = allEntries.map((e, i) => listRowHTML(e, i)).join('');
+  if (groupBy === 'year') {
+    const byYear = {};
+    allEntries.forEach(e => {
+      const y = ((e.date || '').match(/\d{4}/) || ['—'])[0];
+      if (!byYear[y]) byYear[y] = [];
+      byYear[y].push(e);
+    });
+    lView.innerHTML = Object.keys(byYear).sort((a, b) => b.localeCompare(a)).map(y => {
+      return `<div><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e, i)).join('')}</div>`;
+    }).join('');
     return;
   }
 
-  // Default: group by month
   lView.innerHTML = filteredKeys.map(k => {
-    const entries = (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => a.day - b.day);
+    const entries = sorted(k);
     if (!entries.length) return '';
     return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
   }).join('');
@@ -258,50 +336,27 @@ function isPanel(e) {
   return typeCfg(e.type).on_click === 'page';
 }
 
-// JS-based gallery subtype filter (used when URL-based nav would 404)
-function fabGalleryFilter(category, el) {
-  if (typeof window.__LISTING__ === 'undefined') return;
-  if (!window.__LISTING__.filters) window.__LISTING__.filters = {};
-  const isActive = window.__LISTING__.filters.category === category;
-  window.__LISTING__.filters.category = isActive ? '' : category;
-  document.querySelectorAll('#phSubtypesWrap .ph-pill').forEach(p => p.classList.remove('active'));
-  if (!isActive) el.classList.add('active');
-  rebuild();
-}
-
 function openEntryByUid(uid) {
   const e = S[uid];
   if (!e) return;
   if (e.type === 'notes' || isPanel(e)) openPanel(uid); else openSheet(uid);
 }
 
-function buildGalleryFlow() {
-  const flow = document.getElementById('galleryFlow');
-  if (!flow) return;
-  // Preserve the static info cell rendered by Hugo
-  const infoCell = flow.querySelector('.gc-info-cell');
-  // Flatten + sort newest first
-  const all = [];
-  filteredKeys.forEach(k => {
-    const [y, m] = k.split('-');
-    (DATA[k] || []).filter(e => entryMatches(e)).forEach(e => {
-      S[e.uid] = e;
-      all.push({ e, ts: new Date(+y, +m - 1, e.day || 1).getTime() });
-    });
-  });
-  all.sort((a, b) => b.ts - a.ts);
-  const cards = all.length ? all.map(({ e }, i) => cardHTML(e, i)).join('') : emptyState();
-  flow.innerHTML = (infoCell ? infoCell.outerHTML : '') + cards;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof DATA === 'undefined') return;
   Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
-  if (!isGalleryPage()) {
+
+  const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
+  if (listOnly) {
+    viewMode = 'list';
+    document.getElementById('phViewBtn')?.style.setProperty('display', 'none');
+    document.getElementById('cardView')?.style.setProperty('display', 'none');
+  } else {
     const saved = localStorage.getItem('viewMode');
     if (saved) viewMode = saved;
   }
   rebuild();
+
 
   if (typeof window.__OPEN_UID__ !== 'undefined') {
     openSheet(window.__OPEN_UID__);
@@ -317,7 +372,11 @@ document.addEventListener('DOMContentLoaded', () => {
     rebuild();
   });
 
-  // Global cursor-following tooltip for list view
+  // Latest chip visibility on card view scroll
+  const cv = document.getElementById('cardView');
+  if (cv) cv.addEventListener('scroll', updateLatest, { passive: true });
+
+  // Cursor-following image tooltip for list view
   const lTip = document.createElement('div');
   lTip.id = 'lTip';
   lTip.innerHTML = '<div class="l-tip-img"></div>';
@@ -326,19 +385,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const lView = document.getElementById('lView');
   let _tipSrc = '';
 
+  if (!lView) return;
+
   lView.addEventListener('mousemove', ev => {
     const row = ev.target.closest('.l-row');
     if (!row || !row.dataset.img) { lTip.classList.remove('show'); return; }
-
-    // Update image only when row changes
     if (row.dataset.img !== _tipSrc) {
       _tipSrc = row.dataset.img;
       const imgDiv = lTip.querySelector('.l-tip-img');
       imgDiv.className = 'l-tip-img' + (row.dataset.wide === 'wide' ? ' wide' : row.dataset.wide === 'square' ? ' square' : '');
       imgDiv.innerHTML = `<img src="${_tipSrc}" alt="">`;
     }
-
-    // Position: right of cursor, flip left near edge
     const W = 150, pad = 20;
     let x = ev.clientX + pad;
     let y = ev.clientY - 60;
@@ -354,24 +411,52 @@ document.addEventListener('DOMContentLoaded', () => {
     _tipSrc = '';
   });
 
-  // Disable card clicks during horizontal scroll, track current panel
-  let _hScrollTimer;
-  const mWrap  = document.getElementById('mWrap');
-  const mTrack = document.getElementById('mTrack');
-  mWrap.addEventListener('scroll', () => {
-    mTrack.classList.add('is-scrolling');
-    clearTimeout(_hScrollTimer);
-    _hScrollTimer = setTimeout(() => mTrack.classList.remove('is-scrolling'), 300);
-    const panelW = mWrap.querySelector('.m-panel')?.offsetWidth || mWrap.offsetWidth;
-    currentIdx = Math.round(mWrap.scrollLeft / panelW);
-    updateLatest();
-  }, { passive: true });
-
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeSheet(); closePanel(); }
+    if (e.key === 'Escape') {
+      closeSheet(); closePanel();
+      const wrap = document.getElementById('shFilter');
+      if (wrap) wrap.dataset.open = 'false';
+    }
   });
 
   window.addEventListener('resize', () => {
     if (viewMode === 'card') show();
   });
 });
+
+function toggleHomeFilter(e) {
+  e && e.stopPropagation();
+  const wrap = document.getElementById('shFilter');
+  if (!wrap) return;
+  const opening = wrap.dataset.open !== 'true';
+  wrap.dataset.open = opening ? 'true' : 'false';
+  document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', String(opening));
+  if (opening) {
+    requestAnimationFrame(() => {
+      document.addEventListener('click', _shFilterOutside, { once: true });
+    });
+  }
+}
+
+function _shFilterOutside(e) {
+  const wrap = document.getElementById('shFilter');
+  if (!wrap?.contains(e.target)) {
+    wrap && (wrap.dataset.open = 'false');
+    document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function setFilter(type, label) {
+  if (typeof window.__LISTING__ === 'undefined') return;
+  window.__LISTING__.type = type || null;
+  rebuild();
+  document.querySelectorAll('.sh-dp-item').forEach(p => {
+    p.classList.toggle('active', (p.dataset.type || '') === (type || ''));
+  });
+  const lbl = document.getElementById('shFilterLabel');
+  if (lbl) lbl.textContent = label || 'Everything';
+  const wrap = document.getElementById('shFilter');
+  if (wrap) wrap.dataset.open = 'false';
+  document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', 'false');
+}
+

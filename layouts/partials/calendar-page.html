@@ -8,12 +8,11 @@
   "activeType" (.Params.listingType | default "")
 ) }}
 
-<div class="latest-chip" id="latestChip" onclick="goLatest()">↑ Latest</div>
+<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">
-  <div class="m-wrap" id="mWrap"><div class="m-track" id="mTrack"></div></div>
-  <div class="d-cols" id="dCols"></div>
-  <div class="l-view" id="lView"></div>
+  <div id="cardView"><div id="cvTrack"></div></div>
+  <div id="lView"></div>
 </main>
 
 {{ partial "data-panel.html" . }}

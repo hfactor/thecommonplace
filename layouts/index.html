@@ -1,48 +1,35 @@
 {{ define "main" }}
-<div class="home-page">
-  <div class="home-body">
-{{- with resources.Get "img/hiran-head.svg" -}}<span class="home-avatar">{{ .Content | safeHTML }}<img class="home-avatar-img" src="assets/img/hiran.png" alt="Hiran Venugopalan"></span>{{- end -}}  
-    <p class="home-p home-p1">
-      <b>Hiran Venugopalan.</b> 
-      Product designer, maker, coffee brewer. 
-      I've spent years designing digital products, building teams, 
-      and making things across startups, enterprises, 
-      and free software communities.
-    </p>
+{{ partial "header.html" (dict "page" . "ctx" "everything" "activeType" "") }}
 
-    
-    <p class="home-p home-p2">
-      This is home to 
-      <span class="ev-wrap">
-        <a class="ev-pill" href="{{ "everything" | relURL }}">Everything</a>
-        <span class="ev-deck" aria-hidden="true">
-          {{- $i := 0 -}}
-          {{- range hugo.Data.types -}}
-            {{- if .in_everything -}}
-              <span class="ev-card" style="--i:{{ $i }}">{{ .label }}</span>
-              {{- $i = add $i 1 -}}
-            {{- end -}}
-          {{- end -}}
-        </span>
-      </span>  , my commonplace, and
-      <a class="home-link wn-cursor" href="{{ "notes" | relURL }}">Working Notes</a> 
-      where ideas in progress are shared.
-      <!-- comment , and
-      <a class="home-link" href="/projects">Projects</a> where experiments, and side builds come to life. -->
-      I also send <a class="home-link tt-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener"><span class="tt-default">This&amp;That</span><span class="tt-hover">Subscribe</span></a>
-      , curated finds and interviews on how creative people work.</p>
-
-    <p class="home-p home-p3">
-      I enjoy meeting people who are building, exploring, or figuring things out.
-       If you’d like to connect, we can 
-      <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">meet over coffee</a>
-      in Bengaluru, or
-      <span class="home-email-wrap">
-        <button class="home-email" onclick="copyEmail(this)">email me</button>
-        <span class="home-email-tip"><span class="tip-check">✓</span> Copied</span>
-      </span>.
-    </p>
+<div id="cardView" class="cv-home">
+  <div class="home-bio">
+    <div class="home-identity">
+      <div class="home-av">
+        {{- with resources.Get "img/hiran-head.svg" -}}<span class="home-av-svg">{{ .Content | safeHTML }}</span>{{- end -}}
+        <img class="home-av-photo" src="/assets/img/hiran.png" alt="Hiran" loading="eager">
+      </div>
+      <h1 class="home-name">Hiran Venugopalan</h1>
+    </div>
+    <div class="home-desc">
+      <p>Designer, maker, coffee brewer. Designing digital products and making things around design, learning, and open communities.</p>
+      <p>I publish <a class="home-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a>, an occasional newsletter featuring curated finds and conversations with creative people about how they work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
+      <p>Always happy to meet new people and have good conversations. <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">Coffee in Bengaluru</a> or <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span> both work.</p>
+    </div>
+    <nav class="home-nav">
+      <a class="home-nav-link" href="{{ "about" | relURL }}">About</a>
+      <a class="home-nav-link" href="{{ "now" | relURL }}">Now Page</a>
+      <a class="home-nav-link" href="{{ "notes" | relURL }}">Working Notes</a>
+      <a class="home-nav-link" href="{{ "projects" | relURL }}">Projects</a>
+    </nav>
   </div>
-  {{ partial "site-footer.html" . }}
+  <div id="cvTrack"></div>
 </div>
+<div id="lView"></div>
+
+{{ partial "data-panel.html" . }}
+{{ partial "site-footer.html" . }}
+<script>
+window.__LISTING__ = { type: null, viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+</script>
+{{ partialCached "page-data.html" . "global" }}
 {{ end }}

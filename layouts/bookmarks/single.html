@@ -1,8 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="refresh" content="0;url=/bookmarks/">
-<link rel="canonical" href="/bookmarks/">
-</head>
-<body></body>
-</html>
+{{ define "main" }}
+<div class="app">
+{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" "bookmarks") }}
+<main class="content">
+  <div id="cardView"><div id="cvTrack"></div></div>
+  <div id="lView"></div>
+</main>
+{{ partial "data-panel.html" . }}
+{{ partial "page-data.html" (dict "Params" (dict "listingType" "bookmarks") "Site" .Site) }}
+</div>
+<script>
+window.__OPEN_UID__ = "bookmarks/{{ .File.ContentBaseName }}";
+window.__LISTING__ = { type: "bookmarks", viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+</script>
+{{ end }}
+
+{{ define "sheet" }}
+{{- $href   := .Params.href | default "" -}}
+{{- $domain := .Params.domain | default (replaceRE "^https?://([^/?#]+).*" "$1" $href) -}}
+{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+<div class="sheet-overlay open" id="sheetOverlay" onclick="closeSheetOutside(event)">
+  <div class="sheet" id="sheet">
+    <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
+    <div class="sheet-inner" id="sheetInner">
+<div class="modal-bm">
+  <div class="modal-bm-bar">
+    <div class="bm-dots"><span></span><span></span><span></span></div>
+    <span class="modal-bm-url">{{ $domain }}</span>
+  </div>
+  {{- if $href -}}<a class="modal-body-col modal-body-col--link" href="{{ $href }}" target="_blank" rel="noopener">{{- else -}}<div class="modal-body-col">{{- end -}}
+    <div class="modal-type-badge">Bookmark</div>
+    <div class="modal-title">{{ .Title }}{{ if $href }} {{ $icoExt | safeHTML }}{{ end }}</div>
+    {{- with .Content -}}<div class="modal-body">{{ . }}</div>{{- end -}}
+    <div class="modal-date-inline">{{ .Date | dateFormat "Jan 2006" }}</div>
+  {{- if $href -}}</a>{{- else -}}</div>{{- end -}}
+</div>
+    </div>
+  </div>
+</div>
+{{ end }}

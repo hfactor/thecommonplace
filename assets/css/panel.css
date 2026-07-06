@@ -1,3 +1,18 @@
+/* ─── Page avatar (now, colophon, static pages) ────── */
+.page-avatar {
+  display: block;
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--space-4);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.page-avatar svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* ─── Project side panel — floating back button ───── */
 .proj-sp-back {
   position: absolute;
@@ -6,18 +21,16 @@
   z-index: 10;
   width: 28px;
   height: 28px;
-  border-radius: var(--r-sm);
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: none;
+  border: none;
   color: var(--ink2);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-sm);
-  transition: all var(--dur-fast);
+  transition: color var(--dur-fast);
 }
-.proj-sp-back:hover { color: var(--ink); border-color: var(--ink); }
+.proj-sp-back:hover { color: var(--ink); }
 
 /* ─── Project meta row — date + collaborators inline ── */
 .sp-meta-row {
@@ -30,52 +43,36 @@
   color: var(--ink2);
   flex-wrap: nowrap;
 }
-.sp-meta-left { display: flex; align-items: center; gap: 5px; flex-shrink: 1; min-width: 0; white-space: nowrap; overflow: hidden; }
-.sp-collab {
-  position: relative;
-  display: inline-flex;
+.sp-meta-left { display: flex; align-items: center; gap: 6px; flex-shrink: 1; min-width: 0; white-space: nowrap; overflow: visible; }
+
+/* Tooltip below avatar in project meta (sp-body clips upward overflow) */
+.sp-meta-left .people-tip {
+  bottom: auto;
+  top: calc(100% + 6px);
 }
-.sp-collab-avatar {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  border: 1.5px solid var(--bg);
-}
-.sp-collab-tip {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--bg);
-  font-size: var(--text-sm);
-  padding: 3px 8px;
-  border-radius: var(--r-xs);
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-fast);
-}
-.sp-collab:hover .sp-collab-tip { opacity: 1; }
 
 /* ─── Project side panel content ──────────────────── */
 .proj-sp-visit {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 0;
+  padding: 8px 16px;
   font-size: var(--text-sm);
-  color: var(--ink2);
-  text-decoration: none;
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 4px 10px;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+  font-weight: var(--weight-semibold);
+  font-family: var(--font);
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  transition: border-color 0.15s, color 0.15s;
 }
-.proj-sp-visit:hover { color: var(--ink); border-color: var(--border); background: var(--surface); }
+.proj-sp-visit:hover { border-color: var(--ink); }
 .proj-sp-cover {
   width: 100%;
   margin: var(--space-6) 0;
@@ -87,13 +84,13 @@
 .panel-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: var(--z-panel); display: none; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .panel-overlay.open { display: block; }
 
-.side-panel { position: fixed; top: 0; bottom: 0; right: 0; width: 100%; background: var(--bg); z-index: calc(var(--z-panel) + 10); transform: translateX(100%); transition: transform 0.36s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
+.side-panel { position: fixed; top: 0; bottom: 0; right: 0; width: 100%; background: var(--bg); z-index: calc(var(--z-panel) + 10); transform: translateX(100%); transition: transform 0.36s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(0,0,0,0.18); }
 @media (min-width: 640px) { .side-panel { width: 85%; } }
 .side-panel.open { transform: translateX(0); }
 
 .sp-hdr { display: flex; align-items: center; padding: var(--space-4) var(--gap); flex-shrink: 0; }
-.sp-back { width: 28px; height: 28px; border-radius: var(--r-sm); background: transparent; border: 1px solid var(--border); color: var(--ink2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: var(--text-sm); transition: all var(--dur-fast); }
-.sp-back:hover { color: var(--ink); border-color: var(--ink); }
+.sp-back { width: 28px; height: 28px; background: none; border: none; color: var(--ink2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color var(--dur-fast); }
+.sp-back:hover { color: var(--ink); }
 
 .sp-body { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-12) 80px; max-width: 780px; margin: 0 auto; width: 100%; }
 .side-panel:has(.proj-sp-back) .sp-body { padding-top: 60px; }
@@ -108,7 +105,20 @@
 
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
-.sp-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); margin-bottom: var(--space-1); letter-spacing: -0.02em; }
+.sp-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); margin-bottom: 0; letter-spacing: -0.02em; flex: 1; min-width: 0; }
+.sp-title--link { text-decoration: none; transition: color 0.15s; }
+.sp-title--link:hover { color: var(--accent); }
+.proj-sp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
+.sp-proj-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+.sp-proj-url:hover { color: var(--accent); }
 .sp-updated { font-size: var(--text-sm); color: var(--ink2); margin: 6px 0 var(--gap); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
 .sp-text { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); }
@@ -128,8 +138,8 @@
 .sp-text code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.875em; background: var(--surface2); border: 1px solid var(--border-light); border-radius: 4px; padding: 1px 5px; color: var(--ink); }
 .sp-text h1 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
 .sp-text img { max-width: 100%; height: auto; border-radius: var(--r); margin: var(--space-2) 0 20px; display: block; }
-.sp-text a { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast), background-color var(--dur-base); }
-.sp-text a:hover { color: var(--accent); }
+.sp-text a { color: var(--accent); text-decoration: none; transition: text-decoration-color var(--dur-base), text-underline-offset var(--dur-base); }
+.sp-text a:hover { text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
 .sp-footer { margin-top: var(--space-10); font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
 .sp-footer a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
 .sp-footer a:hover { color: var(--ink); }
@@ -220,8 +230,8 @@
 .people-badge:hover .people-tip { opacity: 1; }
 
 /* Wiki-links */
-.wikilink { color: var(--ink); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--accent-subtle); transition: color var(--dur-fast); cursor: pointer; }
-.wikilink:hover { color: var(--accent); }
+.wikilink { color: var(--accent); text-decoration: none; transition: text-decoration-color var(--dur-base), text-underline-offset var(--dur-base); cursor: pointer; }
+.wikilink:hover { text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
 .wikilink-dead { position: relative; color: var(--ink2); text-decoration: none; padding: 0 3px; border-radius: var(--r-xs); background-color: var(--surface2); cursor: default; }
 .wikilink-dead::after { content: 'Private link'; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); font-family: var(--font); font-size: var(--text-sm); font-weight: var(--weight-semibold); padding: 4px 9px; border-radius: var(--r-sm); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); z-index: var(--z-tooltip); }
 .wikilink-dead:hover::after { opacity: 1; }

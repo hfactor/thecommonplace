@@ -1,5 +1,5 @@
 ---
 title: Everything
-layout: listing
-viewMode: cal
+layout: redirect
+redirectTo: /
 ---

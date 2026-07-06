@@ -1,7 +1,59 @@
 {{ define "main" }}
-{{ partial "calendar-page.html" . }}
+<div class="app">
+{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" "reading") }}
+<main class="content">
+  <div id="cardView"><div id="cvTrack"></div></div>
+  <div id="lView"></div>
+</main>
+{{ partial "data-panel.html" . }}
+{{ partial "page-data.html" (dict "Params" (dict "listingType" "reading") "Site" .Site) }}
+</div>
 <script>
 window.__OPEN_UID__ = "reading/{{ .File.ContentBaseName }}";
-window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {} };
+window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
 </script>
+{{ end }}
+
+{{ define "sheet" }}
+{{- $title  := or .Params.localTitle .Title -}}
+{{- $rUrl   := .Params.link | default "" -}}
+{{- $isRec  := or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes") -}}
+{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+<div class="sheet-overlay open" id="sheetOverlay" onclick="closeSheetOutside(event)">
+  <div class="sheet sheet--wide" id="sheet">
+    <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
+    <div class="sheet-inner" id="sheetInner">
+<div class="modal-book">
+  <div class="modal-cover-col">
+    {{- if $rUrl -}}<a class="modal-cover-link" href="{{ $rUrl }}" target="_blank" rel="noopener">{{- end -}}
+    <div class="modal-book-3d">
+      <div class="modal-book-pages"></div>
+      {{- if .Params.image -}}<img class="modal-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">{{- else -}}<div class="modal-cover-blank"></div>{{- end -}}
+      <div class="modal-book-spine"></div>
+    </div>
+    {{- if $rUrl -}}<span class="modal-ext-badge">{{ $icoExt | safeHTML }}</span></a>{{- end -}}
+  </div>
+  <div class="modal-body-col">
+    <div class="modal-type-badge">Reading</div>
+    {{- if $rUrl -}}
+    <a class="modal-title modal-title--link" href="{{ $rUrl }}" target="_blank" rel="noopener">{{ $title }} {{ $icoExt | safeHTML }}</a>
+    {{- else -}}
+    <div class="modal-title">{{ $title }}</div>
+    {{- end -}}
+    <div class="modal-meta">
+      {{- $sep := `<span class="modal-meta-sep">·</span>` -}}
+      {{- $parts := slice -}}
+      {{- with .Params.author -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
+      {{- with .Params.language -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
+      {{- with .Params.genre -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
+      {{- delimit $parts $sep | safeHTML -}}
+      {{- if $isRec -}}{{- if gt (len $parts) 0 -}}{{ $sep | safeHTML }}{{- end -}}<a class="modal-meta-tag modal-meta-tag--rec" href="/reading/?q=recommended">✦ Recommended</a>{{- end -}}
+    </div>
+    {{- with .Content -}}<div class="modal-body">{{ . }}</div>{{- end -}}
+    <a class="modal-date-inline" href="{{ .RelPermalink }}">{{ .Date | dateFormat "Jan 2006" }}</a>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
 {{ end }}

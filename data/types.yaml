@@ -11,6 +11,7 @@
   card_template: book
   view_mode: cal
   on_click: sheet
+  group_by: month
 
 - id: bookmarks
   label: Bookmarks
@@ -18,6 +19,7 @@
   card_template: browser
   view_mode: cal
   on_click: sheet
+  group_by: month
 
 - id: newsletter
   label: Newsletter
@@ -26,6 +28,7 @@
   card_template: newsletter
   view_mode: gallery
   on_click: external
+  group_by: year
 
 - id: uses
   label: Uses
@@ -33,6 +36,7 @@
   card_template: product
   view_mode: gallery
   on_click: sheet
+  group_by: year
 
 - id: projects
   label: Projects
@@ -40,6 +44,7 @@
   card_template: product
   view_mode: gallery
   on_click: page
+  group_by: year
 
 - id: notes
   label: Notes

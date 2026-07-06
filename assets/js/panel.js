@@ -35,6 +35,26 @@ function openPanel(uid) {
       ${blHtml}
       ${e.date ? `<div class="sp-notes-date">Last updated ${e.date}</div>` : ''}
     `;
+  } else if (e.type === 'projects') {
+    const titleEl = e.href
+      ? `<a class="sp-title sp-title--link" href="${e.href}" target="_blank" rel="noopener">${e.title}</a>`
+      : `<div class="sp-title">${e.title}</div>`;
+    const collabsHtml = (e.collabs || []).map(c =>
+      `<span class="people-badge people-badge-plain"><img class="people-avatar" src="${c.src}" alt="${c.name}" loading="lazy" style="width:22px;height:22px;border-width:1.5px"><span class="people-tip">${c.name}</span></span>`
+    ).join('');
+    const withStr   = collabsHtml ? `<span style="opacity:0.4">·</span> with ${collabsHtml}` : '';
+    const domain    = e.href ? e.href.replace(/^https?:\/\/([^/?#]+).*/, '$1') : '';
+    const domainEl  = domain
+      ? `<span style="opacity:0.4">·</span> <a class="sp-proj-url" href="${e.href}" target="_blank" rel="noopener">${domain} ${ICO.ext}</a>`
+      : '';
+    const coverEl   = e.cover ? `<div class="proj-sp-cover"><img src="${e.cover}" alt="${e.title}"></div>` : '';
+    const body      = parseWikilinks(e.content || '');
+    html = `
+      <div class="proj-sp-header">${titleEl}</div>
+      <div class="sp-meta-row"><span class="sp-meta-left"><span>${e.year || ''}</span>${withStr}${domainEl}</span></div>
+      ${coverEl}
+      <div class="sp-text">${body}</div>
+    `;
   } else {
     const coverEl = e.image ? `<div class="sp-cover"><img src="${e.image}" alt=""></div>` : '';
     const yearEl  = e.year ? `<div class="sp-updated">${e.year}</div>` : '';

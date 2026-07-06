@@ -1,0 +1,232 @@
+{{/*
+  section-page.html
+  SSR listing for all first-level section pages.
+  Renders card view HTML at build time for SEO/crawlability.
+  JS rebuilds on DOMContentLoaded for interactivity (sheet, view toggle).
+*/}}
+
+{{- $lt   := .Params.listingType -}}
+{{- $filt := .Params.filters | default dict -}}
+{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+
+{{/* ── Collect + filter items ───────────────────────── */}}
+
+{{- $pages     := slice -}}
+{{- $yamlItems := slice -}}
+
+{{- if eq $lt "reading" -}}
+  {{- range .Site.RegularPages.ByDate -}}
+    {{- $p := . -}}
+    {{- if and (eq $p.Section "reading") (ne (index $p.Params "reading-status") "reading") (ne $p.Params.layout "listing") -}}
+      {{- $match := true -}}
+      {{- with index $filt "genre" -}}{{- if ne $p.Params.genre . -}}{{- $match = false -}}{{- end -}}{{- end -}}
+      {{- with index $filt "recommended" -}}
+        {{- $r := or (eq $p.Params.recommended true) (eq (lower (printf "%v" (default "" $p.Params.recommended))) "yes") -}}
+        {{- if not $r -}}{{- $match = false -}}{{- end -}}
+      {{- end -}}
+      {{- with index $filt "year" -}}
+        {{- if ne (dateFormat "2006" $p.Date) (printf "%v" .) -}}{{- $match = false -}}{{- end -}}
+      {{- end -}}
+      {{- if $match -}}{{- $pages = $pages | append $p -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- else if eq $lt "bookmarks" -}}
+  {{- range .Site.RegularPages.ByDate -}}
+    {{- $p := . -}}
+    {{- if eq $p.Section "bookmarks" -}}
+      {{- $match := true -}}
+      {{- with index $filt "category" -}}{{- if ne $p.Params.category . -}}{{- $match = false -}}{{- end -}}{{- end -}}
+      {{- if $match -}}{{- $pages = $pages | append $p -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- else if eq $lt "projects" -}}
+  {{- range .Site.RegularPages.ByDate.Reverse -}}
+    {{- $p := . -}}
+    {{- if and (eq $p.Section "projects") (ne $p.Params.layout "listing") -}}
+      {{- $match := true -}}
+      {{- with index $filt "category" -}}{{- if ne $p.Params.category . -}}{{- $match = false -}}{{- end -}}{{- end -}}
+      {{- if $match -}}{{- $pages = $pages | append $p -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- else if eq $lt "uses" -}}
+  {{- range hugo.Data.things -}}
+    {{- $item := . -}}
+    {{- $match := true -}}
+    {{- with index $filt "subCategory" -}}{{- if ne (default "Other" $item.subCategory) . -}}{{- $match = false -}}{{- end -}}{{- end -}}
+    {{- with index $filt "recommended" -}}{{- if ne (lower (printf "%v" (default "" $item.recommended))) "yes" -}}{{- $match = false -}}{{- end -}}{{- end -}}
+    {{- if $match -}}{{- $yamlItems = $yamlItems | append $item -}}{{- end -}}
+  {{- end -}}
+
+{{- else if eq $lt "newsletter" -}}
+  {{- $yamlItems = hugo.Data.newsletter -}}
+
+{{- end -}}
+
+{{/* ── Group page-based types by month (newest first) ── */}}
+{{- $byMonth    := dict -}}
+{{- $sortedKeys := slice -}}
+{{- if or (eq $lt "reading") (eq $lt "bookmarks") -}}
+  {{- range $pages -}}
+    {{- $k := dateFormat "2006-01" .Date -}}
+    {{- $existing := slice -}}
+    {{- with index $byMonth $k -}}{{- $existing = . -}}{{- end -}}
+    {{- $byMonth = merge $byMonth (dict $k ($existing | append .)) -}}
+  {{- end -}}
+  {{- range $k, $v := $byMonth -}}{{- $sortedKeys = $sortedKeys | append $k -}}{{- end -}}
+  {{- $sortedKeys = sort $sortedKeys "value" "desc" -}}
+{{- end -}}
+
+{{/* ── Page shell ────────────────────────────────────── */}}
+
+<div class="app">
+
+{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
+
+
+<main class="content">
+  <div id="cardView">
+    <div id="cvTrack">
+
+      {{/* Reading: book cards grouped by month */}}
+      {{- if eq $lt "reading" -}}
+        {{- range $sortedKeys -}}
+          {{- $k  := . -}}
+          {{- $mp := index $byMonth $k -}}
+          {{- $label := dateFormat "Jan '06" (time (printf "%s-01" $k)) -}}
+          <div class="cv-month">
+            <div class="cv-label">{{ $label }}</div>
+            <div class="cv-items">
+              {{- range $i, $p := $mp -}}
+                {{- $uid   := printf "reading/%s" $p.File.ContentBaseName -}}
+                {{- $title := or $p.Params.localTitle $p.Title -}}
+                {{- $isRec := or (eq $p.Params.recommended true) (eq (lower (printf "%v" (default "" $p.Params.recommended))) "yes") -}}
+                <div class="card" data-uid="{{ $uid }}" data-type="reading" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
+                  <div class="card-cover">
+                    {{- if $p.Params.image -}}<img class="card-cover-img" src="{{ $p.Params.image }}" alt="{{ $title }}">{{- else -}}<div class="card-cover-blank"></div>{{- end -}}
+                    <div class="card-spine"></div>
+                  </div>
+                  {{- if $isRec -}}<svg class="card-rec" viewBox="0 0 12 28" xmlns="http://www.w3.org/2000/svg" aria-label="Recommended"><path d="M0 0h12v28l-6-6-6 6z" fill="#A67C00"/></svg><span class="card-rec-label">Recommended</span>{{- end -}}
+                  {{- with $p.Params.link -}}
+                    {{- $ref := cond (strings.Contains . "?") (printf "%s&ref=hiran.in" .) (printf "%s?ref=hiran.in" .) -}}
+                    <a class="card-ext" href="{{ $ref }}" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-tooltip="Go to Link">{{ $icoExt | safeHTML }}</a>
+                  {{- end -}}
+                </div>
+              {{- end -}}
+            </div>
+          </div>
+        {{- end -}}
+      {{- end -}}
+
+      {{/* Bookmarks: browser cards grouped by month */}}
+      {{- if eq $lt "bookmarks" -}}
+        {{- range $sortedKeys -}}
+          {{- $k  := . -}}
+          {{- $mp := index $byMonth $k -}}
+          {{- $label := dateFormat "Jan '06" (time (printf "%s-01" $k)) -}}
+          <div class="cv-month">
+            <div class="cv-label">{{ $label }}</div>
+            <div class="cv-items">
+              {{- range $i, $p := $mp -}}
+                {{- $uid    := printf "bookmarks/%s" $p.File.ContentBaseName -}}
+                {{- $href   := default "" $p.Params.href -}}
+                {{- $domain := $p.Params.domain | default (replaceRE "^https?://([^/?#]+).*" "$1" $href) -}}
+                <div class="card" data-uid="{{ $uid }}" data-type="bookmarks" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
+                  <div class="bm-card">
+                    <div class="bm-bar">
+                      <div class="bm-dots"><span></span><span></span><span></span></div>
+                      <span class="bm-url">{{ $domain }}</span>
+                      <a class="bm-ext" href="{{ $href }}" target="_blank" rel="noopener" onclick="event.stopPropagation()">{{ $icoExt | safeHTML }}</a>
+                    </div>
+                    <div class="bm-body">
+                      <div class="bm-title">{{ $p.Title }}</div>
+                      {{- with $p.Summary -}}<div class="bm-note">{{ . }}</div>{{- end -}}
+                    </div>
+                  </div>
+                </div>
+              {{- end -}}
+            </div>
+          </div>
+        {{- end -}}
+      {{- end -}}
+
+      {{/* Projects: all in one row (no month grouping, sorted by date newest first) */}}
+      {{- if eq $lt "projects" -}}
+        <div class="cv-month">
+          <div class="cv-items">
+            {{- range $i, $p := $pages -}}
+              {{- $subcat := default "" $p.Params.category -}}
+              {{- $lc := "#1c3461" -}}
+              {{- if in (slice "8" "9" "a" "b" "c" "d" "e" "f") (substr (sha256 $p.Title) 0 1) -}}{{- $lc = "#6b1c24" -}}{{- end -}}
+              <a class="floppy-card" data-type="projects" data-subcat="{{ $subcat }}" href="{{ $p.RelPermalink }}" style="--i:{{ $i }}">
+                <div class="floppy">
+                  <div class="floppy-top">
+                    <div class="floppy-tab"></div>
+                    <div class="floppy-shutter-zone"><div class="floppy-shutter"><div class="floppy-rw"></div></div></div>
+                    <div class="floppy-tab"></div>
+                  </div>
+                  <div class="floppy-divider"></div>
+                  <div class="floppy-label" style="--lc:{{ $lc }}">
+                    <div class="floppy-label-stripe"></div>
+                    <div class="floppy-label-body">
+                      <div class="floppy-name">{{ $p.Title }}</div>
+                      {{- with $p.Params.tagline -}}<span class="floppy-tagline">{{ . }}</span>{{- end -}}
+                    </div>
+                  </div>
+                  <div class="floppy-wp-l"></div>
+                  <div class="floppy-wp-r"></div>
+                </div>
+              </a>
+            {{- end -}}
+          </div>
+        </div>
+      {{- end -}}
+
+      {{/* Uses: product cards in one row (no month grouping) */}}
+      {{- if eq $lt "uses" -}}
+        <div class="cv-month">
+          <div class="cv-items">
+            {{- range $i, $item := $yamlItems -}}
+              {{- $uid    := printf "uses/%s" (urlize $item.title) -}}
+              {{- $subcat := default "Other" $item.subCategory -}}
+              {{- $rec    := eq (lower (printf "%v" (default "" $item.recommended))) "yes" -}}
+              <div class="gc gc--uses" data-type="uses" data-subcat="{{ $subcat }}" data-uid="{{ $uid }}" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
+                <div class="gc-img-wrap">
+                  {{- if $item.image -}}<img class="gc-img" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">{{- else -}}<div class="gc-img-blank"></div>{{- end -}}
+                </div>
+                <div class="gc-uses-label">{{ $item.title }}</div>
+              </div>
+            {{- end -}}
+          </div>
+        </div>
+      {{- end -}}
+
+      {{/* Newsletter: link cards in one row (no month grouping) */}}
+      {{- if eq $lt "newsletter" -}}
+        {{- $rots := slice "-2.8" "-2.0" "-1.4" "1.2" "1.8" "2.6" -}}
+        <div class="cv-month">
+          <div class="cv-items">
+            {{- range $i, $nl := $yamlItems -}}
+              {{- $rot := index $rots (mod $i 6) -}}
+              <a class="card nl-card-wrap" href="{{ $nl.url }}" target="_blank" rel="noopener" style="--i:{{ $i }};--rot:{{ $rot }}deg">
+                <div class="nl-card">
+                  {{- if $nl.image -}}<img class="nl-card-img" src="{{ $nl.image }}" alt="">{{- else -}}<div class="nl-card-blank"></div>{{- end -}}
+                </div>
+                <span class="nl-card-ext">{{ $icoExt | safeHTML }}</span>
+              </a>
+            {{- end -}}
+          </div>
+        </div>
+      {{- end -}}
+
+    </div>
+  </div>
+
+  <div id="lView"></div>
+</main>
+
+{{ partial "data-panel.html" . }}
+{{ partialCached "page-data.html" . ($lt | default "global") }}
+</div>

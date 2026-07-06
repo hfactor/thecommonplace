@@ -1,19 +1,15 @@
 {{ define "main" }}
 {{- $projectsPage := .Site.GetPage "/projects" -}}
-
-{{ partial "gallery-page.html" $projectsPage }}
-
+<div class="app">
+{{ partial "header.html" (dict "page" . "ctx" "gallery" "activeType" "projects") }}
+<main class="content">
+  <div id="cardView"><div id="cvTrack"></div></div>
+  <div id="lView"></div>
+</main>
+{{ partial "page-data.html" (dict "Params" (dict "listingType" "projects") "Site" .Site) }}
+</div>
 <script>
-window.__LISTING__ = {
-  type:    "projects",
-  viewMode:"gallery",
-  filters: {},
-  groupBy: "none"
-};
-</script>
-
-{{/* Side panel — pre-opened server-side with full project content */}}
-<script>
+window.__LISTING__ = { type: "projects", viewMode: "gallery", filters: {}, groupBy: "none", listOnly: false };
 function projClose() {
   if (history.length > 1 && document.referrer && document.referrer.startsWith(location.origin)) {
     history.back();
@@ -24,41 +20,46 @@ function projClose() {
 </script>
 <div class="panel-overlay open" id="panelOverlay" onclick="projClose()"></div>
 <div class="side-panel open" id="sidePanel">
-  <button class="sp-back proj-sp-back" onclick="projClose()" aria-label="Close">
-    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1L10 10M10 1L1 10"/></svg>
-  </button>
+  <div class="sp-hdr">
+    <button class="sp-back proj-sp-back" onclick="projClose()" aria-label="Close">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1L10 10M10 1L1 10"/></svg>
+    </button>
+  </div>
   <div class="sp-body" id="spBody">
-
-    <h1 class="sp-title">{{ .Title }}</h1>
-
+    <div class="proj-sp-header">
+      {{- if .Params.href -}}
+      <a class="sp-title sp-title--link" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ .Title }}</a>
+      {{- else -}}
+      <div class="sp-title">{{ .Title }}</div>
+      {{- end -}}
+    </div>
     <div class="sp-meta-row">
       <span class="sp-meta-left">
         <span>{{ .Date | dateFormat "January 2006" }}</span>
         {{- with .Params.collaborators -}}
-        with
-        {{- range . -}}
+        <span style="opacity:0.4">·</span> with
+        {{- range $i, $c := . -}}
           {{- $src := "" -}}
-          {{- if .image -}}{{- $src = .image -}}{{- else if .github -}}{{- $src = printf "https://github.com/%s.png?size=64" .github -}}{{- end -}}
-          {{- if $src -}}<span class="sp-collab"><img class="sp-collab-avatar" src="{{ $src }}" alt="{{ .name }}" loading="lazy"><span class="sp-collab-tip">{{ .name }}</span></span>{{- end -}}
+          {{- if $c.image -}}{{- $src = $c.image -}}{{- else if $c.github -}}{{- $src = printf "https://github.com/%s.png?size=64" $c.github -}}{{- end -}}
+          {{- if $src -}}
+            {{- if $c.github -}}
+            <a class="people-badge" href="https://github.com/{{ $c.github }}" target="_blank" rel="noopener"><img class="people-avatar" src="{{ $src }}" alt="{{ $c.name }}" loading="lazy" style="width:22px;height:22px;border-width:1.5px"><span class="people-tip">{{ $c.name }}</span></a>
+            {{- else -}}
+            <span class="people-badge people-badge-plain"><img class="people-avatar" src="{{ $src }}" alt="{{ $c.name }}" loading="lazy" style="width:22px;height:22px;border-width:1.5px"><span class="people-tip">{{ $c.name }}</span></span>
+            {{- end -}}
+          {{- end -}}
         {{- end -}}
+        {{- end -}}
+        {{- if .Params.href -}}
+        {{- $parsed := urls.Parse .Params.href -}}
+        <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         {{- end -}}
       </span>
-      {{- with .Params.href -}}
-      <a class="proj-sp-visit" href="{{ . }}" target="_blank" rel="noopener">
-        <svg width="12" height="12" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Project
-      </a>
-      {{- end -}}
     </div>
-
     {{- with .Params.cover -}}
-    <div class="proj-sp-cover">
-      <img src="{{ . }}" alt="{{ $.Title }}">
-    </div>
+    <div class="proj-sp-cover"><img src="{{ . }}" alt="{{ $.Title }}"></div>
     {{- end -}}
-
     <div class="sp-text">{{ .Content }}</div>
-
   </div>
 </div>
 {{ end }}

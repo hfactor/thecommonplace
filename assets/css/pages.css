@@ -9,7 +9,7 @@
 }
 
 .gc-img-wrap { overflow: hidden; flex-shrink: 0; }
-.gc[data-type="uses"] .gc-img-wrap { aspect-ratio: 1; padding: 12%; }
+.gc[data-type="uses"] .gc-img-wrap { aspect-ratio: 1; padding: 10%; }
 
 .gc-img { width: 100%; height: 100%; display: block; mix-blend-mode: multiply; transition: transform 0.35s ease; }
 [data-theme="ink"] .gc-img { mix-blend-mode: screen; }
@@ -24,75 +24,55 @@
 .gc-title-row { display: flex; align-items: baseline; gap: 4px; }
 .gc-rec { font-size: var(--text-sm); color: var(--ink2); flex-shrink: 0; line-height: 1; }
 
-/* ── Gallery flow — single scrollable grid ────────────────────────────────── */
-.gallery-flow {
-  height: 100%;
-  overflow-y: auto;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  align-content: start;
-  align-items: start;
-}
 
-@media (min-width: 640px) {
-  .gallery-flow {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    padding: var(--gap-sm);
-  }
-  /* Projects gallery — floppies with breathing room, not full-bleed */
-  .is-projects .gallery-flow {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
-    gap: 20px;
-    padding: var(--gap);
-    justify-content: center;
-  }
-  .is-projects .floppy-card {
-    padding: 10%;
-  }
-}
+/* Card sizes within cv-items */
+/* Books */
+.cv-items .card[data-type="reading"]   { width: 180px; margin-bottom: 0; flex-shrink: 0; }
 
-/* Info cell — first grid tile, shows page title + description */
-.gc-info-cell {
-  position: relative;
-  background: var(--surface2);
-  border-radius: var(--r);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 6px;
-  align-self: stretch;
-}
-.gc-info-back {
-  position: absolute;
-  top: 14px; left: 14px;
-  color: var(--ink2);
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: color var(--dur-fast);
-}
-.gc-info-back:hover { color: var(--ink); }
-.gc-info-title {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-semibold);
-  color: var(--ink);
-  letter-spacing: -0.02em;
-  line-height: var(--lh-display);
-}
-.gc-info-desc {
+/* Bookmarks — fixed size, body centred vertically */
+.cv-items .card[data-type="bookmarks"] { width: 260px; height: 190px; margin-bottom: 0; flex-shrink: 0; }
+.cv-items .card[data-type="bookmarks"] .bm-card { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.cv-items .card[data-type="bookmarks"] .bm-body  { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.cv-items .card[data-type="bookmarks"] .bm-note  { -webkit-line-clamp: 3; }
+
+/* Newsletter */
+.cv-items .nl-card-wrap { width: 300px; flex-shrink: 0; }
+
+/* Floppy (projects) */
+.cv-items .floppy-card { width: 220px; flex-shrink: 0; }
+
+/* Uses — image + hover label */
+.gc--uses { width: 200px; margin-bottom: 0; flex-shrink: 0; }
+.gc--uses .gc-img-wrap { aspect-ratio: 1; padding: 10%; }
+.gc--uses:hover { opacity: 1; }
+.gc-uses-label {
   font-size: var(--text-sm);
   color: var(--ink2);
-  line-height: var(--lh-relaxed);
-  margin: 0;
+  text-align: center;
+  padding: 6px 8px 8px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gc--uses:hover .gc-uses-label {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Gallery cards */
-.is-gallery .gc           { margin-bottom: 0; overflow: visible; }
-.is-gallery .gc-img-wrap  { overflow: hidden; }
-.is-gallery .gc:hover .gc-title { color: var(--accent); }
+/* Other gallery cards (non-uses) */
+.cv-items .gc            { width: 200px; margin-bottom: 0; flex-shrink: 0; }
+.cv-items .gc:hover .gc-title { color: var(--accent); }
+
+@media (max-width: 639px) {
+  .cv-items .card[data-type="reading"]   { width: 130px; }
+  .cv-items .card[data-type="bookmarks"] { width: 220px; height: 170px; }
+  .cv-items .nl-card-wrap                { width: 220px; }
+  .cv-items .floppy-card                 { width: 140px; }
+  .cv-items .gc                          { width: 160px; }
+}
 
 /* ── Floppy disk card ─────────────────────────────────────────────────────── */
 
@@ -115,7 +95,7 @@
   aspect-ratio: 200/210;
   /* top-right chamfer */
   clip-path: polygon(0 0, 94.5% 0, 100% 5.2%, 100% 100%, 0 100%);
-  background: #3e4049;
+  background: var(--floppy-body);
 }
 /* Top section — plastic tabs flanking the shutter groove */
 .floppy-top {
@@ -130,7 +110,7 @@
 .floppy-shutter-zone {
   flex: 1;
   position: relative;
-  background: #16171b;
+  background: var(--floppy-body-dark);
   overflow: hidden;
 }
 /* Sliding shutter */
@@ -138,7 +118,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg,
-    #b0b0b0 0%, #d4d4d4 25%, #eaeaea 50%, #c8c8c8 75%, #a8a8a8 100%
+    var(--floppy-metal) 0%, var(--floppy-metal-light) 25%, var(--floppy-slot) 50%, var(--floppy-slot-edge) 75%, var(--floppy-screw) 100%
   );
 }
 /* Read window — dark cutout in the metal */
@@ -146,23 +126,23 @@
   position: absolute;
   right: 12.5%; top: 15.6%;
   width: 25%; height: 62.5%;
-  background: #3e4049;
-  border-radius: 5%;
-  transition: background 0.4s ease;
+  background: var(--floppy-body);
+  border-radius: var(--r-xs);
+  transition: background var(--dur-base) ease;
 }
-.floppy-card:hover .floppy-rw { background: #0e0f12; }
+.floppy-card:hover .floppy-rw { background: var(--floppy-body-dark); }
 /* Divider strip between top and label */
 .floppy-divider {
   position: absolute;
   top: 30.5%; left: 0; right: 0;
   height: 3.8%;
-  background: #2a2b30;
+  background: var(--floppy-label-divider);
 }
 /* Label sticker */
 .floppy-label {
   position: absolute;
   top: 35.2%; left: 5%; right: 5%; bottom: 8.6%;
-  background: #e2dfd2;
+  background: var(--floppy-label-bg);
   border-radius: 2%;
   overflow: hidden;
   display: flex;
@@ -180,19 +160,20 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 4px;
+  gap: 2px;
+  position: relative;
 }
+
 .floppy-name {
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  color: #222018;
+  color: var(--floppy-text);
   line-height: 1.3;
 }
 .floppy-tagline {
-  font-size: calc(var(--text-sm) - 1px);
-  color: #6a6050;
+  font-size: var(--text-sm);
+  color: var(--floppy-text2);
   line-height: 1.2;
-  margin-top: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -200,8 +181,8 @@
 }
 @media (max-width: 639px) {
   .floppy-label-body { padding: 4px 6px 6px; gap: 2px; }
-  .floppy-name { font-size: 10px; }
-  .floppy-tagline { font-size: 9px; margin-top: 4px; }
+  .floppy-name { font-size: var(--text-sm); }
+  .floppy-tagline { font-size: var(--text-sm); }
 }
 
 /* Write-protect tab — bottom left */
@@ -209,13 +190,13 @@
   position: absolute;
   bottom: 0; left: 0;
   width: 9%; height: 7.6%;
-  background: #2e3038;
+  background: var(--floppy-label-divider);
 }
 .floppy-wp-l::before {
   content: '';
   position: absolute;
   inset: 15% 10%;
-  background: #22242c;
+  background: var(--floppy-body-dark);
   border-radius: 1px;
 }
 
@@ -224,13 +205,13 @@
   position: absolute;
   bottom: 0; right: 0;
   width: 9%; height: 7.6%;
-  background: #3e4049;   /* same as dark case */
+  background: var(--floppy-body);
 }
 .floppy-wp-r::before {
   content: '';
   position: absolute;
   inset: 12% 8%;
-  background: #0a0b0e;   /* near-black — the hole */
+  background: var(--floppy-body-dark);
   border-radius: 1px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
 }
@@ -240,12 +221,12 @@
   position: absolute;
   top: 6px; right: 6px;
   width: 22px; height: 22px;
-  background: rgba(0,0,0,0.4);
+  background: var(--overlay);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: var(--r-full);
   display: flex; align-items: center; justify-content: center;
-  color: #fff;
+  color: var(--bg);
   text-decoration: none;
   opacity: 0.75;
   transition: opacity var(--dur-fast);

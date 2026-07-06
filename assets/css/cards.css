@@ -1,31 +1,60 @@
 /* Shared */
 .card { margin-bottom: 14px; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; }
 .card:active { opacity: 0.85; }
-.card > .card-ext { position: absolute; bottom: 6px; right: 6px; font-size: 10px; color: #fff; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: var(--r-full); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 2; }
-.card > .card-rec { position: absolute; top: 6px; left: 6px; font-size: 10px; color: #fff; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: var(--r-full); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; line-height: 1; }
+/* Ext link badge — inside card-cover so it tilts with the 3D hover */
+.card-cover .card-ext {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  font-size: 10px;
+  color: var(--bg);
+  background: var(--overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--r-full);
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  z-index: 2;
+}
 .ext-badge { width: 22px; height: 22px; border-radius: var(--r-full); background: var(--surface2); border: 1px solid var(--border-light); display: inline-flex; align-items: center; justify-content: center; color: var(--ink2); cursor: pointer; flex-shrink: 0; transition: background 0.12s; text-decoration: none; }
 .ext-badge:hover { background: var(--border); }
 
-/* Book */
+/* ── Recommended — SVG bookmark ribbon inside cover ── */
+.card-rec {
+  position: absolute;
+  top: 0;
+  left: 18px;
+  width: 12px;
+  height: 28px;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.25));
+  overflow: visible;
+}
+.card-rec-label { display: none; }
+/* Gold: gradient defined inline in the SVG element */
+
+/* ── Book card ───────────────────────────────────── */
 .card-cover {
   border-radius: var(--r-xs) 1px 1px var(--r-xs);
-  overflow: hidden;
+  overflow: visible; /* ribbon corner must not be clipped */
   position: relative;
   box-shadow:
-    -5px 4px 16px rgba(0,0,0,0.22),
-    -1px 1px 4px rgba(0,0,0,0.10),
+    -6px 5px 18px rgba(0,0,0,0.26),
+    -1px 1px 4px rgba(0,0,0,0.12),
     inset -2px 0 4px rgba(0,0,0,0.06);
   transition: box-shadow 0.25s, transform 0.25s;
   transform-origin: left center;
 }
 .card:hover .card-cover {
-  transform: perspective(700px) rotateY(-6deg) translateY(-2px);
+  transform: perspective(700px) rotateY(-4deg) translateY(-2px);
   box-shadow:
-    -10px 8px 24px rgba(0,0,0,0.28),
-    -2px 2px 6px rgba(0,0,0,0.12),
+    -10px 8px 24px rgba(0,0,0,0.30),
+    -2px 2px 6px rgba(0,0,0,0.14),
     inset -2px 0 4px rgba(0,0,0,0.08);
 }
-/* Gloss sheen over the cover */
+/* Gloss sheen */
 .card-cover::after {
   content: "";
   position: absolute;
@@ -33,23 +62,50 @@
   background: linear-gradient(110deg, rgba(255,255,255,0.10) 0%, transparent 55%);
   pointer-events: none;
 }
-.card-cover-img { width: 100%; object-fit: cover; display: block; background: var(--surface2); }
-.card-cover-blank { width: 100%; aspect-ratio: 3/4; background: var(--surface2); }
-.card-spine { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: linear-gradient(to right, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 60%, transparent); }
+/* Pages block — appears on hover as book tilts and reveals right edge */
+.card-cover::before {
+  content: "";
+  position: absolute;
+  right: -7px; top: 2px; bottom: 2px;
+  width: 7px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(to right, var(--spine-from), var(--spine-to));
+  box-shadow: inset -1px 0 2px rgba(0,0,0,0.08);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 0;
+}
+.card:hover .card-cover::before { opacity: 1; }
+/* Image clips itself to the cover shape */
+.card-cover-img { width: 100%; object-fit: cover; display: block; background: var(--surface2); border-radius: var(--r-xs) 1px 1px var(--r-xs); overflow: hidden; }
+.card-cover-blank { width: 100%; aspect-ratio: 3/4; background: var(--surface2); border-radius: var(--r-xs) 1px 1px var(--r-xs); overflow: hidden; }
+
+/* Spine — gradient shadow matching cover's left border-radius */
+.card-spine {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 14px;
+  border-radius: var(--r-xs) 0 0 var(--r-xs);
+  background: linear-gradient(to right, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.12) 55%, transparent);
+  pointer-events: none;
+}
+
 [data-theme="ink"] .card-cover {
   box-shadow:
-    -5px 4px 18px rgba(0,0,0,0.60),
-    -1px 1px 5px rgba(0,0,0,0.35),
-    inset -2px 0 4px rgba(0,0,0,0.20);
+    -6px 5px 20px rgba(0,0,0,0.65),
+    -1px 1px 5px rgba(0,0,0,0.38),
+    inset -2px 0 4px rgba(0,0,0,0.22);
 }
 [data-theme="ink"] .card:hover .card-cover {
   box-shadow:
-    -10px 8px 28px rgba(0,0,0,0.70),
-    -2px 2px 8px rgba(0,0,0,0.40),
-    inset -2px 0 5px rgba(0,0,0,0.30);
+    -10px 8px 28px rgba(0,0,0,0.75),
+    -2px 2px 8px rgba(0,0,0,0.42),
+    inset -2px 0 5px rgba(0,0,0,0.32);
 }
 
-/* Bookmark card */
+/* ── Bookmark card ───────────────────────────────── */
+.card[data-type="bookmarks"] { width: 210px; }
 .bm-card { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border-light); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; }
 .card:hover .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
 .bm-bar { display: flex; align-items: center; gap: var(--space-1); padding: var(--space-1) 10px; border-bottom: 1px solid var(--border-light); background: var(--surface2); }
@@ -71,10 +127,7 @@
   .bm-title { font-size: var(--text-sm); }
 }
 
-
-
-
-/* Newsletter card */
+/* ── Newsletter card ─────────────────────────────── */
 .nl-card-wrap { display: block; text-decoration: none; position: relative; }
 .nl-card {
   border-radius: var(--r);
@@ -93,43 +146,39 @@
 .nl-card-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
 .nl-card-blank { width: 100%; aspect-ratio: 16/9; background: var(--surface2); }
 
-/* Ext arrow — newsletter card */
+/* Ext arrow — centered, larger */
 .nl-card-ext {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--r-full);
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  color: #fff;
-  opacity: 0.75;
-  transition: opacity 0.15s;
+  background: var(--overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--bg);
+  opacity: 0;
+  transition: opacity 0.18s ease;
   pointer-events: none;
 }
+.nl-card-ext svg { width: 18px; height: 18px; }
 .nl-card-wrap:hover .nl-card-ext { opacity: 1; }
 
-/* Touch devices: fire hover effects on tap instead */
+/* Touch devices */
 @media (hover: none) {
+  .nl-card-ext { opacity: 0.7; }
   .card:active .card-cover {
-    transform: perspective(700px) rotateY(-6deg) translateY(-2px);
-    box-shadow:
-      -10px 8px 24px rgba(0,0,0,0.28),
-      -2px 2px 6px rgba(0,0,0,0.12),
-      inset -2px 0 4px rgba(0,0,0,0.08);
+    transform: perspective(700px) rotateY(-4deg) translateY(-2px);
+    box-shadow: -10px 8px 24px rgba(0,0,0,0.28), -2px 2px 6px rgba(0,0,0,0.12), inset -2px 0 4px rgba(0,0,0,0.08);
   }
   [data-theme="ink"] .card:active .card-cover {
-    box-shadow:
-      -10px 8px 28px rgba(0,0,0,0.70),
-      -2px 2px 8px rgba(0,0,0,0.40),
-      inset -2px 0 5px rgba(0,0,0,0.30);
+    box-shadow: -10px 8px 28px rgba(0,0,0,0.70), -2px 2px 8px rgba(0,0,0,0.40), inset -2px 0 5px rgba(0,0,0,0.30);
   }
   .card:active .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
   .nl-card-wrap:active .nl-card { transform: rotate(0deg) translateY(-2px); box-shadow: var(--shadow-md); }
-  .nl-card-wrap:active .nl-card-ext { opacity: 1; }
 }

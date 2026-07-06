@@ -34,7 +34,7 @@
 </head>
 <body>
 {{ block "main" . }}{{ end }}
-{{ partial "sheet.html" . }}
+{{ block "sheet" . }}{{ partial "sheet.html" . }}{{ end }}
 
 {{/* Notes search modal — display:none; opened by fabNotesSearch() on notes pages */}}
 <div class="nsm" id="notesSearchModal" onclick="if(event.target===this)closeNotesSearch()">

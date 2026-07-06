@@ -23,7 +23,6 @@
   --lh-prose:   1.75;
 
   /* ── Border radius ──────────────────────────────── */
-  --r-2:    2px;
   --r-xs:   4px;
   --r-sm:   8px;
   --r:      12px;
@@ -31,9 +30,7 @@
   --r-full: 50%;
 
   /* ── Layout ─────────────────────────────────────── */
-  --col-w:  280px;
-  --hdr-h:  64px;
-  --peek:   calc(33vw);
+  --hdr-h:  68px; /* header height (52px) + top offset (16px) */
   --gap:    28px;
   --gap-sm: 20px;
 
@@ -50,16 +47,27 @@
   /* ── Z-index layers ─────────────────────────────── */
   --z-elevated: 10;
   --z-header:   20;
-  --z-chip:     30;
   --z-tooltip:  50;
   --z-sheet:    100;
   --z-panel:    150;
-  --z-fab:      200;
   --z-modal:    400;
 
   /* ── Transitions ────────────────────────────────── */
   --dur-fast: 0.12s;
   --dur-base: 0.2s;
+
+  /* ── Easing curves ──────────────────────────────── */
+  --ease-spring: cubic-bezier(0.34, 1.5, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ease-snap:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Underline offsets ──────────────────────────── */
+  --underline-offset:       3px;
+  --underline-offset-hover: 5px;
+
+  /* ── Animation stagger ──────────────────────────── */
+  --stagger-step: 40ms;
 
   /* ── Shadows ────────────────────────────────────── */
   --shadow-sm:  0 2px 12px rgba(0,0,0,0.08);
@@ -89,6 +97,29 @@
   --glass-border:    rgba(0, 0, 0, 0.10);
   --glass-shadow:    0 1px 0 rgba(255,255,255,0.9) inset, 0 8px 24px -8px rgba(0,0,0,.10);
   --glass-highlight: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%);
+
+  /* ── Recommendation badge ───────────────────────── */
+  --rec-color:       #8a6000;
+  --rec-color-hover: #6b4a00;
+  --rec-bg:          rgba(166,124,0,0.09);
+  --rec-bg-hover:    rgba(166,124,0,0.16);
+
+  /* ── Book spine ─────────────────────────────────── */
+  --spine-from: #dedad2;
+  --spine-to:   #ede8e0;
+
+  /* ── Floppy disk ────────────────────────────────── */
+  --floppy-body:          #3e4049;
+  --floppy-body-dark:     #16171b;
+  --floppy-metal:         #b0b0b0;
+  --floppy-metal-light:   #d4d4d4;
+  --floppy-slot:          #eaeaea;
+  --floppy-slot-edge:     #c8c8c8;
+  --floppy-screw:         #a8a8a8;
+  --floppy-label-bg:      #e2dfd2;
+  --floppy-label-divider: #2a2b30;
+  --floppy-text:          #222018;
+  --floppy-text2:         #6a6050;
 }
 
 /* ── Ink — dark ─────────────────────────────────────── */
@@ -112,4 +143,27 @@
   --glass-border:    rgba(255, 255, 255, 0.10);
   --glass-shadow:    0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 50px -20px rgba(0,0,0,.60);
   --glass-highlight: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 35%);
+
+  /* ── Recommendation badge ───────────────────────── */
+  --rec-color:       #f0b429;
+  --rec-color-hover: #f5c842;
+  --rec-bg:          rgba(240,180,41,0.15);
+  --rec-bg-hover:    rgba(240,180,41,0.22);
+
+  /* ── Book spine ─────────────────────────────────── */
+  --spine-from: #2a2824;
+  --spine-to:   #3a3830;
+
+  /* ── Floppy disk ────────────────────────────────── */
+  --floppy-body:          #2a2b30;
+  --floppy-body-dark:     #0f0f12;
+  --floppy-metal:         #555560;
+  --floppy-metal-light:   #6a6a78;
+  --floppy-slot:          #1a1a20;
+  --floppy-slot-edge:     #333340;
+  --floppy-screw:         #444455;
+  --floppy-label-bg:      #2a2820;
+  --floppy-label-divider: #1a1814;
+  --floppy-text:          #ccc8b8;
+  --floppy-text2:         #8a8070;
 }
