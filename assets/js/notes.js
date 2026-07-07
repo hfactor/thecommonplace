@@ -9,7 +9,7 @@ function _isNotesPage() {
 function fabRandomNote() {
   if (typeof NOTES_DATA === 'undefined' || !NOTES_DATA.length) return;
   const pick = NOTES_DATA[Math.floor(Math.random() * NOTES_DATA.length)];
-  if (document.getElementById('nlTrack') && S[pick.uid]) {
+  if (S[pick.uid]) {
     openPanel(pick.uid);
   } else {
     window.location.href = pick.url;

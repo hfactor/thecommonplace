@@ -78,6 +78,7 @@ function rebuild() {
 }
 
 function show() {
+  document.documentElement.classList.remove('view-list-init');
   const cv    = document.getElementById('cardView');
   const lView = document.getElementById('lView');
   if (!cv || !lView) return;
@@ -403,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saved = localStorage.getItem('viewMode');
     if (saved && !isHome) viewMode = saved;
   }
+  if (typeof updateFabState !== 'undefined') updateFabState();
   rebuild();
 
 

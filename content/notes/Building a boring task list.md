@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Building a boring task list
 date: 2021-07-19
 tags: [productivity, work]

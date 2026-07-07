@@ -1,12 +1,70 @@
 {{ define "main" }}
-<div class="app nl-app" data-page="notes">
-  {{ partial "header.html" (dict "page" . "ctx" "notes") }}
-  <div class="nl-scene">
-    <div class="nl-track-wrap" id="nlTrackWrap">
-      <div class="nl-track" id="nlTrack"></div>
+<div class="app" data-page="notes">
+{{ partial "header.html" (dict "page" . "ctx" "notes") }}
+<div class="notes-scroll-area">
+  <div class="notes-reading">
+    <h1 class="note-title">Half-Baked Notes</h1>
+    <p class="notes-intro">A digital garden of half-baked notes. I write mostly for myself, then keep editing as I learn, build, and change my mind. Nothing here is finished. Some ideas grow, some wander off, and a few are happily left half-baked.</p>
+    <div style="padding-top: var(--space-6);">
+    {{- $notes := where .Site.RegularPages "Section" "notes" -}}
+    {{- $active  := slice -}}
+    {{- $passive := slice -}}
+    {{- $rest    := slice -}}
+    {{- range $notes.ByDate.Reverse -}}
+      {{- if eq .Params.status "active" -}}{{- $active  = $active  | append . -}}
+      {{- else if eq .Params.status "passive" -}}{{- $passive = $passive | append . -}}
+      {{- else -}}{{- $rest = $rest | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $active }}
+    <div>
+      <div class="l-month-label">Front Burner</div>
+      {{- range $active }}
+      <a class="l-row notes-l-row" href="{{ .RelPermalink }}" data-uid="note-{{ .File.UniqueID }}">
+        <span class="l-title">{{ .Title }}</span>
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
+    {{- if $passive }}
+    <div>
+      <div class="l-month-label">Back Burner</div>
+      {{- range $passive }}
+      <a class="l-row notes-l-row" href="{{ .RelPermalink }}" data-uid="note-{{ .File.UniqueID }}">
+        <span class="l-title">{{ .Title }}</span>
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
+    {{- if $rest }}
+    <div>
+      <div class="l-month-label">Needs More Seasoning</div>
+      {{- range $rest }}
+      <a class="l-row notes-l-row" href="{{ .RelPermalink }}" data-uid="note-{{ .File.UniqueID }}">
+        <span class="l-title">{{ .Title }}</span>
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
     </div>
   </div>
+  {{ partial "site-footer.html" . }}
 </div>
+</div>
+
 {{ partial "data-panel.html" . }}
 {{ partial "notes-data.html" . }}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof NOTES_DATA !== 'undefined') {
+    NOTES_DATA.forEach(n => { S[n.uid] = Object.assign({}, n, { type: 'notes' }); });
+  }
+  document.querySelectorAll('.notes-l-row').forEach(a => {
+    a.addEventListener('click', e => {
+      const uid = a.dataset.uid;
+      if (uid && S[uid]) { e.preventDefault(); openPanel(uid); }
+    });
+  });
+});
+</script>
 {{ end }}

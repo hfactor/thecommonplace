@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Documenting meetings
 date: 2021-06-25
 tags: [meetings, documentation]

@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Breadboarding over wireframes
 date: 2021-06-18
 tags: [design, process]

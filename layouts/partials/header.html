@@ -42,7 +42,7 @@
           <svg class="sh-filter-caret" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="sh-dropdown" id="shDropdown" role="listbox">
-          <a class="sh-dp-item{{ if not $activeType }} active{{ end }}" href="{{ "/" | relURL }}">Everything</a>
+          <a class="sh-dp-item{{ if not $activeType }} active{{ end }}" href="{{ "everything" | relURL }}">Everything</a>
           {{- range hugo.Data.types -}}
             {{- if and .in_everything (ne .show_filter false) -}}
               {{- $section := $.page.Site.GetPage (printf "/%s" .id) -}}

@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Tracking changes behaviour
 date: 2026-06-16
 tags: [systems, measurement]

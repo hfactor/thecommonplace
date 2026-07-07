@@ -31,6 +31,7 @@
   | resources.Concat "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="/feed.xml">
+<script>(function(){if(localStorage.getItem('viewMode')==='list')document.documentElement.classList.add('view-list-init');})()</script>
 </head>
 <body>
 {{ block "main" . }}{{ end }}

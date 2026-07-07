@@ -1,3 +1,5 @@
+html.view-list-init #cardView:not(.cv-home) { display: none; }
+html.view-list-init #lView { display: block; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: var(--font); font-size: var(--text-base); line-height: 1.5; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
 html:has(#cardView.cv-home),
@@ -71,7 +73,7 @@ button { font-family: var(--font); }
 .app-gallery #lView { height: auto; padding: 0 10px 80px; }
 
 /* Month labels (list view) */
-.l-month-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); padding: 20px 0 10px; border-bottom: 1px solid var(--border-light); }
+.l-month-label { font-size: var(--text-sm); font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); padding: 24px 0 8px 0; }
 
 /* Empty state */
 .empty-state { padding: var(--space-12) 20px; text-align: center; color: var(--ink2); font-size: var(--text-base); line-height: var(--lh-relaxed); }

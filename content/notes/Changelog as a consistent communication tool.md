@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Changelog as a consistent communication tool
 date: 2021-06-29
 tags: [communication, shipping]

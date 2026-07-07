@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Implementing a design system
 date: 2021-06-18
 tags: [design, systems]

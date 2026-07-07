@@ -124,10 +124,10 @@ body:has(#cardView.cv-home) .sh-logo { visibility: hidden; pointer-events: none;
   padding: 0 4px;
   border: none;
   background: transparent;
-  color: var(--ink);
+  color: var(--ink2);
   font-family: var(--font);
-  font-size: var(--text-md);
-  font-weight: var(--weight-semibold);
+  font-size: var(--text-base);
+  font-weight: var(--weight-normal);
   cursor: pointer;
   border-radius: var(--r-xs);
   transition: color var(--dur-fast);
@@ -140,12 +140,23 @@ body:has(#cardView.cv-home) .sh-logo { visibility: hidden; pointer-events: none;
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: var(--bg);
-  border: 1px solid var(--border-light);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--r-sm);
-  padding: 6px 28px;
+  padding: 10px 28px;
   display: none;
   z-index: var(--z-elevated);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.sh-dropdown::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glass-highlight);
+  pointer-events: none;
 }
 .sh-filter[data-open="true"] .sh-dropdown { display: flex; flex-direction: column; gap: 2px; }
 

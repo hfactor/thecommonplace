@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Files outlive software
 date: 2026-06-16
 tags: [tools, data]

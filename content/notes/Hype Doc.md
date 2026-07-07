@@ -1,4 +1,5 @@
 ---
+status: passive
 title: Hype Doc
 date: 2021-06-17
 tags: [career, documentation]

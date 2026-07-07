@@ -19,14 +19,32 @@
       <nav class="home-nav">
         <a class="home-nav-link" href="{{ "about" | relURL }}">About</a>
         <a class="home-nav-link" href="{{ "now" | relURL }}">Now Page</a>
-        <a class="home-nav-link" href="{{ "notes" | relURL }}">Working Notes</a>
-        <a class="home-nav-link" href="{{ "projects" | relURL }}">Projects</a>
+        <a class="home-nav-link" href="{{ "notes" | relURL }}">Half-Baked Notes</a>
+        <div class="sh-filter home-nav-explore" id="shFilter">
+          <button class="home-nav-link sh-filter-btn" id="shFilterBtn" onclick="toggleHomeFilter(event)" aria-haspopup="listbox" aria-expanded="false">
+            <span id="shFilterLabel">Everything</span>
+            <svg class="sh-filter-caret" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="sh-dropdown" id="shDropdown" role="listbox">
+            <a class="sh-dp-item" href="{{ "everything" | relURL }}">Everything</a>
+            {{- range hugo.Data.types -}}
+              {{- if and .in_everything (ne .show_filter false) -}}
+                {{- $section := $.Site.GetPage (printf "/%s" .id) -}}
+                {{- if $section -}}
+                  <a class="sh-dp-item" href="{{ $section.RelPermalink }}">{{ .label }}</a>
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          </div>
+        </div>
       </nav>
     </div>
 
     <div class="home-cv-wrap">
       <div id="cvTrack"></div>
-      <a class="home-everything-cta" href="{{ "everything" | relURL }}">Everything →</a>
+      <a class="home-everything-cta" href="{{ "everything" | relURL }}" aria-label="Everything">
+        <svg width="24" height="10" viewBox="0 0 24 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5h22M17 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </div>
   {{ partial "site-footer.html" . }}
