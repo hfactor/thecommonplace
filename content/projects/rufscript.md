@@ -1,4 +1,6 @@
 ---
+aliases:
+  - /blog/rufscript-font/
 title: "Rufscript"
 date: 2006-10-01
 href: "https://fontlibrary.org/en/font/rufscript"
