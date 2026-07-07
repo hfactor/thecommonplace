@@ -92,7 +92,7 @@
 .sp-back { width: 28px; height: 28px; background: none; border: none; color: var(--ink2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color var(--dur-fast); }
 .sp-back:hover { color: var(--ink); }
 
-.sp-body { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-12) 80px; max-width: 780px; margin: 0 auto; width: 100%; }
+.sp-body { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-12) 80px; max-width: 620px; margin: 0 auto; width: 100%; }
 .side-panel:has(.proj-sp-back) .sp-body { padding-top: 60px; }
 
 @media (max-width: 639px) {

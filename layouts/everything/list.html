@@ -1,0 +1,23 @@
+{{ define "main" }}
+{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" "") }}
+
+<div class="app">
+<button id="latestChip" onclick="goLatest()">↑ Latest</button>
+
+<main class="content">
+  <div id="cardView">
+    <div id="cvTrack"></div>
+  </div>
+  <div id="lView"></div>
+</main>
+{{ partial "site-footer.html" . }}
+</div>
+
+{{ partial "data-panel.html" . }}
+{{ partial "sheet.html" . }}
+<script>
+window.__LISTING__ = { type: null, viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+</script>
+{{ partialCached "views-data.html" . "global" }}
+{{ partialCached "page-data.html" . "global" }}
+{{ end }}
