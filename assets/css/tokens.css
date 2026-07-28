@@ -1,6 +1,6 @@
 :root {
   /* ── Typefaces ──────────────────────────────────── */
-  --font:         'Public Sans', -apple-system, sans-serif;
+  --font:         'Public Sans', 'Manjari', -apple-system, sans-serif;
   --font-display: 'Bricolage Grotesque', sans-serif;
 
   /* ── Type scale · Major Second (1.125) · 14px base ─ */

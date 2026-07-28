@@ -1,9 +1,10 @@
 /* ─── Page avatar (now, colophon, static pages) ────── */
 .page-avatar {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   margin-bottom: var(--space-4);
+  margin-left: -10px;
   text-decoration: none;
   flex-shrink: 0;
 }
@@ -137,9 +138,9 @@
 .sp-text pre code { background: none; border: none; padding: 0; font-size: inherit; color: var(--ink2); }
 .sp-text code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.875em; background: var(--surface2); border: 1px solid var(--border-light); border-radius: 4px; padding: 1px 5px; color: var(--ink); }
 .sp-text h1 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
-.sp-text img { max-width: 100%; height: auto; border-radius: var(--r); margin: var(--space-2) 0 20px; display: block; }
-.sp-text a { color: var(--accent); text-decoration: none; transition: text-decoration-color var(--dur-base), text-underline-offset var(--dur-base); }
-.sp-text a:hover { text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
+.sp-text img { width: 100%; height: auto; border-radius: var(--r); margin: var(--space-2) 0 20px; display: block; }
+.sp-text a { color: var(--accent); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-position: left bottom; background-repeat: no-repeat; transition: background-size 0.35s ease; }
+.sp-text a:hover { background-size: 100% 1px; }
 .sp-footer { margin-top: var(--space-10); font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
 .sp-footer a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
 .sp-footer a:hover { color: var(--ink); }
@@ -252,7 +253,7 @@
 .notes-reading {
   flex: 1;
   width: 100%;
-  max-width: 640px;
+  max-width: 760px;
   margin: 0 auto;
   padding: var(--space-8) var(--gap) var(--space-12);
 }

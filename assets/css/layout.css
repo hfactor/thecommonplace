@@ -117,7 +117,6 @@ button { font-family: var(--font); }
 }
 
 /* ── External link icon (shared) ────────────────── */
-.home-link[href^="http"]::after,
 .sp-text a[href^="http"]::after,
 .sh-body a[href^="http"]::after {
   content: '';

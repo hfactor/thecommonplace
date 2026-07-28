@@ -1,58 +1,26 @@
 {{ define "main" }}
-{{ partial "header.html" (dict "page" . "ctx" "everything" "activeType" "") }}
-
-<div id="cardView" class="cv-home">
-  <div class="home-main">
-    <div class="home-bio">
-      <div class="home-identity">
-        <div class="home-av">
-          {{- with resources.Get "img/hiran-head.svg" -}}<span class="home-av-svg">{{ .Content | safeHTML }}</span>{{- end -}}
-          <img class="home-av-photo" src="/assets/img/hiran.png" alt="Hiran" loading="eager">
-        </div>
-        <h1 class="home-name">Hiran Venugopalan</h1>
-      </div>
-      <div class="home-desc">
-        <p>Designer, maker, coffee brewer. Designing digital products and making things around design, learning, and open communities.</p>
-        <p>I publish <a class="home-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a>, an occasional newsletter featuring curated finds and conversations with creative people about how they work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
-        <p>Always happy to meet new people and have good conversations. <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">Coffee in Bengaluru</a> or <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span> both work.</p>
-      </div>
-      <nav class="home-nav">
-        <a class="home-nav-link" href="{{ "about" | relURL }}">About</a>
-        <a class="home-nav-link" href="{{ "now" | relURL }}">Now Page</a>
-        <a class="home-nav-link" href="{{ "notes" | relURL }}">Half-Baked Notes</a>
-        <div class="sh-filter home-nav-explore" id="shFilter">
-          <button class="home-nav-link sh-filter-btn" id="shFilterBtn" onclick="toggleHomeFilter(event)" aria-haspopup="listbox" aria-expanded="false">
-            <span id="shFilterLabel">Everything</span>
-            <svg class="sh-filter-caret" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="sh-dropdown" id="shDropdown" role="listbox">
-            <a class="sh-dp-item" href="{{ "everything" | relURL }}">Everything</a>
-            {{- range hugo.Data.types -}}
-              {{- if and .in_everything (ne .show_filter false) -}}
-                {{- $section := $.Site.GetPage (printf "/%s" .id) -}}
-                {{- if $section -}}
-                  <a class="sh-dp-item" href="{{ $section.RelPermalink }}">{{ .label }}</a>
-                {{- end -}}
-              {{- end -}}
-            {{- end -}}
-          </div>
-        </div>
-      </nav>
-    </div>
-
-    <div class="home-cv-wrap">
-      <div id="cvTrack"></div>
-      <a class="home-everything-cta" href="{{ "everything" | relURL }}" aria-label="Everything">
-        <svg width="24" height="10" viewBox="0 0 24 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5h22M17 1l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
+<div class="home-page">
+  <div class="home-body">
+    {{- with resources.Get "img/hiran-head.svg" -}}<span class="home-avatar"><span class="home-avatar-svg">{{ .Content | safeHTML }}</span><img class="home-avatar-img" src="/assets/img/hiran.png" alt="Hiran Venugopalan" loading="eager"></span>{{- end -}}
+    <p class="home-p"><strong>Hiran Venugopalan.</strong> Designer, maker, coffee brewer. Designing digital products and making things around design, learning, and open communities through small projects, FOSS collaborations, and the occasional coffee workshop.</p>
+    <p class="home-p">You'll find <a class="home-link" href="{{ "projects" | relURL }}">Projects</a>, <a class="home-link" href="{{ "notes" | relURL }}">Notes</a>, and <a class="home-link" href="{{ "everything" | relURL }}">Everything</a> here. It's where I keep the work, ideas, references, and recommendations that are worth coming back to. <a class="home-link" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a> is an occasional newsletter featuring curated finds and conversations with people about how they work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
+    <p class="home-p">Always happy to meet new people and have good conversations. <a class="home-link" href="#" target="_blank" rel="noopener">WorkAround</a> if you'd like to work together from a cafe, <a class="home-link" href="https://cal.com/hfactor/meet?ref=hiran.in" target="_blank" rel="noopener">Cal.com</a> if you'd like to schedule time, or simply <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">send an email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span>.</p>
   </div>
   {{ partial "site-footer.html" . }}
 </div>
-
-{{ partial "data-panel.html" . }}
 <script>
-window.__LISTING__ = { type: null, viewMode: "cal", filters: {}, groupBy: "month", listOnly: false, homeLimit: 12 };
+(function() {
+  document.querySelectorAll('.home-link, .home-email').forEach(el => {
+    const uid = 'sc' + Math.random().toString(36).slice(2, 7);
+    el.insertAdjacentHTML('beforeend',
+      '<svg class="link-scribble" width="100%" height="9" aria-hidden="true">' +
+        '<defs><pattern id="' + uid + '" x="0" y="0" width="80" height="9" patternUnits="userSpaceOnUse">' +
+          '<path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '</pattern></defs>' +
+        '<rect x="0" y="0" width="100%" height="9" fill="url(#' + uid + ')"/>' +
+      '</svg>'
+    );
+  });
+})();
 </script>
-{{ partialCached "page-data.html" . "global" }}
 {{ end }}
