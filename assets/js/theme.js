@@ -88,11 +88,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateFabIcons();
 
-  // Header shrinks to top on scroll
-  const hdr = document.getElementById('siteHdr');
-  if (hdr) {
-    const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  }
 });

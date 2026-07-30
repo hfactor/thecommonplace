@@ -1,92 +1,19 @@
-/* ─── Floating header ─────────────────────────────── */
-.site-hdr {
-  position: fixed;
-  top: var(--space-4);
-  left: 0;
-  right: 0;
-  height: 52px;
-  z-index: var(--z-header);
-  background: transparent;
-  transition: top 0.4s ease, height 0.4s ease;
-}
-
-.site-hdr.scrolled {
-  top: 8px;
-  height: 44px;
-}
-
-.sh-inner {
+/* ─── Inline page nav (replaces fixed header everywhere) ── */
+.page-nav {
   display: flex;
   align-items: center;
-  height: 100%;
-  padding: 0 var(--gap);
-  gap: 12px;
-}
-
-/* ── Logo / avatar ────────────────────────────────── */
-.sh-logo {
-  display: flex;
-  align-items: center;
+  padding: var(--hdr-h) max(var(--gap), calc((100% - 560px) / 2)) 0;
   flex-shrink: 0;
-  text-decoration: none;
-  border-radius: 12px;
-  padding: 2px;
 }
-.sh-logo-mark {
-  position: relative;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: width 0.4s ease, height 0.4s ease;
-}
-.scrolled .sh-logo-mark { width: 30px; height: 30px; }
-
-.sh-logo-svg { display: flex; transition: opacity 0.2s ease; }
-.sh-logo-svg svg { width: 38px; height: 38px; display: block; transition: width 0.4s ease, height 0.4s ease; }
-.scrolled .sh-logo-svg svg { width: 30px; height: 30px; }
-
-.sh-logo-photo {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  opacity: 0;
-  transform: scale(1);
-  transform-origin: top left;
-  pointer-events: none;
-  /* photo hidden everywhere by default */
-}
-
-/* ─── Hide header logo on homepage (bio has its own avatar) ── */
-body:has(.home-page) .sh-logo { visibility: hidden; pointer-events: none; }
-
-/* ── Middle ───────────────────────────────────────── */
-.sh-mid {
+.page-nav .page-avatar { margin-bottom: 0; margin-left: 0; }
+.page-nav-right {
   flex: 1;
   display: flex;
   align-items: center;
-  min-width: 0;
-  padding: 0 4px;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.sh-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: var(--text-sm);
-  color: var(--ink2);
-  text-decoration: none;
-  padding: 3px 7px;
-  border-radius: var(--r-xs);
-  transition: color var(--dur-fast), background var(--dur-fast);
-}
-.sh-back:hover { color: var(--ink); background: var(--surface); }
 
 .sh-notes-btns { display: flex; align-items: center; gap: 2px; }
 .sh-txt-btn {
@@ -103,16 +30,6 @@ body:has(.home-page) .sh-logo { visibility: hidden; pointer-events: none; }
   transition: color var(--dur-fast);
 }
 .sh-txt-btn:hover { color: var(--ink); }
-
-/* ── Right controls ───────────────────────────────── */
-.sh-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  padding-right: 8px;
-}
-
 
 /* Everything filter */
 .sh-filter { position: relative; }
@@ -178,7 +95,7 @@ body:has(.home-page) .sh-logo { visibility: hidden; pointer-events: none; }
 .sh-dp-item:hover { color: var(--accent); text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
 .sh-dp-item.active { color: var(--ink); }
 
-/* ── View toggle — animated segmented pill ───────── */
+/* ── View toggle — segmented pill ───────────────── */
 .sh-view-toggle {
   display: flex;
   align-items: center;
@@ -209,16 +126,6 @@ body:has(.home-page) .sh-logo { visibility: hidden; pointer-events: none; }
   display: none;
 }
 
-/* ─── Notes reader ────────────────────────────────── */
-.note-title {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-semibold);
-  color: var(--ink);
-  line-height: var(--lh-display);
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-6);
-}
 .note-content { margin-bottom: var(--space-12); }
 .note-backlinks { border-top: 1px solid var(--border-light); padding-top: 20px; margin-top: 0; }
 .note-backlinks-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
@@ -245,11 +152,10 @@ body:has(.home-page) .sh-logo { visibility: hidden; pointer-events: none; }
 /* ─── Site footer ─────────────────────────────────── */
 .site-footer { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0 var(--space-3); padding: 14px var(--gap); margin-top: auto; }
 @media (max-width: 639px) { .site-footer { justify-content: center; } }
-.sf-name { font-size: var(--text-sm); color: var(--ink2); font-weight: var(--weight-semibold); opacity: 0.6; }
 .sf-dot  { font-size: var(--text-sm); color: var(--ink2); opacity: 0.25; }
 .sf-link { font-size: var(--text-sm); color: var(--ink2); text-decoration: none; opacity: 0.6; transition: opacity var(--dur-fast); }
 .sf-link:hover { opacity: 1; }
-.sf-theme { border: none; background: none; cursor: pointer; color: var(--ink2); display: flex; align-items: center; padding: 0; opacity: 0.6; transition: opacity var(--dur-fast); }
+.sf-theme { border: none; background: none; cursor: pointer; color: var(--ink2); font-family: inherit; font-size: var(--text-sm); padding: 0; opacity: 0.6; transition: opacity var(--dur-fast); }
 .sf-theme:hover { opacity: 1; }
 
 /* ─── Index / back nav ────────────────────────────── */

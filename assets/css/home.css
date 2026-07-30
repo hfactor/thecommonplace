@@ -9,20 +9,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 4vh var(--gap-sm);
+  padding: var(--hdr-h) var(--gap) var(--space-12);
   max-width: 560px;
   margin: 0 auto;
   width: 100%;
   opacity: 0;
   animation: homeSlideUp 0.8s var(--ease-out) 0.1s both;
-}
-
-@media (max-width: 639px) {
-  .home-body { padding: var(--space-12) var(--gap-sm) 2vh; }
-}
-@media (min-width: 640px) {
-  .home-body { padding: 4vh var(--gap) 5vh; }
 }
 
 
@@ -33,7 +25,7 @@
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   margin-left: -10px;
 }
 .home-avatar-svg {
@@ -70,13 +62,15 @@
 
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
-  font-family: var(--font);
+  font-family: var(--font-display);
   font-size: var(--text-lg);
   color: var(--ink2);
   line-height: var(--lh-prose);
   margin: 0 0 var(--space-6) 0;
 }
 .home-p:last-child { margin-bottom: 0; }
+.home-name { font-family: var(--font-display); font-weight: var(--weight-semibold); }
+.home-sh-inline { display: inline; white-space: normal; }
 
 
 
@@ -108,7 +102,9 @@
   transition: clip-path 0.3s cubic-bezier(0.7, 0, 0.3, 1);
 }
 .home-link:hover .link-scribble,
-.home-email:hover .link-scribble {
+.home-email:hover .link-scribble,
+.sh[data-stk]:hover .link-scribble,
+.sh--inline:hover .link-scribble {
   clip-path: inset(0 0% 0 0);
   transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
   transition-duration: 0.22s;

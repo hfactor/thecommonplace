@@ -2,7 +2,7 @@
 
 <div class="app">
 
-{{ partial "header.html" (dict
+{{ partial "page-nav.html" (dict
   "page"       .
   "ctx"        $ctx
   "activeType" (.Params.listingType | default "")

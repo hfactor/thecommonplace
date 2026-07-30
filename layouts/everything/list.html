@@ -1,7 +1,6 @@
 {{ define "main" }}
-{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" "") }}
-
 <div class="app">
+{{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" "") }}
 <button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">

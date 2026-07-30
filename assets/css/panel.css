@@ -19,7 +19,7 @@
   position: absolute;
   top: var(--space-4);
   left: var(--gap);
-  z-index: 10;
+  z-index: var(--z-elevated);
   width: 28px;
   height: 28px;
   background: none;
@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-2);
   margin-bottom: 14px;
   font-size: var(--text-sm);
   color: var(--ink2);
@@ -59,7 +59,7 @@
   justify-content: center;
   gap: 6px;
   margin-top: 0;
-  padding: 8px 16px;
+  padding: var(--space-2) var(--space-4);
   font-size: var(--text-sm);
   white-space: nowrap;
   flex-shrink: 0;
@@ -120,6 +120,7 @@
   transition: color var(--dur-fast);
 }
 .sp-proj-url:hover { color: var(--accent); }
+.note-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-6); }
 .sp-updated { font-size: var(--text-sm); color: var(--ink2); margin: 6px 0 var(--gap); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
 .sp-text { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); }
@@ -134,9 +135,9 @@
 .sp-text blockquote { border-left: 2px solid var(--border); padding-left: 18px; color: var(--ink2); margin: 0 0 18px; font-style: italic; }
 .sp-text blockquote p { margin-bottom: 0; }
 .sp-text hr { border: none; border-top: 1px solid var(--border-light); margin: 28px 0; }
-.sp-text pre { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-sm); padding: 16px 18px; overflow-x: auto; margin: 0 0 20px; font-size: var(--text-sm); line-height: 1.6; }
+.sp-text pre { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-sm); padding: 16px 18px; overflow-x: auto; margin: 0 0 20px; font-size: var(--text-sm); line-height: var(--lh-relaxed); }
 .sp-text pre code { background: none; border: none; padding: 0; font-size: inherit; color: var(--ink2); }
-.sp-text code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.875em; background: var(--surface2); border: 1px solid var(--border-light); border-radius: 4px; padding: 1px 5px; color: var(--ink); }
+.sp-text code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.875em; background: var(--surface2); border: 1px solid var(--border-light); border-radius: var(--r-xs); padding: 1px 5px; color: var(--ink); }
 .sp-text h1 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
 .sp-text img { width: 100%; height: auto; border-radius: var(--r); margin: var(--space-2) 0 20px; display: block; }
 .sp-text a { color: var(--accent); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-position: left bottom; background-repeat: no-repeat; transition: background-size 0.35s ease; }
@@ -209,12 +210,14 @@
 }
 
 /* Colophon cards */
-.colo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--gap); }
-.colo-card { display: block; padding: var(--space-3) 14px; border: 1px solid var(--border-light); border-radius: var(--r); text-decoration: none; transition: border-color var(--dur-fast), background var(--dur-fast); }
-.colo-card:hover { border-color: var(--border); background: var(--surface); }
-.colo-name { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--ink); margin-bottom: 3px; }
-.colo-desc { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-tight); }
-@media (max-width: 639px) { .colo-grid { grid-template-columns: 1fr; } }
+.colo-group { margin-top: var(--gap); }
+.colo-group + .colo-group { margin-top: var(--space-8); }
+.colo-group-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); opacity: 0.5; margin-bottom: var(--space-3); }
+.colo-row { display: flex; align-items: baseline; gap: var(--space-4); padding: 10px 0; border-bottom: 1px solid var(--border-light); text-decoration: none; transition: border-color var(--dur-fast); }
+.colo-row:first-of-type { border-top: 1px solid var(--border-light); }
+.colo-row:hover .colo-row-name { color: var(--ink); }
+.colo-row-name { font-size: var(--text-base); color: var(--ink2); flex: 0 0 160px; transition: color var(--dur-fast); }
+.colo-row-desc { font-size: var(--text-sm); color: var(--ink2); opacity: 0.6; }
 
 /* Colophon — people badges */
 .colo-section-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); margin: 36px 0 14px; }
@@ -253,9 +256,9 @@
 .notes-reading {
   flex: 1;
   width: 100%;
-  max-width: 760px;
+  max-width: 560px;
   margin: 0 auto;
-  padding: var(--space-8) var(--gap) var(--space-12);
+  padding: var(--hdr-h) var(--gap) var(--space-12);
 }
 
 /* Mobile: back button above, title on next line */
@@ -371,7 +374,7 @@
 .now-reading-link:hover { color: var(--ink); }
 .now-reading-grid { display: flex; gap: var(--space-4); flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: var(--space-2); scroll-snap-type: x mandatory; }
 .now-reading-grid::-webkit-scrollbar { display: none; }
-.now-book { width: 116px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-2); scroll-snap-align: start; transition: transform 0.2s ease, opacity 0.2s ease; }
+.now-book { width: 116px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-2); scroll-snap-align: start; transition: transform var(--dur-base) ease, opacity var(--dur-base) ease; }
 .now-book:hover { transform: translateY(-4px); opacity: 0.9; }
 .now-book-cover { position: relative; width: 116px; height: 154px; border-radius: var(--r-xs); overflow: hidden; background: var(--surface2); box-shadow: -3px 3px 10px rgba(0,0,0,0.18); flex-shrink: 0; }
 [data-theme="ink"] .now-book-cover { box-shadow: -3px 3px 10px rgba(0,0,0,0.5); }

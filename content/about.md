@@ -13,4 +13,4 @@ Over the years, that same curiosity has grown into community and open-source wor
 
 I also write a newsletter, [This&That](https://hiran.substack.com/), about how creative people think and work, part interviews, part observations, and part things worth sharing. Outside work, a lot of that same curiosity finds its way into coffee, books, films, and food, including brewing and the occasional workshop around it.
 
-I enjoy meeting people who are building, exploring, or figuring things out. If something here connects, feel free to [write to me](mailto:hiran.v@gmail.com), or [find me over coffee in Bengaluru](https://cal.com/hfactor/meet).
+I enjoy meeting people who are building, exploring, or figuring things out. If something here connects, feel free to [write to me](mailto:hiran.v@gmail.com), or [find me over coffee in Bengaluru](https://topmate.io/hiran).

@@ -83,7 +83,7 @@
 
 <div class="app">
 
-{{ partial "header.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
+{{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
 <button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">

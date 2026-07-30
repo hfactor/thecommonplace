@@ -1,0 +1,53 @@
+/* shared base for all sticker anchors */
+.sh[data-stk],
+.sh--inline {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+}
+.sh[data-stk] { white-space: nowrap; }
+
+/* inline sticker (coffee.svg — stays next to word via ::after) */
+.sh--inline::after {
+  content: '';
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) rotate(var(--rot, 0deg));
+  width: var(--stk-w, 60px);
+  height: var(--stk-h, 60px);
+  background: var(--stk) center / contain no-repeat;
+  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: var(--z-elevated);
+}
+.sh--inline:hover::after {
+  opacity: 1;
+}
+
+/* column-edge stickers (positioned by JS) */
+.sh-pin {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: var(--z-sheet);
+}
+.sh-pin:has(a) {
+  pointer-events: all;
+  cursor: pointer;
+}
+.sh-pin.visible {
+  opacity: 1;
+}
+.sh-pin a,
+.sh-pin a img { display: block; }
+.sh-pin img {
+  display: block;
+  width: var(--w, 64px);
+  height: auto;
+  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+  transform: rotate(var(--rot, 0deg));
+}

@@ -8,14 +8,17 @@
 
       <div class="sp-text">{{ .Content }}</div>
 
-      <div class="colo-grid">
-        {{ range hugo.Data.colophon.tools }}
-        <a class="colo-card" href="{{ .url }}" target="_blank" rel="noopener">
-          <div class="colo-name">{{ .name }}</div>
-          <div class="colo-desc">{{ .description }}</div>
+      {{ range hugo.Data.colophon.tool_groups }}
+      <div class="colo-group">
+        <div class="colo-group-label">{{ .label }}</div>
+        {{ range .items }}
+        <a class="colo-row" href="{{ .url }}" target="_blank" rel="noopener">
+          <span class="colo-row-name">{{ .name }}</span>
+          <span class="colo-row-desc">{{ .description }}</span>
         </a>
         {{ end }}
       </div>
+      {{ end }}
 
       {{ with hugo.Data.colophon.people_heading }}<div class="colo-section-label">{{ . }}</div>{{ end }}
       {{ with hugo.Data.colophon.people_intro }}<div class="sp-text colo-people-intro">{{ . | markdownify }}</div>{{ end }}

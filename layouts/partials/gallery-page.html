@@ -1,7 +1,7 @@
 
 <div class="app is-gallery{{ with .Params.listingType }} is-{{ . }}{{ end }}">
 
-{{ partial "header.html" (dict
+{{ partial "page-nav.html" (dict
   "page"       .
   "ctx"        "gallery"
   "activeType" ($.Params.listingType | default "")

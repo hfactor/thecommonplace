@@ -28,6 +28,7 @@
   (resources.Get "css/animations.css")
   (resources.Get "css/home.css")
   (resources.Get "css/pages.css")
+  (resources.Get "css/stickers.css")
   | resources.Concat "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="/feed.xml">

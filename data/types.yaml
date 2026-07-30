@@ -36,7 +36,7 @@
   card_template: product
   view_mode: gallery
   on_click: sheet
-  group_by: year
+  group_by: category
 
 - id: projects
   label: Projects
@@ -44,7 +44,7 @@
   card_template: product
   view_mode: gallery
   on_click: page
-  group_by: year
+  group_by: none
 
 - id: notes
   label: Notes

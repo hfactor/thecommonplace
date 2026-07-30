@@ -238,6 +238,35 @@ function buildCardView() {
 
   const groupBy = activeGroupBy();
 
+  if (groupBy === 'none') {
+    const entries = filteredKeys.flatMap(k =>
+      (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day)
+    );
+    if (!entries.length) { track.innerHTML = `<div class="cv-month">${emptyState()}</div>`; return; }
+    entries.forEach(e => { S[e.uid] = e; });
+    track.innerHTML = `<div class="cv-month"><div class="cv-items">${entries.map((e, i) => cardHTML(e, i)).join('')}</div></div>`;
+    return;
+  }
+
+  if (groupBy === 'category') {
+    const entries = filteredKeys.flatMap(k =>
+      (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => (a.title || '').localeCompare(b.title || ''))
+    );
+    if (!entries.length) { track.innerHTML = `<div class="cv-month">${emptyState()}</div>`; return; }
+    entries.forEach(e => { S[e.uid] = e; });
+    const byCat = {};
+    entries.forEach(e => {
+      const cat = e.subCategory || e.category || 'Other';
+      if (!byCat[cat]) byCat[cat] = [];
+      byCat[cat].push(e);
+    });
+    track.innerHTML = Object.keys(byCat).sort().map(cat => {
+      const cards = byCat[cat].map((e, i) => cardHTML(e, i)).join('');
+      return `<div class="cv-month"><div class="cv-label">${cat}</div><div class="cv-items">${cards}</div></div>`;
+    }).join('');
+    return;
+  }
+
   if (groupBy === 'year') {
     const entries = filteredKeys.flatMap(k =>
       (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day)
@@ -305,18 +334,15 @@ const LIST_TAG = {
   reading:    e => e.genre || '',
   bookmarks:  e => e.category || '',
   newsletter: () => 'Newsletter',
-  uses:       e => e.subCategory || '',
-  projects:   () => '',
+  uses:       () => '',
+  projects:   () => 'Project',
 };
 
-function listRowHTML(e, i) {
+function listRowHTML(e) {
   S[e.uid] = e;
-  const title   = e.localTitle || e.title || '';
-  const tag     = (LIST_TAG[e.type] || (() => ''))(e);
-  const rec     = isRec(e) ? '<span class="l-rec">✦</span>' : '';
-  const tipImg  = (e.type === 'reading') ? (e.image || e.cover || '') : '';
-  const wide    = ['projects', 'bookmarks', 'newsletter'].includes(e.type) ? 'wide' : e.type === 'uses' ? 'square' : '';
-  const dataImg = tipImg ? `data-img="${tipImg}" data-wide="${wide}"` : '';
+  const title  = e.localTitle || e.title || '';
+  const tag    = (LIST_TAG[e.type] || (() => ''))(e);
+  const rec    = isRec(e) ? '<span class="l-rec">✦</span>' : '';
   const dataUid = `data-uid="${e.uid}"`;
 
   const onClick = typeCfg(e.type).on_click || 'sheet';
@@ -328,25 +354,49 @@ function listRowHTML(e, i) {
     href = e.permalink || (e.href ? withRef(e.href) : null);
     external = !e.permalink && !!e.href;
   }
-  const ext = external ? `<span class="l-ext">${ICO.ext}</span>` : '';
-  const tagline  = e.type === 'projects' && e.tagline ? `<div class="l-note">${e.tagline}</div>` : '';
-  const body   = `<div class="l-title">${title}${rec}${ext}</div>${tagline}<div class="l-tag">${tag}</div>`;
+  const ext     = external ? `<span class="l-ext">${ICO.ext}</span>` : '';
+  const isProjectsPage = e.type === 'projects' && window.__LISTING__?.type === 'projects';
+  let body;
+  if (isProjectsPage) {
+    body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${e.tagline || ''}</div>`;
+  } else {
+    body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
+  }
 
   if (href) {
     const attrs = external ? `href="${href}" target="_blank" rel="noopener"` : `href="${href}"`;
-    return `<a class="l-row" data-type="${e.type}" ${dataUid} ${dataImg} ${attrs} style="--i:${i}">${body}</a>`;
+    return `<a class="l-row" data-type="${e.type}" ${dataUid} ${attrs}>${body}</a>`;
   }
-  return `<div class="l-row" data-type="${e.type}" ${dataUid} ${dataImg} style="--i:${i}" onclick="openSheet(this.dataset.uid)">${body}</div>`;
+  return `<div class="l-row" data-type="${e.type}" ${dataUid} onclick="openSheet(this.dataset.uid)">${body}</div>`;
 }
 
 function buildList() {
   const lView = document.getElementById('lView');
   if (!lView) return;
+  if (window.__LISTING__?.type) lView.dataset.listing = window.__LISTING__.type;
   const groupBy = activeGroupBy();
   const sorted = k => (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day);
 
   const allEntries = filteredKeys.flatMap(k => sorted(k));
   if (!allEntries.length) { lView.innerHTML = emptyState(); return; }
+
+  if (groupBy === 'none') {
+    lView.innerHTML = allEntries.map((e, i) => listRowHTML(e)).join('');
+    return;
+  }
+
+  if (groupBy === 'category') {
+    const byCat = {};
+    allEntries.forEach(e => {
+      const cat = e.subCategory || e.category || 'Other';
+      if (!byCat[cat]) byCat[cat] = [];
+      byCat[cat].push(e);
+    });
+    lView.innerHTML = Object.keys(byCat).sort().map(cat => {
+      return `<div><div class="l-month-label">${cat}</div>${byCat[cat].map((e, i) => listRowHTML(e)).join('')}</div>`;
+    }).join('');
+    return;
+  }
 
   if (groupBy === 'year') {
     const byYear = {};
@@ -356,7 +406,7 @@ function buildList() {
       byYear[y].push(e);
     });
     lView.innerHTML = Object.keys(byYear).sort((a, b) => b.localeCompare(a)).map(y => {
-      return `<div><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e, i)).join('')}</div>`;
+      return `<div><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e)).join('')}</div>`;
     }).join('');
     return;
   }
@@ -368,17 +418,18 @@ function buildList() {
   let html = recentKeys.map(k => {
     const entries = sorted(k);
     if (!entries.length) return '';
-    return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
+    return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e)).join('')}</div>`;
   }).join('');
 
   if (oldKeys.length) {
     const oldEntries = oldKeys.flatMap(k => sorted(k));
     if (oldEntries.length) {
-      html += `<div><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e, i)).join('')}</div>`;
+      html += `<div><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e)).join('')}</div>`;
     }
   }
   lView.innerHTML = html;
 }
+
 
 function isPanel(e) {
   return typeCfg(e.type).on_click === 'page';
@@ -425,41 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Latest chip visibility on card view scroll
   const cv = document.getElementById('cardView');
   if (cv) cv.addEventListener('scroll', updateLatest, { passive: true });
-
-  // Cursor-following image tooltip for list view
-  const lTip = document.createElement('div');
-  lTip.id = 'lTip';
-  lTip.innerHTML = '<div class="l-tip-img"></div>';
-  document.body.appendChild(lTip);
-
-  const lView = document.getElementById('lView');
-  let _tipSrc = '';
-
-  if (!lView) return;
-
-  lView.addEventListener('mousemove', ev => {
-    const row = ev.target.closest('.l-row');
-    if (!row || !row.dataset.img) { lTip.classList.remove('show'); return; }
-    if (row.dataset.img !== _tipSrc) {
-      _tipSrc = row.dataset.img;
-      const imgDiv = lTip.querySelector('.l-tip-img');
-      imgDiv.className = 'l-tip-img' + (row.dataset.wide === 'wide' ? ' wide' : row.dataset.wide === 'square' ? ' square' : '');
-      imgDiv.innerHTML = `<img src="${_tipSrc}" alt="">`;
-    }
-    const W = 150, pad = 20;
-    let x = ev.clientX + pad;
-    let y = ev.clientY - 60;
-    if (x + W > window.innerWidth - 12) x = ev.clientX - W - pad;
-    y = Math.max(8, Math.min(y, window.innerHeight - 220));
-    lTip.style.left = x + 'px';
-    lTip.style.top  = y + 'px';
-    lTip.classList.add('show');
-  });
-
-  lView.addEventListener('mouseleave', () => {
-    lTip.classList.remove('show');
-    _tipSrc = '';
-  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {

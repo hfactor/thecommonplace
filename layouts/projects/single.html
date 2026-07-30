@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{- $projectsPage := .Site.GetPage "/projects" -}}
 <div class="app">
-{{ partial "header.html" (dict "page" . "ctx" "gallery" "activeType" "projects") }}
+{{ partial "page-nav.html" (dict "page" . "ctx" "projects") }}
 <main class="content">
   <div id="cardView"><div id="cvTrack"></div></div>
   <div id="lView"></div>

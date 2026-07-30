@@ -1,39 +1,42 @@
-tools:
-  - name: Hugo
-    url: https://gohugo.io
-    description: The base. Recently moved here from Jekyll. This is faster, cleaner, and easier to extend.
+tool_groups:
+  - label: Web
+    items:
+      - name: Hugo
+        url: https://gohugo.io
+        description: The base. Recently moved here from Jekyll. Faster, cleaner, easier to extend.
+      - name: GitHub Pages
+        url: https://pages.github.com
+        description: Hosting. Quietly publishes every commit without getting in the way.
+      - name: Namecheap
+        url: https://www.namecheap.com
+        description: Domain registrar. Where this little corner of the internet lives.
 
-  - name: GitHub Pages
-    url: https://pages.github.com
-    description: Hosting. Quietly publishes every commit without getting in the way.
+  - label: Editors
+    items:
+      - name: Claude Code
+        url: https://claude.ai
+        description: My current co-worker for building, experimenting, and figuring things out.
+      - name: Visual Studio Code
+        url: https://code.visualstudio.com
+        description: Code editor. Where the manual edits still happen, usually when tokens run out.
+      - name: Obsidian
+        url: https://obsidian.md
+        description: Writing app. Notes, drafts, everything.
+      - name: MarkTable
+        url: https://github.com/stultus/marktable
+        description: A tool I built. Because not every YAML file deserves line-by-line editing.
 
-  - name: Namecheap
-    url: https://www.namecheap.com
-    description: Domain registrar. Where this little corner of the internet lives.
-
-  - name: Claude Code
-    url: https://claude.ai
-    description: My current co-worker for building, experimenting, and figuring things out.
-
-  - name: Visual Studio Code
-    url: https://code.visualstudio.com
-    description: Code editor. Where the manual edits still happen, usually when tokens run out.
-
-  - name: Obsidian
-    url: https://obsidian.md
-    description: Writing app. My Content Management System. Notes, drafts, everything.
-
-  - name: MarkTable
-    url: https://github.com/stultus/marktable
-    description: A tool I built. Because not every YAML, Markdown file deserves line-by-line editing.
-
-  - name: Public Sans
-    url: https://fonts.google.com/specimen/Public+Sans
-    description: Body typeface. Personal favourite for its clean readability.
-
-  - name: Bricolage Grotesque
-    url: https://fonts.google.com/specimen/Bricolage+Grotesque
-    description: Display typeface. Adds just enough character without shouting.
+  - label: Typefaces
+    items:
+      - name: Public Sans
+        url: https://fonts.google.com/specimen/Public+Sans
+        description: Body typeface. Clean and readable.
+      - name: Bricolage Grotesque
+        url: https://fonts.google.com/specimen/Bricolage+Grotesque
+        description: Display typeface. Adds character without shouting.
+      - name: Manjari
+        url: https://fonts.google.com/specimen/Manjari
+        description: Malayalam typeface. For content in my mother tongue.
 
 people_heading: "People Behind This Place"
 people_intro: "This place carries the influence of many people. Some believed in me early, some opened doors, challenged my thinking, reviewed my work, fixed bugs, and quietly shaped how this website evolved. Some are mentors. Some are collaborators. Some are friends. Some may never know how much they influenced what you see here. If your face is missing, please [open an issue](https://github.com/hfactor/commonplace/issues/new)."
