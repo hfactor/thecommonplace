@@ -48,8 +48,8 @@
   --z-elevated: 10;
   --z-header:   20;
   --z-tooltip:  50;
-  --z-sheet:    100;
-  --z-panel:    150;
+  --z-sheet:    500;
+  --z-panel:    450;
   --z-modal:    400;
 
   /* ── Transitions ────────────────────────────────── */

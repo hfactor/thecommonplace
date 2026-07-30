@@ -1,4 +1,6 @@
 ---
+moc: yes
+burner: back
 title: Design is the process of elimination
 date: 2026-06-16
 tags: [design, product]

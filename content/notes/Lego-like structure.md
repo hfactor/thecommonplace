@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Lego-like structure
 date: 2021-06-23
 tags: [systems, design]

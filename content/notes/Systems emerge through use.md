@@ -1,4 +1,6 @@
 ---
+moc: yes
+burner: back
 title: Systems emerge through use
 date: 2026-06-16
 tags: [systems, productivity]

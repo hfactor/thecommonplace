@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Generalists have advantages
 date: 2026-06-16
 tags: [learning, thinking]

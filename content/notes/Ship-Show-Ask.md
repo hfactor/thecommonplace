@@ -1,4 +1,6 @@
 ---
+moc: yes
+burner: back
 status: passive
 title: Ship-Show-Ask
 date: 2021-08-11

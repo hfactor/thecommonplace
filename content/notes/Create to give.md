@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Create to give
 date: 2021-07-19
 tags: [craft, creativity]

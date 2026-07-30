@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Keep unfinished ideas
 date: 2026-06-16
 tags: [ideas, notes]

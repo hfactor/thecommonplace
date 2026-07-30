@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Lots of inputs and a strong filter
 date: 2021-07-24
 tags: [knowledge, learning]

@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Version one is for learning
 date: 2026-06-16
 tags: [product, shipping, learning]

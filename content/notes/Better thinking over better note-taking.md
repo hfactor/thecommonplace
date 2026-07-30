@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Better thinking over better note-taking
 date: 2021-07-23
 tags: [notes, thinking]

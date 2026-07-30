@@ -1,4 +1,6 @@
 ---
+moc: yes
+burner: front
 title: Do less
 date: 2021-07-03
 tags: [focus, productivity]

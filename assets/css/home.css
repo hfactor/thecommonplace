@@ -19,7 +19,7 @@
 }
 
 @media (max-width: 639px) {
-  .home-body { justify-content: flex-start; padding-top: var(--hdr-h); }
+  .home-body { padding-top: var(--hdr-h); }
 }
 
 

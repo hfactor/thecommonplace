@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Note titles are APIs for thought
 date: 2021-06-30
 tags: [notes, writing]

@@ -1,4 +1,5 @@
 ---
+moc: yes
 title: Focus requires subtraction
 date: 2026-06-16
 tags: [focus, thinking]

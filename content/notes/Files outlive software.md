@@ -1,4 +1,6 @@
 ---
+moc: yes
+burner: back
 status: passive
 title: Files outlive software
 date: 2026-06-16
