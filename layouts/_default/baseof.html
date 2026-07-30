@@ -35,6 +35,7 @@
 <script>(function(){if(localStorage.getItem('viewMode')==='list')document.documentElement.classList.add('view-list-init');})()</script>
 </head>
 <body>
+{{ partial "pill-nav.html" . }}
 {{ block "main" . }}{{ end }}
 {{ block "sheet" . }}{{ partial "sheet.html" . }}{{ end }}
 

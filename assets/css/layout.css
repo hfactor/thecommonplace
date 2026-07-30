@@ -5,6 +5,7 @@ html, body { height: 100%; font-family: var(--font); font-size: var(--text-base)
 html:has(#cardView.cv-home),
 body:has(#cardView.cv-home) { height: auto; min-height: 100%; }
 body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 120% 50% at 50% 105%, var(--accent-subtle) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+[data-theme="chalk"] body::after { background: radial-gradient(ellipse 120% 50% at 50% 105%, rgba(91,143,255,0.22) 0%, transparent 65%); }
 
 /* ── Global scrollbar hiding ─────────────────────── */
 * { scrollbar-width: none; }

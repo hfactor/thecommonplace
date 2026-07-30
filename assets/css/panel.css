@@ -258,7 +258,7 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: var(--hdr-h) var(--gap) var(--space-12);
+  padding: calc(var(--hdr-h) + var(--space-8)) var(--gap) var(--space-12);
 }
 
 /* Mobile: back button above, title on next line */

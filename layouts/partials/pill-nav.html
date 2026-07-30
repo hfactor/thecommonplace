@@ -1,0 +1,104 @@
+{{- $cur := .RelPermalink -}}
+{{- $ctx := "default" -}}
+{{- if and (eq .Section "notes") .IsSection -}}{{- $ctx = "notes" -}}{{- end -}}
+{{- if and .IsSection (not (eq .Section "notes")) (not .IsHome) -}}{{- $ctx = "section" -}}{{- end -}}
+
+{{- $sectionLabel := "" -}}
+{{- if eq $ctx "section" -}}
+  {{- range hugo.Data.types -}}
+    {{- if eq .id $.Section -}}{{- $sectionLabel = .label -}}{{- end -}}
+  {{- end -}}
+  {{- if or (eq $.Section "everything") (eq $.RelPermalink "/everything/") -}}{{- $sectionLabel = "Everything" -}}{{- end -}}
+{{- end -}}
+
+<div class="pn" id="pillNav" data-ctx="{{ $ctx }}">
+  <div class="pn-inner">
+
+    <div class="pn-bar" id="pillBar">
+      {{- with resources.Get "img/hiran-head.svg" -}}
+      <a href="{{ "/" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>
+      {{- end -}}
+
+      {{- if $sectionLabel -}}
+      <span class="pn-bar-label">{{ $sectionLabel }}</span>
+      {{- end -}}
+
+      <div style="flex:1"></div>
+
+      {{- if eq $ctx "section" -}}
+      <div class="sh-view-toggle pn-bar-vt" id="shViewToggle" data-mode="cal">
+        <button class="sh-vt-btn active" data-mode="cal" onclick="event.stopPropagation();setViewMode('card')" aria-label="Card view">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2" width="3.5" height="10" rx="1"/><rect x="6.25" y="2" width="3.5" height="10" rx="1"/><rect x="11" y="2" width="1.5" height="10" rx="0.75" opacity="0.4"/></svg>
+        </button>
+        <button class="sh-vt-btn" data-mode="list" onclick="event.stopPropagation();setViewMode('list')" aria-label="List view">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="1.5" y1="3.5" x2="12.5" y2="3.5"/><line x1="1.5" y1="7" x2="12.5" y2="7"/><line x1="1.5" y1="10.5" x2="12.5" y2="10.5"/></svg>
+        </button>
+      </div>
+      {{- end -}}
+
+      <button class="pn-menu-btn" aria-label="Toggle menu">
+        <svg class="ico-menu" width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="0" y1="1" x2="14" y2="1"/><line x1="0" y1="5" x2="14" y2="5"/><line x1="0" y1="9" x2="14" y2="9"/></svg>
+        <svg class="ico-x" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="pn-body" id="pillBody" aria-hidden="true">
+
+      <div class="pn-group">
+        <a class="pn-link{{ if eq $cur "/everything/" }} pn-link--active{{ end }}" href="{{ "everything" | relURL }}">Everything</a>
+        <a class="pn-link{{ if eq $cur "/reading/" }} pn-link--active{{ end }}" href="{{ "reading" | relURL }}">Reading</a>
+        <a class="pn-link{{ if eq $cur "/projects/" }} pn-link--active{{ end }}" href="{{ "projects" | relURL }}">Projects</a>
+        <a class="pn-link{{ if eq $cur "/uses/" }} pn-link--active{{ end }}" href="{{ "uses" | relURL }}">Uses</a>
+        <a class="pn-link{{ if eq $cur "/bookmarks/" }} pn-link--active{{ end }}" href="{{ "bookmarks" | relURL }}">Bookmarks</a>
+        <a class="pn-link{{ if eq $cur "/notes/" }} pn-link--active{{ end }}" href="{{ "notes" | relURL }}">Working Notes</a>
+      </div>
+
+      <div class="pn-group">
+        <a class="pn-link pn-link--sm{{ if eq $cur "/now/" }} pn-link--active{{ end }}" href="{{ "now" | relURL }}">Now Page</a>
+        <a class="pn-link pn-link--sm{{ if eq $cur "/about/" }} pn-link--active{{ end }}" href="{{ "about" | relURL }}">About Me</a>
+        <a class="pn-link pn-link--sm" href="https://luma.com/workaround?k=c" target="_blank" rel="noopener">Work from Cafe</a>
+        <a class="pn-link pn-link--sm" href="https://topmate.io/hiran" target="_blank" rel="noopener">Book a Call</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const pn = document.getElementById('pillNav');
+  const bar = document.getElementById('pillBar');
+
+  function pillOpen() {
+    pn.classList.add('pn--open');
+    document.getElementById('pillBody').setAttribute('aria-hidden', 'false');
+  }
+  function pillClose() {
+    pn.classList.remove('pn--open');
+    document.getElementById('pillBody').setAttribute('aria-hidden', 'true');
+  }
+  window.pillClose = pillClose;
+
+  const avatarLink = pn.querySelector('.pn-avatar');
+  if (avatarLink && window.location.pathname === '/') {
+    avatarLink.addEventListener('click', function (e) { e.preventDefault(); });
+  }
+
+  bar.addEventListener('click', function (e) {
+    if (e.target.closest('.pn-avatar, .pn-theme-btn, .sh-view-toggle')) return;
+    pn.classList.contains('pn--open') ? pillClose() : pillOpen();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (pn.classList.contains('pn--open') && !pn.contains(e.target)) pillClose();
+  });
+
+  window.pillCopyEmail = function (btn) {
+    navigator.clipboard.writeText('hiran.v@gmail.com').then(function () {
+      const orig = btn.textContent;
+      btn.textContent = '✓ copied';
+      setTimeout(function () { btn.textContent = orig; }, 2000);
+    });
+  };
+})();
+</script>
