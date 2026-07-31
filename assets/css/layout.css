@@ -74,7 +74,8 @@ button { font-family: var(--font); }
 .app-gallery #lView { height: auto; padding: 0 10px 80px; }
 
 /* Month labels (list view) */
-.l-month-label { font-size: var(--text-sm); font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); padding: 24px 0 8px 0; }
+.l-group { position: relative; padding-top: 28px; }
+.l-month-label { position: absolute; top: 0; left: 0; font-size: clamp(36px, 6vw, 72px); font-family: var(--font-display); font-weight: var(--weight-semibold); letter-spacing: -0.03em; color: var(--ink); opacity: 0.05; white-space: nowrap; pointer-events: none; z-index: 0; line-height: 1; user-select: none; }
 
 /* Empty state */
 .empty-state { padding: var(--space-12) 20px; text-align: center; color: var(--ink2); font-size: var(--text-base); line-height: var(--lh-relaxed); }
@@ -111,6 +112,9 @@ button { font-family: var(--font); }
   /* Section pages: compact card view, vertically centred */
   #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); }
   body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
+  /* On mobile, section pages scroll the full page */
+  body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
+  body:has(#lView) .content { overflow: visible; }
 }
 
 

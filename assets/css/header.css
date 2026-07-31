@@ -1,7 +1,7 @@
 /* ─── Pill nav ────────────────────────────────────── */
 .pn {
   position: fixed;
-  top: 16px;
+  top: 22px;
   left: 50%;
   transform: translateX(-50%);
   z-index: var(--z-modal);
@@ -10,7 +10,7 @@
 
 /* Single container — glass effect, no hard border */
 .pn-inner {
-  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  background: color-mix(in srgb, var(--bg) 25%, transparent);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: none;
@@ -39,9 +39,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 8px 7px 10px;
+  padding: 7px 10px 7px 14px;
   cursor: pointer;
-  height: 44px;
+  height: 48px;
 }
 .pn--open .pn-bar { cursor: default; }
 
@@ -58,8 +58,10 @@
   text-decoration: none;
   transition: opacity var(--dur-fast);
 }
-.pn-avatar svg { width: 30px; height: 30px; display: block; }
+.pn-avatar svg { width: 28px; height: 28px; display: block; }
 .pn-avatar:hover { opacity: 0.7; }
+.pn[data-ctx="default"] .pn-avatar { cursor: default; }
+.pn[data-ctx="default"] .pn-avatar:hover { opacity: 1; }
 
 /* Section label in bar */
 .pn-bar-label {
@@ -114,8 +116,6 @@
 .pn-bar .sh-vt-btn.active { opacity: 1; background: var(--surface2); }
 .pn-bar .sh-vt-btn:hover { opacity: 0.7; }
 
-/* Hide ☰ on section pages — bar label click opens menu instead */
-.pn[data-ctx="section"] .pn-menu-btn { display: none; }
 
 .pn-theme-btn {
   display: flex;
@@ -151,6 +151,17 @@
 
 .pn-group {
   padding: 14px 18px 16px;
+}
+.pn-group--inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 0;
+}
+.pn-sep {
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.3;
 }
 
 

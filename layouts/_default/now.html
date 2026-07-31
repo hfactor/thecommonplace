@@ -4,7 +4,7 @@
     <div class="notes-reading">
 
       {{ partial "page-avatar.html" . }}
-      <h1 class="note-title">{{ .Title }}</h1>
+      <h1 class="page-title note-title">{{ .Title }}</h1>
       <div class="sp-text">{{ .Content }}</div>
 
       {{- $reading := where .Site.RegularPages "Params.reading-status" "reading" -}}

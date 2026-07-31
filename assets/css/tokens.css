@@ -167,3 +167,14 @@
   --floppy-text:          #ccc8b8;
   --floppy-text2:         #8a8070;
 }
+
+@media (max-width: 639px) {
+  :root {
+    --text-base: clamp(12px, calc(11.67px + 0.10vw), 13px);
+    --text-md:   clamp(14px, calc(13.67px + 0.10vw), 15px);
+    --text-lg:   clamp(15px, calc(14.33px + 0.21vw), 16px);
+    --text-xl:   clamp(16px, calc(15.33px + 0.21vw), 18px);
+    --text-2xl:  clamp(18px, calc(17.33px + 0.21vw), 20px);
+    --text-3xl:  clamp(20px, calc(18.67px + 0.42vw), 22px);
+  }
+}

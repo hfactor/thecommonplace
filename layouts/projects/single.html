@@ -28,9 +28,9 @@ function projClose() {
   <div class="sp-body" id="spBody">
     <div class="proj-sp-header">
       {{- if .Params.href -}}
-      <a class="sp-title sp-title--link" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ .Title }}</a>
+      <a class="page-title sp-title sp-title--link" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ .Title }}</a>
       {{- else -}}
-      <div class="sp-title">{{ .Title }}</div>
+      <div class="page-title sp-title">{{ .Title }}</div>
       {{- end -}}
     </div>
     <div class="sp-meta-row">

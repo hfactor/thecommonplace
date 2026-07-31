@@ -106,7 +106,8 @@
 
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
-.sp-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); margin-bottom: 0; letter-spacing: -0.02em; flex: 1; min-width: 0; }
+.page-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; }
+.sp-title { flex: 1; min-width: 0; margin-bottom: 0; }
 .sp-title--link { text-decoration: none; transition: color 0.15s; }
 .sp-title--link:hover { color: var(--accent); }
 .proj-sp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
@@ -120,14 +121,14 @@
   transition: color var(--dur-fast);
 }
 .sp-proj-url:hover { color: var(--accent); }
-.note-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-6); }
+.note-title { margin-bottom: var(--space-6); }
 .sp-updated { font-size: var(--text-sm); color: var(--ink2); margin: 6px 0 var(--gap); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
 .sp-text { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); }
 .sp-text p { margin-bottom: 18px; }
 .sp-text p:last-child { margin-bottom: 0; }
 .sp-text h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
-.sp-text h3 { font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); margin: var(--gap) 0 var(--space-2); }
+.sp-text h3 { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.01em; margin: var(--gap) 0 var(--space-2); }
 .sp-text ul, .sp-text ol { margin: 0 0 18px 20px; }
 .sp-text li { margin-bottom: 6px; line-height: var(--lh-prose); }
 .sp-text strong { color: var(--ink); font-weight: var(--weight-semibold); }
@@ -179,9 +180,9 @@
   align-items: center;
   height: 56px;
   font-family: var(--font-display);
-  font-size: clamp(18px, 2.2vw, 32px);
+  font-size: var(--text-xl);
   font-weight: var(--weight-normal);
-  line-height: 1;
+  line-height: var(--lh-display);
   color: var(--ink2);
   border: none;
   background: none;
@@ -206,7 +207,7 @@
 
 @media (max-width: 639px) {
   .nl-track { padding-left: clamp(24px, 6vw, 48px); }
-  .nl-item { font-size: clamp(16px, 4.8vw, 24px); }
+  .nl-item { font-size: var(--text-lg); }
 }
 
 /* Colophon cards */
@@ -405,9 +406,10 @@
 
 .nw-nav-close {
   display: none;
-  position: absolute;
-  top: calc(var(--hdr-h) + var(--space-2));
-  right: var(--gap);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: calc(var(--z-sheet) + 1);
   border: none;
   background: none;
   color: var(--ink2);
@@ -430,20 +432,11 @@
   transition: color var(--dur-fast), opacity var(--dur-fast);
 }
 .nw-nav-title--active { color: var(--ink); }
-.nw-nav-title--active::before { content: '§ '; opacity: 0.4; font-size: 0.85em; }
 .nw-nav:hover .nw-nav-title { opacity: 0.35; }
 .nw-nav:hover .nw-nav-title:hover { opacity: 1; color: var(--ink); }
 
 /* Content: full width, same as any static page */
-.nw-page-title {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: var(--weight-semibold);
-  color: var(--ink);
-  line-height: var(--lh-display);
-  letter-spacing: -0.02em;
-  margin: 0 0 var(--space-6);
-}
+.nw-page-title { margin: 0 0 var(--space-6); }
 
 .nw-section-mark {
   color: var(--ink2);
@@ -452,10 +445,6 @@
   font-weight: var(--weight-normal);
 }
 
-/* "Notes ↑" list button — bottom of content */
-.nw-list-btn {
-  display: none;
-}
 
 
 /* Desktop: content clears the fixed nav, centres when viewport is wide enough */
@@ -478,18 +467,5 @@
   }
   .nw-nav.nw-nav--open { transform: translateX(0); }
   .nw-nav-close { display: flex; }
-  .nw-list-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: none;
-    background: none;
-    color: var(--ink2);
-    font-size: var(--text-sm);
-    cursor: pointer;
-    padding: 0 0 var(--space-6);
-    transition: color var(--dur-fast);
-  }
-  .nw-list-btn:hover { color: var(--ink); }
 }
 

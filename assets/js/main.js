@@ -393,7 +393,7 @@ function buildList() {
       byCat[cat].push(e);
     });
     lView.innerHTML = Object.keys(byCat).sort().map(cat => {
-      return `<div><div class="l-month-label">${cat}</div>${byCat[cat].map((e, i) => listRowHTML(e)).join('')}</div>`;
+      return `<div class="l-group"><div class="l-month-label">${cat}</div>${byCat[cat].map((e, i) => listRowHTML(e)).join('')}</div>`;
     }).join('');
     return;
   }
@@ -406,7 +406,7 @@ function buildList() {
       byYear[y].push(e);
     });
     lView.innerHTML = Object.keys(byYear).sort((a, b) => b.localeCompare(a)).map(y => {
-      return `<div><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e)).join('')}</div>`;
+      return `<div class="l-group"><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e)).join('')}</div>`;
     }).join('');
     return;
   }
@@ -418,13 +418,13 @@ function buildList() {
   let html = recentKeys.map(k => {
     const entries = sorted(k);
     if (!entries.length) return '';
-    return `<div><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e)).join('')}</div>`;
+    return `<div class="l-group"><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e)).join('')}</div>`;
   }).join('');
 
   if (oldKeys.length) {
     const oldEntries = oldKeys.flatMap(k => sorted(k));
     if (oldEntries.length) {
-      html += `<div><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e)).join('')}</div>`;
+      html += `<div class="l-group"><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e)).join('')}</div>`;
     }
   }
   lView.innerHTML = html;

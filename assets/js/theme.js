@@ -1,10 +1,10 @@
 'use strict';
 
 const ICO = {
-  ext:    `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  search: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
-  grid:   `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="4.5" height="11" rx="1"/><rect x="8" y="1.5" width="4.5" height="11" rx="1"/></svg>`,
-  list:   `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><line x1="1.5" y1="3.5" x2="12.5" y2="3.5"/><line x1="1.5" y1="7" x2="12.5" y2="7"/><line x1="1.5" y1="10.5" x2="12.5" y2="10.5"/></svg>`,
+  ext:    `<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5.5,1 9,1 9,4.5"/><line x1="9" y1="1" x2="3.5" y2="6.5"/><polyline points="4,3 1,3 1,9 7,9 7,6"/></svg>`,
+  search: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="9" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  grid:   `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="5" height="12" rx="1.5"/><rect x="8" y="1" width="5" height="12" rx="1.5"/></svg>`,
+  list:   `<svg width="14" height="13" viewBox="0 0 14 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="2" x2="4.5" y2="2"/><line x1="6.5" y1="2" x2="13" y2="2"/><line x1="1" y1="6.5" x2="4.5" y2="6.5"/><line x1="6.5" y1="6.5" x2="13" y2="6.5"/><line x1="1" y1="11" x2="4.5" y2="11"/><line x1="6.5" y1="11" x2="13" y2="11"/></svg>`,
   moon: `◐`,
   sun:  `◐`,
   explore: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9L7 11.5L12 9"/><path d="M2 6.5L7 9L12 6.5"/><path d="M7 2.5L12 5L7 7.5L2 5L7 2.5Z"/></svg>`,

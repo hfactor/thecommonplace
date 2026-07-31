@@ -27,7 +27,7 @@
 
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
-  font-family: var(--font-display);
+  font-family: var(--font);
   font-size: var(--text-lg);
   color: var(--ink2);
   line-height: var(--lh-prose);
@@ -42,8 +42,12 @@
 
 /* ─── Entrance animation ─────────────────────────── */
 @keyframes homeSlideUp {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 639px) {
+  .home-body { animation-duration: 0.9s; animation-delay: 0.15s; }
 }
 
 /* ─── Inline links ───────────────────────────────── */
