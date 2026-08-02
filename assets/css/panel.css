@@ -164,7 +164,7 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: calc(var(--hdr-h) + var(--space-8)) var(--gap) var(--space-12);
+  padding: calc(var(--hdr-h) + var(--space-8)) 0 var(--space-12);
 }
 
 

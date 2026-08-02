@@ -112,6 +112,7 @@ button { font-family: var(--font); }
   /* Section pages: compact card view, vertically centred */
   #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) / 2); margin-bottom: auto; }
   body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
+  #lView { padding-left: var(--gap-sm); padding-right: var(--gap-sm); }
   /* On mobile, section pages scroll the full page */
   body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
   body:has(#lView) .content { overflow: visible; }
