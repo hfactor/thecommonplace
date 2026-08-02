@@ -1,121 +1,17 @@
 {{ define "main" }}
-<div class="app" data-page="notes">
-{{- $allNotes := (where .Site.RegularPages "Section" "notes").ByDate.Reverse -}}
-
-<!-- Floating left nav -->
-<div class="nw-nav" id="nwNav">
-  <button class="nw-nav-close" id="nwNavClose" aria-label="Close">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
-  </button>
-  {{- range $allNotes }}
-  <a class="nw-nav-title" href="{{ .RelPermalink }}" data-uid="note-{{ .File.UniqueID }}">{{ .Title }}</a>
-  {{- end }}
-</div>
-<div class="nw-nav-backdrop" id="nwNavBackdrop"></div>
-
-<!-- Content: full width, exactly like a static page -->
-<div class="notes-scroll-area" id="nwScroll">
-<div class="notes-reading" id="nwContent">
-<div id="nwDefault">
-    <h1 class="page-title nw-page-title"><span class="nw-section-mark">§</span> {{ .Title }}</h1>
-    <div class="sp-text nw-default-body">{{ .Content }}</div>
+{{- $notes := (where .Site.RegularPages "Section" "notes").ByLastmod.Reverse -}}
+<div class="app">
+  <div class="notes-scroll-area">
+    <div class="notes-reading">
+      <h1 class="page-title">{{ .Title }}</h1>
+      {{- with .Description -}}<div class="sp-text"><p>{{ . }}</p></div>{{- end -}}
+      {{- range $notes -}}
+      <a class="l-row" data-type="notes" href="{{ .RelPermalink }}">
+        <div class="l-title">{{ .Title }}</div>
+      </a>
+      {{- end -}}
+    </div>
+    {{ partial "site-footer.html" . }}
   </div>
 </div>
-</div>
-
-</div>
-
-{{ partial "data-panel.html" . }}
-{{ partial "notes-data.html" . }}
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof NOTES_DATA !== 'undefined') {
-    NOTES_DATA.forEach(n => { S[n.uid] = Object.assign({}, n, { type: 'notes' }); });
-  }
-
-  const nav      = document.getElementById('nwNav');
-  const backdrop = document.getElementById('nwNavBackdrop');
-  const closeBtn = document.getElementById('nwNavClose');
-  const content  = document.getElementById('nwContent');
-  const scroll   = document.getElementById('nwScroll');
-
-  function openNav()  { nav.classList.add('nw-nav--open'); backdrop.classList.add('nw-nav--open'); }
-  function closeNav() { nav.classList.remove('nw-nav--open'); backdrop.classList.remove('nw-nav--open'); }
-
-  closeBtn.addEventListener('click', closeNav);
-  backdrop.addEventListener('click', closeNav);
-
-  function activateNav(uid) {
-    document.querySelectorAll('.nw-nav-title').forEach(t => t.classList.remove('nw-nav-title--active'));
-    const link = document.querySelector(`.nw-nav-title[data-uid="${uid}"]`);
-    if (link) { link.classList.add('nw-nav-title--active'); link.scrollIntoView({ block: 'nearest' }); }
-  }
-
-  function renderNote(uid, pushUrl) {
-    const note = S[uid];
-    if (!note) return;
-    if (pushUrl !== false) history.pushState({ uid }, '', note.url);
-
-    const body = parseWikilinks(note.content || '');
-    let blHtml = '';
-    if (note.backlinks && note.backlinks.length) {
-      const items = note.backlinks.map(b =>
-        `<li><span class="wikilink" data-uid="${b.uid}">${b.title}</span></li>`
-      ).join('');
-      blHtml = `<div class="sp-text"><h3>Linked from</h3><ul>${items}</ul></div>`;
-    }
-    const dateHtml = note.date ? `<div class="sp-notes-date">Last updated ${note.date}</div>` : '';
-
-    document.getElementById('nwDefault')?.remove();
-    document.getElementById('nwNote')?.remove();
-
-    content.insertAdjacentHTML('beforeend', `
-      <div id="nwNote">
-        <h1 class="page-title nw-page-title">${note.title}</h1>
-        ${body ? `<div class="sp-text">${body}</div>` : ''}
-        ${blHtml}
-        ${dateHtml}
-      </div>`);
-
-    content.querySelectorAll('.wikilink[data-uid]').forEach(el => {
-      el.addEventListener('click', () => { activateNav(el.dataset.uid); renderNote(el.dataset.uid); });
-    });
-
-    scroll.scrollTop = 0;
-    closeNav();
-  }
-
-  // Parse wikilinks in default content
-  const defaultBody = document.querySelector('.nw-default-body');
-  if (defaultBody) {
-    defaultBody.innerHTML = parseWikilinks(defaultBody.innerHTML);
-    defaultBody.querySelectorAll('.wikilink[data-uid]').forEach(el => {
-      el.addEventListener('click', () => { activateNav(el.dataset.uid); renderNote(el.dataset.uid); });
-    });
-  }
-
-  document.querySelectorAll('.nw-nav-title').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const noteEl = document.getElementById('nwNote');
-      if (noteEl) noteEl.remove();
-      activateNav(a.dataset.uid);
-      renderNote(a.dataset.uid);
-    });
-  });
-
-  window.addEventListener('popstate', e => {
-    if (e.state && e.state.uid) {
-      const noteEl = document.getElementById('nwNote');
-      if (noteEl) noteEl.remove();
-      activateNav(e.state.uid);
-      renderNote(e.state.uid, false);
-    } else {
-      const noteEl = document.getElementById('nwNote');
-      if (noteEl) noteEl.remove();
-      content.insertAdjacentHTML('beforeend', '<div id="nwDefault"></div>');
-    }
-  });
-});
-</script>
 {{ end }}

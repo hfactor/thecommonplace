@@ -49,3 +49,4 @@
 - id: notes
   label: Notes
   in_everything: false
+  on_click: page

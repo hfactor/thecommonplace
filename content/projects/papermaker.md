@@ -3,7 +3,7 @@ title: "Papermaker"
 date: 2025-12-01
 href: "https://github.com/hfactor/papermaker"
 cover: "/img/projects/papermaker.png"
-tagline: "Digital planners that stay out of the way."
+tagline: "Print-your-own paper planners"
 category: "Tools"
 collaborators: null
 ---

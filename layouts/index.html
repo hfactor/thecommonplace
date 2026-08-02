@@ -2,7 +2,7 @@
 <div class="home-page">
   <div class="home-body">
     <p class="home-p"><strong class="home-name sh" data-stk="/assets/img/hiran.png" data-stk-size="80" data-side="above" data-rot="-6">Hiran Venugopalan.</strong> Designer, maker, coffee brewer. I design digital products, build projects around language, learning, and <span class="sh" data-stk="/stickers/smc.svg" data-stk2="/stickers/ksha.svg" data-href2="https://www.instagram.com/ksha.cc" data-side="left" data-rot="-6" data-href="https://smc.org.in/en/">open communities</span>, and host <span class="sh sh--inline" style="--stk:url('/stickers/coffee.svg'); --stk-w:110px; --stk-h:32px; --rot:3deg">coffee workshops</span>.</p>
-    <p class="home-p">You'll find <a class="home-link" href="{{ "projects" | relURL }}">Projects</a>, <a class="home-link" href="{{ "notes" | relURL }}">Notes</a>, and <a class="home-link" href="{{ "everything" | relURL }}">Everything</a> here. It's where I keep the work, ideas, and references worth keeping. <a class="home-link sh" data-stk="/stickers/newsletter.svg" data-side="right" data-rot="5" data-href="https://hiran.substack.com?ref=hiran.in" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a> is an occasional newsletter with curated finds and conversations about how people work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
+    <p class="home-p">You'll find <a class="home-link" href="{{ "projects" | relURL }}">Projects</a>, <a class="home-link" href="{{ "notes" | relURL }}">Working Notes</a>, and <a class="home-link" href="{{ "everything" | relURL }}">Everything</a> here. It's where I keep the work, ideas, and references worth keeping. <a class="home-link sh" data-stk="/stickers/newsletter.svg" data-side="right" data-rot="5" data-href="https://hiran.substack.com?ref=hiran.in" href="https://hiran.substack.com?ref=hiran.in" target="_blank" rel="noopener">This&amp;That</a> is an occasional newsletter with curated finds and conversations about how people work. <a class="home-link" href="https://hiran.substack.com/subscribe?ref=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
     <p class="home-p">Always happy to meet new people, exchange ideas, and keep learning. Join me at <a class="home-link sh" data-stk="/stickers/workaround.svg" data-side="left" data-rot="-4" data-href="https://luma.com/workaround?k=c" href="https://luma.com/workaround?k=c" target="_blank" rel="noopener">a cafe</a>, <a class="home-link" href="https://topmate.io/hiran" target="_blank" rel="noopener">book a call</a>, or <span style="white-space:nowrap"><span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">send an email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span>.</span></p>
   </div>
   {{ partial "site-footer.html" . }}
@@ -65,16 +65,18 @@
       }
     }
 
-    el.addEventListener('mouseenter', show);
-    el.addEventListener('mouseleave', hide);
-    pins.forEach(p => { p.addEventListener('mouseenter', () => clearTimeout(hideTimer)); p.addEventListener('mouseleave', hide); });
+    if (!window.matchMedia('(hover: none)').matches) {
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('mouseleave', hide);
+      pins.forEach(p => { p.addEventListener('mouseenter', () => clearTimeout(hideTimer)); p.addEventListener('mouseleave', hide); });
+    }
     new ResizeObserver(place).observe(hb);
   });
 })();
 </script>
 <script>
 (function() {
-  document.querySelectorAll('.home-link, .home-email, .sh[data-stk], .sh--inline').forEach(el => {
+  document.querySelectorAll('.home-link, .home-email, .sh--inline').forEach(el => {
     const uid = 'sc' + Math.random().toString(36).slice(2, 7);
     el.insertAdjacentHTML('beforeend',
       '<svg class="link-scribble" width="100%" height="9" aria-hidden="true">' +

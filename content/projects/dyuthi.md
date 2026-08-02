@@ -3,7 +3,7 @@ title: "Dyuthi"
 date: 2007-06-01
 href: "https://github.com/smc/Dyuthi"
 cover: "/img/projects/dyuthi.png"
-tagline: "The first decorative Unicode font for Malayalam."
+tagline: "Malayalam Decorative Unicode Font"
 category: "Type Design"
 collaborators:
   - name: "Hussain K H"

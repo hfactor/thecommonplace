@@ -3,7 +3,7 @@ title: "Scriptty"
 date: 2026-02-01
 href: "https://github.com/stultus/scriptty"
 cover: "/img/projects/scriptty.png"
-tagline: "An offline screenwriting tool that disappears while you write."
+tagline: "100% Offline Screenwriter"
 category: "Tools"
 collaborators:
   - name: "Hrishikesh Bhaskaran"

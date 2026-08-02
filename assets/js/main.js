@@ -187,8 +187,8 @@ function cardHTML(e, idx) {
       tag   = 'a';
       attrs = `href="${withRef(extHref)}" target="_blank" rel="noopener"`;
     } else if (onClick === 'page') {
-      tag   = 'div';
-      attrs = `data-uid="${uid}" onclick="openEntryByUid('${uid}')"`;
+      tag   = 'a';
+      attrs = `href="${e.permalink || extHref}"`;
     } else {
       tag     = 'div';
       attrs   = `data-uid="${uid}" onclick="openSheet(this.dataset.uid)"`;
@@ -332,10 +332,10 @@ function buildCardView() {
 
 const LIST_TAG = {
   reading:    e => e.genre || '',
-  bookmarks:  e => e.category || '',
+  bookmarks:  e => e.domain || '',
   newsletter: () => 'Newsletter',
-  uses:       () => '',
-  projects:   () => 'Project',
+  uses:       e => e.subCategory || '',
+  projects:   e => e.tagline || '',
 };
 
 function listRowHTML(e) {
@@ -355,13 +355,7 @@ function listRowHTML(e) {
     external = !e.permalink && !!e.href;
   }
   const ext     = external ? `<span class="l-ext">${ICO.ext}</span>` : '';
-  const isProjectsPage = e.type === 'projects' && window.__LISTING__?.type === 'projects';
-  let body;
-  if (isProjectsPage) {
-    body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${e.tagline || ''}</div>`;
-  } else {
-    body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
-  }
+  const body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
 
   if (href) {
     const attrs = external ? `href="${href}" target="_blank" rel="noopener"` : `href="${href}"`;
@@ -373,7 +367,6 @@ function listRowHTML(e) {
 function buildList() {
   const lView = document.getElementById('lView');
   if (!lView) return;
-  if (window.__LISTING__?.type) lView.dataset.listing = window.__LISTING__.type;
   const groupBy = activeGroupBy();
   const sorted = k => (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day);
 
@@ -381,7 +374,7 @@ function buildList() {
   if (!allEntries.length) { lView.innerHTML = emptyState(); return; }
 
   if (groupBy === 'none') {
-    lView.innerHTML = allEntries.map((e, i) => listRowHTML(e)).join('');
+    lView.innerHTML = allEntries.map(e => listRowHTML(e)).join('');
     return;
   }
 
@@ -393,7 +386,7 @@ function buildList() {
       byCat[cat].push(e);
     });
     lView.innerHTML = Object.keys(byCat).sort().map(cat => {
-      return `<div class="l-group"><div class="l-month-label">${cat}</div>${byCat[cat].map((e, i) => listRowHTML(e)).join('')}</div>`;
+      return `<div class="l-group"><div class="l-month-label">${cat}</div>${byCat[cat].map(e => listRowHTML(e)).join('')}</div>`;
     }).join('');
     return;
   }
@@ -406,7 +399,7 @@ function buildList() {
       byYear[y].push(e);
     });
     lView.innerHTML = Object.keys(byYear).sort((a, b) => b.localeCompare(a)).map(y => {
-      return `<div class="l-group"><div class="l-month-label">${y}</div>${byYear[y].map((e, i) => listRowHTML(e)).join('')}</div>`;
+      return `<div class="l-group"><div class="l-month-label">${y}</div>${byYear[y].map(e => listRowHTML(e)).join('')}</div>`;
     }).join('');
     return;
   }
@@ -418,27 +411,19 @@ function buildList() {
   let html = recentKeys.map(k => {
     const entries = sorted(k);
     if (!entries.length) return '';
-    return `<div class="l-group"><div class="l-month-label">${kFull(k)}</div>${entries.map((e, i) => listRowHTML(e)).join('')}</div>`;
+    return `<div class="l-group"><div class="l-month-label">${kFull(k)}</div>${entries.map(e => listRowHTML(e)).join('')}</div>`;
   }).join('');
 
-  if (oldKeys.length) {
-    const oldEntries = oldKeys.flatMap(k => sorted(k));
-    if (oldEntries.length) {
-      html += `<div class="l-group"><div class="l-month-label">2022 & Earlier</div>${oldEntries.map((e, i) => listRowHTML(e)).join('')}</div>`;
-    }
+  const oldEntries = oldKeys.flatMap(k => sorted(k));
+  if (oldEntries.length) {
+    html += `<div class="l-group"><div class="l-month-label">2022 & Earlier</div>${oldEntries.map(e => listRowHTML(e)).join('')}</div>`;
   }
   lView.innerHTML = html;
 }
 
 
-function isPanel(e) {
-  return typeCfg(e.type).on_click === 'page';
-}
-
 function openEntryByUid(uid) {
-  const e = S[uid];
-  if (!e) return;
-  if (e.type === 'notes' || isPanel(e)) openPanel(uid); else openSheet(uid);
+  openSheet(uid);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -464,9 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('popstate', () => {
-    if (document.getElementById('sidePanel')?.classList.contains('open')) {
-      closePanel(true); return;
-    }
     if (document.getElementById('sheetOverlay')?.classList.contains('open')) {
       closeSheet(true); return;
     }
@@ -479,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      closeSheet(); closePanel();
+      closeSheet();
       const wrap = document.getElementById('shFilter');
       if (wrap) wrap.dataset.open = 'false';
     }

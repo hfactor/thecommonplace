@@ -3,7 +3,7 @@ title: Gundert
 date: 2019-01-01
 href: https://www.behance.net/gallery/87688395/Gunderts-Vattezhuthu-Archival-font-project
 cover: /img/projects/gundert.png
-tagline: Hermann Gundert's Vattezhuthu glyphs, vectorised.
+tagline: "Vattezhuthu script, vectorised"
 category: Type Design
 collaborators:
   - name: Indran

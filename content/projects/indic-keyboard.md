@@ -3,7 +3,7 @@ title: "Indic Keyboard"
 date: 2022-11-01
 href: "https://github.com/hfactor/Indic-Keyboard"
 cover: "/img/projects/indic-keyboard.png"
-tagline: "Brand identity for an open source keyboard in 23 Indian languages."
+tagline: "Indic Keyboard, 100% Privacy"
 category: "Community"
 collaborators:
   - name: "Jishnu Mohan"

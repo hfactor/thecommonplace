@@ -2,10 +2,8 @@
 .sh[data-stk],
 .sh--inline {
   position: relative;
-  display: inline-block;
-  vertical-align: baseline;
+  display: inline;
 }
-.sh[data-stk] { white-space: nowrap; }
 
 /* inline sticker (coffee.svg — stays next to word via ::after) */
 .sh--inline::after {

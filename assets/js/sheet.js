@@ -1,3 +1,16 @@
+function parseWikilinks(html) {
+  return html.replace(/\[\[([^\]]+)\]\]/g, (_, title) => {
+    const key   = title.toLowerCase();
+    const entry = Object.values(S).find(e =>
+      (e.title || '').toLowerCase() === key ||
+      (e.localTitle || '').toLowerCase() === key
+    );
+    if (!entry) return `<span class="wikilink-dead">${title}</span>`;
+    const label = entry.localTitle || title;
+    return `<span class="wikilink" data-uid="${entry.uid}">${label}</span>`;
+  });
+}
+
 let _sheetPrevUrl    = null;
 let _sheetOpen       = false;
 let _sheetScrollLeft = null;
@@ -33,17 +46,19 @@ function openSheet(uid) {
       ? `<img class="modal-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="modal-cover-blank"></div>`;
     const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
-    const cover = rUrl
-      ? `<a class="modal-cover-link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${coverWrap}<span class="modal-ext-badge">${ICO.ext}</span></a>`
-      : coverWrap;
-    const titleEl = rUrl
-      ? `<a class="modal-title modal-title--link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${title} ${ICO.ext}</a>`
-      : `<div class="modal-title">${title}</div>`;
+    const coverCol = e.permalink
+      ? `<a class="modal-cover-col modal-cover-link" href="${e.permalink}">${coverWrap}</a>`
+      : `<div class="modal-cover-col">${coverWrap}</div>`;
+    const extBadge = rUrl ? `<a class="modal-ext-standalone" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext}</a>` : '';
+    const titleEl = `<div class="modal-title-row">` +
+      (e.permalink ? `<a class="modal-title modal-title--link" href="${e.permalink}">${title}</a>` : `<span class="modal-title">${title}</span>`) +
+      extBadge +
+      `</div>`;
     const dateEl = e.date
       ? (e.permalink ? `<a class="modal-date-inline" href="${e.permalink}">${e.date}</a>` : `<div class="modal-date-inline">${e.date}</div>`)
       : '';
     html = `<div class="modal-book">
-      <div class="modal-cover-col">${cover}</div>
+      ${coverCol}
       <div class="modal-body-col">
         <div class="modal-type-badge">Reading</div>
         ${titleEl}

@@ -3,7 +3,7 @@ title: Cinema Radio
 date: 2026-05-10
 href: https://radio.hiran.in/
 cover: /img/projects/cinema-radio.png
-tagline: Film audio that runs like a broadcast channel.
+tagline: "Cinema as a Live Radio"
 category: Craft
 collaborators:
   - name: Arun Sajeev

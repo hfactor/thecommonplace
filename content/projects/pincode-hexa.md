@@ -3,7 +3,7 @@ title: "Pincode Hexa"
 date: 2025-06-01
 href: "https://github.com/hfactor/pincode-map"
 cover: "/img/projects/pincode-hexa.png"
-tagline: "Every Indian pincode is also a color. Here's the whole country."
+tagline: "Every Indian pincode as a hex color"
 category: "Craft"
 collaborators: null
 ---

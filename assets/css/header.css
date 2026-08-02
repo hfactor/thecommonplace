@@ -91,21 +91,6 @@
   transition: color var(--dur-fast);
 }
 .pn-menu-btn:hover { color: var(--ink); }
-.pn-notes-list-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: none;
-  color: var(--ink2);
-  cursor: pointer;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: color var(--dur-fast);
-}
-.pn-notes-list-btn:hover { color: var(--ink); }
 .pn-menu-btn .ico-x { display: none; }
 .pn--open .pn-menu-btn .ico-menu { display: none; }
 .pn--open .pn-menu-btn .ico-x { display: block; }
@@ -319,12 +304,12 @@
 }
 
 .note-content { margin-bottom: var(--space-12); }
-.note-backlinks { border-top: 1px solid var(--border-light); padding-top: 20px; margin-top: 0; }
-.note-backlinks-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-.note-backlinks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-.note-backlink-item { display: block; font-size: var(--text-base); color: var(--ink); text-decoration: none; padding: 10px var(--space-3); background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-sm); transition: border-color var(--dur-fast), background var(--dur-fast), color var(--dur-fast); line-height: var(--lh-tight); }
-.note-backlink-item:hover { color: var(--accent); border-color: var(--border); background: var(--surface2); }
-@media (max-width: 639px) { .note-backlinks-grid { grid-template-columns: 1fr; } }
+.note-backlinks { margin-top: var(--space-6); }
+.note-backlinks-label { font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); margin-bottom: 10px; }
+.note-backlinks-grid { display: flex; flex-direction: column; gap: var(--space-1); }
+.note-backlink-item { font-size: var(--text-base); color: var(--accent); text-decoration: none; line-height: var(--lh-tight); padding: 4px 0; position: relative; display: inline-block; white-space: nowrap; }
+.note-backlink-item .link-scribble { position: absolute; top: calc(100% - 6px); left: 0; pointer-events: none; overflow: hidden; clip-path: inset(0 100% 0 0); transition: clip-path 0.3s cubic-bezier(0.7,0,0.3,1); }
+.note-backlink-item:hover .link-scribble { clip-path: inset(0 0% 0 0); transition-timing-function: cubic-bezier(0.8,1,0.7,1); transition-duration: 0.22s; }
 
 /* ─── Notes search modal ──────────────────────────── */
 .nsm { display: none; position: fixed; inset: 0; z-index: var(--z-modal); background: var(--overlay); align-items: flex-start; justify-content: center; padding-top: 72px; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }

@@ -96,9 +96,14 @@
 
 /* Cover as link — same badge style as card-ext */
 .modal-cover-link {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   text-decoration: none;
+  width: 100%;
+  height: 100%;
 }
 .modal-cover-link .modal-ext-badge {
   position: absolute;
@@ -216,11 +221,26 @@
 }
 
 /* Type badge — subtle, just a label */
+.modal-type-row { display: flex; align-items: flex-start; gap: 8px; }
+.modal-title-row { display: flex; align-items: baseline; gap: 6px; }
 .modal-type-badge {
   font-size: var(--text-sm);
   color: var(--ink2);
   opacity: 0.4;
-  margin-bottom: 4px;
+}
+.modal-ext-standalone {
+  color: var(--ink2);
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity var(--dur-fast);
+  font-size: 0.75em;
+  display: inline;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.modal-ext-standalone:hover { opacity: 1; }
+@media (max-width: 639px) {
+  .modal-type-badge { display: none; }
 }
 
 /* Clickable meta tags */
