@@ -6,7 +6,7 @@ date: 2026-05-23
 language: Malayalam
 genre: Fiction
 recommended: true
-image: /img/reading/Sathabhishekam.png
+image: /img/reading/Sathabhishekam.jpg
 link:
 ---
 
