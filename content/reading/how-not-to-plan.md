@@ -6,7 +6,7 @@ date: 2026-06-05
 language: English
 genre: Non-Fiction
 recommended: false
-image: https://m.media-amazon.com/images/I/71MZksBQrVL._SL1500_.jpg
+image: /img/reading/how-not-to-plan.jpg
 link: https://amzn.to/4x6gESh
 reading-status: reading
 ---

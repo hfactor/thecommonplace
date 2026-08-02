@@ -6,7 +6,7 @@ date: 2026-05-23
 language: Malayalam
 genre: Fiction
 recommended: true
-image: https://grandhavahak.com/wp-content/uploads/2025/01/347F-Divya-Binu-4.jpg
+image: /img/reading/Sathabhishekam.png
 link:
 ---
 

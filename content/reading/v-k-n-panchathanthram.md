@@ -6,7 +6,7 @@ date: 2026-06-05
 language: Malayalam
 genre: Fiction
 recommended: false
-image: https://m.media-amazon.com/images/I/51inhZxWuML._SY522_.jpg
+image: /img/reading/v-k-n-panchathanthram.jpg
 link: https://amzn.to/3RPORW9
 ---
 

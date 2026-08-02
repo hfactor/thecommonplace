@@ -6,7 +6,7 @@ date: 2025-03-19
 language: English
 genre: Comics
 recommended: true
-image: https://m.media-amazon.com/images/I/81TNCq9abaL._SL1500_.jpg
+image: /img/reading/metamaus.jpg
 link: https://amzn.to/4u6Bejt
 ---
 

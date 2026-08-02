@@ -52,10 +52,10 @@ people:
     github: anivar
 
   - name: Hussain K H
-    image: https://upload.wikimedia.org/wikipedia/commons/c/cb/Rachana_Hussain.jpeg
+    image: /img/colophon/hussain-k-h.jpg
 
   - name: Narayana Bhattathiri
-    image: https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Narayana_Bhattathiri_01_at_SMC_Annual_Meet_2014.jpg/500px-Narayana_Bhattathiri_01_at_SMC_Annual_Meet_2014.jpg
+    image: /img/colophon/narayana-bhattathiri.jpg
 
   - name: Santosh Thottingal
     github: santhoshtr
@@ -83,7 +83,7 @@ people:
     github: asimkt
 
   - name: Anand Subramanian
-    image: https://theanand.com/wp-content/uploads/2019/11/photo6228535232081013083-e1574104783560.jpg
+    image: /img/colophon/anand-subramanian.jpg
     website: https://theanand.com/
 
   - name: Orion C Jose
@@ -97,7 +97,7 @@ people:
     github: baijum
     
   - name: Melvin Thambi
-    image: https://phosphor.utils.elfsightcdn.com/?url=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F2025027929369939968%2Fga6kWajq_400x400.jpg
+    image: /img/colophon/melvin-thambi.jpg
     website: https://www.melvinthambi.com/
 
   - name: Sinu John

@@ -1,14 +1,32 @@
 {{ define "main" }}
 <div class="app">
+{{ partial "page-nav.html" (dict "page" . "ctx" "reading") }}
+<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 <main class="content">
   <div id="cardView"><div id="cvTrack"></div></div>
   <div id="lView"></div>
 </main>
-{{ partial "page-data.html" (dict "Params" (dict "listingType" "reading") "Site" .Site) }}
+{{ partial "site-footer.html" . }}
 </div>
 <script>
-window.__OPEN_UID__ = "reading/{{ .File.ContentBaseName }}";
-window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+window.__LISTING__ = { type: "reading", filters: {}, listOnly: false };
+window.__SELF_ENTRY__ = {{ dict
+  "uid"         (printf "reading/%s" .File.ContentBaseName)
+  "type"        "reading"
+  "day"         (int (dateFormat "2" .Date))
+  "title"       .Title
+  "date"        (dateFormat "Jan 2, 2006" .Date)
+  "author"      (default "" .Params.author)
+  "localTitle"  (default "" .Params.localTitle)
+  "language"    (default "" .Params.language)
+  "genre"       (default "" .Params.genre)
+  "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
+  "image"       (default "" .Params.image)
+  "link"        (default "" .Params.link)
+  "content"     (printf "%s" .Content)
+  "permalink"   .RelPermalink
+  | jsonify | safeJS }};
+window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
 </script>
 {{ end }}
 
@@ -22,15 +40,13 @@ window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {}, groupBy: "
     <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
     <div class="sheet-inner" id="sheetInner">
 <div class="modal-book">
-  <div class="modal-cover-col">
-    {{- if $rUrl -}}<a class="modal-cover-link" href="{{ $rUrl }}" target="_blank" rel="noopener">{{- end -}}
+  {{- if $rUrl -}}<a class="modal-cover-col modal-cover-link" href="{{ $rUrl }}" target="_blank" rel="noopener">{{- else -}}<div class="modal-cover-col">{{- end -}}
     <div class="modal-book-3d">
       <div class="modal-book-pages"></div>
       {{- if .Params.image -}}<img class="modal-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">{{- else -}}<div class="modal-cover-blank"></div>{{- end -}}
       <div class="modal-book-spine"></div>
     </div>
-    {{- if $rUrl -}}<span class="modal-ext-badge">{{ $icoExt | safeHTML }}</span></a>{{- end -}}
-  </div>
+    {{- if $rUrl -}}<span class="modal-ext-badge">{{ $icoExt | safeHTML }}</span></a>{{- else -}}</div>{{- end -}}
   <div class="modal-body-col">
     <div class="modal-type-badge">Reading</div>
     {{- if $rUrl -}}
@@ -39,13 +55,12 @@ window.__LISTING__ = { type: "reading", viewMode: "cal", filters: {}, groupBy: "
     <div class="modal-title">{{ $title }}</div>
     {{- end -}}
     <div class="modal-meta">
-      {{- $sep := `<span class="modal-meta-sep">·</span>` -}}
       {{- $parts := slice -}}
       {{- with .Params.author -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
       {{- with .Params.language -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
       {{- with .Params.genre -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
-      {{- delimit $parts $sep | safeHTML -}}
-      {{- if $isRec -}}{{- if gt (len $parts) 0 -}}{{ $sep | safeHTML }}{{- end -}}<a class="modal-meta-tag modal-meta-tag--rec" href="/reading/?q=recommended">✦ Recommended</a>{{- end -}}
+      {{- delimit $parts "" | safeHTML -}}
+      {{- if $isRec -}}<a class="modal-meta-tag modal-meta-tag--rec" href="/reading/?q=recommended">✦ Recommended</a>{{- end -}}
     </div>
     {{- with .Content -}}<div class="modal-body">{{ . }}</div>{{- end -}}
     <a class="modal-date-inline" href="{{ .RelPermalink }}">{{ .Date | dateFormat "Jan 2006" }}</a>

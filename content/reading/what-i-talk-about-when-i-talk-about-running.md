@@ -6,7 +6,7 @@ date:
 language: English
 genre: Memoir
 recommended:
-image: https://m.media-amazon.com/images/I/71skAxiMC2L._SL1500_.jpg
+image: /img/reading/what-i-talk-about-when-i-talk-about-running.jpg
 link: https://amzn.to/4vPjTMS
 reading-status: reading
 ---

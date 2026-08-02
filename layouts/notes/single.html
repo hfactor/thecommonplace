@@ -20,16 +20,9 @@
   {{- end -}}
 {{- end -}}
 
-<div class="app">
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
+{{ partial "readable-open.html" (dict) }}
 
-      <div class="proj-page-hdr">
-        <a class="proj-back" href="{{ $notesPage.RelPermalink }}" aria-label="Back to Notes">
-          <svg width="7" height="12" viewBox="0 0 7 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,1 1,6 6,11"/></svg>
-        </a>
-        <h1 class="page-title proj-page-title">{{ .Title }}</h1>
-      </div>
+      {{ partial "child-page-header.html" (dict "backHref" $notesPage.RelPermalink "backLabel" "Back to Notes" "title" .Title) }}
 
       <div class="sp-text">
         {{ $content | safeHTML }}
@@ -37,7 +30,7 @@
         <h3>Linked from</h3>
         <ul>
           {{- range $backlinks -}}
-          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+          <li><a href="{{ .RelPermalink }}" class="wikilink">{{ .Title }}</a></li>
           {{- end -}}
         </ul>
         {{- end -}}
@@ -45,14 +38,11 @@
 
       {{ if .Lastmod }}<div class="sp-notes-date">Last updated {{ .Lastmod | dateFormat "January 2006" }}</div>{{ end }}
 
-    </div>
-    {{ partial "site-footer.html" . }}
-  </div>
-</div>
+{{ partial "readable-close.html" (dict "page" .) }}
 <script>
 (function(){
   var svg = '<svg class="link-scribble" width="100%" height="9" aria-hidden="true" viewBox="0 0 80 9" preserveAspectRatio="none"><path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  document.querySelectorAll('.sp-text a, .wikilink, .note-backlink-item').forEach(function(el){
+  document.querySelectorAll('.sp-text a, .wikilink').forEach(function(el){
     el.insertAdjacentHTML('beforeend', svg);
   });
 })();

@@ -6,7 +6,7 @@ date: 2022-11-27
 language: Malayalam
 genre: Fiction
 recommended: false
-image: https://m.media-amazon.com/images/I/51tvj-cHI-L.jpg
+image: /img/reading/malayalee-memorial.jpg
 link: https://amzn.to/41aPpXf
 ---
 ഒരുവട്ടം വായിക്കാവുന്ന, രസിപ്പിക്കുന്ന ചില 'സെറ്റിങ്ങുകളും', പ്രയോഗങ്ങളും ഉണ്ട് പുസ്തകത്തിൽ.

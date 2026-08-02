@@ -6,7 +6,7 @@ date: 2026-06-24
 language: English
 genre: Memoir
 recommended: true
-image: https://m.media-amazon.com/images/I/71s2JgvxaxL._SL1500_.jpg
+image: /img/reading/the-land-and-the-shadows.jpg
 link: https://amzn.to/4eaWsGt
 ---
 A nostalgic and beautifully written account of Kongu Nadu and Tamil life in the 1980s, seen through memories of cinema and theatre culture. The first half is vivid, immersive, and a joy to read. The second half feels like a collection of magazine essays, with much of the context no longer as relevant. Still, the opening chapters alone make it worth reading.

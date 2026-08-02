@@ -6,7 +6,7 @@ date: 2023-07-30
 language: English
 genre: Non-Fiction
 recommended: true
-image: https://m.media-amazon.com/images/I/41+OnWJqCzL.jpg
+image: /img/reading/how-to-get-to-great-ideas.jpg
 link: https://amzn.to/3QknWiy
 ---
 A quick read guide on developing and refining creative ideas. Skim it, skim it again. It's a table book!

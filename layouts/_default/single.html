@@ -1,9 +1,6 @@
 {{ define "main" }}
-<div class="app">
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
+{{ partial "readable-open.html" (dict) }}
 
-      {{ partial "page-avatar.html" . }}
       <h1 class="page-title note-title">{{ .Title }}</h1>
       {{ if .Params.updated }}<p class="sp-updated">Updated {{ .Params.updated }}</p>{{ end }}
 
@@ -11,8 +8,5 @@
 
       {{ if .Params.footer }}<p class="sp-footer">{{ .Params.footer | markdownify }}</p>{{ end }}
 
-    </div>
-    {{ partial "site-footer.html" . }}
-  </div>
-</div>
+{{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

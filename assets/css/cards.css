@@ -182,3 +182,240 @@
   .card:active .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
   .nl-card-wrap:active .nl-card { transform: rotate(0deg) translateY(-2px); box-shadow: var(--shadow-md); }
 }
+
+/* ── Gallery/product cards + cv-items size overrides (merged from pages.css) ── */
+
+/* ── Gallery card (uses + projects — cal columns and gallery grid) ────────── */
+.gc {
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit; cursor: pointer;
+  background: var(--surface2); border-radius: var(--r);
+  overflow: hidden; position: relative;
+  margin-bottom: 14px;
+}
+
+.gc-img-wrap { overflow: hidden; flex-shrink: 0; }
+.gc[data-type="uses"] .gc-img-wrap { aspect-ratio: 1; padding: 10%; }
+
+.gc-img { width: 100%; height: 100%; display: block; mix-blend-mode: multiply; transition: transform 0.35s ease; }
+[data-theme="ink"] .gc-img { mix-blend-mode: screen; }
+.gc[data-type="uses"] .gc-img { object-fit: contain; }
+.gc:hover .gc-img { transform: scale(1.05); }
+.gc-img-blank { width: 100%; height: 100%; background: var(--surface); border-radius: var(--r-xs); }
+
+.gc-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 2px; }
+.gc-title { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink); line-height: var(--lh-tight); transition: color var(--dur-fast); }
+.gc-meta  { font-size: var(--text-sm); color: var(--ink2); }
+.gc-tagline { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
+.gc-title-row { display: flex; align-items: baseline; gap: 4px; }
+.gc-rec { font-size: var(--text-sm); color: var(--ink2); flex-shrink: 0; line-height: 1; }
+
+
+/* Card sizes within cv-items */
+/* Books */
+.cv-items .card[data-type="reading"]   { width: 180px; margin-bottom: 0; flex-shrink: 0; }
+
+/* Bookmarks — fixed size, body centred vertically */
+.cv-items .card[data-type="bookmarks"] { width: 260px; height: 190px; margin-bottom: 0; flex-shrink: 0; }
+.cv-items .card[data-type="bookmarks"] .bm-card { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.cv-items .card[data-type="bookmarks"] .bm-body  { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.cv-items .card[data-type="bookmarks"] .bm-note  { -webkit-line-clamp: 3; }
+
+/* Newsletter */
+.cv-items .nl-card-wrap { width: 300px; flex-shrink: 0; }
+
+/* Floppy (projects) */
+.cv-items .floppy-card { width: 220px; flex-shrink: 0; }
+
+/* Uses — image + hover label */
+.gc--uses { width: 200px; margin-bottom: 0; flex-shrink: 0; }
+.gc--uses .gc-img-wrap { aspect-ratio: 1; padding: 10%; }
+.gc--uses:hover { opacity: 1; }
+.gc-uses-label {
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  text-align: center;
+  padding: 6px 8px 8px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gc--uses:hover .gc-uses-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Other gallery cards (non-uses) */
+.cv-items .gc            { width: 200px; margin-bottom: 0; flex-shrink: 0; }
+.cv-items .gc:hover .gc-title { color: var(--accent); }
+
+@media (max-width: 639px) {
+  .cv-items .card[data-type="reading"]   { width: 130px; }
+  .cv-items .card[data-type="bookmarks"] { width: 220px; height: 170px; }
+  .cv-items .nl-card-wrap                { width: 220px; }
+  .cv-items .floppy-card                 { width: 140px; }
+  .cv-items .gc                          { width: 160px; }
+}
+
+/* ── Floppy disk card ─────────────────────────────────────────────────────── */
+
+.floppy-card {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  padding-bottom: 10px;
+}
+.floppy-card .floppy-tab {
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.floppy-card:hover .floppy-tab:first-child { width: 8%; }
+.floppy-card:hover .floppy-tab:last-child  { width: 38%; }
+
+/* Outer case */
+.floppy {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200/210;
+  /* top-right chamfer */
+  clip-path: polygon(0 0, 94.5% 0, 100% 5.2%, 100% 100%, 0 100%);
+  background: var(--floppy-body);
+}
+/* Top section — plastic tabs flanking the shutter groove */
+.floppy-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 30.5%;
+  display: flex;
+}
+.floppy-tab { width: 22%; flex-shrink: 0; }
+
+/* Dark groove the shutter sits in */
+.floppy-shutter-zone {
+  flex: 1;
+  position: relative;
+  background: var(--floppy-body-dark);
+  overflow: hidden;
+}
+/* Sliding shutter */
+.floppy-shutter {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    var(--floppy-metal) 0%, var(--floppy-metal-light) 25%, var(--floppy-slot) 50%, var(--floppy-slot-edge) 75%, var(--floppy-screw) 100%
+  );
+}
+/* Read window — dark cutout in the metal */
+.floppy-rw {
+  position: absolute;
+  right: 12.5%; top: 15.6%;
+  width: 25%; height: 62.5%;
+  background: var(--floppy-body);
+  border-radius: var(--r-xs);
+  transition: background var(--dur-base) ease;
+}
+.floppy-card:hover .floppy-rw { background: var(--floppy-body-dark); }
+/* Divider strip between top and label */
+.floppy-divider {
+  position: absolute;
+  top: 30.5%; left: 0; right: 0;
+  height: 3.8%;
+  background: var(--floppy-label-divider);
+}
+/* Label sticker */
+.floppy-label {
+  position: absolute;
+  top: 35.2%; left: 5%; right: 5%; bottom: 8.6%;
+  background: var(--floppy-label-bg);
+  border-radius: 2%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.floppy-label-stripe {
+  height: 9px;
+  flex-shrink: 0;
+  background: var(--lc, #1c3461);
+}
+.floppy-label-body {
+  flex: 1;
+  padding: 6px 8px 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  position: relative;
+}
+
+.floppy-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--floppy-text);
+  line-height: 1.3;
+}
+.floppy-tagline {
+  font-size: var(--text-sm);
+  color: var(--floppy-text2);
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (max-width: 639px) {
+  .floppy-label-body { padding: 4px 6px 6px; gap: 2px; }
+  .floppy-name { font-size: var(--text-sm); }
+  .floppy-tagline { font-size: var(--text-sm); }
+}
+
+/* Write-protect tab — bottom left */
+.floppy-wp-l {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 9%; height: 7.6%;
+  background: var(--floppy-label-divider);
+}
+.floppy-wp-l::before {
+  content: '';
+  position: absolute;
+  inset: 15% 10%;
+  background: var(--floppy-body-dark);
+  border-radius: 1px;
+}
+
+/* HD density hole — bottom right. Outer matches case; inner square reads as hole. */
+.floppy-wp-r {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 9%; height: 7.6%;
+  background: var(--floppy-body);
+}
+.floppy-wp-r::before {
+  content: '';
+  position: absolute;
+  inset: 12% 8%;
+  background: var(--floppy-body-dark);
+  border-radius: 1px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+}
+
+/* External link icon — top-right corner, appears on gc hover */
+.gc-ext-link {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 22px; height: 22px;
+  background: var(--overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: var(--r-full);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity var(--dur-fast);
+  z-index: 1;
+}
+.gc:hover .gc-ext-link { opacity: 1; }

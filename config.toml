@@ -37,6 +37,12 @@ ignoreFiles = [
   [params.sections.uses]
     render = true
 
+[outputFormats.SectionData]
+  mediaType = "application/json"
+  baseName = "data"
+  isPlainText = true
+  notAlternative = true
+
 [outputs]
   home    = ["HTML", "RSS"]
   section = ["HTML", "RSS"]

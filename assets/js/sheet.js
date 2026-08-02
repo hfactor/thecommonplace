@@ -39,19 +39,19 @@ function openSheet(uid) {
     const title  = e.localTitle || e.title;
     const rUrl   = e.link || e.url;
     const metaParts = [e.author, e.language, e.genre].filter(Boolean)
-      .map(v => metaLink(v, 'reading')).join('<span class="modal-meta-sep">·</span>');
+      .map(v => metaLink(v, 'reading')).join('');
     const recTag = recPill(e, 'reading');
     const body   = parseWikilinks(e.content || '');
     const coverInner = e.image
       ? `<img class="modal-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="modal-cover-blank"></div>`;
     const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
-    const coverCol = e.permalink
-      ? `<a class="modal-cover-col modal-cover-link" href="${e.permalink}">${coverWrap}</a>`
+    const coverCol = rUrl
+      ? `<a class="modal-cover-col modal-cover-link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${coverWrap}</a>`
       : `<div class="modal-cover-col">${coverWrap}</div>`;
     const extBadge = rUrl ? `<a class="modal-ext-standalone" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext}</a>` : '';
     const titleEl = `<div class="modal-title-row">` +
-      (e.permalink ? `<a class="modal-title modal-title--link" href="${e.permalink}">${title}</a>` : `<span class="modal-title">${title}</span>`) +
+      (rUrl ? `<a class="modal-title modal-title--link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${title}</a>` : `<span class="modal-title">${title}</span>`) +
       extBadge +
       `</div>`;
     const dateEl = e.date
@@ -62,7 +62,7 @@ function openSheet(uid) {
       <div class="modal-body-col">
         <div class="modal-type-badge">Reading</div>
         ${titleEl}
-        <div class="modal-meta">${metaParts}${metaParts && recTag ? '<span class="modal-meta-sep">·</span>' : ''}${recTag}</div>
+        <div class="modal-meta">${metaParts}${recTag}</div>
         ${body ? `<div class="modal-body">${body}</div>` : ''}
         ${dateEl}
       </div>
@@ -104,7 +104,7 @@ function openSheet(uid) {
       <div class="modal-body-col">
         <div class="modal-type-badge">Uses</div>
         ${usesTitleEl}
-        <div class="modal-meta">${[metaLink(e.subCategory, 'uses'), recPill(e, 'uses')].filter(Boolean).join('<span class="modal-meta-sep">·</span>')}</div>
+        <div class="modal-meta">${[metaLink(e.subCategory, 'uses'), recPill(e, 'uses')].filter(Boolean).join('')}</div>
         ${e.note ? `<div class="modal-body">${e.note}</div>` : ''}
         ${dateEl}
       </div>
@@ -115,6 +115,9 @@ function openSheet(uid) {
   const sheet   = document.getElementById('sheet');
   inner.innerHTML = html;
   sheet.classList.toggle('sheet--wide', wide);
+
+  const scribbleSvg = '<svg class="link-scribble" width="100%" height="9" aria-hidden="true" viewBox="0 0 80 9" preserveAspectRatio="none"><path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  inner.querySelectorAll('.modal-body a').forEach(el => el.insertAdjacentHTML('beforeend', scribbleSvg));
 
   if (!_sheetOpen) {
     const cv = document.getElementById('cardView');

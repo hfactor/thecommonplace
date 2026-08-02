@@ -1,0 +1,4 @@
+{{/* dict: href, title, tag (optional), type (optional — data-type hook for per-type CSS/JS) */}}
+<a class="l-row"{{ with .type }} data-type="{{ . }}"{{ end }} href="{{ .href }}">
+  <div class="l-title">{{ .title }}</div>{{ with .tag }}<div class="l-tag">{{ . }}</div>{{ end }}
+</a>

@@ -152,14 +152,5 @@
 {{- end -}}
 
 <script>
-const BASE_PATH = "{{ .Site.Home.RelPermalink }}";
 const DATA = {{ $months | jsonify | safeJS }};
-{{- $about    := .Site.GetPage "/about" -}}
-{{- $now      := .Site.GetPage "/now" -}}
-{{- $colophon := .Site.GetPage "/colophon" -}}
-const PAGE_CONTENT = {
-  about:    {{ dict "title" "About" "content" (printf "%s" ($about.Content | default "")) "footer" (default "" $about.Params.footer) | jsonify | safeJS }},
-  now:      {{ dict "title" "Now"   "content" (printf "%s" ($now.Content   | default "")) "updated" (default "" $now.Params.updated) "footer" (default "" $now.Params.footer) | jsonify | safeJS }},
-  colophon: {{ dict "title" "Colophon" "content" (printf "%s" ($colophon.Content | default "")) | jsonify | safeJS }}
-};
 </script>

@@ -2,14 +2,14 @@
 # id:            URL slug and filter key
 # in_everything: whether this type appears in the Explore dropdown
 # card_template: named rendering template — book | browser | newsletter | product
-# view_mode:     dedicated page view — cal | gallery
+# view_mode:     dedicated page view — card | gallery
 # on_click:      what happens when a card/row is clicked — sheet | external | page
 
 - id: reading
   label: Reading
   in_everything: true
   card_template: book
-  view_mode: cal
+  view_mode: card
   on_click: sheet
   group_by: month
 
@@ -17,7 +17,7 @@
   label: Bookmarks
   in_everything: true
   card_template: browser
-  view_mode: cal
+  view_mode: card
   on_click: sheet
   group_by: month
 

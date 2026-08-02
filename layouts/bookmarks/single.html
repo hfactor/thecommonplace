@@ -1,15 +1,30 @@
 {{ define "main" }}
 <div class="app">
 {{ partial "page-nav.html" (dict "page" . "ctx" "bookmarks") }}
+<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 <main class="content">
   <div id="cardView"><div id="cvTrack"></div></div>
   <div id="lView"></div>
 </main>
-{{ partial "page-data.html" (dict "Params" (dict "listingType" "bookmarks") "Site" .Site) }}
+{{ partial "site-footer.html" . }}
 </div>
 <script>
-window.__OPEN_UID__ = "bookmarks/{{ .File.ContentBaseName }}";
-window.__LISTING__ = { type: "bookmarks", viewMode: "cal", filters: {}, groupBy: "month", listOnly: false };
+{{- $href   := .Params.href | default "" -}}
+{{- $domain := .Params.domain | default (replaceRE "^https?://([^/?#]+).*" "$1" $href) -}}
+window.__LISTING__ = { type: "bookmarks", filters: {}, listOnly: false };
+window.__SELF_ENTRY__ = {{ dict
+  "uid"      (printf "bookmarks/%s" .File.ContentBaseName)
+  "type"     "bookmarks"
+  "day"      (int (dateFormat "2" .Date))
+  "title"    .Title
+  "date"     (dateFormat "Jan 2, 2006" .Date)
+  "domain"   $domain
+  "href"     $href
+  "category" (default "" .Params.category)
+  "content"  (printf "%s" .Content)
+  "summary"  (printf "%s" (.Summary | default ""))
+  | jsonify | safeJS }};
+window.__DATA_URL__ = "{{ "bookmarks/data.json" | relURL }}";
 </script>
 {{ end }}
 

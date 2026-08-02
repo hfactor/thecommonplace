@@ -1,25 +1,18 @@
 /* ─── Homepage shell ─────────────────────────────── */
-.home-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-}
-
-.home-body {
-  flex: 1;
+/* Homepage reuses .notes-reading (panel.css); this modifier adds the
+   vertical-centering and entrance animation that make it feel like a
+   homepage rather than a document. */
+.notes-reading.home-reading {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: var(--gap) var(--gap);
-  max-width: 560px;
-  margin: 0 auto;
-  width: 100%;
   opacity: 0;
   animation: homeSlideUp 0.8s var(--ease-out) 0.1s both;
 }
 
 @media (max-width: 639px) {
-  .home-body { padding-top: var(--hdr-h); }
+  .notes-reading.home-reading { padding-top: var(--hdr-h); }
 }
 
 
@@ -47,7 +40,7 @@
 }
 
 @media (max-width: 639px) {
-  .home-body { animation-duration: 0.9s; animation-delay: 0.15s; }
+  .notes-reading.home-reading { animation-duration: 0.9s; animation-delay: 0.15s; }
 }
 
 /* ─── Inline links ───────────────────────────────── */

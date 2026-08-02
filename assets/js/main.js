@@ -1,4 +1,4 @@
-// DATA and PAGE_CONTENT are injected by Hugo via listing templates
+// DATA is injected by Hugo via listing templates
 
 const S = {};
 
@@ -54,20 +54,8 @@ const emptyState = () => `<div class="empty-state"><div class="empty-state-icon"
 
 function setViewMode(mode) {
   viewMode = mode;
-  localStorage.setItem('viewMode', mode);
   updateFabState();
-  // Show bio-hide toggle only in list view
-  const bioToggle = document.getElementById('bioToggleBtn');
-  if (bioToggle) bioToggle.style.display = mode === 'list' ? 'inline-flex' : 'none';
   show();
-}
-
-function toggleBio() {
-  const layout = document.getElementById('homeLayout');
-  if (!layout) return;
-  layout.classList.toggle('bio-hidden');
-  const btn = document.getElementById('bioToggleBtn');
-  if (btn) btn.textContent = layout.classList.contains('bio-hidden') ? 'Show bio' : 'Hide bio';
 }
 
 function rebuild() {
@@ -78,7 +66,6 @@ function rebuild() {
 }
 
 function show() {
-  document.documentElement.classList.remove('view-list-init');
   const cv    = document.getElementById('cardView');
   const lView = document.getElementById('lView');
   if (!cv || !lView) return;
@@ -427,25 +414,36 @@ function openEntryByUid(uid) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (typeof DATA === 'undefined') return;
-  Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
-
   const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
   if (listOnly) {
     viewMode = 'list';
     document.getElementById('phViewBtn')?.style.setProperty('display', 'none');
     document.getElementById('cardView')?.style.setProperty('display', 'none');
-  } else {
-    const isHome = !!document.getElementById('cardView')?.classList.contains('cv-home');
-    const saved = localStorage.getItem('viewMode');
-    if (saved && !isHome) viewMode = saved;
   }
   if (typeof updateFabState !== 'undefined') updateFabState();
-  rebuild();
 
-
-  if (typeof window.__OPEN_UID__ !== 'undefined') {
-    openSheet(window.__OPEN_UID__);
+  if (typeof window.__SELF_ENTRY__ !== 'undefined') {
+    // Permalink page: only this one entry is embedded. Open its modal
+    // immediately, then fetch the section's shared (cached) data file in
+    // idle time to build the background list — instead of every permalink
+    // shipping a full copy of the whole section's data.
+    window.DATA = window.DATA || {};
+    S[window.__SELF_ENTRY__.uid] = window.__SELF_ENTRY__;
+    openSheet(window.__SELF_ENTRY__.uid);
+    if (window.__DATA_URL__) {
+      (window.requestIdleCallback || (fn => setTimeout(fn, 0)))(() => {
+        fetch(window.__DATA_URL__).then(r => r.json()).then(data => {
+          window.DATA = data;
+          Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
+          rebuild();
+        }).catch(() => {});
+      });
+    }
+  } else if (typeof DATA !== 'undefined') {
+    Object.values(DATA).forEach(entries => entries.forEach(e => { S[e.uid] = e; }));
+    rebuild();
+  } else {
+    return;
   }
 
   window.addEventListener('popstate', () => {
@@ -472,39 +470,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function toggleHomeFilter(e) {
-  e && e.stopPropagation();
-  const wrap = document.getElementById('shFilter');
-  if (!wrap) return;
-  const opening = wrap.dataset.open !== 'true';
-  wrap.dataset.open = opening ? 'true' : 'false';
-  document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', String(opening));
-  if (opening) {
-    requestAnimationFrame(() => {
-      document.addEventListener('click', _shFilterOutside, { once: true });
-    });
-  }
-}
-
-function _shFilterOutside(e) {
-  const wrap = document.getElementById('shFilter');
-  if (!wrap?.contains(e.target)) {
-    wrap && (wrap.dataset.open = 'false');
-    document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', 'false');
-  }
-}
-
-function setFilter(type, label) {
-  if (typeof window.__LISTING__ === 'undefined') return;
-  window.__LISTING__.type = type || null;
-  rebuild();
-  document.querySelectorAll('.sh-dp-item').forEach(p => {
-    p.classList.toggle('active', (p.dataset.type || '') === (type || ''));
-  });
-  const lbl = document.getElementById('shFilterLabel');
-  if (lbl) lbl.textContent = label || 'Everything';
-  const wrap = document.getElementById('shFilter');
-  if (wrap) wrap.dataset.open = 'false';
-  document.getElementById('shFilterBtn')?.setAttribute('aria-expanded', 'false');
-}
 

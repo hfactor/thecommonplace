@@ -102,9 +102,11 @@
   justify-content: center;
   position: relative;
   text-decoration: none;
-  width: 100%;
-  height: 100%;
 }
+/* Only needed when nested inside a wrapper column (uses modal); when
+   .modal-cover-link IS the .modal-cover-col (reading modal), that class
+   already governs sizing — width:100% here would fight it. */
+.modal-uses-img-col .modal-cover-link { width: 100%; height: 100%; }
 .modal-cover-link .modal-ext-badge {
   position: absolute;
   bottom: 8px; right: 8px;
@@ -281,8 +283,9 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
   margin-top: var(--space-4);
 }
 
-.modal-body a { color: var(--accent); text-decoration: none; transition: text-decoration-color var(--dur-base), text-underline-offset var(--dur-base); }
-.modal-body a:hover { text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
+.modal-body a { color: var(--accent); text-decoration: none; position: relative; display: inline-block; vertical-align: baseline; white-space: nowrap; }
+.modal-body a .link-scribble { position: absolute; top: calc(100% - 6px); left: 0; pointer-events: none; overflow: hidden; clip-path: inset(0 100% 0 0); transition: clip-path 0.3s cubic-bezier(0.7,0,0.3,1); }
+.modal-body a:hover .link-scribble { clip-path: inset(0 0% 0 0); transition-timing-function: cubic-bezier(0.8,1,0.7,1); transition-duration: 0.22s; }
 
 .modal-ext-btn {
   display: inline-flex;
@@ -326,8 +329,6 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
 }
 .sheet-close--bar:hover { background: none; }
 
-.modal-rec { color: var(--accent); font-size: 0.75em; vertical-align: middle; margin-left: 6px; }
-
 /* ── Uses modal: two-column 50/50 ───────────────── */
 .modal-uses {
   display: flex;
@@ -368,27 +369,3 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
   .modal-uses-img-col { width: 100%; max-height: 200px; }
   .modal-uses-img { max-height: 140px; width: auto; }
 }
-
-/* ── Uses sheet (keeps old sh- styles) ──────────── */
-.sh-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: var(--space-4); position: relative; text-decoration: none; color: inherit; }
-.sh-cover { width: 72px; height: auto; border-radius: var(--r-xs); flex-shrink: 0; box-shadow: -2px 2px 8px rgba(0,0,0,0.16); display: block; }
-[data-theme="ink"] .sh-cover { box-shadow: -2px 2px 8px rgba(0,0,0,0.5); }
-.sh-cover-sq { width: 80px; height: 80px; object-fit: contain; padding: 8px; mix-blend-mode: multiply; }
-[data-theme="ink"] .sh-cover-sq { mix-blend-mode: screen; }
-.sh-cover-blank { width: 72px; height: 96px; background: var(--surface2); border-radius: var(--r-xs); flex-shrink: 0; }
-.sh-cover-wrap { position: relative; flex-shrink: 0; line-height: 0; align-self: flex-start; }
-.sh-info { display: flex; flex-direction: column; gap: var(--space-1); padding-top: 2px; flex: 1; }
-.sh-title { font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); }
-.sh-meta { font-size: var(--text-sm); color: var(--ink2); }
-.sh-date { font-size: var(--text-sm); color: var(--ink2); }
-.sh-rule { border: none; border-top: 1px solid var(--border-light); margin: 14px 0; }
-.sh-body { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-prose); }
-.sh-body a { color: var(--accent); text-decoration: none; transition: text-decoration-color var(--dur-base), text-underline-offset var(--dur-base); }
-.sh-body a:hover { text-decoration: underline wavy var(--accent); text-underline-offset: var(--underline-offset-hover); }
-.sh-ext-ind { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; align-self: center; border: 1px solid var(--border-light); border-radius: var(--r-full); color: var(--ink2); }
-.sh-ext-ind svg { width: 14px; height: 14px; }
-a.sh-row:hover .sh-ext-ind { border-color: var(--border); color: var(--ink); }
-a.sh-row:hover .sh-title { color: var(--accent); }
-.sh-bm-icon { width: 72px; height: 72px; border-radius: var(--r-xs); border: 1px solid var(--border-light); background: var(--surface); overflow: hidden; }
-.sh-bm-bar { background: var(--surface2); border-bottom: 1px solid var(--border-light); padding: 6px 7px; display: flex; gap: 4px; align-items: center; }
-.sh-bm-dot { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--border); flex-shrink: 0; }

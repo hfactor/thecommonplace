@@ -1,6 +1,8 @@
 {{- $cur := .RelPermalink -}}
 {{- $ctx := "default" -}}
 {{- if and .IsSection (not (eq .Section "notes")) (not .IsHome) -}}{{- $ctx = "section" -}}{{- end -}}
+{{/* Single reading/bookmark pages render the full section list behind an auto-opened modal — closing it should give the same /reading/ or /bookmarks/ experience, toggle included. */}}
+{{- if and (not .IsSection) (in (slice "reading" "bookmarks") .Section) -}}{{- $ctx = "section" -}}{{- end -}}
 
 {{- $sectionLabel := "" -}}
 {{- if eq $ctx "section" -}}
@@ -26,8 +28,8 @@
 
 
 {{- if eq $ctx "section" -}}
-      <div class="sh-view-toggle pn-bar-vt" id="shViewToggle" data-mode="cal">
-        <button class="sh-vt-btn active" data-mode="cal" onclick="event.stopPropagation();setViewMode('card')" aria-label="Card view">
+      <div class="sh-view-toggle pn-bar-vt" id="shViewToggle" data-mode="card">
+        <button class="sh-vt-btn active" data-mode="card" onclick="event.stopPropagation();setViewMode('card')" aria-label="Card view">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="1" width="4.5" height="11" rx="1.5"/><rect x="7.5" y="1" width="4.5" height="11" rx="1.5"/></svg>
         </button>
         <button class="sh-vt-btn" data-mode="list" onclick="event.stopPropagation();setViewMode('list')" aria-label="List view">

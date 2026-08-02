@@ -6,7 +6,7 @@ date: 2022-01-11
 language: English
 genre: Non-Fiction
 recommended: true
-image: https://m.media-amazon.com/images/I/41hqY19S9rL.jpg
+image: /img/reading/how-to-take-smart-notes.jpg
 link: https://amzn.to/3Mnc7oB
 ---
 A solid guide on using the [[Zettelkasten]] method for note-taking. The book has a clear purpose, and if it aligns with your needs, it's a valuable resource.

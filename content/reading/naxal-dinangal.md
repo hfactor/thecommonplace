@@ -6,7 +6,7 @@ date:
 language: Malayalam
 genre: Non-Fiction
 recommended:
-image: https://m.media-amazon.com/images/I/51AFV-lZtmL.jpg
+image: /img/reading/naxal-dinangal.jpg
 link: https://amzn.to/3QZVQeY
 reading-status: reading
 ---

@@ -1,0 +1,27 @@
+{{- $months := dict -}}
+{{- range .Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "bookmarks" -}}
+    {{- $key  := dateFormat "2006-01" .Date -}}
+    {{- $uid  := printf "bookmarks/%s" .File.ContentBaseName -}}
+    {{- $href   := default "" .Params.href -}}
+    {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
+    {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
+    {{- $entry := dict
+      "uid"      $uid
+      "type"     "bookmarks"
+      "day"      (int (dateFormat "2" .Date))
+      "title"    .Title
+      "date"     (dateFormat "Jan 2, 2006" .Date)
+      "domain"   $domain
+      "href"     $href
+      "category" (default "" .Params.category)
+      "content"  (printf "%s" .Content)
+      "summary"  (printf "%s" (.Summary | default ""))
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{ $months | jsonify }}

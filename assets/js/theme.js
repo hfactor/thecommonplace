@@ -45,7 +45,7 @@ function updateFabIcons() {
   // Sync segmented toggle
   const toggle = document.getElementById('shViewToggle');
   if (toggle) {
-    const mode = vm === 'list' ? 'list' : 'cal';
+    const mode = vm === 'list' ? 'list' : 'card';
     toggle.dataset.mode = mode;
     toggle.querySelectorAll('.sh-vt-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.mode === mode);
@@ -56,17 +56,21 @@ function updateFabIcons() {
 // Alias so main.js can call this after setViewMode
 function updateFabState() { updateFabIcons(); }
 
-// Append ref=hiran.in to all external links
+// Append a tracking param to all external links.
+// Substack reserves `ref` for its own referral-attribution system — an
+// arbitrary value there breaks its subscribe flow — so Substack links get
+// the standard, non-reserved `utm_source` instead.
 function withRef(url) {
   if (!url || !url.startsWith('http')) return url || '#';
-  return url + (url.includes('?') ? '&' : '?') + 'ref=hiran.in';
+  const param = url.includes('substack.com') ? 'utm_source=hiran.in' : 'ref=hiran.in';
+  return url + (url.includes('?') ? '&' : '?') + param;
 }
 
 function subscribeNewsletter(e) {
   e.preventDefault();
   const email = e.target.querySelector('input[type="email"]').value.trim();
   if (!email) return;
-  window.open('https://hiran.substack.com?email=' + encodeURIComponent(email) + '&ref=hiran.in', '_blank');
+  window.open('https://hiran.substack.com?email=' + encodeURIComponent(email) + '&utm_source=hiran.in', '_blank');
 }
 
 function copyEmail(el) {

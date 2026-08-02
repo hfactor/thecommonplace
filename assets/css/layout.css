@@ -1,5 +1,3 @@
-html.view-list-init #cardView:not(.cv-home) { display: none; }
-html.view-list-init #lView { display: block; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: var(--font); font-size: var(--text-base); line-height: 1.5; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
 html:has(#cardView.cv-home),
@@ -112,7 +110,7 @@ button { font-family: var(--font); }
   /* Section pages: compact card view, vertically centred */
   #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) / 2); margin-bottom: auto; }
   body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
-  #lView { padding-left: var(--gap-sm); padding-right: var(--gap-sm); }
+  #lView { padding: var(--gap) var(--gap-sm) 100px; }
   /* On mobile, section pages scroll the full page */
   body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
   body:has(#lView) .content { overflow: visible; }
@@ -120,8 +118,7 @@ button { font-family: var(--font); }
 
 
 /* ── External link icon (shared) ────────────────── */
-.sp-text a[href^="http"]::after,
-.sh-body a[href^="http"]::after {
+.sp-text a[href^="http"]::after {
   content: '';
   display: inline-block;
   width: 0.4em;

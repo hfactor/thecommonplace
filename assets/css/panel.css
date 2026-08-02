@@ -1,19 +1,3 @@
-/* ─── Page avatar (now, colophon, static pages) ────── */
-.page-avatar {
-  display: block;
-  width: 48px;
-  height: 48px;
-  margin-bottom: var(--space-4);
-  margin-left: -10px;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-.page-avatar svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
 /* ─── Project meta row — date + collaborators inline ── */
 .sp-meta-row {
   display: flex;
@@ -145,11 +129,6 @@
 
 /* Notes index: space between description and list */
 .sp-text + .l-row { margin-top: var(--space-8); }
-
-/* Backlinks */
-.sp-backlink-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-.sp-backlink-item { font-size: var(--text-base); color: var(--ink2); padding: 10px var(--space-3); background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-sm); cursor: pointer; transition: all var(--dur-fast); line-height: var(--lh-tight); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-.sp-backlink-item:hover { color: var(--ink); border-color: var(--border); background: var(--surface2); }
 
 /* Notes pages — shared scroll + reading layout */
 .notes-scroll-area {

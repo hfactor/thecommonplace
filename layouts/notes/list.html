@@ -1,17 +1,10 @@
 {{ define "main" }}
 {{- $notes := (where .Site.RegularPages "Section" "notes").ByLastmod.Reverse -}}
-<div class="app">
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
+{{ partial "readable-open.html" (dict) }}
       <h1 class="page-title">{{ .Title }}</h1>
       {{- with .Description -}}<div class="sp-text"><p>{{ . }}</p></div>{{- end -}}
       {{- range $notes -}}
-      <a class="l-row" data-type="notes" href="{{ .RelPermalink }}">
-        <div class="l-title">{{ .Title }}</div>
-      </a>
+      {{ partial "list-row.html" (dict "href" .RelPermalink "title" .Title "type" "notes") }}
       {{- end -}}
-    </div>
-    {{ partial "site-footer.html" . }}
-  </div>
-</div>
+{{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

@@ -6,7 +6,7 @@ date: 2022-06-29
 language: Malayalam
 genre: Fiction
 recommended: true
-image: https://dcbookstore.com/uploads/product/images/72528964476100-manja.JPG
+image: /img/reading/manjaveyil-maranangal.jpg
 link: https://dcbookstore.com/books/manjaveyil-maranangal
 ---
 ബെന്യാമിന്റെ എഴുത്തുകളിൽ വച്ച് എനിക്ക് പ്രിയപ്പെട്ടത് മഞ്ഞവെയിൽ മരണങ്ങളാണ്. എഴുത്തിന്റെ ഓളം, കഥ പറഞ്ഞ് പോവുന്ന രീതി, ആഖ്യാനത്തിലെ ഫ്ലാഷ്ബാക്കും ചരിത്രവും ഡീഗോ ഗാർഷ്യയും, ക്ലൈമാക്സും അങ്ങനെ പലതും അതിനെ പ്രിയപ്പെട്ടതാക്കി.
