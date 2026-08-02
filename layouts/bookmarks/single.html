@@ -31,7 +31,7 @@ window.__DATA_URL__ = "{{ "bookmarks/data.json" | relURL }}";
 {{ define "sheet" }}
 {{- $href   := .Params.href | default "" -}}
 {{- $domain := .Params.domain | default (replaceRE "^https?://([^/?#]+).*" "$1" $href) -}}
-{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
 <div class="sheet-overlay open" id="sheetOverlay" onclick="closeSheetOutside(event)">
   <div class="sheet" id="sheet">
     <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>

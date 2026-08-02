@@ -23,7 +23,7 @@
           {{- end -}}
           {{- if .Params.href -}}
           {{- $parsed := urls.Parse .Params.href -}}
-          <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ .Params.href }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           {{- end -}}
         </span>
       </div>

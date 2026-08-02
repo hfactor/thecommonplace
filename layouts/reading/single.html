@@ -34,7 +34,7 @@ window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
 {{- $title  := or .Params.localTitle .Title -}}
 {{- $rUrl   := .Params.link | default "" -}}
 {{- $isRec  := or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes") -}}
-{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+{{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
 <div class="sheet-overlay open" id="sheetOverlay" onclick="closeSheetOutside(event)">
   <div class="sheet sheet--wide" id="sheet">
     <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
