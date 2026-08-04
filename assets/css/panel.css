@@ -191,4 +191,111 @@
 .now-book-title { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-tight); }
 .now-book-author { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-tight); }
 
+/* ─── 404 page ───────────────────────────────────── */
+.err404-wrap { min-height: 40vh; display: flex; align-items: center; gap: var(--space-10); flex-wrap: wrap; }
+.err404 { flex: 1; min-width: 240px; display: flex; flex-direction: column; align-items: flex-start; }
+.err404-code { display: inline-block; font-family: var(--font-display); font-size: 72px; font-weight: var(--weight-semibold); color: var(--ink2); opacity: 0.3; line-height: 1; margin-bottom: var(--space-4); transform: rotate(-4deg); }
+.err404-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-3); }
+.err404-copy { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-relaxed); margin-bottom: var(--space-6); max-width: 46ch; }
+
+.err404-home {
+  flex-shrink: 0;
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+  background: none;
+  text-decoration: none;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-pill);
+  padding: 9px 16px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.err404-home:hover { background: var(--accent); color: var(--bg); }
+
+/* ─── 404 puzzle — a tilted book, casual not a centerpiece ── */
+.err404-puzzle { flex-shrink: 0; position: relative; transform: rotate(-4deg); }
+.err404-puzzle[hidden] { display: none; }
+.err404-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  width: 176px;
+  max-width: 100%;
+  background: var(--border);
+  border-radius: var(--r-xs) 1px 1px var(--r-xs);
+  overflow: visible;
+  position: relative;
+  box-shadow:
+    -6px 5px 18px rgba(0, 0, 0, 0.26),
+    -1px 1px 4px rgba(0, 0, 0, 0.12),
+    inset -2px 0 4px rgba(0, 0, 0, 0.06);
+  transition: box-shadow var(--dur-base), transform var(--dur-base);
+}
+.err404-board.is-solved {
+  box-shadow:
+    -10px 8px 24px rgba(0, 0, 0, 0.30),
+    -2px 2px 6px rgba(0, 0, 0, 0.14),
+    inset -2px 0 4px rgba(0, 0, 0, 0.08);
+}
+.err404-board.is-win-flash { animation: err404-win 0.5s cubic-bezier(.34,1.56,.64,1); }
+@keyframes err404-win {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.1) rotate(2deg); }
+  70%  { transform: scale(0.97) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.err404-board::before {
+  content: '';
+  position: absolute;
+  right: -6px; top: 2px; bottom: 2px;
+  width: 6px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(to right, var(--spine-from), var(--spine-to));
+  box-shadow: inset -1px 0 2px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  z-index: 0;
+}
+.err404-tile {
+  background-size: 300% 300%;
+  cursor: grab;
+  touch-action: none;
+  transition: filter var(--dur-fast);
+  position: relative;
+}
+.err404-tile:hover { filter: brightness(1.08); }
+.err404-tile.is-dragging { cursor: grabbing; z-index: 5; filter: brightness(1.15); }
+.err404-tile.is-drop-target { outline: 2px solid var(--accent); outline-offset: -2px; }
+.err404-tile.is-correct { cursor: default; }
+
+.err404-link-badge {
+  position: absolute;
+  bottom: -10px; right: -10px;
+  width: 32px; height: 32px;
+  border-radius: var(--r-full);
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  animation: err404-badge-pop 0.4s cubic-bezier(.34,1.56,.64,1) 0.15s both;
+}
+.err404-link-badge[hidden] { display: none; }
+@keyframes err404-badge-pop {
+  0%   { transform: scale(0); }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 559px) {
+  .err404-wrap { flex-direction: column-reverse; align-items: center; text-align: left; gap: var(--space-8); }
+  .err404 { align-items: flex-start; }
+}
+
 

@@ -430,6 +430,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.DATA = window.DATA || {};
     S[window.__SELF_ENTRY__.uid] = window.__SELF_ENTRY__;
     openSheet(window.__SELF_ENTRY__.uid);
+    // openSheet captured window.location.href as the "previous" URL, but on a
+    // direct permalink load that IS this page — closing should fall back to
+    // the section list instead of re-landing on the same permalink.
+    _sheetPrevUrl = '/' + window.__SELF_ENTRY__.uid.split('/')[0] + '/';
     if (window.__DATA_URL__) {
       (window.requestIdleCallback || (fn => setTimeout(fn, 0)))(() => {
         fetch(window.__DATA_URL__).then(r => r.json()).then(data => {
