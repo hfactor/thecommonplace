@@ -3,40 +3,40 @@ tool_groups:
     items:
       - name: Hugo
         url: https://gohugo.io
-        description: The base. Recently moved here from Jekyll. Faster, cleaner, easier to extend.
+        description: Static site generator, moved here from Jekyll
       - name: GitHub Pages
         url: https://pages.github.com
-        description: Hosting. Quietly publishes every commit without getting in the way.
+        description: Hosting
       - name: Namecheap
         url: https://www.namecheap.com
-        description: Domain registrar. Where this little corner of the internet lives.
+        description: Domain registrar
 
   - label: Editors
     items:
       - name: Claude Code
         url: https://claude.ai
-        description: My current co-worker for building, experimenting, and figuring things out.
+        description: AI coding tool used to build and edit the site
       - name: Visual Studio Code
         url: https://code.visualstudio.com
-        description: Code editor. Where the manual edits still happen, usually when tokens run out.
+        description: Code editor, for manual edits
       - name: Obsidian
         url: https://obsidian.md
-        description: Writing app. Notes, drafts, everything.
+        description: Notes and writing app
       - name: MarkTable
         url: https://github.com/stultus/marktable
-        description: A tool I built. Because not every YAML file deserves line-by-line editing.
+        description: A tool I built for editing YAML files directly
 
   - label: Typefaces
     items:
       - name: Public Sans
         url: https://fonts.google.com/specimen/Public+Sans
-        description: Body typeface. Clean and readable.
+        description: Body typeface
       - name: Bricolage Grotesque
         url: https://fonts.google.com/specimen/Bricolage+Grotesque
-        description: Display typeface. Adds character without shouting.
+        description: Display typeface
       - name: Manjari
         url: https://fonts.google.com/specimen/Manjari
-        description: Malayalam typeface. For content in my mother tongue.
+        description: Malayalam typeface
 
 people_heading: "People Behind This Place"
 people_intro: "This place carries the influence of many people. Some believed in me early, some opened doors, challenged my thinking, reviewed my work, fixed bugs, and quietly shaped how this website evolved. Some are mentors. Some are collaborators. Some are friends. Some may never know how much they influenced what you see here. If your face is missing, please [open an issue](https://github.com/hfactor/commonplace/issues/new)."
