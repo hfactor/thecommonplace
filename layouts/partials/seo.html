@@ -26,7 +26,7 @@
 <meta name="description" content="{{ $desc }}">
 {{ with $keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
 <meta name="author" content="Hiran Venugopalan">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="{{ if eq .Section "work" }}noindex, nofollow{{ else }}index, follow{{ end }}">
 <link rel="canonical" href="{{ .Permalink }}">
 
 <!-- Open Graph -->
@@ -67,6 +67,34 @@
     "addressCountry": "IN"
   },
   "knowsAbout": ["Product Design", "UX Design", "Open Source Software", "Typography", "Malayalam Computing"]
+}
+</script>
+{{ else if eq .Section "work" }}
+<!-- JSON-LD: Person + work history (for ATS / AI parsing) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Hiran Venugopalan",
+  "jobTitle": "Product Design Leader",
+  "url": "https://hiran.in/work/",
+  "email": "mailto:hiran.v@gmail.com",
+  "description": {{ $desc | jsonify }},
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bengaluru",
+    "addressCountry": "IN"
+  },
+  "knowsAbout": {{ .Params.tags | default slice | jsonify }},
+  "hasOccupation": [
+    {{ range $i, $e := .Params.experience }}{{ if $i }},{{ end }}
+    {
+      "@type": "Role",
+      "roleName": {{ $e.role | jsonify }},
+      "hiringOrganization": { "@type": "Organization", "name": {{ $e.org | jsonify }} }
+    }
+    {{ end }}
+  ]
 }
 </script>
 {{ else if eq .Section "notes" }}

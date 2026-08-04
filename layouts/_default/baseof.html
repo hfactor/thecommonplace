@@ -27,6 +27,7 @@
   (resources.Get "css/list.css")
   (resources.Get "css/animations.css")
   (resources.Get "css/home.css")
+  (resources.Get "css/work.css")
   (resources.Get "css/stickers.css")
   | resources.Concat "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">

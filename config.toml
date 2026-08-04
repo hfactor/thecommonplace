@@ -36,10 +36,18 @@ ignoreFiles = [
     render = false
   [params.sections.uses]
     render = true
+  [params.sections.work]
+    render = true
 
 [outputFormats.SectionData]
   mediaType = "application/json"
   baseName = "data"
+  isPlainText = true
+  notAlternative = true
+
+[outputFormats.PlainResume]
+  mediaType = "text/markdown"
+  baseName = "resume"
   isPlainText = true
   notAlternative = true
 

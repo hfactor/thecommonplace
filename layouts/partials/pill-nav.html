@@ -1,6 +1,6 @@
 {{- $cur := .RelPermalink -}}
 {{- $ctx := "default" -}}
-{{- if and .IsSection (not (eq .Section "notes")) (not .IsHome) -}}{{- $ctx = "section" -}}{{- end -}}
+{{- if and .IsSection (not (eq .Section "notes")) (not (eq .Section "work")) (not .IsHome) -}}{{- $ctx = "section" -}}{{- end -}}
 {{/* Single reading/bookmark pages render the full section list behind an auto-opened modal — closing it should give the same /reading/ or /bookmarks/ experience, toggle included. */}}
 {{- if and (not .IsSection) (in (slice "reading" "bookmarks") .Section) -}}{{- $ctx = "section" -}}{{- end -}}
 

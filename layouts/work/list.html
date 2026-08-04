@@ -1,0 +1,138 @@
+{{ define "main" }}
+{{ partial "readable-open.html" (dict) }}
+
+      <div class="work-header">
+        <h1 class="work-title">
+          <span class="work-title-eyebrow">Professional Experience</span>
+          <span class="work-title-name">Hiran Venugopalan</span>
+        </h1>
+      </div>
+      <div class="sp-text work-intro">{{ .Content }}</div>
+
+      {{- with .Params.experience }}
+      <div class="work-timeline">
+        <div class="work-section-label">Experience</div>
+        <div class="work-role-rail">
+          {{- range . }}
+          {{- $current := strings.Contains .dates "Present" }}
+          <div class="work-role">
+            <div class="work-role-head">
+              <span class="work-role-title">{{ .role }}</span>
+              <span class="work-role-org">{{ .org }}</span>
+              <span class="work-role-dates">{{ .dates }}</span>
+            </div>
+            <p class="work-role-body">{{ .body }}</p>
+            {{- if not $current }}
+            <button type="button" class="work-role-case" data-work-modal-open>
+              <svg class="work-role-case-icon" viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M5 6.5V4.5a2 2 0 0 1 4 0v2"/></svg>
+              Ask about this
+            </button>
+            {{- end }}
+          </div>
+          {{- end }}
+        </div>
+      </div>
+      {{- end }}
+
+      {{- with .Params.community }}
+      <div class="work-community">
+        <div class="work-section-label">Communities</div>
+        {{- range . }}
+        <div class="work-community-item">
+          <div class="work-community-head">
+            <span class="work-community-name">{{ .name }}</span>
+            <span class="work-community-dates">{{ .dates }}</span>
+          </div>
+          <p class="work-community-body">{{ .body }}</p>
+        </div>
+        {{- end }}
+      </div>
+      {{- end }}
+
+      {{- with .Params.tags }}
+      <div class="work-tags-wrap">
+        <div class="work-section-label">Focus Areas</div>
+        <div class="work-tags">{{ delimit . " · " }}</div>
+      </div>
+      {{- end }}
+
+      <div class="work-contact">
+        <div class="work-section-label">Contact</div>
+        <a class="work-contact-link" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
+      </div>
+
+      <div class="work-modal-backdrop" id="workModalBackdrop" hidden>
+        <div class="work-modal" role="dialog" aria-modal="true" aria-labelledby="workModalLabel">
+          <button type="button" class="work-modal-close" id="workModalClose" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+          </button>
+
+          <div class="work-modal-body" id="workModalGate">
+            <div class="work-modal-label" id="workModalLabel">
+              <svg class="work-cases-lock" viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M5 6.5V4.5a2 2 0 0 1 4 0v2"/></svg>
+              Ask About This
+            </div>
+            <p class="work-modal-copy">Most of my work has been on long-term product platforms and isn't documented publicly. Enter the password if you have it, or reach out directly.</p>
+            <form class="work-gate-form" id="workGateForm">
+              <input type="password" class="work-gate-input" id="workGatePassword" placeholder="Password" autocomplete="off">
+              <button type="submit" class="work-gate-submit">View</button>
+            </form>
+            <div class="work-modal-or">or</div>
+            <a class="work-contact-link" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
+          </div>
+
+          <div class="work-modal-body" id="workModalNoAccess" hidden>
+            <h3 class="work-interest-heading">Looks like you don't have access yet.</h3>
+            <p class="work-interest-copy">If you'd like to continue the conversation, feel free to email me. I'll share the work that's most relevant.</p>
+            <a class="work-interest-btn" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+<script>
+(function () {
+  var backdrop  = document.getElementById('workModalBackdrop');
+  var closeBtn  = document.getElementById('workModalClose');
+  var gate      = document.getElementById('workModalGate');
+  var noAccess  = document.getElementById('workModalNoAccess');
+  var gateForm  = document.getElementById('workGateForm');
+  var triggers  = document.querySelectorAll('[data-work-modal-open]');
+
+  function openModal() {
+    gate.hidden = false;
+    noAccess.hidden = true;
+    gateForm.reset();
+    gateForm.querySelector('.work-gate-submit').disabled = false;
+    backdrop.hidden = false;
+    document.getElementById('workGatePassword').focus();
+  }
+
+  function closeModal() {
+    backdrop.hidden = true;
+  }
+
+  triggers.forEach(function (btn) {
+    btn.addEventListener('click', openModal);
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function (e) {
+    if (e.target === backdrop) closeModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !backdrop.hidden) closeModal();
+  });
+
+  gateForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = gateForm.querySelector('.work-gate-submit');
+    btn.disabled = true;
+    setTimeout(function () {
+      gate.hidden = true;
+      noAccess.hidden = false;
+    }, 450);
+  });
+})();
+</script>
+{{ end }}

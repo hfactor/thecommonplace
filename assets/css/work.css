@@ -1,0 +1,344 @@
+/* ── Work page: resume + career path ─────────────── */
+
+/* Extra breathing room below the nav before the page starts */
+.notes-reading:has(.work-header) {
+  padding-top: calc(var(--hdr-h) + var(--space-12) * 1.15);
+}
+
+/* Header: eyebrow + name; intro runs full width below */
+.work-header {
+  margin-bottom: calc(var(--space-3) * 1.15);
+}
+
+.work-title { margin-bottom: 0; }
+.work-title-eyebrow {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: var(--weight-normal);
+  color: var(--ink2);
+  margin-bottom: 2px;
+}
+.work-title-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-normal);
+  color: var(--ink);
+  line-height: var(--lh-display);
+  letter-spacing: -0.02em;
+}
+
+.work-intro {
+  font-size: var(--text-base);
+  max-width: none;
+  margin-top: calc(var(--space-6) * 1.15);
+  margin-bottom: calc(var(--space-12) * 1.15);
+}
+
+.work-section-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  opacity: 0.6;
+  margin-bottom: calc(var(--space-4) * 1.15);
+}
+
+/* Experience — a timeline rail with a dot per role */
+.work-timeline { margin-top: calc(var(--space-12) * 1.15); }
+
+.work-role-rail {
+  position: relative;
+  padding-left: calc(var(--space-6) * 1.15);
+  border-left: 2px solid var(--border-light);
+}
+
+.work-role {
+  position: relative;
+  padding-bottom: calc(var(--space-8) * 1.15);
+}
+.work-role:last-child { padding-bottom: 0; }
+.work-role::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-6) * 1.15 - 5px);
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+}
+
+.work-role-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-bottom: 6px;
+}
+.work-role-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+.work-role-org {
+  font-size: var(--text-base);
+  color: var(--ink2);
+}
+.work-role-org::before { content: '· '; }
+.work-role-dates {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+.work-role-body {
+  font-size: var(--text-base);
+  color: var(--ink2);
+  line-height: var(--lh-prose);
+}
+
+.work-role-case {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: var(--space-3);
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.7;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity var(--dur-fast);
+}
+.work-role-case:hover { opacity: 1; text-decoration: underline; }
+.work-role-case-icon { width: 12px; height: 12px; flex-shrink: 0; stroke: currentColor; }
+
+/* Community — three separate affiliations, always expanded */
+.work-community { margin-top: calc(var(--space-12) * 1.15); }
+
+.work-community-item {
+  padding: calc(var(--space-4) * 1.15) 0;
+}
+.work-community-item:first-child { padding-top: 0; }
+.work-community-item:last-child { padding-bottom: 0; }
+
+.work-community-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.work-community-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+}
+.work-community-dates {
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.work-community-body {
+  font-size: var(--text-base);
+  color: var(--ink2);
+  line-height: var(--lh-prose);
+  margin-top: calc(var(--space-3) * 1.15);
+}
+
+/* Contact — just the email, set big */
+.work-contact { margin-top: calc(var(--space-12) * 1.15); }
+.work-contact-link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+.work-contact-link:hover { color: var(--accent); }
+
+/* Case study modal — triggered per-role, offers password or a direct contact */
+.work-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay, rgba(0, 0, 0, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  z-index: 200;
+}
+.work-modal-backdrop[hidden] { display: none; }
+
+.work-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: calc(var(--space-8) * 1.15);
+  box-shadow: var(--shadow-lg, 0 20px 60px -20px rgba(0, 0, 0, 0.35));
+}
+
+.work-modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  color: var(--ink2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: color var(--dur-fast);
+}
+.work-modal-close:hover { color: var(--ink); }
+
+.work-modal-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  opacity: 0.6;
+  margin-bottom: calc(var(--space-3) * 1.15);
+}
+.work-cases-lock {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  stroke: var(--accent);
+  opacity: 1;
+}
+.work-modal-copy {
+  font-size: var(--text-base);
+  color: var(--ink2);
+  line-height: var(--lh-relaxed);
+  margin-bottom: calc(var(--space-6) * 1.15);
+}
+
+.work-gate-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.work-modal-or {
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.6;
+  margin: calc(var(--space-4) * 1.15) 0 var(--space-2);
+}
+
+.work-interest-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.work-interest-copy {
+  font-size: var(--text-base);
+  color: var(--ink2);
+  line-height: var(--lh-relaxed);
+  margin-bottom: calc(var(--space-4) * 1.15);
+  max-width: 52ch;
+}
+
+.work-interest-btn {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+  text-decoration: none;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-pill);
+  padding: 9px 16px;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.work-interest-btn:hover { background: var(--accent); color: var(--bg); }
+
+.work-gate-input {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 2px;
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  transition: border-color var(--dur-fast);
+}
+.work-gate-input:focus { border-color: var(--accent); }
+
+.work-gate-submit {
+  flex-shrink: 0;
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+  background: none;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-pill);
+  padding: 9px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.work-gate-submit:hover { background: var(--accent); color: var(--bg); }
+.work-gate-submit:disabled { opacity: 0.5; cursor: default; }
+
+/* Tags — same section-label rhythm as the rest of the page */
+.work-tags-wrap {
+  margin-top: calc(var(--space-12) * 1.15);
+}
+.work-tags {
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  line-height: var(--lh-relaxed);
+}
+
+@media (max-width: 639px) {
+  .work-role-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .work-role-org::before { content: none; }
+  .work-role-dates { margin-left: 0; opacity: 0.6; }
+
+  .work-community-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .work-gate-input { width: 140px; }
+
+  .work-role-body,
+  .work-community-body,
+  .work-modal-copy,
+  .work-interest-copy {
+    hyphens: auto;
+    text-wrap: pretty;
+  }
+}
