@@ -34,6 +34,7 @@
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="/feed.xml">
 </head>
 <body>
+{{ partial "intro-splash.html" . }}
 {{ partial "pill-nav.html" . }}
 {{ block "main" . }}{{ end }}
 {{ block "sheet" . }}{{ partial "sheet.html" . }}{{ end }}

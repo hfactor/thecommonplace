@@ -1,0 +1,36 @@
+<div class="intro-splash" id="introSplash" aria-hidden="true">
+  <div class="intro-splash-mark" id="introSplashMark">
+    {{- with resources.Get "img/h-logo.svg" -}}{{ .Content | safeHTML }}{{- end -}}
+  </div>
+</div>
+<script>
+(function () {
+  var KEY = 'introSplashSeen';
+  var el = document.getElementById('introSplash');
+  if (!el) return;
+  if (sessionStorage.getItem(KEY)) { el.remove(); return; }
+  sessionStorage.setItem(KEY, '1');
+
+  document.documentElement.classList.add('intro-splash-active');
+
+  var mark = document.getElementById('introSplashMark');
+  var holdDelay = 1120;
+
+  void mark.offsetWidth; // force a style flush so the initial state is committed before we transition
+  requestAnimationFrame(function () {
+    el.classList.add('is-in');
+    // Chained off the same frame is-in actually lands in, so a delayed rAF
+    // (backgrounded tab, busy main thread on a cold load) can't race this
+    // against an independent timer and close the splash before it opens.
+    setTimeout(function () {
+      el.classList.add('is-out');
+      document.documentElement.classList.remove('intro-splash-active');
+    }, holdDelay);
+  });
+
+  el.addEventListener('transitionend', function (e) {
+    if (e.propertyName === 'opacity' && el.classList.contains('is-out')) el.remove();
+  });
+  setTimeout(function () { el.remove(); }, holdDelay + 800);
+})();
+</script>
