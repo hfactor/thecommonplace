@@ -16,7 +16,9 @@
 {{ partial "seo.html" . }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Manjari:wght@100;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manjari:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Manjari:wght@400&display=swap" rel="stylesheet"></noscript>
 {{ $css := slice
   (resources.Get "css/tokens.css")
   (resources.Get "css/layout.css")
@@ -34,7 +36,6 @@
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="/feed.xml">
 </head>
 <body>
-{{ partial "intro-splash.html" . }}
 {{ partial "pill-nav.html" . }}
 {{ block "main" . }}{{ end }}
 {{ block "sheet" . }}{{ partial "sheet.html" . }}{{ end }}

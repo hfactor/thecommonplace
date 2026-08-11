@@ -3,7 +3,7 @@
   <div class="notes-scroll-area">
     <div class="notes-reading">
 
-      <h1 class="page-title note-title">{{ .Title }}</h1>
+      {{ partial "page-title.html" (dict "title" .Title) }}
 
       <div class="sp-text">{{ .Content }}</div>
 

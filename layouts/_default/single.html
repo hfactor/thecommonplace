@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{ partial "readable-open.html" (dict) }}
 
-      <h1 class="page-title note-title">{{ .Title }}</h1>
+      {{ partial "page-title.html" (dict "title" .Title) }}
       {{ if .Params.updated }}<p class="sp-updated">Updated {{ .Params.updated }}</p>{{ end }}
 
       <div class="sp-text">{{ .Content }}</div>

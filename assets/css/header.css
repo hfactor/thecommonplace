@@ -1,4 +1,7 @@
 /* ─── Pill nav — reduced to a plain avatar, no chrome ── */
+/* Same fade-up as .app (animations.css), offset by the fixed centering transform
+   so the icon rises in step with the page instead of sitting static above it. */
+@keyframes pn-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 .pn {
   position: fixed;
   top: 36px;
@@ -9,23 +12,35 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  animation: pn-in 0.9s ease both;
 }
 
-/* Avatar — always visible, always home link */
+/* Avatar — always visible, always home link. Hit area is bigger than the visual
+   icon (negative margin pulls it back so layout/gap stay unaffected). */
 .pn-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
+  margin: -4px;
   flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
   text-decoration: none;
   transition: opacity var(--dur-fast);
 }
-.pn-avatar svg { width: 36px; height: 36px; display: block; }
+.pn-avatar svg { width: 36px; height: 36px; display: block; transform: translateX(-2px); }
 .pn-avatar:hover { opacity: 0.7; }
+
+/* Icon + title, one line — used everywhere the standalone fixed icon isn't (see pill-nav.html) */
+.page-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--space-4);
+}
+.page-head .page-title { margin-bottom: 0; }
 
 /* ─── FAB nav dock — bottom-right corner FAB with a compact popover menu ── */
 .pn-fab-dock {
@@ -36,6 +51,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  animation: page-in 0.9s ease both;
 }
 
 /* Glass effect, shared by the FAB and the quick toggle */
@@ -167,14 +183,13 @@
 .pn-link--active { color: var(--accent); font-weight: var(--weight-semibold); }
 .pn-link--sm { font-size: var(--text-md); }
 
-/* ─── Page nav — icon spacer + page title for listing pages ── */
+/* ─── Page nav — icon + title row for listing pages ── */
 .page-nav {
   display: flex;
   align-items: center;
-  padding: calc(var(--space-12) + 32px) max(var(--gap), calc((100% - 560px) / 2)) var(--space-8);
+  padding: calc(var(--space-12) + 24px) max(var(--gap), calc((100% - 560px) / 2)) var(--space-8);
   flex-shrink: 0;
 }
-.page-nav-title { margin-bottom: 0; }
 .page-nav-right {
   display: flex;
   align-items: center;

@@ -1,0 +1,7 @@
+{{- /* dict: title (string) */ -}}
+<div class="page-head">
+  {{- with resources.Get "img/hiran-head.svg" -}}
+  <a href="{{ "/" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>
+  {{- end -}}
+  <h1 class="page-title">{{ .title }}</h1>
+</div>

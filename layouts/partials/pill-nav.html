@@ -4,7 +4,15 @@
 {{/* Single reading/bookmark pages render the full section list behind an auto-opened modal — closing it should give the same /reading/ or /bookmarks/ experience, toggle included. */}}
 {{- if and (not .IsSection) (in (slice "reading" "bookmarks") .Section) -}}{{- $ctx = "section" -}}{{- end -}}
 
-{{- if not .IsHome }}
+{{/* Pages with their own header (back-arrow single notes/projects, /work/, 404) keep the
+     standalone fixed icon as their only home link. Everywhere else the icon now renders
+     inline next to the page title (see page-title.html) so it reads as one line. */}}
+{{- $keepFixedIcon := or
+  (and (not .IsSection) (in (slice "notes" "projects") .Section))
+  (eq .Section "work")
+  (eq .Kind "404")
+-}}
+{{- if and (not .IsHome) $keepFixedIcon }}
 <div class="pn" id="pillNav" data-ctx="{{ $ctx }}">
   {{- with resources.Get "img/hiran-head.svg" -}}
   <a href="{{ "/" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>

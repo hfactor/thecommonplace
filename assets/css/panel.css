@@ -31,7 +31,7 @@
 
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
-.page-title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+.page-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
 .proj-page-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .proj-back { display: flex; align-items: center; color: var(--ink2); text-decoration: none; flex-shrink: 0; transition: color 0.15s; padding: 4px 2px; }
 .proj-back:hover { color: var(--ink); }
@@ -51,7 +51,6 @@
   transition: color var(--dur-fast);
 }
 .sp-proj-url:hover { color: var(--accent); }
-.note-title { margin-bottom: var(--space-6); }
 .sp-updated { font-size: var(--text-sm); color: var(--ink2); margin: 6px 0 var(--gap); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
 .sp-text { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); }
@@ -145,10 +144,13 @@
   margin: 0 auto;
   padding: calc(var(--space-12) + 32px) 0 var(--space-12);
 }
-
+/* Pages whose icon now sits inline in .page-head don't need extra top clearance
+   for a separately fixed icon above — see pill-nav.html for which pages still do. */
+.notes-reading:has(.page-head) { padding-top: calc(var(--space-12) + 24px); }
 
 @media (max-width: 639px) {
   .notes-reading { padding: calc(var(--space-10) + 24px) var(--gap-sm) var(--space-10); }
+  .notes-reading:has(.page-head) { padding-top: calc(var(--space-10) + 16px); }
 }
 
 /* Antilibrary list */

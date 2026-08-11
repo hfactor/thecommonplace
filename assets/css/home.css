@@ -1,22 +1,16 @@
 /* ─── Homepage shell ─────────────────────────────── */
 /* Homepage reuses .notes-reading (panel.css); this modifier adds the
-   vertical-centering and entrance animation that make it feel like a
-   homepage rather than a document. */
+   vertical-centering that makes it feel like a homepage rather than a document. */
 .notes-reading.home-reading {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: var(--gap) var(--gap);
-  opacity: 0;
-  animation: homeSlideUp 0.8s var(--ease-out) 0.1s both;
 }
 
 @media (max-width: 639px) {
   .notes-reading.home-reading { padding-top: var(--hdr-h); }
 }
-
-
-
 
 /* ─── Avatar ──────────────────────────────────────── */
 .home-avatar {
@@ -27,7 +21,7 @@
   height: 40px;
   margin-bottom: var(--space-6);
 }
-.home-avatar svg { width: 40px; height: 40px; display: block; }
+.home-avatar svg { width: 40px; height: 40px; display: block; transform: translateX(-2px); }
 
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
@@ -41,18 +35,6 @@
 .home-name { font-family: var(--font-display); font-weight: var(--weight-semibold); }
 .home-sh-inline { display: inline; white-space: normal; }
 
-
-
-
-/* ─── Entrance animation ─────────────────────────── */
-@keyframes homeSlideUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 639px) {
-  .notes-reading.home-reading { animation-duration: 0.9s; animation-delay: 0.15s; }
-}
 
 /* ─── Inline links ───────────────────────────────── */
 .link-scribble-path { stroke: var(--accent); stroke-width: 1.5px; }
