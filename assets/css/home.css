@@ -18,6 +18,17 @@
 
 
 
+/* ─── Avatar ──────────────────────────────────────── */
+.home-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-6);
+}
+.home-avatar svg { width: 40px; height: 40px; display: block; }
+
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
   font-family: var(--font);
@@ -65,7 +76,8 @@
 .home-link:hover .link-scribble,
 .home-email:hover .link-scribble,
 .sh[data-stk]:hover .link-scribble,
-.sh--inline:hover .link-scribble {
+.sh--inline:hover .link-scribble,
+.pn-link:hover .link-scribble {
   clip-path: inset(0 0% 0 0);
   transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
   transition-duration: 0.22s;

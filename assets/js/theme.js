@@ -42,15 +42,14 @@ function updateFabIcons() {
   const sfTheme = document.querySelector('.sf-theme');
   if (sfTheme) sfTheme.innerHTML = icon;
 
-  // Sync segmented toggle
-  const toggle = document.getElementById('shViewToggle');
-  if (toggle) {
-    const mode = vm === 'list' ? 'list' : 'card';
+  // Sync segmented toggle(s) — bar and FAB dock both render one on section pages
+  const mode = vm === 'list' ? 'list' : 'card';
+  document.querySelectorAll('.sh-view-toggle').forEach(toggle => {
     toggle.dataset.mode = mode;
     toggle.querySelectorAll('.sh-vt-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.mode === mode);
     });
-  }
+  });
 }
 
 // Alias so main.js can call this after setViewMode

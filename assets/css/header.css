@@ -1,22 +1,49 @@
-/* ─── Pill nav ────────────────────────────────────── */
+/* ─── Pill nav — reduced to a plain avatar, no chrome ── */
 .pn {
   position: fixed;
-  top: 22px;
+  top: 36px;
   left: 50%;
   transform: translateX(-50%);
   z-index: var(--z-modal);
   width: min(560px, calc(100vw - 2 * var(--gap)));
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Single container — glass effect, no hard border */
-.pn-inner {
+/* Avatar — always visible, always home link */
+.pn-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  text-decoration: none;
+  transition: opacity var(--dur-fast);
+}
+.pn-avatar svg { width: 36px; height: 36px; display: block; }
+.pn-avatar:hover { opacity: 0.7; }
+
+/* ─── FAB nav dock — bottom-right corner FAB with a compact popover menu ── */
+.pn-fab-dock {
+  position: fixed;
+  bottom: clamp(28px, 5vh, 64px);
+  right: clamp(20px, 4vw, 56px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Glass effect, shared by the FAB and the quick toggle */
+.pn-fab,
+.pn-quick {
   background: color-mix(in srgb, var(--bg) 25%, transparent);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: none;
-  border-radius: 100px;
-  overflow: hidden;
-  transition: border-radius 0s;
   box-shadow:
     0 0 0 0.5px rgba(0,0,0,0.07),
     0 1px 0 0 rgba(255,255,255,0.85) inset,
@@ -24,9 +51,8 @@
     0 4px 16px rgba(0,0,0,0.08),
     0 12px 40px rgba(0,0,0,0.06);
 }
-.pn--open .pn-inner { border-radius: 20px; }
-
-[data-theme="ink"] .pn-inner {
+[data-theme="ink"] .pn-fab,
+[data-theme="ink"] .pn-quick {
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.10),
     0 1px 0 0 rgba(255,255,255,0.10) inset,
@@ -34,104 +60,68 @@
     0 12px 40px rgba(0,0,0,0.28);
 }
 
-/* Bar row */
-.pn-bar {
+/* Quick toggle — card/list, always visible on section pages, sits beside the FAB */
+.pn-quick {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 10px 7px 14px;
-  cursor: pointer;
+  gap: 2px;
   height: 48px;
+  padding: 0 10px;
+  border-radius: 100px;
 }
-.pn--open .pn-bar { cursor: default; }
+.pn-quick .sh-vt-btn { opacity: 0.4; color: var(--ink); background: none; }
+.pn-quick .sh-vt-btn.active { opacity: 1; background: var(--surface2); }
+.pn-quick .sh-vt-btn:hover { opacity: 0.75; }
 
-/* Avatar — always visible, always home link */
-.pn-avatar {
+.pn-fab-wrap { position: relative; }
+
+/* FAB — just the head mark, nothing else */
+.pn-fab {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: none;
   border-radius: 50%;
-  overflow: hidden;
-  text-decoration: none;
+  padding: 0;
+  cursor: pointer;
+}
+.pn-fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
   transition: opacity var(--dur-fast);
 }
-.pn-avatar svg { width: 28px; height: 28px; display: block; }
-.pn-avatar:hover { opacity: 0.7; }
-.pn[data-ctx="default"] .pn-avatar { cursor: default; }
-.pn[data-ctx="default"] .pn-avatar:hover { opacity: 1; }
+.pn-fab-icon svg { width: 26px; height: 26px; display: block; }
+.pn-fab:hover .pn-fab-icon { opacity: 0.7; }
 
-/* Section label in bar */
-.pn-bar-label {
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  color: var(--ink);
-  white-space: nowrap;
-  margin-left: 2px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Menu button — ☰ ↔ × swap */
-.pn-menu-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: none;
-  color: var(--ink2);
-  cursor: pointer;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: color var(--dur-fast);
-}
-.pn-menu-btn:hover { color: var(--ink); }
-.pn-menu-btn .ico-x { display: none; }
-.pn--open .pn-menu-btn .ico-menu { display: none; }
-.pn--open .pn-menu-btn .ico-x { display: block; }
-
-/* View toggle in bar (section pages) — bare icon buttons, no pill */
-.pn-bar .sh-view-toggle { background: none; box-shadow: none; padding: 0; gap: 2px; }
-.pn-bar .sh-vt-btn { opacity: 0.3; color: var(--ink); background: none; }
-.pn-bar .sh-vt-btn.active { opacity: 1; background: var(--surface2); }
-.pn-bar .sh-vt-btn:hover { opacity: 0.7; }
-
-
-.pn-theme-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  border: none;
-  background: none;
-  color: var(--ink2);
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: color var(--dur-fast);
-}
-.pn-theme-btn:hover { color: var(--ink); }
-
-/* Body — opacity only, height snaps */
-.pn-body {
-  max-height: 0;
+/* Popover menu — anchored above the FAB, sized to its content, flat with no shadow */
+.pn-panel {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 0;
+  width: max-content;
+  min-width: 180px;
+  max-width: min(240px, calc(100vw - 48px));
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
   overflow: hidden;
+  max-height: 0;
   opacity: 0;
-  transition: max-height 0s, opacity 0.18s ease;
+  transform: translateY(6px) scale(0.98);
+  transform-origin: bottom right;
   pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, max-height 0s 0.18s;
 }
-.pn--open .pn-body {
+.pn--open .pn-panel {
   max-height: 600px;
   opacity: 1;
+  transform: translateY(0) scale(1);
   pointer-events: auto;
-  transition: max-height 0s, opacity 0.18s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .pn-group {
@@ -161,7 +151,8 @@
 }
 .pn-link {
   display: block;
-  width: 100%;
+  width: max-content;
+  position: relative;
   text-align: left;
   font-family: var(--font-display);
   font-size: var(--text-lg);
@@ -171,20 +162,19 @@
   border: none;
   background: none;
   cursor: pointer;
-  transition: color var(--dur-fast);
   line-height: var(--lh-tight);
 }
-.pn-link:hover { color: var(--ink); }
-.pn-link--active { color: var(--ink); }
-.pn-link--sm { font-size: 13px; }
+.pn-link--active { color: var(--accent); font-weight: var(--weight-semibold); }
+.pn-link--sm { font-size: var(--text-md); }
 
-/* ─── Inline page nav (spacer only now) ─────────── */
+/* ─── Page nav — icon spacer + page title for listing pages ── */
 .page-nav {
   display: flex;
   align-items: center;
-  padding: calc(var(--hdr-h) + var(--space-8)) max(var(--gap), calc((100% - 560px) / 2)) 0;
+  padding: calc(var(--space-12) + 32px) max(var(--gap), calc((100% - 560px) / 2)) var(--space-8);
   flex-shrink: 0;
 }
+.page-nav-title { margin-bottom: 0; }
 .page-nav-right {
   display: flex;
   align-items: center;

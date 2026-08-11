@@ -143,12 +143,12 @@
   width: 100%;
   max-width: 560px;
   margin: 0 auto;
-  padding: calc(var(--hdr-h) + var(--space-8)) 0 var(--space-12);
+  padding: calc(var(--space-12) + 32px) 0 var(--space-12);
 }
 
 
 @media (max-width: 639px) {
-  .notes-reading { padding: calc(var(--hdr-h) + var(--space-6)) var(--gap-sm) var(--space-10); }
+  .notes-reading { padding: calc(var(--space-10) + 24px) var(--gap-sm) var(--space-10); }
 }
 
 /* Antilibrary list */
