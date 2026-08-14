@@ -3,6 +3,9 @@ moc: yes
 title: Better thinking over better note-taking
 date: 2021-07-23
 tags: [notes, thinking]
+categories:
+  - name: thinking
+    order: 50
 ---
 
 The goal of a thinking system is not to capture more. It is to think better. Notes are useful because writing forces clarity and the archive gives you material to return to, but the notes themselves are not the product. The thinking is. A narrow note is easier to revise, contradict, and reuse because it doesn't drag a whole topic behind it.

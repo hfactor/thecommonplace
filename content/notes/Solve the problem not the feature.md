@@ -2,6 +2,11 @@
 title: Solve the problem not the feature
 date: 2021-06-09
 tags: [product, design]
+categories:
+  - name: craft
+    order: 10
+  - name: focus
+    order: 20
 ---
 
 A feature is a response to a problem, and the problem is always more interesting. When you start with the feature you commit to a shape before understanding the friction, and that shape becomes load-bearing before anyone confirms it's solving the right thing. Clarity on the problem matters more than speed on the solution. Building a feature before knowing the problem is half-cooked. Opinionated doesn't mean half-cooked.

@@ -29,17 +29,17 @@
 .sp-cover { width: 100%; aspect-ratio: 16/9; background: var(--surface2); border-radius: var(--r); overflow: hidden; margin-bottom: var(--gap); }
 .sp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
-.page-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+.page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
 .proj-page-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.proj-back { display: flex; align-items: center; color: var(--ink2); text-decoration: none; flex-shrink: 0; transition: color 0.15s; padding: 4px 2px; }
+.proj-back { display: flex; align-items: center; color: var(--ink2); text-decoration: none; flex-shrink: 0; transition: color var(--dur-quick); padding: 4px 2px; }
 .proj-back:hover { color: var(--ink); }
 .proj-page-title { margin-bottom: 0; }
-.proj-page-title--link { text-decoration: none; transition: color 0.15s; }
+.proj-page-title--link { text-decoration: none; transition: color var(--dur-quick); }
 .proj-page-title--link:hover { color: var(--accent); }
 .sp-title { flex: 1; min-width: 0; margin-bottom: 0; }
-.sp-title--link { text-decoration: none; transition: color 0.15s; }
+.sp-title--link { text-decoration: none; transition: color var(--dur-quick); }
 .sp-title--link:hover { color: var(--accent); }
 .sp-proj-url {
   display: inline-flex;
@@ -52,11 +52,26 @@
 }
 .sp-proj-url:hover { color: var(--accent); }
 .sp-updated { font-size: var(--text-sm); color: var(--ink2); margin: 6px 0 var(--gap); }
+/* On /now this line sits at the very end of the page (after Currently
+   Reading), not right under the title — needs the same generous top
+   clearance the old standalone .sp-footer line had. */
+.now-reading + .sp-updated { margin-top: var(--space-10); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
-.sp-text { font-size: var(--text-lg); color: var(--ink2); line-height: var(--lh-prose); }
+.sp-text { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-prose); }
 .sp-text p { margin-bottom: 18px; }
+/* Lede — the opening paragraph reads as a deliberate intro statement, not
+   just the first line of body copy: one step up the scale, heavier, and
+   tighter leading (bigger text needs proportionally less line-height).
+   Targets the paragraph right after the opening photo — About currently
+   leads with an image, so the lede is the first *text* paragraph, not
+   literally the first child. */
+.sp-text--lede > p:first-child + p {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-tight);
+}
 .sp-text p:last-child { margin-bottom: 0; }
-.sp-text h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
+.sp-text h2 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
 .sp-text h3 { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.01em; margin: var(--gap) 0 var(--space-2); }
 .sp-text ul, .sp-text ol { margin: 0 0 18px 20px; }
 .sp-text li { margin-bottom: 6px; line-height: var(--lh-prose); }
@@ -68,14 +83,28 @@
 .sp-text pre { background: var(--surface); border: 1px solid var(--border-light); border-radius: var(--r-sm); padding: 16px 18px; overflow-x: auto; margin: 0 0 20px; font-size: var(--text-sm); line-height: var(--lh-relaxed); }
 .sp-text pre code { background: none; border: none; padding: 0; font-size: inherit; color: var(--ink2); }
 .sp-text code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.875em; background: var(--surface2); border: 1px solid var(--border-light); border-radius: var(--r-xs); padding: 1px 5px; color: var(--ink); }
-.sp-text h1 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
+.sp-text h1 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin: 36px 0 var(--space-3); }
 .sp-text img { width: 100%; height: auto; border-radius: var(--r); margin: var(--space-2) 0 20px; display: block; }
-.sp-text a { color: var(--accent); text-decoration: none; position: relative; display: inline-block; vertical-align: baseline; white-space: nowrap; }
-.sp-text a .link-scribble { position: absolute; top: calc(100% - 6px); left: 0; pointer-events: none; overflow: hidden; clip-path: inset(0 100% 0 0); transition: clip-path 0.3s cubic-bezier(0.7,0,0.3,1); }
-.sp-text a:hover .link-scribble { clip-path: inset(0 0% 0 0); transition-timing-function: cubic-bezier(0.8,1,0.7,1); transition-duration: 0.22s; }
+.sp-text a { display: inline; white-space: normal; }
+/* About page closing signature — matches .cv-label (the Everything feed's
+   faded month/category watermarks) exactly: same size, weight, and low
+   opacity, just clickable here. */
+.about-email-jumbo {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-jumbo);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.05;
+  text-decoration: none;
+  word-break: break-word;
+  transition: opacity var(--dur-fast);
+}
+.about-email-jumbo:hover { opacity: 0.3; }
+
 .sp-footer { margin-top: var(--space-10); font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
-.sp-footer a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
-.sp-footer a:hover { color: var(--ink); }
 .now-meta { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); margin-top: var(--space-6); opacity: 0.7; }
 .now-meta a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
 .now-meta a:hover { color: var(--ink); }
@@ -97,7 +126,7 @@
 /* Colophon cards */
 .colo-group { margin-top: var(--gap); }
 .colo-group + .colo-group { margin-top: var(--space-8); }
-.colo-group-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); opacity: 0.5; margin-bottom: var(--space-3); }
+.colo-group-label { font-size: var(--text-sm); font-weight: var(--weight-normal); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); opacity: 0.5; margin-bottom: var(--space-3); }
 .colo-row { display: flex; align-items: baseline; gap: var(--space-4); padding: 10px 0; border-bottom: 1px solid var(--border-light); text-decoration: none; transition: border-color var(--dur-fast); }
 .colo-row:first-of-type { border-top: 1px solid var(--border-light); }
 .colo-row:hover .colo-row-name { color: var(--ink); }
@@ -105,25 +134,43 @@
 .colo-row-desc { font-size: var(--text-sm); color: var(--ink2); opacity: 0.6; }
 
 /* Colophon — people badges */
-.colo-section-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); margin: 36px 0 14px; }
+.colo-section-label { font-size: var(--text-sm); font-weight: var(--weight-normal); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink2); margin: 36px 0 14px; }
 .colo-people-intro { margin-bottom: 20px; }
 .people-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .people-with { font-size: var(--text-sm); color: var(--ink2); flex-shrink: 0; }
 .people-badge { position: relative; text-decoration: none; flex-shrink: 0; }
 .people-badge-plain { cursor: default; }
-.people-avatar { width: 36px; height: 36px; border-radius: var(--r-full); object-fit: cover; display: block; background: var(--surface2); border: 2px solid var(--bg); transition: transform 0.15s ease; }
+.people-avatar { width: 36px; height: 36px; border-radius: var(--r-full); object-fit: cover; display: block; background: var(--surface2); border: 2px solid var(--bg); transition: transform var(--dur-quick) ease; }
 .people-avatar-init { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--surface2); border: 2px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: var(--text-base); color: var(--ink2); }
 .people-badge:hover .people-avatar,
 .people-badge:hover .people-avatar-init { transform: translateY(-3px); }
-.people-tip { position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 3px 7px; border-radius: var(--r-sm); white-space: nowrap; font-size: 11px; font-weight: var(--weight-semibold); opacity: 0; pointer-events: none; transition: opacity var(--dur-fast); z-index: var(--z-tooltip); }
+.people-tip { position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 3px 7px; border-radius: var(--r-sm); white-space: nowrap; font-size: var(--text-sm); font-weight: var(--weight-normal); opacity: 0; pointer-events: none; transition: opacity var(--dur-fast); z-index: var(--z-tooltip); }
 .people-badge:hover .people-tip { opacity: 1; }
 
+/* Shared accent-underline link treatment — reused by every prose/meta link
+   context (.sp-text/.sp-updated/.sp-footer/.wikilink all used it as an
+   identical hand-copied block; consolidated to one place). Underline is
+   transparent at rest and reveals to --accent on hover. */
+.sp-text a,
+.sp-updated a,
+.sp-footer a,
+.wikilink {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur-reveal) var(--ease-reveal);
+}
+.sp-text a:hover,
+.sp-updated a:hover,
+.sp-footer a:hover,
+.wikilink:hover { text-decoration-color: var(--accent); transition-duration: var(--dur-quick); }
+
 /* Wiki-links */
-.wikilink { color: var(--accent); text-decoration: none; position: relative; display: inline-block; vertical-align: baseline; white-space: nowrap; cursor: pointer; }
-.wikilink .link-scribble { position: absolute; top: calc(100% - 6px); left: 0; pointer-events: none; overflow: hidden; clip-path: inset(0 100% 0 0); transition: clip-path 0.3s cubic-bezier(0.7,0,0.3,1); }
-.wikilink:hover .link-scribble { clip-path: inset(0 0% 0 0); transition-timing-function: cubic-bezier(0.8,1,0.7,1); transition-duration: 0.22s; }
+.wikilink { display: inline; white-space: normal; cursor: pointer; }
 .wikilink-dead { position: relative; color: var(--ink2); text-decoration: none; cursor: default; }
-.wikilink-dead::after { content: 'Private link'; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); font-family: var(--font); font-size: var(--text-sm); font-weight: var(--weight-semibold); padding: 4px 9px; border-radius: var(--r-sm); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); z-index: var(--z-tooltip); }
+.wikilink-dead::after { content: 'Private link'; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); font-family: var(--font); font-size: var(--text-sm); font-weight: var(--weight-normal); padding: 4px 9px; border-radius: var(--r-sm); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity var(--dur-fast); z-index: var(--z-tooltip); }
 .wikilink-dead:hover::after { opacity: 1; }
 
 /* Notes index: space between description and list */
@@ -140,17 +187,13 @@
 .notes-reading {
   flex: 1;
   width: 100%;
-  max-width: 560px;
+  max-width: var(--content-w);
   margin: 0 auto;
-  padding: calc(var(--space-12) + 32px) 0 var(--space-12);
+  padding: calc(var(--hdr-h) + var(--space-6)) 0 calc(var(--space-12) + var(--ftr-h));
 }
-/* Pages whose icon now sits inline in .page-head don't need extra top clearance
-   for a separately fixed icon above — see pill-nav.html for which pages still do. */
-.notes-reading:has(.page-head) { padding-top: calc(var(--space-12) + 24px); }
 
 @media (max-width: 639px) {
-  .notes-reading { padding: calc(var(--space-10) + 24px) var(--gap-sm) var(--space-10); }
-  .notes-reading:has(.page-head) { padding-top: calc(var(--space-10) + 16px); }
+  .notes-reading { padding: calc(var(--hdr-h) + var(--space-4)) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
 }
 
 /* Antilibrary list */
@@ -162,12 +205,20 @@
   padding: var(--space-3) 0;
 }
 .anti-title {
-  font-size: var(--text-md);
+  font-size: var(--text-base);
   color: var(--ink2);
   line-height: var(--lh-tight);
   letter-spacing: -0.01em;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* Fade mask only when JS confirms actual clipping — see .l-title-text note
+   in list.css for why this can't be unconditional. */
+.anti-title.is-truncated {
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
 }
 .anti-author {
   font-size: var(--text-sm);
@@ -179,7 +230,7 @@
 /* ─── Now page — currently reading ──────────────── */
 .now-reading { margin-top: var(--space-10); }
 .now-reading-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4); }
-.now-reading-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; }
+.now-reading-label { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; }
 .now-reading-link { font-size: var(--text-sm); color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
 .now-reading-link:hover { color: var(--ink); }
 .now-reading-grid { display: flex; gap: var(--space-4); flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: var(--space-2); scroll-snap-type: x mandatory; }
@@ -193,11 +244,234 @@
 .now-book-title { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-tight); }
 .now-book-author { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-tight); }
 
+/* ─── Notebook page — /note/:topic ───────────────────
+   One continuous document, not a list of separate cards. The underlying
+   source is many small files (an authoring/storage convenience — split and
+   grow freely in Obsidian), but a reader should never be able to tell where
+   one file ends and the next begins: no boxes, no dividers standing in for
+   file boundaries. Each note contributes a heading (its frontmatter title)
+   plus its own content, flowing exactly like sections of one long article —
+   the same as any note's own in-body ## subheadings would. ── */
+/* Notebook title reads small next to a full page of note headings below it —
+   extra bottom margin gives it real breathing room so it doesn't get lost. */
+.nb-title { margin-bottom: var(--space-10); }
+
+/* Table of contents — Substack-style: a small fixed dash-stack button pinned
+   near the screen's left edge (collapsed state, always just lines, no text),
+   click opens a floating popover listing every section. Fixed to the edge —
+   not calculated off the content column's margin — same as the reference. */
+.nb-toc { display: none; }
+@media (min-width: 768px) {
+  .nb-toc {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: var(--space-6);
+    transform: translateY(-50%);
+    z-index: var(--z-modal);
+  }
+}
+.nb-toc-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 10px 8px;
+  border: none;
+  background: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.nb-toc-toggle:hover { background: var(--surface2); }
+.nb-toc-dash {
+  display: block;
+  width: 12px;
+  height: 1.5px;
+  background: var(--ink2);
+  opacity: 0.5;
+  transition: width var(--dur-fast) var(--ease-snap), opacity var(--dur-fast), background var(--dur-fast);
+}
+.nb-toc-toggle:hover .nb-toc-dash { opacity: 0.75; }
+.nb-toc-dash.is-active { width: 18px; opacity: 1; background: var(--accent); }
+
+.nb-toc-menu {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 12px);
+  transform: translateY(-50%) scale(0.98);
+  width: 260px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: var(--r);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 0.5px rgba(0,0,0,0.07),
+    0 1px 0 0 rgba(255,255,255,0.85) inset,
+    0 -1px 0 0 rgba(0,0,0,0.04) inset,
+    0 4px 16px rgba(0,0,0,0.08),
+    0 12px 40px rgba(0,0,0,0.06);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-snap);
+}
+[data-theme="ink"] .nb-toc-menu {
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.10),
+    0 1px 0 0 rgba(255,255,255,0.10) inset,
+    0 4px 16px rgba(0,0,0,0.35),
+    0 12px 40px rgba(0,0,0,0.28);
+}
+.nb-toc--open .nb-toc-menu { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
+.nb-toc-item {
+  display: block;
+  padding: 7px 10px;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  text-decoration: none;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
+  mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.nb-toc-item:hover { background: var(--surface2); color: var(--ink); }
+.nb-toc-item.is-active { color: var(--accent); font-weight: var(--weight-normal); }
+
+.nb-cards { display: flex; flex-direction: column; }
+.nb-card { position: relative; scroll-margin-top: calc(var(--hdr-h) + var(--space-4)); }
+.nb-card-title { display: flex; align-items: baseline; gap: 8px; margin: 36px 0 var(--space-3); }
+.nb-card:first-child .nb-card-title { margin-top: 0; }
+.nb-card-anchor {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  line-height: var(--lh-display);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+.nb-card-anchor:hover { color: var(--accent); }
+
+/* Permalink — copies the full URL, not just the in-page #anchor (which only
+   works if you're already on this notebook). Icon-only, shown on heading hover. */
+.nb-card-permalink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  padding: 0;
+  color: var(--ink2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-fast), color var(--dur-fast), background var(--dur-fast);
+}
+.nb-card-title:hover .nb-card-permalink,
+.nb-card-permalink:focus-visible { opacity: 0.6; }
+.nb-card-permalink:hover { opacity: 1 !important; color: var(--accent); background: var(--surface2); }
+.nb-card-permalink svg { display: block; }
+
+.nb-card-grid { display: block; }
+
+/* Source — true margin note, not a second column splitting the content box in
+   two. Below 1024px there's no room in the margin, so it just sits under the
+   note's content, quiet and full-width. */
+.nb-footnotes {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  opacity: 0.6;
+  line-height: var(--lh-relaxed);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* Classic reference style: italic throughout (including the link), no
+   underline — the small external-link glyph (shared with .sp-text a, see
+   layout.css) is the only "this is a link" signal. */
+.nb-footnote,
+.nb-footnote a { font-style: italic; }
+.nb-footnote a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
+.nb-footnote a:hover { color: var(--accent); }
+
+@media (min-width: 1024px) {
+  .nb-footnotes {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-top: 0;
+    margin-left: var(--space-6);
+    width: 130px;
+  }
+}
+
+/* Wikilink hover-preview popover — same glass-card treatment as .pt-nav-menu,
+   for one consistent floating-panel look sitewide. */
+.wl-preview {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  width: min(300px, calc(100vw - 32px));
+  background: var(--surface);
+  border: none;
+  border-radius: var(--r);
+  box-shadow:
+    0 0 0 0.5px rgba(0,0,0,0.07),
+    0 1px 0 0 rgba(255,255,255,0.85) inset,
+    0 -1px 0 0 rgba(0,0,0,0.04) inset,
+    0 4px 16px rgba(0,0,0,0.08),
+    0 12px 40px rgba(0,0,0,0.06);
+  padding: var(--space-4);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+}
+[data-theme="ink"] .wl-preview {
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,0.10),
+    0 1px 0 0 rgba(255,255,255,0.10) inset,
+    0 4px 16px rgba(0,0,0,0.35),
+    0 12px 40px rgba(0,0,0,0.28);
+}
+.wl-preview.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.wl-preview-head { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: var(--space-2); }
+.wl-preview-title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--ink);
+  line-height: var(--lh-tight);
+  flex: 1;
+  min-width: 0;
+}
+.wl-preview-text { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-relaxed); }
+.wl-preview-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--ink2);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.wl-preview-open:hover { color: var(--accent); background: var(--surface2); }
+.wl-preview-open svg { display: block; }
+
 /* ─── 404 page ───────────────────────────────────── */
 .err404-wrap { min-height: 40vh; display: flex; align-items: center; gap: var(--space-10); flex-wrap: wrap; }
 .err404 { flex: 1; min-width: 240px; display: flex; flex-direction: column; align-items: flex-start; }
 .err404-code { display: inline-block; font-family: var(--font-display); font-size: 72px; font-weight: var(--weight-semibold); color: var(--ink2); opacity: 0.3; line-height: 1; margin-bottom: var(--space-4); transform: rotate(-4deg); }
-.err404-title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-3); }
+.err404-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-3); }
 .err404-copy { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-relaxed); margin-bottom: var(--space-6); max-width: 46ch; }
 
 .err404-home {

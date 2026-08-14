@@ -3,14 +3,18 @@
   --font:         'Public Sans', 'Manjari', -apple-system, sans-serif;
   --font-display: 'Bricolage Grotesque', sans-serif;
 
-  /* ── Type scale · Major Second (1.125) · 14px base ─ */
-  --text-sm:   clamp(12px, calc(11.67px + 0.10vw), 13px);
-  --text-base: clamp(14px, calc(13.67px + 0.10vw), 15px);
-  --text-md:   clamp(15px, calc(14.33px + 0.21vw), 16px);
-  --text-lg:   clamp(16px, calc(15.33px + 0.21vw), 18px);
-  --text-xl:   clamp(18px, calc(17.33px + 0.21vw), 20px);
-  --text-2xl:  clamp(20px, calc(18.67px + 0.42vw), 22px);
-  --text-3xl:  clamp(22px, calc(20px   + 0.63vw),  28px);
+  /* ── Type scale · true Major Second (1.125) · 16px base ─
+     Each step is base × 1.125^n, rounded to the nearest px:
+     sm 14 · base 16 · md 18 · lg 20 · xl 22. Capped at xl — no 2xl/3xl. ── */
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   18px;
+  --text-lg:   20px;
+  --text-xl:   22px;
+
+  /* ── Jumbo — decorative watermark numerals only (month/category labels
+     behind the card scroller and list view), not part of the reading scale ── */
+  --text-jumbo: clamp(36px, 6vw, 72px);
 
   /* ── Weights ────────────────────────────────────── */
   --weight-normal:   400;
@@ -30,9 +34,15 @@
   --r-full: 50%;
 
   /* ── Layout ─────────────────────────────────────── */
-  --hdr-h:  68px; /* header height (52px) + top offset (16px) */
-  --gap:    28px;
-  --gap-sm: 20px;
+  --hdr-h:     68px; /* header height (52px) + top offset (16px) */
+  --ftr-h:     76px; /* fixed footer pill height + bottom offset — content
+                         needs this much clearance so the pill never overlaps
+                         the last line of text */
+  --gap:       28px;
+  --gap-sm:    20px;
+  --content-w: 560px; /* shared reading-column width — static pages, notes,
+                          list view, card track, and the header row all
+                          center on this same value */
 
   /* ── Spacing scale ──────────────────────────────── */
   --space-1:  4px;
@@ -49,25 +59,24 @@
   --z-header:   20;
   --z-tooltip:  50;
   --z-sheet:    500;
-  --z-panel:    450;
   --z-modal:    400;
 
   /* ── Transitions ────────────────────────────────── */
-  --dur-fast: 0.12s;
-  --dur-base: 0.2s;
+  --dur-fast:     0.12s;
+  --dur-quick:    0.15s;
+  --dur-base:     0.2s;
+  --dur-med:      0.18s;
+  --dur-reveal:   0.22s;
+  --dur-hover:    0.25s;
+  --dur-slow:     0.3s;
+  --dur-entrance: 0.9s;
 
   /* ── Easing curves ──────────────────────────────── */
-  --ease-spring: cubic-bezier(0.34, 1.5, 0.64, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.2, 0.64, 1);
-  --ease-snap:   cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* ── Underline offsets ──────────────────────────── */
-  --underline-offset:       3px;
-  --underline-offset-hover: 5px;
-
-  /* ── Animation stagger ──────────────────────────── */
-  --stagger-step: 40ms;
+  --ease-bounce:       cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ease-snap:         cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:          cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-reveal:       cubic-bezier(0.7, 0, 0.3, 1);
+  --ease-reveal-hover: cubic-bezier(0.8, 1, 0.7, 1);
 
   /* ── Shadows ────────────────────────────────────── */
   --shadow-sm:  0 2px 12px rgba(0,0,0,0.08);
@@ -93,11 +102,6 @@
   --accent:        #113e9f;
   --accent-subtle: rgba(91, 143, 255, 0.15);
 
-  --glass-bg:        rgba(0, 0, 0, 0.04);
-  --glass-border:    rgba(0, 0, 0, 0.10);
-  --glass-shadow:    0 1px 0 rgba(255,255,255,0.9) inset, 0 8px 24px -8px rgba(0,0,0,.10);
-  --glass-highlight: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%);
-
   /* ── Recommendation badge ───────────────────────── */
   --rec-color:       #8a6000;
   --rec-color-hover: #6b4a00;
@@ -120,6 +124,11 @@
   --floppy-label-divider: #2a2b30;
   --floppy-text:          #222018;
   --floppy-text2:         #6a6050;
+
+  /* ── Field-note cover (notebook cards) ──────────── */
+  --fn-cover:  #26272c;
+  --fn-title:  #f2f0ea;
+  --fn-thread: rgba(255, 255, 255, 0.32);
 }
 
 /* ── Ink — dark ─────────────────────────────────────── */
@@ -138,11 +147,6 @@
   --shadow-md:  0 4px 20px rgba(0,0,0,0.45);
   --shadow-lg:  0 8px 40px rgba(0,0,0,0.50);
   --overlay:    rgba(0,0,0,0.55);
-
-  --glass-bg:        rgba(255, 255, 255, 0.05);
-  --glass-border:    rgba(255, 255, 255, 0.10);
-  --glass-shadow:    0 1px 0 rgba(255,255,255,0.06) inset, 0 20px 50px -20px rgba(0,0,0,.60);
-  --glass-highlight: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 35%);
 
   /* ── Recommendation badge ───────────────────────── */
   --rec-color:       #f0b429;
@@ -166,15 +170,9 @@
   --floppy-label-divider: #1a1814;
   --floppy-text:          #ccc8b8;
   --floppy-text2:         #8a8070;
-}
 
-@media (max-width: 639px) {
-  :root {
-    --text-base: clamp(12px, calc(11.67px + 0.10vw), 13px);
-    --text-md:   clamp(14px, calc(13.67px + 0.10vw), 15px);
-    --text-lg:   clamp(15px, calc(14.33px + 0.21vw), 16px);
-    --text-xl:   clamp(16px, calc(15.33px + 0.21vw), 18px);
-    --text-2xl:  clamp(18px, calc(17.33px + 0.21vw), 20px);
-    --text-3xl:  clamp(20px, calc(18.67px + 0.42vw), 22px);
-  }
+  /* ── Field-note cover (notebook cards) ──────────── */
+  --fn-cover:  #37383f;
+  --fn-title:  #f2f0ea;
+  --fn-thread: rgba(255, 255, 255, 0.22);
 }

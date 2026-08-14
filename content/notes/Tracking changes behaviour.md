@@ -3,6 +3,9 @@ status: passive
 title: Tracking changes behaviour
 date: 2026-06-16
 tags: [systems, measurement]
+categories:
+  - name: focus
+    order: 180
 ---
 
 Tracking real data and real feedback changes how you behave. Measurement creates awareness, and awareness influences what you do next.

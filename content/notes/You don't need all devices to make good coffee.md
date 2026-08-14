@@ -2,6 +2,9 @@
 title: You don't need all devices to make good coffee
 date: 2026-06-16
 tags: [hobbies, tools]
+categories:
+  - name: focus
+    order: 190
 ---
 
 Coffee gets made sophisticated quickly. The base minimum looks like a lot of equipment. But you don't need it, pick one method, start there. As you learn and experiment, you'll know what to add. More devices don't make you a better brewer. They just make the collection bigger.

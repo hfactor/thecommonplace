@@ -3,6 +3,11 @@ moc: yes
 title: Version one is for learning
 date: 2026-06-16
 tags: [product, shipping, learning]
+categories:
+  - name: shipping
+    order: 70
+  - name: craft
+    order: 210
 ---
 
 Build the first version for learning, not for shipping. Can we build this? Does the stack work? Is this even possible? Build crude, raw, basic. Then understand what you built, then build more. This works especially well for AI.

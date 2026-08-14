@@ -2,7 +2,8 @@
 {{- $projectsPage := .Site.GetPage "/projects" -}}
 {{ partial "readable-open.html" (dict) }}
 
-      {{ partial "child-page-header.html" (dict "backHref" $projectsPage.RelPermalink "backLabel" "Back to Projects" "title" .Title "titleHref" .Params.href) }}
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <h1 class="page-title">{{ .Title }}</h1>
 
       <div class="sp-meta-row">
         <span class="sp-meta-left">

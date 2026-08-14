@@ -1,0 +1,194 @@
+{{- /* dict: nb (the notebook page to render), scrollTo (optional slug — forces a
+       scroll-to-card on load; when absent, falls back to location.hash on the client) */ -}}
+{{- $nb        := .nb -}}
+{{- $scrollTo  := .scrollTo | default "" -}}
+{{- $catKey    := path.Base $nb.RelPermalink -}}
+{{- $allNotes  := where site.RegularPages "Section" "notes" -}}
+{{- $notebooks := where site.RegularPages "Section" "notebook" -}}
+
+{{/* key (e.g. "craft") -> notebook page */}}
+{{- $nbByKey := dict -}}
+{{- range $notebooks -}}
+  {{- $nbByKey = merge $nbByKey (dict (path.Base .RelPermalink) .) -}}
+{{- end -}}
+
+{{/* Notes belonging to this notebook, each carrying its per-category order */}}
+{{- $items := slice -}}
+{{- range $allNotes -}}
+  {{- $p := . -}}
+  {{- range $p.Params.categories -}}
+    {{- if eq .name $catKey -}}
+      {{- $items = $items | append (dict "page" $p "order" .order) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $items = sort $items "order" "asc" -}}
+
+{{/* title -> {url, preview} for wikilink resolution — every note's canonical spot
+     is the notebook of its PRIMARY (first-listed) category */}}
+{{- $canon := dict -}}
+{{- range $allNotes -}}
+  {{- $p    := . -}}
+  {{- $cats := $p.Params.categories -}}
+  {{- if $cats -}}
+    {{- $primary := index $cats 0 -}}
+    {{- $target  := index $nbByKey $primary.name -}}
+    {{- if $target -}}
+      {{- $slug    := path.Base $p.RelPermalink -}}
+      {{- $url     := printf "%s#%s" $target.RelPermalink $slug -}}
+      {{- $preview := $p.Plain | htmlUnescape -}}
+      {{- $preview  = replaceRE `\[\[([^\]]+)\]\]` `$1` $preview -}}
+      {{- $preview  = $preview | truncate 300 -}}
+      {{- $canon = merge $canon (dict $p.Title (dict "url" $url "preview" $preview)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" $nb.RelPermalink) }}
+      <h1 class="page-title nb-title">{{ $nb.Title }}</h1>
+
+      <div class="nb-toc">
+        <button type="button" class="nb-toc-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Table of contents">
+        {{- range $items -}}
+          <span class="nb-toc-dash" data-slug="{{ path.Base .page.RelPermalink }}"></span>
+        {{- end -}}
+        </button>
+        <div class="nb-toc-menu" aria-hidden="true">
+        {{- range $items -}}
+          {{- $tocSlug := path.Base .page.RelPermalink -}}
+          <a href="#{{ $tocSlug }}" class="nb-toc-item" data-slug="{{ $tocSlug }}">{{ .page.Title }}</a>
+        {{- end -}}
+        </div>
+      </div>
+
+      <div class="nb-cards" id="nbCards" data-scroll-to="{{ $scrollTo }}">
+      {{- range $items -}}
+        {{- $p    := .page -}}
+        {{- $slug := path.Base $p.RelPermalink -}}
+        {{- $content := $p.Content -}}
+
+        {{/* Pull out the "### Source" block (if any) and turn it into footnotes */}}
+        {{- $footnotes := slice -}}
+        {{- $srcBlocks := findRE `(?s)<h3[^>]*>Source</h3>\s*<ul>.*?</ul>` $content -}}
+        {{- if $srcBlocks -}}
+          {{- $block := index $srcBlocks 0 -}}
+          {{- $content = replaceRE `(?s)<h3[^>]*>Source</h3>\s*<ul>.*?</ul>` "" $content -}}
+          {{- range findRE `(?s)<li>.*?</li>` $block -}}
+            {{- $item := replaceRE `(?s)</?li>` "" . -}}
+            {{- $item = partial "wikilinks-resolve.html" (dict "content" $item "canon" $canon "notes" $allNotes "deadPlain" true) -}}
+            {{- $footnotes = $footnotes | append $item -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{/* Resolve [[wikilinks]] to their canonical notebook#slug anchor */}}
+        {{- $content = partial "wikilinks-resolve.html" (dict "content" $content "canon" $canon "notes" $allNotes) -}}
+
+        <article class="nb-card" id="{{ $slug }}">
+          <h2 class="nb-card-title">
+            <a href="#{{ $slug }}" class="nb-card-anchor">{{ $p.Title }}</a>
+            <button type="button" class="nb-card-permalink" data-url="{{ $p.Permalink }}" data-tooltip="Copy link" aria-label="Copy link to this note">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7L7 5"/><path d="M6.5 3.5L8 2C8.8 1.2 10 1.2 10.8 2C11.6 2.8 11.6 4 10.8 4.8L9.3 6.3"/><path d="M5.5 8.5L4 10C3.2 10.8 2 10.8 1.2 10C0.4 9.2 0.4 8 1.2 7.2L2.7 5.7"/></svg>
+            </button>
+          </h2>
+          <div class="nb-card-grid">
+            <div class="nb-card-body sp-text">{{ $content | safeHTML }}</div>
+            {{- if $footnotes -}}
+            <div class="nb-footnotes">
+              {{- range $footnotes -}}<div class="nb-footnote">{{ . | safeHTML }}</div>{{- end -}}
+            </div>
+            {{- end -}}
+          </div>
+        </article>
+      {{- end -}}
+      </div>
+
+{{ partial "readable-close.html" (dict "page" $nb) }}
+
+<script>
+(function(){
+  var wrap = document.getElementById('nbCards');
+  if (!wrap) return;
+
+  var targetId = wrap.dataset.scrollTo || (location.hash ? location.hash.slice(1) : '');
+  if (targetId) {
+    var target = document.getElementById(targetId);
+    if (target) target.scrollIntoView();
+  }
+
+  wrap.querySelectorAll('.nb-card-permalink').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var url = btn.getAttribute('data-url');
+      navigator.clipboard.writeText(url).then(function () {
+        btn.setAttribute('data-tooltip', 'Copied!');
+        setTimeout(function () { btn.setAttribute('data-tooltip', 'Copy link'); }, 1500);
+      });
+    });
+  });
+
+  // TOC — dash-stack button toggles a popover menu, same open/close pattern
+  // as the header's type-switcher dropdown (page-title.html's .pt-nav).
+  var toc = document.querySelector('.nb-toc');
+  if (toc) {
+    var tocBtn  = toc.querySelector('.nb-toc-toggle');
+    var tocMenu = toc.querySelector('.nb-toc-menu');
+
+    function tocOpen() {
+      toc.classList.add('nb-toc--open');
+      tocBtn.setAttribute('aria-expanded', 'true');
+      tocMenu.setAttribute('aria-hidden', 'false');
+    }
+    function tocClose() {
+      toc.classList.remove('nb-toc--open');
+      tocBtn.setAttribute('aria-expanded', 'false');
+      tocMenu.setAttribute('aria-hidden', 'true');
+    }
+    tocBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      toc.classList.contains('nb-toc--open') ? tocClose() : tocOpen();
+    });
+    tocMenu.querySelectorAll('.nb-toc-item').forEach(function (a) {
+      a.addEventListener('click', tocClose);
+    });
+    document.addEventListener('click', function (e) {
+      if (toc.classList.contains('nb-toc--open') && !toc.contains(e.target)) tocClose();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') tocClose();
+    });
+  }
+
+  // TOC scroll-spy — highlights whichever note heading is currently nearest
+  // the top of the viewport, both the collapsed dash and the menu row. Pure
+  // UI enhancement: all links/content are already server-rendered, this
+  // just tracks which one is "current".
+  var tocDashes = document.querySelectorAll('.nb-toc-dash');
+  var tocItems  = document.querySelectorAll('.nb-toc-item');
+  var dashBySlug = {}, itemBySlug = {};
+  tocDashes.forEach(function (d) { dashBySlug[d.dataset.slug] = d; });
+  tocItems.forEach(function (a) { itemBySlug[a.dataset.slug] = a; });
+
+  if (tocDashes.length && 'IntersectionObserver' in window) {
+    var current = null;
+    function setActive(slug) {
+      if (slug === current) return;
+      if (current) {
+        if (dashBySlug[current]) dashBySlug[current].classList.remove('is-active');
+        if (itemBySlug[current]) itemBySlug[current].classList.remove('is-active');
+      }
+      if (slug) {
+        if (dashBySlug[slug]) dashBySlug[slug].classList.add('is-active');
+        if (itemBySlug[slug]) itemBySlug[slug].classList.add('is-active');
+      }
+      current = slug;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+    document.querySelectorAll('.nb-card').forEach(function (card) { observer.observe(card); });
+  }
+})();
+</script>

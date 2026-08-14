@@ -1,6 +1,6 @@
 /* ─── Page entrance — one slow fade-up, used on every page ── */
 @keyframes page-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.app { animation: page-in 0.9s ease both; }
+.app { animation: page-in var(--dur-entrance) ease both; }
 
 /* Custom tooltips */
 [data-tooltip] { position: relative; }
@@ -12,14 +12,14 @@
   transform: translateX(-50%) translateY(3px);
   background: var(--ink);
   color: var(--bg);
-  font-size: 11px;
+  font-size: var(--text-sm);
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 6px;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.12s, transform 0.12s;
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
   z-index: 200;
 }
 [data-tooltip]:hover::after {

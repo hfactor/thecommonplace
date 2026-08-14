@@ -3,6 +3,9 @@ moc: yes
 title: Keep unfinished ideas
 date: 2026-06-16
 tags: [ideas, notes]
+categories:
+  - name: thinking
+    order: 150
 ---
 
 Archive ideas instead of deleting them. An idea that doesn't fit now might make sense later when the context changes. The cost of keeping is low. The cost of deleting is permanent.

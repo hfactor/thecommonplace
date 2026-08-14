@@ -2,6 +2,9 @@
 title: Customers reveal reality
 date: 2026-06-16
 tags: [product, feedback]
+categories:
+  - name: craft
+    order: 160
 ---
 
 An idea is only as good as what the world actually needs. Assumption and gut feel are not how products work. You can be opinionated about direction, but feedback is real data and opinions are not.

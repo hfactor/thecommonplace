@@ -1,50 +1,18 @@
 {{ define "main" }}
-{{- $notesPage := .Site.GetPage "/notes" -}}
-{{- $allNotes  := where .Site.RegularPages "Section" "notes" -}}
-
-{{- /* Resolve wikilinks in content — check notes + reading */ -}}
-{{- $content := .Content -}}
-{{- $linkPages := union $allNotes (where .Site.RegularPages "Section" "reading") -}}
-{{- range $linkPages -}}
-  {{- $pattern     := printf `\[\[%s\]\]` (replaceRE `([.+*?()\[\]{}|^$\\])` `\$1` .Title) -}}
-  {{- $replacement := printf `<a href="%s" class="wikilink">%s</a>` .RelPermalink .Title -}}
-  {{- $content      = replaceRE $pattern $replacement $content -}}
+{{- $slug   := path.Base .RelPermalink -}}
+{{- $cats   := .Params.categories -}}
+{{- $nb     := "" -}}
+{{- if $cats -}}
+  {{- $primary := index $cats 0 -}}
+  {{- $nb = .Site.GetPage (printf "/notebook/%s" $primary.name) -}}
 {{- end -}}
-{{- $content = replaceRE `\[\[([^\]]+)\]\]` `<span class="wikilink-dead">$1</span>` $content -}}
-
-{{- /* Find backlinks */ -}}
-{{- $backlinks := slice -}}
-{{- range $allNotes -}}
-  {{- if and (ne . $) (in .RawContent (printf "[[%s]]" $.Title)) -}}
-    {{- $backlinks = $backlinks | append . -}}
-  {{- end -}}
+{{- if $nb -}}
+  {{ partial "notebook-page.html" (dict "nb" $nb "scrollTo" $slug) }}
+{{- else -}}
+  {{ partial "readable-open.html" (dict) }}
+  {{ partial "page-title.html" (dict) }}
+  <h1 class="page-title">{{ .Title }}</h1>
+  <div class="sp-text"><p>This note isn't filed under a notebook yet. <a href="{{ (.Site.GetPage "/notes").RelPermalink }}">Back to Notes</a></p></div>
+  {{ partial "readable-close.html" (dict "page" .) }}
 {{- end -}}
-
-{{ partial "readable-open.html" (dict) }}
-
-      {{ partial "child-page-header.html" (dict "backHref" $notesPage.RelPermalink "backLabel" "Back to Notes" "title" .Title) }}
-
-      <div class="sp-text">
-        {{ $content | safeHTML }}
-        {{- if $backlinks -}}
-        <h3>Linked from</h3>
-        <ul>
-          {{- range $backlinks -}}
-          <li><a href="{{ .RelPermalink }}" class="wikilink">{{ .Title }}</a></li>
-          {{- end -}}
-        </ul>
-        {{- end -}}
-      </div>
-
-      {{ if .Lastmod }}<div class="sp-notes-date">Last updated {{ .Lastmod | dateFormat "January 2006" }}</div>{{ end }}
-
-{{ partial "readable-close.html" (dict "page" .) }}
-<script>
-(function(){
-  var svg = '<svg class="link-scribble" width="100%" height="9" aria-hidden="true" viewBox="0 0 80 9" preserveAspectRatio="none"><path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  document.querySelectorAll('.sp-text a, .wikilink').forEach(function(el){
-    el.insertAdjacentHTML('beforeend', svg);
-  });
-})();
-</script>
 {{ end }}

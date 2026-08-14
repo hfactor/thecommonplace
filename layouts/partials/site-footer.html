@@ -1,9 +1,75 @@
-<footer class="site-footer">
-  <a class="sf-link" href="{{ "about" | relURL }}">About</a>
-  <span class="sf-dot">·</span>
-  <a class="sf-link" href="{{ "everything" | relURL }}">Everything</a>
-  <span class="sf-dot">·</span>
-  <a class="sf-link" href="{{ "colophon" | relURL }}">Colophon</a>
-  <span class="sf-dot">·</span>
-  <button class="sf-theme" onclick="fabToggleTheme()" aria-label="Toggle theme">Dark / Light</button>
-</footer>
+{{- $cur := .RelPermalink -}}
+{{- $label := "Everything" -}}
+{{- if ne $cur "/everything/" -}}
+  {{- range hugo.Data.types -}}
+    {{- if and .in_everything (strings.HasPrefix $cur (printf "/%s" .id)) -}}
+      {{- $label = .label -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if strings.HasPrefix $cur "/note/" -}}
+    {{- $label = "Notes" -}}
+  {{- end -}}
+{{- end -}}
+<nav class="site-footer">
+  <div class="pt-nav sf-nav">
+    <button type="button" class="sf-link pt-nav-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Switch section">
+      {{ $label }}
+      <svg class="pt-nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="1" y1="5" x2="9" y2="5"/>
+        <line class="pt-nav-caret-v" x1="5" y1="1" x2="5" y2="9"/>
+      </svg>
+    </button>
+    <div class="pt-nav-menu sf-nav-menu" aria-hidden="true">
+      <a class="pt-nav-link{{ if eq $cur "/everything/" }} pt-nav-link--active{{ end }}" href="{{ "everything" | relURL }}">Everything</a>
+      {{- range hugo.Data.types }}
+        {{- if .in_everything }}
+        <a class="pt-nav-link{{ if strings.HasPrefix $cur (printf "/%s" .id) }} pt-nav-link--active{{ end }}" href="{{ .id | relURL }}">{{ .label }}</a>
+        {{- end }}
+      {{- end }}
+    </div>
+  </div>
+  <a class="sf-link{{ if eq $cur "/now/" }} sf-link--active{{ end }}" href="{{ "now" | relURL }}">NowPage</a>
+  <a class="sf-link{{ if eq $cur "/about/" }} sf-link--active{{ end }}" href="{{ "about" | relURL }}">About</a>
+  <div class="pt-nav sf-nav sf-nav--connect">
+    <button type="button" class="sf-link pt-nav-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Connect">
+      Connect
+    </button>
+    <div class="pt-nav-menu sf-nav-menu" aria-hidden="true">
+      <a class="pt-nav-link" href="mailto:hiran.v@gmail.com">Email</a>
+      <a class="pt-nav-link" href="https://hiran.substack.com/subscribe?utm_source=hiran.in" target="_blank" rel="noopener">Newsletter!</a>
+      <a class="pt-nav-link" href="https://topmate.io/hiran" target="_blank" rel="noopener">Book a Call</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+(function () {
+  document.querySelectorAll('.sf-nav').forEach(function (wrap) {
+    var btn  = wrap.querySelector('.pt-nav-toggle');
+    var menu = wrap.querySelector('.pt-nav-menu');
+    if (!btn || !menu) return;
+
+    function open() {
+      wrap.classList.add('pt-nav--open');
+      btn.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-hidden', 'false');
+    }
+    function close() {
+      wrap.classList.remove('pt-nav--open');
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      wrap.classList.contains('pt-nav--open') ? close() : open();
+    });
+    document.addEventListener('click', function (e) {
+      if (wrap.classList.contains('pt-nav--open') && !wrap.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  });
+})();
+</script>

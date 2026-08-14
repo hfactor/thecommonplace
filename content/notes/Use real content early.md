@@ -2,6 +2,9 @@
 title: Use real content early
 date: 2026-06-16
 tags: [design, product]
+categories:
+  - name: craft
+    order: 200
 ---
 
 When designing a product or building something, work with real content early. Context defines clarity. Dummy data lacks integrity. It misses edge cases and makes interfaces look cleaner than they are with actual use.

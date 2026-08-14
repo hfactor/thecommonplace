@@ -60,39 +60,6 @@
 {{- end -}}
 {{- end -}}
 
-{{/* ── Newsletter ─────────────────────────────────────── */}}
-{{- if or (eq $lt "") (eq $lt "newsletter") -}}
-{{- range hugo.Data.newsletter -}}
-  {{- $url   := .url -}}
-  {{- $img   := "" -}}
-  {{- $title := default "" .title -}}
-  {{- if .image -}}{{- $img = .image -}}{{- end -}}
-  {{- if and (not $img) (not $title) -}}
-    {{- $opts := dict "headers" (dict "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36") -}}
-    {{- $r := try (resources.GetRemote $url $opts) -}}
-    {{- if not $r.Err -}}
-      {{- with $r.Value -}}
-        {{- $html := .Content -}}
-        {{- $m := findRE `property="og:image"\s+content="([^"]+)"` $html 1 -}}
-        {{- if not $m -}}{{- $m = findRE `content="([^"]+)"\s+property="og:image"` $html 1 -}}{{- end -}}
-        {{- if $m -}}{{- $img = replaceRE `.*content="([^"]+)".*` "$1" (index $m 0) -}}{{- end -}}
-        {{- $mt := findRE `property="og:title"\s+content="([^"]+)"` $html 1 -}}
-        {{- if not $mt -}}{{- $mt = findRE `content="([^"]+)"\s+property="og:title"` $html 1 -}}{{- end -}}
-        {{- if $mt -}}{{- $title = replaceRE `.*content="([^"]+)".*` "$1" (index $mt 0) -}}{{- end -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- $t   := time .date -}}
-  {{- $key := dateFormat "2006-01" $t -}}
-  {{- $slug := replaceRE `^.*/p/([^/?#]+).*$` "$1" $url -}}
-  {{- $uid  := printf "newsletter/%s" $slug -}}
-  {{- $entry := dict "uid" $uid "type" "newsletter" "day" (int (dateFormat "2" $t)) "url" $url "image" $img "title" $title -}}
-  {{- $existing := slice -}}
-  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
-  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
-{{- end -}}
-{{- end -}}
-
 {{/* ── Uses (things.yaml) ────────────────────────────── */}}
 {{- if or (eq $lt "") (eq $lt "uses") -}}
 {{- range hugo.Data.things -}}
@@ -148,6 +115,83 @@
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
   {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Notes (notebooks — one card per category, not per note) ───── */}}
+{{- if eq $lt "notes" -}}
+{{- $noteCounts := dict -}}
+{{- range where .Site.RegularPages "Section" "notes" -}}
+  {{- range .Params.categories -}}
+    {{- $n := 0 -}}
+    {{- with index $noteCounts .name -}}{{- $n = . -}}{{- end -}}
+    {{- $noteCounts = merge $noteCounts (dict .name (add $n 1)) -}}
+  {{- end -}}
+{{- end -}}
+{{- range where .Site.RegularPages "Section" "notebook" -}}
+  {{- $key   := "notebooks" -}}
+  {{- $catKey := path.Base .RelPermalink -}}
+  {{- $count := 0 -}}
+  {{- with index $noteCounts $catKey -}}{{- $count = . -}}{{- end -}}
+  {{- $entry := dict
+    "uid"       (printf "notes/%s" $catKey)
+    "type"      "notes"
+    "day"       (sub 1000 (int (default 0 .Params.order)))
+    "title"     .Title
+    "count"     $count
+    "permalink" .RelPermalink
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Notes in the combined Everything feed ───────────
+     One card per notebook, not per note — avoids a busy writing week flooding
+     the feed with individual entries. Each notebook is auto-bumped to the
+     month of its most recently dated note, but only counting notes whose
+     PRIMARY category is that notebook — a note filed under two notebooks
+     (e.g. Craft + Focus) can only ever bump the one it primarily belongs to,
+     never both at once. No manual curation needed. */}}
+{{- if eq $lt "" -}}
+{{- $allCatNotes     := dict -}}
+{{- $primaryCatNotes := dict -}}
+{{- range where .Site.RegularPages "Section" "notes" -}}
+  {{- $p    := . -}}
+  {{- $cats := $p.Params.categories -}}
+  {{- range $cats -}}
+    {{- $existing := slice -}}
+    {{- with index $allCatNotes .name -}}{{- $existing = . -}}{{- end -}}
+    {{- $allCatNotes = merge $allCatNotes (dict .name ($existing | append $p)) -}}
+  {{- end -}}
+  {{- with $cats -}}
+    {{- $primary := index . 0 -}}
+    {{- $existing := slice -}}
+    {{- with index $primaryCatNotes $primary.name -}}{{- $existing = . -}}{{- end -}}
+    {{- $primaryCatNotes = merge $primaryCatNotes (dict $primary.name ($existing | append $p)) -}}
+  {{- end -}}
+{{- end -}}
+{{- range where .Site.RegularPages "Section" "notebook" -}}
+  {{- $catKey  := path.Base .RelPermalink -}}
+  {{- $members := index $allCatNotes $catKey -}}
+  {{- $primaryMembers := index $primaryCatNotes $catKey -}}
+  {{- if $primaryMembers -}}
+    {{- $latest := index (sort $primaryMembers "Date" "desc") 0 -}}
+    {{- $key := dateFormat "2006-01" $latest.Date -}}
+    {{- $entry := dict
+      "uid"       (printf "notes/%s" $catKey)
+      "type"      "notes"
+      "day"       (int (dateFormat "2" $latest.Date))
+      "title"     .Title
+      "date"      (dateFormat "Jan 2, 2006" $latest.Date)
+      "count"     (len $members)
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
 {{- end -}}
 {{- end -}}
 

@@ -3,6 +3,9 @@ status: passive
 title: Hype Doc
 date: 2021-06-17
 tags: [career, documentation]
+categories:
+  - name: collaboration
+    order: 50
 ---
 
 A hype doc is a running note of what you shipped, contributed, and learned. Small wins, team efforts, decisions that went well. You add to it as things happen, not at the end of the year when you need to remember.

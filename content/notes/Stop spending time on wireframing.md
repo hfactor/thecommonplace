@@ -2,6 +2,9 @@
 title: Stop spending time on wireframing
 date: 2021-07-28
 tags: [design, process]
+categories:
+  - name: craft
+    order: 120
 ---
 
 High-fidelity wireframes often become the product of the conversation instead of a tool for it. People respond to spacing, font choices, and visual weight before they've agreed on whether the flow is right. The wireframe becomes the thing being reviewed rather than the logic it was meant to represent.

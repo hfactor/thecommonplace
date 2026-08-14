@@ -1,16 +1,17 @@
 ---
 title: "About"
+footer: "See what this site is built with in the [colophon](/colophon/)."
 ---
-I’m Hiran Venugopalan, a maker and product designer with fifteen years of experience designing products, building teams, and helping ideas grow into systems people can use.
-
 ![Hiran Venugopalan, 2020](../assets/img/hiran-2020-asif.png)
 
-I currently lead design at [Kaleyra](https://www.tatacommunications.com/kaleyra)/Tata Communications, continuing the journey that began with Kaleyra becoming part of the group. Before that, I worked with Quintype and Bang the Table. Earlier in my journey,  I co-founded saltmangotree, an early digital marketing studio in India, where I led design and technology until its acquisition in.
+I’m Hiran Venugopalan. I enjoy making things and learning how things work. I often find myself working on things where design, technology, and culture meet.
 
-My path into design began with an interest in free and open-source software, and by volunteering with [Swathanthra Malayalam Computing](https://smc.org.in/en/). I was part of the effort to help revive the community, and that opened the door to language computing, type design, and digital publishing. During that journey, I created [Dyuthi](https://github.com/smc/Dyuthi), an ornamental Malayalam Unicode font, worked on language computing projects, and designed [Rufscript](https://fontlibrary.org/en/font/rufscript), a handwriting-inspired display typeface.
+Design has been a large part of my life, but not where it started. An interest in free and open-source software led me to [Swathanthra Malayalam Computing](https://smc.org.in/en/), and into language computing, and type design. That period shaped how I think about making and sharing things.
 
-Over the years, that same curiosity has grown into community and open-source work through projects like *Malayaleegraphy*, a type-art project that brought Malayalam lettering into digital pop-culture. I’ve been building [UXFOSS](https://hiran.in/uxfoss), an initiative to bring product design into FOSS projects, and [Ksha Collectives](https://instagram.com/ksha.cc), an space for educational tools, language, and learning. You’ll find more of that in [/projects](/projects)
+I have made the first Malayalam decorative Unicode font, [Dyuthi](/projects/dyuthi/), turned a friend’s handwriting into the open-source typeface [Rufscript](/projects/rufscript/), and explored Malayalam lettering through digital pop culture with [Malayaleegraphy](/projects/malayaleegraphy/). More recently, I’ve worked on smaller projects like [Paper Maker](/projects/papermaker/) and [Cinema Radio](/projects/cinema-radio/). You’ll find more of that in [/projects](/projects/)
 
-I also write a newsletter, [This&That](https://hiran.substack.com/), about how creative people think and work, part interviews, part observations, and part things worth sharing. Outside work, a lot of that same curiosity finds its way into coffee, books, films, and food, including brewing and the occasional workshop around it.
+These days, I lead Product Design and Experience at Kaleyra, part of Tata Communications. Outside work, I am involved with [UXFOSS](/uxfoss/) and [Ksha Collectives](https://instagram.com/ksha.cc), working around FOSS, language, and learning.
 
-I enjoy meeting people who are building, exploring, or figuring things out. If something here connects, feel free to [write to me](mailto:hiran.v@gmail.com), or [find me over coffee in Bengaluru](https://topmate.io/hiran).
+Coffee is a newer interest. I brew, learn, experiment, and occasionally run workshops and tasting sessions. I also spend a fair amount of time reading, watching cinema, and getting interested in food, history and culture.
+
+I have met some of my favourite people through work, communities, and the internet. I like good conversations, people who are generous with what they know, and making things together. If something here interests you, send me an [email](mailto:hiran.v@gmail.com) or connect via [Topmate](https://topmate.io/hiran). Let’s catch up online or offline.

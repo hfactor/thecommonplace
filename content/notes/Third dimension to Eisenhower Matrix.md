@@ -2,6 +2,9 @@
 title: Third dimension to Eisenhower Matrix
 date: 2021-08-02
 tags: [productivity, prioritisation]
+categories:
+  - name: focus
+    order: 80
 ---
 
 Urgency and importance give you two dimensions. The third is leverage: whether doing this task permanently simplifies or unblocks something else. A task can be neither urgent nor immediately important but still high leverage. Fixing a broken process that generates overhead every week, writing documentation that stops three recurring questions, these compound over time.

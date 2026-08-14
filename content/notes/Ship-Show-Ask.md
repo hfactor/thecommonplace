@@ -5,6 +5,11 @@ status: passive
 title: Ship-Show-Ask
 date: 2021-08-11
 tags: [shipping, git, collaboration]
+categories:
+  - name: shipping
+    order: 40
+  - name: collaboration
+    order: 100
 ---
 
 Ship/Show/Ask is a branching strategy that lets every change carry its own level of review. Ship goes straight to mainline, no PR, no waiting. Show opens a PR but merges without waiting for approval, creates a space for feedback after the fact. Ask opens a PR and waits for input before merging.

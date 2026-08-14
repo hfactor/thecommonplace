@@ -2,6 +2,9 @@
 title: Fat-marker method
 date: 2021-07-06
 tags: [design, process]
+categories:
+  - name: craft
+    order: 70
 ---
 
 A thick marker makes detail impossible, and that's the point. When you sketch with something that can't draw a fine line, you're forced to stay at the level of structure and flow. The roughness signals to everyone in the room that nothing here is final.

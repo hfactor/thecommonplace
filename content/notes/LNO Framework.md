@@ -3,6 +3,9 @@ status: passive
 title: LNO Framework
 date: 2021-07-10
 tags: [productivity, prioritisation]
+categories:
+  - name: focus
+    order: 60
 ---
 
 LNO is a task categorisation method by Shreyas Doshi. Every task on your list is one of three types: Leverage, Neutral, or Overhead.

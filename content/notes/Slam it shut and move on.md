@@ -2,6 +2,9 @@
 title: Slam it shut and move on
 date: 2021-06-05
 tags: [shipping, decisions]
+categories:
+  - name: shipping
+    order: 10
 ---
 
 There's a version of every project that never ships because it keeps getting refined. At some point the work is good enough to learn from, and learning requires it being out there. Shipping and moving immediately to the next thing isn't recklessness, it's a discipline. Done is a decision, not a discovery.

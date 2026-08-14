@@ -5,6 +5,11 @@ status: passive
 title: Files outlive software
 date: 2026-06-16
 tags: [tools, data]
+categories:
+  - name: focus
+    order: 140
+  - name: thinking
+    order: 130
 ---
 
 Software can die. Files shouldn't get aborted with it. A note stored in a proprietary format is hostage to the app that made it. Markdown is plain text. It opens in anything, exports to anything, and will still work ten years from now.

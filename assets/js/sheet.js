@@ -116,9 +116,6 @@ function openSheet(uid) {
   inner.innerHTML = html;
   sheet.classList.toggle('sheet--wide', wide);
 
-  const scribbleSvg = '<svg class="link-scribble" width="100%" height="9" aria-hidden="true" viewBox="0 0 80 9" preserveAspectRatio="none"><path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  inner.querySelectorAll('.modal-body a').forEach(el => el.insertAdjacentHTML('beforeend', scribbleSvg));
-
   if (!_sheetOpen) {
     const cv = document.getElementById('cardView');
     _sheetScrollLeft = cv ? cv.scrollLeft : null;

@@ -6,5 +6,5 @@
 {{- end -}}
 
 <div class="page-nav">
-  {{ partial "page-title.html" (dict "title" $label) }}
+  {{ partial "page-title.html" (dict "title" $label "cur" .page.RelPermalink "typeNav" true "viewToggle" true) }}
 </div>

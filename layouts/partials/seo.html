@@ -2,6 +2,19 @@
 {{- $siteName := site.Title -}}
 {{- $tagline  := site.Params.tagline -}}
 
+{{- /* Individual notes render inside their notebook's page (many URLs, one piece of
+       content) — canonical points at the notebook so search engines consolidate
+       ranking there instead of treating each note URL as separate duplicate content. */}}
+{{- $canonicalURL := .Permalink -}}
+{{- if and (eq .Section "notes") (not .IsSection) -}}
+  {{- with .Params.categories -}}
+    {{- $primary := index . 0 -}}
+    {{- with site.GetPage (printf "/notebook/%s" $primary.name) -}}
+      {{- $canonicalURL = .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 {{- /* Title */}}
 {{- $title := printf "%s — %s" .Title $siteName -}}
 {{- if $isHome -}}{{- $title = printf "%s — %s" $siteName $tagline -}}{{- end -}}
@@ -27,11 +40,11 @@
 {{ with $keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
 <meta name="author" content="Hiran Venugopalan">
 <meta name="robots" content="{{ if eq .Section "work" }}noindex, nofollow{{ else }}index, follow{{ end }}">
-<link rel="canonical" href="{{ .Permalink }}">
+<link rel="canonical" href="{{ $canonicalURL }}">
 
 <!-- Open Graph -->
 <meta property="og:type"        content="{{ if $isHome }}website{{ else }}article{{ end }}">
-<meta property="og:url"         content="{{ .Permalink }}">
+<meta property="og:url"         content="{{ $canonicalURL }}">
 <meta property="og:title"       content="{{ $title }}">
 <meta property="og:description" content="{{ $desc }}">
 <meta property="og:image"       content="{{ $image }}">

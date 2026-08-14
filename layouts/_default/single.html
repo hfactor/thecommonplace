@@ -1,10 +1,15 @@
 {{ define "main" }}
 {{ partial "readable-open.html" (dict) }}
 
-      {{ partial "page-title.html" (dict "title" .Title) }}
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <h1 class="page-title">{{ .Title }}</h1>
       {{ if .Params.updated }}<p class="sp-updated">Updated {{ .Params.updated }}</p>{{ end }}
 
-      <div class="sp-text">{{ .Content }}</div>
+      <div class="sp-text sp-text--lede">{{ .Content }}</div>
+
+      {{ if eq .RelPermalink "/about/" }}
+      <a class="about-email-jumbo" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
+      {{ end }}
 
       {{ if .Params.footer }}<p class="sp-footer">{{ .Params.footer | markdownify }}</p>{{ end }}
 

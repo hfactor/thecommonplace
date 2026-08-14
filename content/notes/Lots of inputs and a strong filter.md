@@ -3,6 +3,9 @@ moc: yes
 title: Lots of inputs and a strong filter
 date: 2021-07-24
 tags: [knowledge, learning]
+categories:
+  - name: thinking
+    order: 70
 ---
 
 More inputs only help if the filter is strong. Without one, more reading creates more noise. Not everything deserves attention. If an idea matters, it will come back, you'll see it again in a different place, from a different person.

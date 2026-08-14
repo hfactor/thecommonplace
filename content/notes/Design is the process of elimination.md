@@ -4,6 +4,11 @@ burner: back
 title: Design is the process of elimination
 date: 2026-06-16
 tags: [design, product]
+categories:
+  - name: craft
+    order: 170
+  - name: focus
+    order: 130
 ---
 
 Design is not adding, it's subtracting. You start with different ideas, merge them, find patterns, combine and converge, and bring things to the bare minimum that still works for the person using it. The role of a product designer is not to produce visual design. The job is to make things that work for the end user, solve their problem, and give them clarity.

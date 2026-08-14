@@ -1,7 +1,26 @@
-{{- /* dict: title (string) */ -}}
-<div class="page-head">
+{{- /* dict: title (optional string), extraClass (optional), typeNav (optional
+       bool — the type-switcher itself now lives in the footer, not here;
+       this flag no longer changes anything in this partial but call sites
+       still pass it), viewToggle (optional bool — adds the Latest/List
+       controls, right-aligned) */ -}}
+{{- $viewToggle := .viewToggle | default false -}}
+<div class="page-head{{ with .extraClass }} {{ . }}{{ end }}">
   {{- with resources.Get "img/hiran-head.svg" -}}
-  <a href="{{ "/" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>
+  <a href="{{ "everything" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>
   {{- end -}}
-  <h1 class="page-title">{{ .title }}</h1>
+  {{- /* Every page still needs exactly one h1 for SEO — visually hidden here
+         since the visible section-switcher now lives in the footer, but kept
+         in the DOM so pages without their own in-body heading (About, Now,
+         Colophon…) don't lose it. */ -}}
+  {{- with .title }}<h1 class="page-title sr-only">{{ . }}</h1>{{- end -}}
+
+  <div class="pt-view">
+    {{- if $viewToggle }}
+    <button type="button" id="latestChip" class="pt-view-latest" onclick="goLatest()" aria-label="Jump to latest">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="10" x2="6" y2="2"/><polyline points="2,6 6,2 10,6"/></svg>
+    </button>
+    <button type="button" id="latestModeBtn" class="pt-view-mode" onclick="fabToggleView()" aria-label="Switch to list view"></button>
+    {{- end }}
+    <button type="button" class="pt-theme" onclick="fabToggleTheme()" aria-label="Toggle theme"></button>
+  </div>
 </div>

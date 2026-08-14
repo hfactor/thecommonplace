@@ -1,7 +1,6 @@
 {{ define "main" }}
 <div class="app">
 {{ partial "page-nav.html" (dict "page" . "ctx" "bookmarks") }}
-<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 <main class="content">
   <div id="cardView"><div id="cvTrack"></div></div>
   <div id="lView"></div>

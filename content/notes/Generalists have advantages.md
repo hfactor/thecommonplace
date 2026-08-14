@@ -3,6 +3,9 @@ moc: yes
 title: Generalists have advantages
 date: 2026-06-16
 tags: [learning, thinking]
+categories:
+  - name: thinking
+    order: 140
 ---
 
 Specialisation is not always an advantage. Having exposure across domains helps you solve problems from different angles. An analogy from an adjacent business often articulates a problem more clearly than staying inside the domain. It also helps find edge cases faster, someone who's seen the same shape of problem elsewhere already knows where it breaks.

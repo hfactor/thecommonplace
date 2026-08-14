@@ -4,6 +4,9 @@ status: passive
 title: Breadboarding over wireframes
 date: 2021-06-18
 tags: [design, process]
+categories:
+  - name: craft
+    order: 40
 ---
 
 Breadboarding maps logic, not layout. It keeps the review focused on whether the system makes sense before anyone responds to how it looks. Once you introduce layout, people respond to spacing, visual weight, type choices, attention moves away from structure. A breadboard shows how parts connect and what happens when a user takes an action, without triggering the visual response that derails the structural conversation.

@@ -2,6 +2,9 @@
 title: One notebook system
 date: 2026-06-16
 tags: []
+categories:
+  - name: thinking
+    order: 160
 ---
 I have [one notebook](https://amzn.to/44a1OwP), and I write everything in it. It's an A6-sized notebook, cheaper, India version of [FieldNote](https://fieldnotesbrand.com/), and office, personal, project, all of it goes in the same place. It's not fully bullet journal, but I have used page numbering and indexing, dated entries, no empty pages, and not everything. [[Borrow ideas not workflows]]. (PS: Bullet Journal videos make it look overwhelming, but the core ideas are sound.)
 

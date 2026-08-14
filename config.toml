@@ -14,6 +14,7 @@ ignoreFiles = [
 
 [permalinks]
   notes     = "/note/:slug"
+  notebook  = "/note/:slug"
   reading   = "/reading/:slug"
   bookmarks = "/bookmarks/:slug"
 
@@ -32,8 +33,6 @@ ignoreFiles = [
     render = true
   [params.sections.bookmarks]
     render = true
-  [params.sections.things]
-    render = false
   [params.sections.uses]
     render = true
   [params.sections.work]
