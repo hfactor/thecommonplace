@@ -9,7 +9,7 @@
 {{- if and (eq .Section "notes") (not .IsSection) -}}
   {{- with .Params.categories -}}
     {{- $primary := index . 0 -}}
-    {{- with site.GetPage (printf "/notebook/%s" $primary.name) -}}
+    {{- with site.GetPage (printf "categories/%s" ($primary | urlize)) -}}
       {{- $canonicalURL = .Permalink -}}
     {{- end -}}
   {{- end -}}

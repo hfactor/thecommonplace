@@ -2,7 +2,7 @@ baseURL = "https://hiran.in"
 locale = "en-us"
 title = "Hiran Venugopalan"
 enableRobotsTXT = true
-disableKinds = ["taxonomy", "term"]
+disableKinds = ["taxonomy"]
 
 ignoreFiles = [
   "/content/notes/.obsidian/.*",
@@ -12,9 +12,16 @@ ignoreFiles = [
   "/content/notes/AGENTS\\.md"
 ]
 
+# Notebooks are not their own content — a notebook is just a distinct value
+# of a note's `categories` field. Hugo's taxonomy system auto-generates one
+# page per category, appearing/disappearing as notes are added, renamed, or
+# removed — no separate file to hand-maintain in sync.
+[taxonomies]
+  category = "categories"
+
 [permalinks]
   notes     = "/note/:slug"
-  notebook  = "/note/:slug"
+  categories = "/note/:slug"
   reading   = "/reading/:slug"
   bookmarks = "/bookmarks/:slug"
 

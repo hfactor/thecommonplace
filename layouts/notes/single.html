@@ -1,13 +1,13 @@
 {{ define "main" }}
-{{- $slug   := path.Base .RelPermalink -}}
-{{- $cats   := .Params.categories -}}
-{{- $nb     := "" -}}
+{{- $slug := path.Base .RelPermalink -}}
+{{- $cats := .Params.categories -}}
+{{- $term := "" -}}
 {{- if $cats -}}
   {{- $primary := index $cats 0 -}}
-  {{- $nb = .Site.GetPage (printf "/notebook/%s" $primary.name) -}}
+  {{- $term = .Site.GetPage (printf "categories/%s" ($primary | urlize)) -}}
 {{- end -}}
-{{- if $nb -}}
-  {{ partial "notebook-page.html" (dict "nb" $nb "scrollTo" $slug) }}
+{{- if $term -}}
+  {{ partial "notebook-render.html" (dict "pages" $term.Pages "title" $term.Title "page" $term "scrollTo" $slug) }}
 {{- else -}}
   {{ partial "readable-open.html" (dict) }}
   {{ partial "page-title.html" (dict) }}

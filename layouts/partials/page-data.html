@@ -120,26 +120,17 @@
 
 {{/* ── Notes (notebooks — one card per category, not per note) ───── */}}
 {{- if eq $lt "notes" -}}
-{{- $noteCounts := dict -}}
-{{- range where .Site.RegularPages "Section" "notes" -}}
-  {{- range .Params.categories -}}
-    {{- $n := 0 -}}
-    {{- with index $noteCounts .name -}}{{- $n = . -}}{{- end -}}
-    {{- $noteCounts = merge $noteCounts (dict .name (add $n 1)) -}}
-  {{- end -}}
-{{- end -}}
-{{- range where .Site.RegularPages "Section" "notebook" -}}
+{{- range where .Site.Pages "Kind" "term" -}}
+  {{- $t     := . -}}
   {{- $key   := "notebooks" -}}
-  {{- $catKey := path.Base .RelPermalink -}}
-  {{- $count := 0 -}}
-  {{- with index $noteCounts $catKey -}}{{- $count = . -}}{{- end -}}
+  {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
   {{- $entry := dict
-    "uid"       (printf "notes/%s" $catKey)
+    "uid"       (printf "notes/%s" (path.Base $t.RelPermalink))
     "type"      "notes"
-    "day"       (sub 1000 (int (default 0 .Params.order)))
-    "title"     .Title
-    "count"     $count
-    "permalink" .RelPermalink
+    "day"       (int (dateFormat "20060102" $recent))
+    "title"     $t.Title
+    "count"     (len $t.Pages)
+    "permalink" $t.RelPermalink
   -}}
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
@@ -155,38 +146,31 @@
      (e.g. Craft + Focus) can only ever bump the one it primarily belongs to,
      never both at once. No manual curation needed. */}}
 {{- if eq $lt "" -}}
-{{- $allCatNotes     := dict -}}
 {{- $primaryCatNotes := dict -}}
 {{- range where .Site.RegularPages "Section" "notes" -}}
   {{- $p    := . -}}
   {{- $cats := $p.Params.categories -}}
-  {{- range $cats -}}
-    {{- $existing := slice -}}
-    {{- with index $allCatNotes .name -}}{{- $existing = . -}}{{- end -}}
-    {{- $allCatNotes = merge $allCatNotes (dict .name ($existing | append $p)) -}}
-  {{- end -}}
   {{- with $cats -}}
     {{- $primary := index . 0 -}}
     {{- $existing := slice -}}
-    {{- with index $primaryCatNotes $primary.name -}}{{- $existing = . -}}{{- end -}}
-    {{- $primaryCatNotes = merge $primaryCatNotes (dict $primary.name ($existing | append $p)) -}}
+    {{- with index $primaryCatNotes $primary -}}{{- $existing = . -}}{{- end -}}
+    {{- $primaryCatNotes = merge $primaryCatNotes (dict $primary ($existing | append $p)) -}}
   {{- end -}}
 {{- end -}}
-{{- range where .Site.RegularPages "Section" "notebook" -}}
-  {{- $catKey  := path.Base .RelPermalink -}}
-  {{- $members := index $allCatNotes $catKey -}}
-  {{- $primaryMembers := index $primaryCatNotes $catKey -}}
+{{- range where .Site.Pages "Kind" "term" -}}
+  {{- $t := . -}}
+  {{- $primaryMembers := index $primaryCatNotes $t.Title -}}
   {{- if $primaryMembers -}}
     {{- $latest := index (sort $primaryMembers "Date" "desc") 0 -}}
     {{- $key := dateFormat "2006-01" $latest.Date -}}
     {{- $entry := dict
-      "uid"       (printf "notes/%s" $catKey)
+      "uid"       (printf "notes/%s" (path.Base $t.RelPermalink))
       "type"      "notes"
       "day"       (int (dateFormat "2" $latest.Date))
-      "title"     .Title
+      "title"     $t.Title
       "date"      (dateFormat "Jan 2, 2006" $latest.Date)
-      "count"     (len $members)
-      "permalink" .RelPermalink
+      "count"     (len $t.Pages)
+      "permalink" $t.RelPermalink
     -}}
     {{- $existing := slice -}}
     {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

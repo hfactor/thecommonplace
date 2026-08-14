@@ -61,19 +61,20 @@
   {{- end -}}
 
 {{- else if eq $lt "notes" -}}
-  {{- $noteCounts := dict -}}
-  {{- range where .Site.RegularPages "Section" "notes" -}}
-    {{- range .Params.categories -}}
-      {{- $n := 0 -}}
-      {{- with index $noteCounts .name -}}{{- $n = . -}}{{- end -}}
-      {{- $noteCounts = merge $noteCounts (dict .name (add $n 1)) -}}
-    {{- end -}}
+  {{/* Notebooks aren't their own content — a notebook is just a distinct
+       `categories` value on a note. Hugo's taxonomy auto-generates one term
+       page per category, only for categories that actually have notes, so
+       this list is always exactly in sync with what's been written — no
+       separate file to keep in step. Ordered by whichever notebook has the
+       most recently dated note. */}}
+  {{- $termData := slice -}}
+  {{- range where .Site.Pages "Kind" "term" -}}
+    {{- $t := . -}}
+    {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
+    {{- $termData = $termData | append (dict "title" $t.Title "permalink" $t.RelPermalink "count" (len $t.Pages) "recent" $recent) -}}
   {{- end -}}
-  {{- range sort (where .Site.RegularPages "Section" "notebook") "Params.order" "asc" -}}
-    {{- $catKey := path.Base .RelPermalink -}}
-    {{- $count  := 0 -}}
-    {{- with index $noteCounts $catKey -}}{{- $count = . -}}{{- end -}}
-    {{- $yamlItems = $yamlItems | append (dict "title" .Title "permalink" .RelPermalink "count" $count) -}}
+  {{- range sort $termData "recent" "desc" -}}
+    {{- $yamlItems = $yamlItems | append (dict "title" .title "permalink" .permalink "count" .count) -}}
   {{- end -}}
 
 {{- end -}}

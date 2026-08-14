@@ -1,28 +1,12 @@
-{{- /* dict: nb (the notebook page to render), scrollTo (optional slug — forces a
-       scroll-to-card on load; when absent, falls back to location.hash on the client) */ -}}
-{{- $nb        := .nb -}}
+{{- /* dict: pages (slice of note Pages, already in display order), title (string),
+       page (the notebook's own Page — the taxonomy term page, used for the header's
+       active-state and the footer), scrollTo (optional slug — forces a scroll-to-card
+       on load; when absent, falls back to location.hash on the client) */ -}}
+{{- $items     := .pages -}}
+{{- $title     := .title -}}
+{{- $page      := .page -}}
 {{- $scrollTo  := .scrollTo | default "" -}}
-{{- $catKey    := path.Base $nb.RelPermalink -}}
 {{- $allNotes  := where site.RegularPages "Section" "notes" -}}
-{{- $notebooks := where site.RegularPages "Section" "notebook" -}}
-
-{{/* key (e.g. "craft") -> notebook page */}}
-{{- $nbByKey := dict -}}
-{{- range $notebooks -}}
-  {{- $nbByKey = merge $nbByKey (dict (path.Base .RelPermalink) .) -}}
-{{- end -}}
-
-{{/* Notes belonging to this notebook, each carrying its per-category order */}}
-{{- $items := slice -}}
-{{- range $allNotes -}}
-  {{- $p := . -}}
-  {{- range $p.Params.categories -}}
-    {{- if eq .name $catKey -}}
-      {{- $items = $items | append (dict "page" $p "order" .order) -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-{{- $items = sort $items "order" "asc" -}}
 
 {{/* title -> {url, preview} for wikilink resolution — every note's canonical spot
      is the notebook of its PRIMARY (first-listed) category */}}
@@ -32,10 +16,10 @@
   {{- $cats := $p.Params.categories -}}
   {{- if $cats -}}
     {{- $primary := index $cats 0 -}}
-    {{- $target  := index $nbByKey $primary.name -}}
-    {{- if $target -}}
+    {{- $term    := $.Site.GetPage (printf "categories/%s" ($primary | urlize)) -}}
+    {{- if $term -}}
       {{- $slug    := path.Base $p.RelPermalink -}}
-      {{- $url     := printf "%s#%s" $target.RelPermalink $slug -}}
+      {{- $url     := printf "%s#%s" $term.RelPermalink $slug -}}
       {{- $preview := $p.Plain | htmlUnescape -}}
       {{- $preview  = replaceRE `\[\[([^\]]+)\]\]` `$1` $preview -}}
       {{- $preview  = $preview | truncate 300 -}}
@@ -46,26 +30,26 @@
 
 {{ partial "readable-open.html" (dict) }}
 
-      {{ partial "page-title.html" (dict "cur" $nb.RelPermalink) }}
-      <h1 class="page-title nb-title">{{ $nb.Title }}</h1>
+      {{ partial "page-title.html" (dict "cur" $page.RelPermalink) }}
+      <h1 class="page-title nb-title">{{ $title }}</h1>
 
       <div class="nb-toc">
         <button type="button" class="nb-toc-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Table of contents">
         {{- range $items -}}
-          <span class="nb-toc-dash" data-slug="{{ path.Base .page.RelPermalink }}"></span>
+          <span class="nb-toc-dash" data-slug="{{ path.Base .RelPermalink }}"></span>
         {{- end -}}
         </button>
         <div class="nb-toc-menu" aria-hidden="true">
         {{- range $items -}}
-          {{- $tocSlug := path.Base .page.RelPermalink -}}
-          <a href="#{{ $tocSlug }}" class="nb-toc-item" data-slug="{{ $tocSlug }}">{{ .page.Title }}</a>
+          {{- $tocSlug := path.Base .RelPermalink -}}
+          <a href="#{{ $tocSlug }}" class="nb-toc-item" data-slug="{{ $tocSlug }}">{{ .Title }}</a>
         {{- end -}}
         </div>
       </div>
 
       <div class="nb-cards" id="nbCards" data-scroll-to="{{ $scrollTo }}">
       {{- range $items -}}
-        {{- $p    := .page -}}
+        {{- $p    := . -}}
         {{- $slug := path.Base $p.RelPermalink -}}
         {{- $content := $p.Content -}}
 
@@ -104,7 +88,7 @@
       {{- end -}}
       </div>
 
-{{ partial "readable-close.html" (dict "page" $nb) }}
+{{ partial "readable-close.html" (dict "page" $page) }}
 
 <script>
 (function(){
