@@ -16,7 +16,7 @@
   {{- $cats := $p.Params.categories -}}
   {{- if $cats -}}
     {{- $primary := index $cats 0 -}}
-    {{- $term    := $.Site.GetPage (printf "categories/%s" ($primary | urlize)) -}}
+    {{- $term    := site.GetPage (printf "categories/%s" ($primary | urlize)) -}}
     {{- if $term -}}
       {{- $slug    := path.Base $p.RelPermalink -}}
       {{- $url     := printf "%s#%s" $term.RelPermalink $slug -}}
