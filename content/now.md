@@ -1,12 +1,14 @@
 ---
 title: "Now"
 layout: "now"
-updated: "June 2026"
+updated: "August 2026"
 footer: "Inspired by [Derek Sivers](https://sive.rs/) and [nownownow.com](https://nownownow.com/)."
 ---
 
-Reading is finally in a good place. Started a habit of reading during the commute, fifteen minutes inside an auto each way. Also borrowing from the local library now. Deadlines make you read faster.
+Reading is happening again, and I'm trying to stay more local too, visiting nearby places instead of defaulting to a laptop and the internet. If you're around and keen to catch up, my [Topmate](https://topmate.io/hiran) is open, happy to meet offline over coffee.
 
-Writing code has become something AI does. That shift is giving more space to think, ideate, and figure out what I actually want to make. [Cinema Radio](https://radio.hiran.in) found an audience beyond what I expected, and now has a [Mac menu bar version](https://github.com/hfactor/cinema-radio-mac-menubar) too. Notarisation pending, releasing soon.
+Picked up [Nofusion](https://www.nofusion.app/en/) recently too, trying to get back into photos that feel less processed by Apple's camera pipeline. These next few months are full of travel and festivals, which helps with that.
 
-A 20-planter hydroponics setup is sitting at home, waiting to fill the kitchen with greens. Also wanting to restart mobile photography, weekly posts, monochrome this time.
+My wife and I ran two pilot rounds of an apartment cafe at home, pouring through ten coffee roasts we picked up on a trip to Singapore. The trip was good, the event turned out even better.
+
+On the build side, I'm cleaning up [Papermaker](/projects/papermaker), adding a few more features, and finally making it public, along with some quick-win contributions to FOSS projects around me. [IndiaFOSS](https://fossunited.org/indiafoss/2026) is happening late September, but I'm skipping it this year, got other stuff going on.

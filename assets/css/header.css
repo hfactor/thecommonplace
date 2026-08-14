@@ -29,7 +29,6 @@
   gap: 10px;
   height: var(--hdr-h);
   padding: 0 var(--space-4);
-  background: var(--bg);
 }
 .page-head .page-title { margin-bottom: 0; }
 @media (max-width: 639px) {
@@ -192,11 +191,10 @@
   width: 100%;
   max-width: var(--content-w);
   margin: 0 auto;
-  padding: calc(var(--hdr-h) + var(--space-4)) 0 0;
   flex-shrink: 0;
 }
 @media (max-width: 639px) {
-  .page-nav { padding: calc(var(--hdr-h) + var(--space-3)) var(--gap-sm) 0; }
+  .page-nav { padding: 0 var(--gap-sm); }
 }
 
 

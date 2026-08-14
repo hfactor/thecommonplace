@@ -22,6 +22,7 @@ button { font-family: var(--font); }
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  margin-top: calc(var(--hdr-h) + var(--gap));
 }
 
 #cvTrack {
@@ -68,8 +69,8 @@ button { font-family: var(--font); }
 }
 
 /* ── List view ────────────────────────────────────── */
-#lView { display: none; height: 100%; overflow-y: auto; padding: var(--gap) max(var(--gap), calc((100% - var(--content-w)) / 2)) 100px; }
-.app-gallery #lView { height: auto; padding: 0 10px 80px; }
+#lView { display: none; height: 100%; overflow-y: auto; padding: calc(var(--hdr-h) + var(--gap)) max(var(--gap), calc((100% - var(--content-w)) / 2)) 100px; }
+.app-gallery #lView { height: auto; padding: calc(var(--hdr-h) + var(--gap)) 10px 80px; }
 
 /* Month labels (list view) */
 .l-group { position: relative; padding-top: 28px; }
@@ -83,9 +84,9 @@ button { font-family: var(--font); }
   #cvTrack { padding: var(--space-8) var(--gap-sm) 0; }
   .cv-month { padding-right: calc(var(--gap-sm) * 1.5); }
   /* Section pages: compact card view, vertically centred */
-  #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) / 2); margin-bottom: auto; }
+  #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) + var(--gap)); margin-bottom: auto; }
   body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
-  #lView { padding: var(--gap) var(--gap-sm) 100px; }
+  #lView { padding: calc(var(--hdr-h) + var(--gap)) var(--gap-sm) 100px; }
   /* On mobile, section pages scroll the full page */
   body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
   body:has(#lView) .content { overflow: visible; }
