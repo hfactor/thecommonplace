@@ -1,9 +1,7 @@
 ---
-title: Borrow ideas not workflows
-date: 2026-06-16
-tags: [systems, learning]
+title: "Borrow ideas not workflows"
+date: 2026-03-05
+categories: ["Analog Journaling"]
+categories_weight: 2
 ---
-
-Workflows have a higher failure rate when borrowed. They're personal, built around how someone's brain works, what problems they had, what constraints shaped them. If you've tried Notion templates, you know. How your brain works is not how others' does. Don't force-fit. Borrowing ideas and taking inspiration helps, but borrowing the whole flow usually doesn't.
-
-[[Systems emerge through use]], the system that works is the one that grew from your own constraints, not someone else's.
+I used to-do books long before I knew what a bullet journal was, then started an actual [bullet journal](https://bulletjournal.com/) in 2018. Never used it the way it's meant to be used, or the way anyone recommends, rapid logging one week, ignoring it the next, keeping only the parts that stuck and skipping the rest.

@@ -1,0 +1,89 @@
+{{/*
+  ARCHIVED — this is the old homepage template (bio copy, sticker-hover pins,
+  newsletter mention), kept here for reference only. Hugo never selects a file
+  named "home-archive.html" for any page, so this is inert — it is not part of
+  the build. The homepage now lives at layouts/index.html and just redirects
+  to /everything/. Pull content back out of here if/when it's needed again.
+*/}}
+{{ define "main" }}
+{{ partial "readable-open.html" (dict "extraClass" "home-reading") }}
+    {{ partial "page-title.html" (dict "cur" .RelPermalink "extraClass" "page-head--home") }}
+    <p class="home-p"><strong class="home-name sh" data-stk="/assets/img/hiran.png" data-stk-size="80" data-side="above" data-rot="-6">Hiran Venugopalan.</strong> Designer, maker, coffee brewer. I design digital products, build projects around language, learning, and <span class="sh" data-stk="/stickers/smc.svg" data-stk2="/stickers/ksha.svg" data-href2="https://www.instagram.com/ksha.cc" data-side="left" data-rot="-6" data-href="https://smc.org.in/en/">open communities</span>, and host <span class="sh sh--inline" style="--stk:url('/stickers/coffee.svg'); --stk-w:110px; --stk-h:32px; --rot:3deg">coffee workshops</span>.</p>
+    <p class="home-p">You'll find <a class="home-link" href="{{ "projects" | relURL }}">Projects</a>, <a class="home-link" href="{{ "notes" | relURL }}">Working Notes</a>, and <a class="home-link" href="{{ "everything" | relURL }}">Everything</a> here. It's where I keep the work, ideas, and references worth keeping. <a class="home-link sh" data-stk="/stickers/newsletter.svg" data-side="right" data-rot="5" data-href="https://hiran.substack.com?utm_source=hiran.in" href="https://hiran.substack.com?utm_source=hiran.in" target="_blank" rel="noopener">This&amp;That</a> is an occasional newsletter with curated finds and conversations about how people work. <a class="home-link" href="https://hiran.substack.com/subscribe?utm_source=hiran.in" target="_blank" rel="noopener">Subscribe.</a></p>
+    <p class="home-p">Always happy to meet new people, exchange ideas, and keep learning. Join me at <a class="home-link sh" data-stk="/stickers/workaround.svg" data-side="left" data-rot="-4" data-href="https://luma.com/workaround?k=c" href="https://luma.com/workaround?k=c" target="_blank" rel="noopener">a cafe</a>, <a class="home-link" href="https://topmate.io/hiran" target="_blank" rel="noopener">book a call</a>, or <span class="home-email-wrap"><button class="home-email" onclick="copyEmail(this)">send an email</button><span class="home-email-tip"><span class="tip-check">✓</span> Copied</span></span>.</p>
+{{ partial "readable-close.html" (dict "page" .) }}
+<script>
+(function () {
+  const hb = document.querySelector('.home-reading');
+  if (!hb) return;
+
+  document.querySelectorAll('.sh[data-stk]').forEach(el => {
+    const files = [el.dataset.stk, el.dataset.stk2].filter(Boolean);
+    const side  = el.dataset.side || 'right';
+    const rot   = el.dataset.rot  || '0';
+    const GAP   = -16;
+    const STACK = 10;
+    const SIZE  = parseInt(el.dataset.stkSize || '64');
+    const r     = parseFloat(rot);
+    const hrefs = [el.dataset.href, el.dataset.href2];
+
+    const pins = files.map((src, i) => {
+      const pin = document.createElement('div');
+      pin.className = 'sh-pin';
+      pin.style.setProperty('--rot', (i % 2 === 0 ? r : -r) + 'deg');
+      pin.style.setProperty('--w', SIZE + 'px');
+      const img = document.createElement('img');
+      img.src = src; img.alt = '';
+      if (hrefs[i]) {
+        const a = document.createElement('a');
+        a.href = hrefs[i]; a.target = '_blank'; a.rel = 'noopener';
+        a.appendChild(img); pin.appendChild(a);
+      } else {
+        pin.appendChild(img);
+      }
+      document.body.appendChild(pin);
+      return pin;
+    });
+
+    let hideTimer;
+    function show() { clearTimeout(hideTimer); place(); pins.forEach(p => p.classList.add('visible')); }
+    function hide() { hideTimer = setTimeout(() => pins.forEach(p => p.classList.remove('visible')), 300); }
+
+    function place() {
+      const er = el.getBoundingClientRect();
+      const hr = hb.getBoundingClientRect();
+      if (side === 'above') {
+        const cx = er.left + er.width / 2;
+        pins.forEach((pin, i) => {
+          pin.style.left = (cx - SIZE / 2 + i * 8) + 'px';
+          pin.style.top  = (er.top - SIZE - 8 - i * 4) + 'px';
+        });
+      } else {
+        const midY = er.top + er.height / 2;
+        const totalH = SIZE * files.length - STACK * (files.length - 1);
+        const startY = midY - totalH / 2;
+        pins.forEach((pin, i) => {
+          const x = side === 'right' ? hr.right + GAP : hr.left - SIZE - GAP;
+          pin.style.left = x + 'px';
+          pin.style.top  = (startY + i * (SIZE - STACK)) + 'px';
+        });
+      }
+    }
+
+    if (!window.matchMedia('(hover: none)').matches) {
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('mouseleave', hide);
+      pins.forEach(p => { p.addEventListener('mouseenter', () => clearTimeout(hideTimer)); p.addEventListener('mouseleave', hide); });
+    }
+    new ResizeObserver(place).observe(hb);
+  });
+})();
+</script>
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.home-link, .home-email, .sh--inline').forEach(el => addScribble(el));
+  });
+})();
+</script>
+{{ end }}

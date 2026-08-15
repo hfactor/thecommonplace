@@ -22,12 +22,13 @@ button { font-family: var(--font); }
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  margin-top: calc(var(--hdr-h) + var(--gap));
 }
 
 #cvTrack {
   display: flex;
   height: 100%;
-  padding: 0 var(--gap) 0 max(var(--gap), calc((100% - 560px) / 2));
+  padding: 0 var(--gap) 0 max(var(--gap), calc((100% - var(--content-w)) / 2));
   gap: 0;
 }
 
@@ -47,7 +48,7 @@ button { font-family: var(--font); }
   position: absolute;
   bottom: 4px;
   left: 0;
-  font-size: clamp(36px, 6vw, 72px);
+  font-size: var(--text-jumbo);
   font-weight: var(--weight-semibold);
   letter-spacing: -0.03em;
   color: var(--ink);
@@ -68,49 +69,24 @@ button { font-family: var(--font); }
 }
 
 /* ── List view ────────────────────────────────────── */
-#lView { display: none; height: 100%; overflow-y: auto; padding: var(--gap) max(var(--gap), calc((100% - 560px) / 2)) 100px; }
-.app-gallery #lView { height: auto; padding: 0 10px 80px; }
+#lView { display: none; height: 100%; overflow-y: auto; padding: calc(var(--hdr-h) + var(--gap)) max(var(--gap), calc((100% - var(--content-w)) / 2)) 100px; }
+.app-gallery #lView { height: auto; padding: calc(var(--hdr-h) + var(--gap)) 10px 80px; }
 
 /* Month labels (list view) */
 .l-group { position: relative; padding-top: 28px; }
-.l-month-label { position: absolute; top: 0; left: 0; font-size: clamp(36px, 6vw, 72px); font-family: var(--font-display); font-weight: var(--weight-semibold); letter-spacing: -0.03em; color: var(--ink); opacity: 0.05; white-space: nowrap; pointer-events: none; z-index: 0; line-height: 1; user-select: none; }
+.l-month-label { position: absolute; top: 0; left: 0; font-size: var(--text-jumbo); font-family: var(--font-display); font-weight: var(--weight-semibold); letter-spacing: -0.03em; color: var(--ink); opacity: 0.05; white-space: nowrap; pointer-events: none; z-index: 0; line-height: 1; user-select: none; }
 
 /* Empty state */
 .empty-state { padding: var(--space-12) 20px; text-align: center; color: var(--ink2); font-size: var(--text-base); line-height: var(--lh-relaxed); }
-.empty-state-icon { font-size: var(--text-2xl); opacity: 0.3; margin-bottom: var(--space-3); }
-
-/* ── Latest chip ──────────────────────────────────── */
-#latestChip {
-  position: fixed;
-  bottom: calc(var(--gap) + 56px);
-  left: 50%;
-  transform: translateX(-50%);
-  appearance: none;
-  -webkit-appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: var(--text-sm);
-  font-family: var(--font);
-  color: var(--ink2);
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, color 0.15s;
-  z-index: 10;
-  white-space: nowrap;
-  letter-spacing: 0.01em;
-}
-#latestChip.visible { opacity: 1; pointer-events: auto; }
-#latestChip:hover { color: var(--ink); }
+.empty-state-icon { font-size: var(--text-xl); opacity: 0.3; margin-bottom: var(--space-3); }
 
 @media (max-width: 639px) {
   #cvTrack { padding: var(--space-8) var(--gap-sm) 0; }
   .cv-month { padding-right: calc(var(--gap-sm) * 1.5); }
   /* Section pages: compact card view, vertically centred */
-  #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) / 2); margin-bottom: auto; }
+  #cardView:not(.cv-home) { height: clamp(220px, 45dvh, 340px); margin-top: calc(var(--hdr-h) + var(--gap)); margin-bottom: auto; }
   body:has(#cardView:not(.cv-home)) #lView { height: auto; overflow: visible; }
-  #lView { padding: var(--gap) var(--gap-sm) 100px; }
+  #lView { padding: calc(var(--hdr-h) + var(--gap)) var(--gap-sm) 100px; }
   /* On mobile, section pages scroll the full page */
   body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
   body:has(#lView) .content { overflow: visible; }
@@ -118,7 +94,8 @@ button { font-family: var(--font); }
 
 
 /* ── External link icon (shared) ────────────────── */
-.sp-text a[href^="http"]::after {
+.sp-text a[href^="http"]::after,
+.nb-footnote a[href^="http"]::after {
   content: '';
   display: inline-block;
   width: 0.4em;

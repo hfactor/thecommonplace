@@ -1,7 +1,8 @@
 {{ define "main" }}
-<div class="app">
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
+{{ partial "readable-open.html" (dict) }}
+
+      {{/* intentional: 404 uses its own .err404-title instead of passing "title" to page-title.html */}}
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
 
       <div class="err404-wrap">
         <div class="err404">
@@ -19,10 +20,7 @@
         </div>
       </div>
 
-    </div>
-    {{ partial "site-footer.html" . }}
-  </div>
-</div>
+{{ partial "readable-close.html" (dict "page" .) }}
 
 {{- $books := slice -}}
 {{- range .Site.RegularPages -}}

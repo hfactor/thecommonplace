@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <h1 class="page-title">{{ .Title }}</h1>
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      {{- $books := where hugo.Data.antilibrary "title" "ne" "" -}}
+      {{- $books = sort $books "date" "desc" -}}
+      <ul class="notes-list anti-list">
+        {{- range $books }}
+        <li class="notes-list-item">
+          <span class="anti-title">{{ .title }}</span>
+          {{- if .author }}<span class="anti-author">{{ .author }}</span>{{- end }}
+        </li>
+        {{- end }}
+      </ul>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

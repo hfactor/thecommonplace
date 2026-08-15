@@ -18,7 +18,7 @@
   filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--dur-hover) ease;
   z-index: var(--z-elevated);
 }
 .sh--inline:hover::after {
@@ -30,7 +30,7 @@
   position: fixed;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--dur-hover) ease;
   z-index: var(--z-sheet);
 }
 .sh-pin:has(a) {
@@ -70,7 +70,7 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.18);
   opacity: 0;
   transform: scale(0.7);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity var(--dur-quick) ease, transform var(--dur-quick) ease;
   pointer-events: none;
 }
 .sh-pin a:hover::after {

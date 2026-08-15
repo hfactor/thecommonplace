@@ -1,27 +1,28 @@
 /* ─── Homepage shell ─────────────────────────────── */
 /* Homepage reuses .notes-reading (panel.css); this modifier adds the
-   vertical-centering and entrance animation that make it feel like a
-   homepage rather than a document. */
+   vertical-centering that makes it feel like a homepage rather than a document. */
 .notes-reading.home-reading {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: var(--gap) var(--gap);
-  opacity: 0;
-  animation: homeSlideUp 0.8s var(--ease-out) 0.1s both;
 }
 
 @media (max-width: 639px) {
   .notes-reading.home-reading { padding-top: var(--hdr-h); }
 }
 
-
-
+/* ─── Header row — same page-head as everywhere else, just no title and
+   nudged down a little since it's sitting inside the vertically-centered block ── */
+.page-head--home {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+}
 
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
   font-family: var(--font);
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   color: var(--ink2);
   line-height: var(--lh-prose);
   margin: 0 0 var(--space-6) 0;
@@ -30,18 +31,6 @@
 .home-name { font-family: var(--font-display); font-weight: var(--weight-semibold); }
 .home-sh-inline { display: inline; white-space: normal; }
 
-
-
-
-/* ─── Entrance animation ─────────────────────────── */
-@keyframes homeSlideUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 639px) {
-  .notes-reading.home-reading { animation-duration: 0.9s; animation-delay: 0.15s; }
-}
 
 /* ─── Inline links ───────────────────────────────── */
 .link-scribble-path { stroke: var(--accent); stroke-width: 1.5px; }
@@ -60,15 +49,15 @@
   pointer-events: none;
   overflow: hidden;
   clip-path: inset(0 100% 0 0);
-  transition: clip-path 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+  transition: clip-path var(--dur-slow) var(--ease-reveal);
 }
 .home-link:hover .link-scribble,
 .home-email:hover .link-scribble,
 .sh[data-stk]:hover .link-scribble,
 .sh--inline:hover .link-scribble {
   clip-path: inset(0 0% 0 0);
-  transition-timing-function: cubic-bezier(0.8, 1, 0.7, 1);
-  transition-duration: 0.22s;
+  transition-timing-function: var(--ease-reveal-hover);
+  transition-duration: var(--dur-reveal);
 }
 
 /* ─── Email copy button ───────────────────────────── */
@@ -91,7 +80,7 @@
   color: var(--ink2);
   font-family: var(--font);
   font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-normal);
   padding: 5px 12px;
   border-radius: var(--r-sm);
   border: 1px solid var(--border);
@@ -99,7 +88,7 @@
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+  transition: opacity var(--dur-med) ease, transform var(--dur-reveal) var(--ease-bounce);
 }
 .home-email-tip.show {
   opacity: 1;
@@ -107,7 +96,7 @@
 }
 .tip-check {
   color: var(--accent);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-normal);
   margin-right: 3px;
 }
 

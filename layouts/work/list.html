@@ -1,6 +1,9 @@
 {{ define "main" }}
 {{ partial "readable-open.html" (dict) }}
 
+      {{/* intentional: page renders its own <h1 class="work-title"> below instead of passing "title" to page-title.html */}}
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+
       <div class="work-header">
         <h1 class="work-title">
           <span class="work-title-eyebrow">Professional Experience</span>

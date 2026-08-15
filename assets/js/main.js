@@ -1,5 +1,29 @@
 // DATA is injected by Hugo via listing templates
 
+// Hand-drawn underline squiggle appended to a link. `stretch: true` scales one
+// stroke to fill the element (short labels); default tiles it every 80px (long text).
+function addScribble(el, opts) {
+  opts = opts || {};
+  if (opts.stretch) {
+    el.insertAdjacentHTML('beforeend',
+      '<svg class="link-scribble" width="100%" height="9" aria-hidden="true" viewBox="0 0 80 9" preserveAspectRatio="none">' +
+        '<path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>'
+    );
+    return;
+  }
+  const uid = 'sc' + Math.random().toString(36).slice(2, 7);
+  el.insertAdjacentHTML('beforeend',
+    '<svg class="link-scribble" width="100%" height="9" aria-hidden="true">' +
+      '<defs><pattern id="' + uid + '" x="0" y="0" width="80" height="9" patternUnits="userSpaceOnUse">' +
+        '<path class="link-scribble-path" d="M0 4 C8 0.5 16 8 26 4.5 C34 1.5 42 8 52 4 C60 1 68 7.5 75 4.5 C77 3.5 79 3.8 80 4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</pattern></defs>' +
+      '<rect x="0" y="0" width="100%" height="9" fill="url(#' + uid + ')"/>' +
+    '</svg>'
+  );
+}
+window.addScribble = addScribble;
+
 const S = {};
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -88,17 +112,41 @@ function show() {
     }
     lView.style.display = 'none';
   }
+  updateLatestVisibility();
+  updateTitleTruncation();
 }
 
-function updateLatest() {
-  const cv   = document.getElementById('cardView');
-  const chip = document.getElementById('latestChip');
-  if (chip && cv) chip.classList.toggle('visible', cv.scrollLeft > 80);
+// Fades a title with a mask only once it's actually clipped — see the
+// .is-truncated notes in list.css/panel.css for why this can't be pure CSS.
+function updateTitleTruncation() {
+  document.querySelectorAll('.l-title-text, .anti-title').forEach(el => {
+    el.classList.toggle('is-truncated', el.scrollWidth > el.clientWidth + 1);
+  });
 }
 
 function goLatest() {
   const cv = document.getElementById('cardView');
   if (cv) cv.scrollTo({ left: 0, behavior: 'smooth' });
+  const lView = document.getElementById('lView');
+  if (lView) lView.scrollTo({ top: 0, behavior: 'smooth' });
+  if (viewMode === 'list') window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateLatestVisibility();
+}
+
+// Latest chip only shows once you've scrolled away from the most recent
+// content — a fresh page load starts there, so nothing to jump back to yet.
+function updateLatestVisibility() {
+  const chip = document.getElementById('latestChip');
+  if (!chip) return;
+  const cv    = document.getElementById('cardView');
+  const lView = document.getElementById('lView');
+  let atLatest = true;
+  if (viewMode === 'list') {
+    atLatest = (!lView || lView.scrollTop <= 4) && window.scrollY <= 4;
+  } else {
+    atLatest = !cv || cv.scrollLeft <= 4;
+  }
+  chip.classList.toggle('is-visible', !atLatest);
 }
 
 // Persist card scroll position across page navigations (projects)
@@ -112,6 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = e.target.closest('[data-type="projects"]');
     if (card) sessionStorage.setItem(_scrollKey, cv.scrollLeft);
   }, true);
+
+  cv.addEventListener('scroll', updateLatestVisibility, { passive: true });
+  const lView = document.getElementById('lView');
+  if (lView) lView.addEventListener('scroll', updateLatestVisibility, { passive: true });
+  window.addEventListener('scroll', updateLatestVisibility, { passive: true });
 });
 
 const FLOPPY_LABEL_COLORS = ['#1c3461', '#6b1c24', '#1a4a2e', '#4a2a0a', '#2a1a4a', '#0a3a4a'];
@@ -151,13 +204,9 @@ function cardHTML(e, idx) {
     return `<div class="card" data-uid="${uid}" data-type="${e.type}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-bar">${dots}<span class="bm-url">${e.domain || ''}</span><a class="bm-ext" href="${withRef(e.href)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a></div><div class="bm-body"><div class="bm-title">${e.title}</div>${noteEl}</div></div></div>`;
   }
 
-  // ── newsletter ────────────────────────────────────────
-  if (tmpl === 'newsletter') {
-    const rots = [-2.8, -2.0, -1.4, 1.2, 1.8, 2.6];
-    const rh   = [...uid].reduce((a, c) => a + c.charCodeAt(0), 0);
-    const rot  = rots[rh % rots.length];
-    const img  = e.image ? `<img class="nl-card-img" src="${e.image}" alt="">` : `<div class="nl-card-blank"></div>`;
-    return `<a class="card nl-card-wrap" href="${withRef(e.url)}" target="_blank" rel="noopener" style="--i:${idx||0};--rot:${rot}deg"><div class="nl-card">${img}</div><span class="nl-card-ext">${ICO.ext}</span></a>`;
+  // ── notebook (notes — one card per category) ──────────
+  if (tmpl === 'notebook') {
+    return `<a class="fn-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="fn-card-title">${e.title}</span></a>`;
   }
 
   // ── product (uses, projects, any gallery type) ────────
@@ -320,9 +369,9 @@ function buildCardView() {
 const LIST_TAG = {
   reading:    e => e.genre || '',
   bookmarks:  e => e.domain || '',
-  newsletter: () => 'Newsletter',
   uses:       e => e.subCategory || '',
   projects:   e => e.tagline || '',
+  notes:      e => `${e.count} note${e.count === 1 ? '' : 's'}`,
 };
 
 function listRowHTML(e) {
@@ -342,7 +391,7 @@ function listRowHTML(e) {
     external = !e.permalink && !!e.href;
   }
   const ext     = external ? `<span class="l-ext">${ICO.ext}</span>` : '';
-  const body = `<div class="l-title">${title}${rec}${ext}</div><div class="l-tag">${tag}</div>`;
+  const body = `<div class="l-title"><span class="l-title-text">${title}</span>${rec}${ext}</div><div class="l-tag">${tag}</div>`;
 
   if (href) {
     const attrs = external ? `href="${href}" target="_blank" rel="noopener"` : `href="${href}"`;
@@ -417,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
   if (listOnly) {
     viewMode = 'list';
-    document.getElementById('phViewBtn')?.style.setProperty('display', 'none');
+    document.getElementById('latestModeBtn')?.style.setProperty('display', 'none');
     document.getElementById('cardView')?.style.setProperty('display', 'none');
   }
   if (typeof updateFabState !== 'undefined') updateFabState();
@@ -457,10 +506,6 @@ document.addEventListener('DOMContentLoaded', () => {
     rebuild();
   });
 
-  // Latest chip visibility on card view scroll
-  const cv = document.getElementById('cardView');
-  if (cv) cv.addEventListener('scroll', updateLatest, { passive: true });
-
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeSheet();
@@ -473,5 +518,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (viewMode === 'card') show();
   });
 });
+
+// Runs independently of the DATA/rebuild path above — covers static pages
+// like /antilibrary that never call show()/rebuild() but still have
+// truncatable titles (.anti-title).
+document.addEventListener('DOMContentLoaded', updateTitleTruncation);
+window.addEventListener('resize', updateTitleTruncation);
 
 

@@ -1,9 +1,8 @@
 {{ define "main" }}
-<div class="app">
-  <div class="notes-scroll-area">
-    <div class="notes-reading">
+{{ partial "readable-open.html" (dict) }}
 
-      <h1 class="page-title note-title">{{ .Title }}</h1>
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <h1 class="page-title">{{ .Title }}</h1>
 
       <div class="sp-text">{{ .Content }}</div>
 
@@ -16,28 +15,15 @@
           {{ end }}
           <div class="people-badges">
             {{ range $project.maintainers }}
-            <div class="people-badge people-badge-plain">
-              {{ if .image }}<img class="people-avatar" src="{{ .image }}" alt="{{ .name }}">
-              {{ else if .github }}<img class="people-avatar" src="https://github.com/{{ .github }}.png?size=64" alt="{{ .name }}">
-              {{ else }}<div class="people-avatar-init">{{ substr .name 0 1 }}</div>{{ end }}
-              <div class="people-tip">{{ .name }}</div>
-            </div>
+            {{ partial "people-badge.html" (dict "person" .) }}
             {{ end }}
             {{ range $project.designers }}
-            <div class="people-badge people-badge-plain">
-              {{ if .image }}<img class="people-avatar" src="{{ .image }}" alt="{{ .name }}">
-              {{ else if .github }}<img class="people-avatar" src="https://github.com/{{ .github }}.png?size=64" alt="{{ .name }}">
-              {{ else }}<div class="people-avatar-init">{{ substr .name 0 1 }}</div>{{ end }}
-              <div class="people-tip">{{ .name }}</div>
-            </div>
+            {{ partial "people-badge.html" (dict "person" .) }}
             {{ end }}
           </div>
         </a>
         {{ end }}
       </div>
 
-    </div>
-    {{ partial "site-footer.html" . }}
-  </div>
-</div>
+{{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

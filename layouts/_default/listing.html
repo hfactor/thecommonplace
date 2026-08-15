@@ -1,9 +1,5 @@
 {{ define "main" }}
-{{ if .Params.listingType }}
-  {{ partial "section-page.html" . }}
-{{ else }}
-  {{ partial "card-page.html" . }}
-{{ end }}
+{{ partial "section-page.html" . }}
 <script>
 window.__LISTING__ = {
   type:     {{ with .Params.listingType }}{{ . | jsonify | safeJS }}{{ else }}null{{ end }},

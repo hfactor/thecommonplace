@@ -1,1 +1,10 @@
-<div class="page-nav"></div>
+{{- $label := .page.Title -}}
+{{- if in (slice "reading" "bookmarks") .ctx -}}
+  {{- range hugo.Data.types -}}
+    {{- if eq .id $.ctx -}}{{- $label = .label -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<div class="page-nav">
+  {{ partial "page-title.html" (dict "title" $label "cur" .page.RelPermalink "typeNav" true "viewToggle" true) }}
+</div>

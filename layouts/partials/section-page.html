@@ -60,8 +60,22 @@
     {{- if $match -}}{{- $yamlItems = $yamlItems | append $item -}}{{- end -}}
   {{- end -}}
 
-{{- else if eq $lt "newsletter" -}}
-  {{- $yamlItems = hugo.Data.newsletter -}}
+{{- else if eq $lt "notes" -}}
+  {{/* Notebooks aren't their own content — a notebook is just a distinct
+       `categories` value on a note. Hugo's taxonomy auto-generates one term
+       page per category, only for categories that actually have notes, so
+       this list is always exactly in sync with what's been written — no
+       separate file to keep in step. Ordered by whichever notebook has the
+       most recently dated note. */}}
+  {{- $termData := slice -}}
+  {{- range where .Site.Pages "Kind" "term" -}}
+    {{- $t := . -}}
+    {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
+    {{- $termData = $termData | append (dict "title" $t.Title "permalink" $t.RelPermalink "count" (len $t.Pages) "recent" $recent) -}}
+  {{- end -}}
+  {{- range sort $termData "recent" "desc" -}}
+    {{- $yamlItems = $yamlItems | append (dict "title" .title "permalink" .permalink "count" .count) -}}
+  {{- end -}}
 
 {{- end -}}
 
@@ -84,7 +98,6 @@
 <div class="app">
 
 {{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
-<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">
   <div id="cardView">
@@ -203,18 +216,13 @@
         </div>
       {{- end -}}
 
-      {{/* Newsletter: link cards in one row (no month grouping) */}}
-      {{- if eq $lt "newsletter" -}}
-        {{- $rots := slice "-2.8" "-2.0" "-1.4" "1.2" "1.8" "2.6" -}}
+      {{/* Notes: notebook cards in one row (no month grouping) */}}
+      {{- if eq $lt "notes" -}}
         <div class="cv-month">
           <div class="cv-items">
-            {{- range $i, $nl := $yamlItems -}}
-              {{- $rot := index $rots (mod $i 6) -}}
-              <a class="card nl-card-wrap" href="{{ $nl.url }}" target="_blank" rel="noopener" style="--i:{{ $i }};--rot:{{ $rot }}deg">
-                <div class="nl-card">
-                  {{- if $nl.image -}}<img class="nl-card-img" src="{{ $nl.image }}" alt="">{{- else -}}<div class="nl-card-blank"></div>{{- end -}}
-                </div>
-                <span class="nl-card-ext">{{ $icoExt | safeHTML }}</span>
+            {{- range $i, $item := $yamlItems -}}
+              <a class="fn-card" href="{{ $item.permalink }}" style="--i:{{ $i }}">
+                <span class="fn-card-title">{{ $item.title }}</span>
               </a>
             {{- end -}}
           </div>

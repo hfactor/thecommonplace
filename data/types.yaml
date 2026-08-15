@@ -1,9 +1,13 @@
 # Content types — drives the Explore panel navigation and JS rendering.
 # id:            URL slug and filter key
 # in_everything: whether this type appears in the Explore dropdown
-# card_template: named rendering template — book | browser | newsletter | product
+# card_template: named rendering template — book | browser | product | notebook
 # view_mode:     dedicated page view — card | gallery
 # on_click:      what happens when a card/row is clicked — sheet | external | page
+#
+# Order here also drives the Everything type-dropdown order (after "Everything"
+# itself, which is hardcoded first in page-title.html): Reading, Projects, Notes,
+# Bookmarks, Uses.
 
 - id: reading
   label: Reading
@@ -12,31 +16,6 @@
   view_mode: card
   on_click: sheet
   group_by: month
-
-- id: bookmarks
-  label: Bookmarks
-  in_everything: true
-  card_template: browser
-  view_mode: card
-  on_click: sheet
-  group_by: month
-
-- id: newsletter
-  label: Newsletter
-  in_everything: true
-  show_filter: false
-  card_template: newsletter
-  view_mode: gallery
-  on_click: external
-  group_by: year
-
-- id: uses
-  label: Uses
-  in_everything: true
-  card_template: product
-  view_mode: gallery
-  on_click: sheet
-  group_by: category
 
 - id: projects
   label: Projects
@@ -48,5 +27,24 @@
 
 - id: notes
   label: Notes
-  in_everything: false
+  in_everything: true
+  card_template: notebook
+  view_mode: gallery
   on_click: page
+  group_by: none
+
+- id: bookmarks
+  label: Bookmarks
+  in_everything: true
+  card_template: browser
+  view_mode: card
+  on_click: sheet
+  group_by: month
+
+- id: uses
+  label: Uses
+  in_everything: true
+  card_template: product
+  view_mode: gallery
+  on_click: sheet
+  group_by: category

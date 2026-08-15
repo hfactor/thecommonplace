@@ -1,0 +1,31 @@
+{{- $p := .person -}}
+{{- $linkable := .linkable | default false -}}
+{{- $href := "" -}}
+{{- if $linkable -}}
+  {{- if $p.website -}}{{- $href = $p.website -}}
+  {{- else if $p.github -}}{{- $href = printf "https://github.com/%s" $p.github -}}
+  {{- end -}}
+{{- end -}}
+{{- if $linkable -}}
+<a class="people-badge{{ if not $href }} people-badge-plain{{ end }}"{{ if $href }} href="{{ $href }}" target="_blank" rel="noopener"{{ end }}>
+  {{ if $p.image }}
+  <img class="people-avatar" src="{{ $p.image }}" alt="{{ $p.name }}">
+  {{ else if $p.github }}
+  <img class="people-avatar" src="https://github.com/{{ $p.github }}.png?size=64" alt="{{ $p.name }}">
+  {{ else }}
+  <div class="people-avatar-init">{{ substr $p.name 0 1 }}</div>
+  {{ end }}
+  <div class="people-tip">{{ $p.name }}</div>
+</a>
+{{- else -}}
+<div class="people-badge people-badge-plain">
+  {{ if $p.image }}
+  <img class="people-avatar" src="{{ $p.image }}" alt="{{ $p.name }}">
+  {{ else if $p.github }}
+  <img class="people-avatar" src="https://github.com/{{ $p.github }}.png?size=64" alt="{{ $p.name }}">
+  {{ else }}
+  <div class="people-avatar-init">{{ substr $p.name 0 1 }}</div>
+  {{ end }}
+  <div class="people-tip">{{ $p.name }}</div>
+</div>
+{{- end -}}

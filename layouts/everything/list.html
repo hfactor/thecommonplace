@@ -1,7 +1,6 @@
 {{ define "main" }}
 <div class="app">
 {{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" "") }}
-<button id="latestChip" onclick="goLatest()">↑ Latest</button>
 
 <main class="content">
   <div id="cardView">
@@ -12,10 +11,8 @@
 {{ partial "site-footer.html" . }}
 </div>
 
-{{ partial "sheet.html" . }}
 <script>
 window.__LISTING__ = { type: null, filters: {}, listOnly: false };
 </script>
-{{ partialCached "views-data.html" . "global" }}
 {{ partialCached "page-data.html" . "global" }}
 {{ end }}
