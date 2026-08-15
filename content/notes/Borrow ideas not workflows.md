@@ -4,4 +4,4 @@ date: 2026-03-05
 categories: ["Analog Journaling"]
 categories_weight: 2
 ---
-A lot of people give up on notebooks because they try to adopt someone else's whole system at once. Frameworks like Bullet Journaling work better as a set of ideas to pick from than a set of rules to follow. Take whatever fits how you actually think, rapid logging, task migration, whatever it is, and skip the rest. [Ryder Carroll built the original Bullet Journal method](https://bulletjournal.com/pages/rydercarroll) as a personal coping tool, not a fixed doctrine, which is worth keeping in mind.
+I used to-do books long before I knew what a bullet journal was, then started an actual [bullet journal](https://bulletjournal.com/) in 2018. Never used it the way it's meant to be used, or the way anyone recommends, rapid logging one week, ignoring it the next, keeping only the parts that stuck and skipping the rest.

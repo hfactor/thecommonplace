@@ -2,6 +2,8 @@
 title: "Lots of inputs and a strong filter"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 8
+categories_weight: 7
 ---
-Good thinking usually comes from reading and noticing a lot, across different fields, not just one lane. But that only works if you're also willing to drop things fast. If a book or article isn't holding your attention in the first few minutes, it's fine to put it down. [Morgan Housel writes about this balance well](https://collabfund.com/blog/how-to-read-lots-of-inputs-and-a-strong-filter/), reading widely but filtering hard.
+Almost everything gets noted down, then most of it gets cancelled. It's less about capturing the right things upfront and more about reviewing later and cutting hard.
+
+Margins do the tracking, something moved to [Raindrop](https://raindrop.io/) or into an Obsidian note, a task simply done, gets marked and struck out, both in the index and the entry itself, so it's obvious at a glance what's still open.

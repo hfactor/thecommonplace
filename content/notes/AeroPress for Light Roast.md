@@ -4,14 +4,14 @@ date: 2026-02-20
 categories: ["Manual Brewing"]
 categories_weight: 9
 ---
-| | |
-|---|---|
-| Coffee | 14g light roast, medium-fine grind |
-| Water | 200ml at 85°C to 88°C |
-| Position | Standard |
-| Filter | 2 paper filters, rinsed |
-| Beans | Jumping Ant |
-| Target | 160ml |
+|          |                                    |
+| -------- | ---------------------------------- |
+| Coffee   | 14g light roast, medium-fine grind |
+| Water    | 200ml at 85°C to 88°C              |
+| Position | Standard                           |
+| Filter   | 2 paper filters, rinsed            |
+| Beans    | Jumping Ant                        |
+| Target   | 160ml                              |
 
 1. Set up standard, upright, on your cup.
 2. Add the coffee.
