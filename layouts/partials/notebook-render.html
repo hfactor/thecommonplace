@@ -31,59 +31,30 @@
 {{ partial "readable-open.html" (dict) }}
 
       {{ partial "page-title.html" (dict "cur" $page.RelPermalink) }}
+      <a class="back-link" href="{{ (site.GetPage "/notes").RelPermalink }}">&larr; All Notes</a>
       <h1 class="page-title nb-title">{{ $title }}</h1>
 
-      <div class="nb-toc">
-        <button type="button" class="nb-toc-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Table of contents">
-        {{- range $items -}}
-          <span class="nb-toc-dash" data-slug="{{ path.Base .RelPermalink }}"></span>
-        {{- end -}}
-        </button>
-        <div class="nb-toc-menu" aria-hidden="true">
-        {{- range $items -}}
-          {{- $tocSlug := path.Base .RelPermalink -}}
-          <a href="#{{ $tocSlug }}" class="nb-toc-item" data-slug="{{ $tocSlug }}">{{ .Title }}</a>
-        {{- end -}}
-        </div>
-      </div>
-
       <div class="nb-cards" id="nbCards" data-scroll-to="{{ $scrollTo }}">
-      {{- range $items -}}
-        {{- $p    := . -}}
+      {{- range $idx, $p := $items -}}
         {{- $slug := path.Base $p.RelPermalink -}}
-        {{- $content := $p.Content -}}
-
-        {{/* Pull out the "### Source" block (if any) and turn it into footnotes */}}
-        {{- $footnotes := slice -}}
-        {{- $srcBlocks := findRE `(?s)<h3[^>]*>Source</h3>\s*<ul>.*?</ul>` $content -}}
-        {{- if $srcBlocks -}}
-          {{- $block := index $srcBlocks 0 -}}
-          {{- $content = replaceRE `(?s)<h3[^>]*>Source</h3>\s*<ul>.*?</ul>` "" $content -}}
-          {{- range findRE `(?s)<li>.*?</li>` $block -}}
-            {{- $item := replaceRE `(?s)</?li>` "" . -}}
-            {{- $item = partial "wikilinks-resolve.html" (dict "content" $item "canon" $canon "notes" $allNotes "deadPlain" true) -}}
-            {{- $footnotes = $footnotes | append $item -}}
-          {{- end -}}
-        {{- end -}}
 
         {{/* Resolve [[wikilinks]] to their canonical notebook#slug anchor */}}
-        {{- $content = partial "wikilinks-resolve.html" (dict "content" $content "canon" $canon "notes" $allNotes) -}}
+        {{- $content := partial "wikilinks-resolve.html" (dict "content" $p.Content "canon" $canon "notes" $allNotes) -}}
 
         <article class="nb-card" id="{{ $slug }}">
+          <span class="nb-card-tab">
+            <svg class="nb-card-tab-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 0 100 L 11.047 7.94 Q 12 0 20 0 L 80 0 Q 88 0 88.953 7.94 L 100 100" vector-effect="non-scaling-stroke" />
+            </svg>
+            <span class="nb-card-tab-text">{{ printf "%03d" (add $idx 1) }}</span>
+          </span>
           <h2 class="nb-card-title">
             <a href="#{{ $slug }}" class="nb-card-anchor">{{ $p.Title }}</a>
             <button type="button" class="nb-card-permalink" data-url="{{ $p.Permalink }}" data-tooltip="Copy link" aria-label="Copy link to this note">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7L7 5"/><path d="M6.5 3.5L8 2C8.8 1.2 10 1.2 10.8 2C11.6 2.8 11.6 4 10.8 4.8L9.3 6.3"/><path d="M5.5 8.5L4 10C3.2 10.8 2 10.8 1.2 10C0.4 9.2 0.4 8 1.2 7.2L2.7 5.7"/></svg>
             </button>
           </h2>
-          <div class="nb-card-grid">
-            <div class="nb-card-body sp-text">{{ $content | safeHTML }}</div>
-            {{- if $footnotes -}}
-            <div class="nb-footnotes">
-              {{- range $footnotes -}}<div class="nb-footnote">{{ . | safeHTML }}</div>{{- end -}}
-            </div>
-            {{- end -}}
-          </div>
+          <div class="nb-card-body sp-text">{{ $content | safeHTML }}</div>
         </article>
       {{- end -}}
       </div>
@@ -111,68 +82,31 @@
     });
   });
 
-  // TOC — dash-stack button toggles a popover menu, same open/close pattern
-  // as the header's type-switcher dropdown (page-title.html's .pt-nav).
-  var toc = document.querySelector('.nb-toc');
-  if (toc) {
-    var tocBtn  = toc.querySelector('.nb-toc-toggle');
-    var tocMenu = toc.querySelector('.nb-toc-menu');
-
-    function tocOpen() {
-      toc.classList.add('nb-toc--open');
-      tocBtn.setAttribute('aria-expanded', 'true');
-      tocMenu.setAttribute('aria-hidden', 'false');
-    }
-    function tocClose() {
-      toc.classList.remove('nb-toc--open');
-      tocBtn.setAttribute('aria-expanded', 'false');
-      tocMenu.setAttribute('aria-hidden', 'true');
-    }
-    tocBtn.addEventListener('click', function (e) {
+  // The tab on any card toggles: collapses everything down to just title
+  // lines (the TOC) when expanded, or expands everything and scrolls to
+  // that card when collapsed. Clicking anywhere else on a card (while
+  // collapsed) does the same expand-and-scroll, not an accordion.
+  function setCollapsed(collapsed) {
+    wrap.classList.toggle('is-collapsed', collapsed);
+  }
+  wrap.querySelectorAll('.nb-card-tab').forEach(function (tab) {
+    tab.addEventListener('click', function (e) {
       e.stopPropagation();
-      toc.classList.contains('nb-toc--open') ? tocClose() : tocOpen();
-    });
-    tocMenu.querySelectorAll('.nb-toc-item').forEach(function (a) {
-      a.addEventListener('click', tocClose);
-    });
-    document.addEventListener('click', function (e) {
-      if (toc.classList.contains('nb-toc--open') && !toc.contains(e.target)) tocClose();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') tocClose();
-    });
-  }
-
-  // TOC scroll-spy — highlights whichever note heading is currently nearest
-  // the top of the viewport, both the collapsed dash and the menu row. Pure
-  // UI enhancement: all links/content are already server-rendered, this
-  // just tracks which one is "current".
-  var tocDashes = document.querySelectorAll('.nb-toc-dash');
-  var tocItems  = document.querySelectorAll('.nb-toc-item');
-  var dashBySlug = {}, itemBySlug = {};
-  tocDashes.forEach(function (d) { dashBySlug[d.dataset.slug] = d; });
-  tocItems.forEach(function (a) { itemBySlug[a.dataset.slug] = a; });
-
-  if (tocDashes.length && 'IntersectionObserver' in window) {
-    var current = null;
-    function setActive(slug) {
-      if (slug === current) return;
-      if (current) {
-        if (dashBySlug[current]) dashBySlug[current].classList.remove('is-active');
-        if (itemBySlug[current]) itemBySlug[current].classList.remove('is-active');
+      if (wrap.classList.contains('is-collapsed')) {
+        setCollapsed(false);
+        tab.closest('.nb-card').scrollIntoView();
+      } else {
+        setCollapsed(true);
       }
-      if (slug) {
-        if (dashBySlug[slug]) dashBySlug[slug].classList.add('is-active');
-        if (itemBySlug[slug]) itemBySlug[slug].classList.add('is-active');
-      }
-      current = slug;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
-    document.querySelectorAll('.nb-card').forEach(function (card) { observer.observe(card); });
-  }
+    });
+  });
+  wrap.querySelectorAll('.nb-card').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      if (!wrap.classList.contains('is-collapsed')) return;
+      e.preventDefault();
+      setCollapsed(false);
+      card.scrollIntoView();
+    });
+  });
 })();
 </script>

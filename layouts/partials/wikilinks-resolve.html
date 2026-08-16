@@ -1,11 +1,7 @@
-{{- /* dict: content (string), canon (dict title->{url,preview}), notes (page slice),
-       deadPlain (bool, optional) — true renders unresolved [[..]] as plain text
-       instead of a styled "dead" link (used for footnote citations to books/sources
-       that aren't notes in this site). */ -}}
-{{- $content   := .content -}}
-{{- $canon     := .canon -}}
-{{- $notes     := .notes -}}
-{{- $deadPlain := .deadPlain | default false -}}
+{{- /* dict: content (string), canon (dict title->{url,preview}), notes (page slice) */ -}}
+{{- $content := .content -}}
+{{- $canon   := .canon -}}
+{{- $notes   := .notes -}}
 {{- range $notes -}}
   {{- $target := . -}}
   {{- $info   := index $canon $target.Title -}}
@@ -15,9 +11,5 @@
     {{- $content      = replaceRE $pattern $replacement $content -}}
   {{- end -}}
 {{- end -}}
-{{- if $deadPlain -}}
-  {{- $content = replaceRE `\[\[([^\]]+)\]\]` `$1` $content -}}
-{{- else -}}
-  {{- $content = replaceRE `\[\[([^\]]+)\]\]` `<span class="wikilink-dead">$1</span>` $content -}}
-{{- end -}}
+{{- $content = replaceRE `\[\[([^\]]+)\]\]` `<span class="wikilink-dead">$1</span>` $content -}}
 {{- $content | safeHTML -}}

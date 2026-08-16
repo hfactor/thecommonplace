@@ -94,8 +94,7 @@ button { font-family: var(--font); }
 
 
 /* ── External link icon (shared) ────────────────── */
-.sp-text a[href^="http"]::after,
-.nb-footnote a[href^="http"]::after {
+.sp-text a[href^="http"]::after {
   content: '';
   display: inline-block;
   width: 0.4em;

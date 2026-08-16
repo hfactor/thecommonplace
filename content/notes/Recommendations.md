@@ -22,5 +22,5 @@ categories_weight: 10
 | [Lamy Safari EF](https://amzn.to/4cOkFj5)          | Writes beautifully, a daily pleasure.                     |
 | [Jinhao 35](https://amzn.to/4tylLHY)               | Cheapest, but good quality.                               |
 | [Twsbi Eco F](https://amzn.to/3P3PHh7)             | Writes exceptionally well. Body shows ink level.          |
-| [KuruToga M5](https://amzn.to/3RkI32t)             | Must have mechanical pencil, I would say.                 |
+| [KuruToga M5](https://amzn.to/3RkI32t)             | A must-have mechanical pencil.                             |
 | [Kabeer Art Pencil](https://link.amazon/B03d0CMYb) | Good for boring meetings when the art set’s out of reach. |
