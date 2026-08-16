@@ -7,7 +7,7 @@ categories_weight: 5
 ---
 French press is ideal if you’re looking for a strong cup of coffee. Personally, I’m not a huge fan of it, but it’s definitely popular. 
 
-The idea is pretty simple. You let the coffee grounds sit in hot water for a few minutes, then press them down to separate the grounds from the coffee. There’s no complicated technique involved. All you really need is a [French Press](https://link.amazon/B0e38Ktrm)
+The idea is pretty simple. You let the coffee grounds sit in hot water for a few minutes, then press them down to separate the grounds from the coffee. There’s no complicated technique involved. All you need is a [French Press](https://link.amazon/B0e38Ktrm)
 
 |        |                       |
 | ------ | --------------------- |
