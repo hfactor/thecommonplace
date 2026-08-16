@@ -3,6 +3,7 @@
 {{ partial "readable-open.html" (dict) }}
 
       {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <a class="back-link" href="{{ $projectsPage.RelPermalink }}">&larr; All Projects</a>
       <h1 class="page-title">{{ .Title }}</h1>
 
       <div class="sp-meta-row">

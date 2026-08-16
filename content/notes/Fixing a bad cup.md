@@ -1,15 +1,29 @@
 ---
-title: "Fixing a bad cup"
+title: Fixing a bad cup
 date: 2026-02-20
-categories: ["Manual Brewing"]
-categories_weight: 15
+categories:
+  - Manual Brewing
+categories_weight: 11
 ---
-Change one variable at a time, then taste again before changing another. More on how these work in [[Grind, heat, and time decide most of the cup]].
+A bad cup is usually a matter of extraction, strength, or both. Across moka pot, French press, AeroPress, South Indian filter, and pour-over, you can adjust five basic variables:
 
-**Sour, sharp, or thin, usually under-extracted.** Grind finer, brew longer, use hotter water, stir more.
+| Variable                  | What it changes                                 |
+| ------------------------- | ----------------------------------------------- |
+| **Grind size**            | How easily water extracts the coffee            |
+| **Water temperature**     | How quickly extraction happens                  |
+| **Coffee-to-water ratio** | How strong the cup is                           |
+| **Contact time**          | How long extraction continues                   |
+| **Agitation**             | How much the coffee is disturbed during brewing |
 
-**Bitter, harsh, or dry, usually over-extracted.** Grind coarser, brew shorter, use cooler water, stir less.
-
-**Weak or watery.** More coffee, or less water.
-
-**Too strong.** Less coffee, or dilute the brewed cup with hot water.
+### Taste → Try this
+| If your coffee tastes… | Try…             |
+| ---------------------- | ---------------- |
+| **Sour or sharp**      | Grind finer      |
+| **Thin**               | Use more coffee  |
+| **Bitter or harsh**    | Grind coarser    |
+| **Dry or astringent**  | Reduce agitation |
+| **Weak or watery**     | Use more coffee  |
+| **Too strong**         | Use more water   |
+| **Sour and strong**    | Grind finer      |
+| **Bitter and weak**    | Grind coarser    |
+Make one small change, taste the difference, and keep adjusting until the cup feels right.

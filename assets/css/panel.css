@@ -32,6 +32,8 @@
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
 .page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+.back-link { display: inline-block; font-size: var(--text-sm); color: var(--ink2); text-decoration: none; margin-bottom: var(--space-3); transition: color var(--dur-fast); }
+.back-link:hover { color: var(--ink); }
 .proj-page-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .proj-back { display: flex; align-items: center; color: var(--ink2); text-decoration: none; flex-shrink: 0; transition: color var(--dur-quick); padding: 4px 2px; }
 .proj-back:hover { color: var(--ink); }
@@ -196,6 +198,7 @@
   margin: 0 auto;
   padding: calc(var(--hdr-h) + var(--space-6)) 0 calc(var(--space-12) + var(--ftr-h));
 }
+.notes-reading:has(.nb-cards) { max-width: 720px; }
 
 @media (max-width: 639px) {
   .notes-reading { padding: calc(var(--hdr-h) + var(--space-4)) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
@@ -247,108 +250,78 @@
 }
 
 /* ─── Notebook page — /note/:topic ───────────────────
-   One continuous document, not a list of separate cards. The underlying
-   source is many small files (an authoring/storage convenience — split and
-   grow freely in Obsidian), but a reader should never be able to tell where
-   one file ends and the next begins: no boxes, no dividers standing in for
-   file boundaries. Each note contributes a heading (its frontmatter title)
-   plus its own content, flowing exactly like sections of one long article —
-   the same as any note's own in-body ## subheadings would. ── */
+   The underlying source is many small files (an authoring/storage
+   convenience — split and grow freely in Obsidian). Each one renders as a
+   card: a physical index-card stack, not a generic web card grid. Collapsed,
+   the stack shows just a tab per card (the title); expanded, every card's
+   full content shows in place, one after another. ── */
 /* Notebook title reads small next to a full page of note headings below it —
    extra bottom margin gives it real breathing room so it doesn't get lost. */
 .nb-title { margin-bottom: var(--space-10); }
 
-/* Table of contents — Substack-style: a small fixed dash-stack button pinned
-   near the screen's left edge (collapsed state, always just lines, no text),
-   click opens a floating popover listing every section. Fixed to the edge —
-   not calculated off the content column's margin — same as the reference. */
-.nb-toc { display: none; }
-@media (min-width: 768px) {
-  .nb-toc {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: var(--space-6);
-    transform: translateY(-50%);
-    z-index: var(--z-modal);
-  }
-}
-.nb-toc-toggle {
+/* One box holding a stack of index cards — a single bordered container, not
+   many separate floating cards with gaps (that's the generic web-card-grid
+   look). Cards inside are divided by a single hairline each, like the edges
+   of physical cards stacked in a drawer. Collapsed shows just the stack of
+   title tabs; expanded reveals each card's full content in place, still
+   inside the same box, one after another. */
+.nb-cards {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
-  padding: 10px 8px;
-  border: none;
-  background: none;
+  border: 1px solid var(--border-light);
   border-radius: var(--r-sm);
-  cursor: pointer;
-  transition: background var(--dur-fast);
 }
-.nb-toc-toggle:hover { background: var(--surface2); }
-.nb-toc-dash {
-  display: block;
-  width: 12px;
-  height: 1.5px;
-  background: var(--ink2);
-  opacity: 0.5;
-  transition: width var(--dur-fast) var(--ease-snap), opacity var(--dur-fast), background var(--dur-fast);
+.nb-card {
+  position: relative;
+  scroll-margin-top: calc(var(--hdr-h) + var(--space-4));
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--border-light);
 }
-.nb-toc-toggle:hover .nb-toc-dash { opacity: 0.75; }
-.nb-toc-dash.is-active { width: 18px; opacity: 1; background: var(--accent); }
+.nb-card:last-child { border-bottom: none; }
 
-.nb-toc-menu {
+.nb-cards.is-collapsed .nb-card-body,
+.nb-cards.is-collapsed .nb-card-permalink { display: none; }
+.nb-cards.is-collapsed .nb-card { padding: var(--space-4) var(--space-6); cursor: pointer; transition: background var(--dur-quick); }
+.nb-cards.is-collapsed .nb-card:hover { background: var(--surface2); }
+.nb-cards.is-collapsed .nb-card-title { margin: 0; }
+.nb-cards.is-collapsed .nb-card-tab-text { padding: 2px 12px; }
+
+.nb-card-tab {
   position: absolute;
-  top: 50%;
-  left: calc(100% + 12px);
-  transform: translateY(-50%) scale(0.98);
-  width: 260px;
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 8px;
-  border-radius: var(--r);
-  background: var(--surface);
-  box-shadow:
-    0 0 0 0.5px rgba(0,0,0,0.07),
-    0 1px 0 0 rgba(255,255,255,0.85) inset,
-    0 -1px 0 0 rgba(0,0,0,0.04) inset,
-    0 4px 16px rgba(0,0,0,0.08),
-    0 12px 40px rgba(0,0,0,0.06);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-snap);
+  top: 0;
+  right: var(--space-4);
+  transform: translateY(-100%);
+  cursor: pointer;
 }
-[data-theme="ink"] .nb-toc-menu {
-  box-shadow:
-    0 0 0 0.5px rgba(255,255,255,0.10),
-    0 1px 0 0 rgba(255,255,255,0.10) inset,
-    0 4px 16px rgba(0,0,0,0.35),
-    0 12px 40px rgba(0,0,0,0.28);
+.nb-card-tab:hover .nb-card-tab-bg path { fill: var(--surface2); }
+.nb-card-tab-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
-.nb-toc--open .nb-toc-menu { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
-.nb-toc-item {
+.nb-card-tab-bg path {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: fill var(--dur-quick);
+}
+.nb-card-tab-text {
+  position: relative;
   display: block;
-  padding: 7px 10px;
-  font-size: var(--text-sm);
+  padding: 2px 28px;
+  font-size: 10px;
   color: var(--ink2);
-  text-decoration: none;
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  white-space: nowrap;
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
-  mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
-  transition: background var(--dur-fast), color var(--dur-fast);
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
-.nb-toc-item:hover { background: var(--surface2); color: var(--ink); }
-.nb-toc-item.is-active { color: var(--accent); font-weight: var(--weight-normal); }
-
-.nb-cards { display: flex; flex-direction: column; }
-.nb-card { position: relative; scroll-margin-top: calc(var(--hdr-h) + var(--space-4)); }
-.nb-card-title { display: flex; align-items: baseline; gap: 8px; margin: 36px 0 var(--space-3); }
-.nb-card:first-child .nb-card-title { margin-top: 0; }
+.nb-card-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 var(--space-4); }
 .nb-card-anchor {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   font-weight: var(--weight-semibold);
   color: var(--ink);
   line-height: var(--lh-display);
@@ -357,6 +330,10 @@
   transition: color var(--dur-fast);
 }
 .nb-card-anchor:hover { color: var(--accent); }
+@media (max-width: 639px) {
+  .nb-title,
+  .nb-card-anchor { font-size: var(--text-base); }
+}
 
 /* Permalink — copies the full URL, not just the in-page #anchor (which only
    works if you're already on this notebook). Icon-only, shown on heading hover. */
@@ -380,40 +357,6 @@
 .nb-card-permalink:focus-visible { opacity: 0.6; }
 .nb-card-permalink:hover { opacity: 1 !important; color: var(--accent); background: var(--surface2); }
 .nb-card-permalink svg { display: block; }
-
-.nb-card-grid { display: block; }
-
-/* Source — true margin note, not a second column splitting the content box in
-   two. Below 1024px there's no room in the margin, so it just sits under the
-   note's content, quiet and full-width. */
-.nb-footnotes {
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--ink2);
-  opacity: 0.6;
-  line-height: var(--lh-relaxed);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-/* Classic reference style: italic throughout (including the link), no
-   underline — the small external-link glyph (shared with .sp-text a, see
-   layout.css) is the only "this is a link" signal. */
-.nb-footnote,
-.nb-footnote a { font-style: italic; }
-.nb-footnote a { color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
-.nb-footnote a:hover { color: var(--accent); }
-
-@media (min-width: 1024px) {
-  .nb-footnotes {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    margin-top: 0;
-    margin-left: var(--space-6);
-    width: 130px;
-  }
-}
 
 /* Wikilink hover-preview popover — same glass-card treatment as .pt-nav-menu,
    for one consistent floating-panel look sitewide. */
