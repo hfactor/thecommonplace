@@ -4,6 +4,10 @@
 # card_template: named rendering template — book | browser | product | notebook
 # view_mode:     dedicated page view — card | gallery
 # on_click:      what happens when a card/row is clicked — sheet | external | page
+# group_by:      card-view grouping — month | category | none
+# list_group_by: list-view grouping — defaults to group_by when omitted; set
+#                separately when a type should group differently per view
+#                (e.g. Life Logs groups by month in card view but not list view)
 #
 # Order here also drives the Everything type-dropdown order (after "Everything"
 # itself, which is hardcoded first in page-title.html): Reading, Projects, Notes,
@@ -48,3 +52,12 @@
   view_mode: gallery
   on_click: sheet
   group_by: category
+
+- id: lifelog
+  label: Life Logs
+  in_everything: false
+  card_template: lifelog
+  view_mode: card
+  on_click: page
+  group_by: month
+  list_group_by: none

@@ -60,6 +60,32 @@
 {{- end -}}
 {{- end -}}
 
+{{/* ── Life Logs (archive — /lifelog listing only, never Everything) ──
+     The newest entry lives exclusively at /now, not the archive, so it's
+     excluded here too — otherwise list-view on /lifelog would show 3 while
+     card-view (section-page.html, which excludes it the same way) shows 2. */}}
+{{- if eq $lt "lifelog" -}}
+{{- $latest := partialCached "lifelog-latest.html" . "global" -}}
+{{- range (where .Site.RegularPages "Section" "lifelog").ByDate.Reverse -}}
+  {{- if ne .RelPermalink $latest.RelPermalink -}}
+    {{- $key := dateFormat "2006-01" .Date -}}
+    {{- $uid := printf "lifelog/%s" .File.ContentBaseName -}}
+    {{- $entry := dict
+      "uid"       $uid
+      "type"      "lifelog"
+      "day"       (int (dateFormat "2" .Date))
+      "title"     .Title
+      "date"      (dateFormat "Jan 2, 2006" .Date)
+      "summary"   (.Plain | htmlUnescape | replaceRE "’" "'" | truncate 220)
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
 {{/* ── Uses (things.yaml) ────────────────────────────── */}}
 {{- if or (eq $lt "") (eq $lt "uses") -}}
 {{- range hugo.Data.things -}}
@@ -120,17 +146,15 @@
 
 {{/* ── Notes (notebooks — one card per category, not per note) ───── */}}
 {{- if eq $lt "notes" -}}
-{{- range where .Site.Pages "Kind" "term" -}}
-  {{- $t     := . -}}
+{{- range partialCached "notebook-list.html" . "global" -}}
   {{- $key   := "notebooks" -}}
-  {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
   {{- $entry := dict
-    "uid"       (printf "notes/%s" (path.Base $t.RelPermalink))
+    "uid"       (printf "notes/%s" (path.Base .permalink))
     "type"      "notes"
-    "day"       (int (dateFormat "20060102" $recent))
-    "title"     $t.Title
-    "count"     (len $t.Pages)
-    "permalink" $t.RelPermalink
+    "day"       (int (dateFormat "20060102" .recent))
+    "title"     .title
+    "count"     .count
+    "permalink" .permalink
   -}}
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

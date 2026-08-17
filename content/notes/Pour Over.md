@@ -3,7 +3,8 @@ title: Pour Over
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 7
+order:
+  Manual Brewing: 7
 ---
 Pour over is a coffee brewing method where you slowly pour hot water over ground coffee held in a paper filter. You can use different pour-over devices, such as the [Hario V60](https://link.amazon/B0f40jZwR) (Plastic, Glass, Metal or Ceramic), [Origami](https://somethingsbrewing.in/products/origami-coffee-dripper-with-holder-medium), and [Switch Dripper](https://link.amazon/B09uBdtan), which sit directly over your cup or carafe. The water passes through the coffee and filter, leaving you with a clean and clear cup. Each dripper controls water flow differently, changing the final cup.
 

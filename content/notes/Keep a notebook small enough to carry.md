@@ -2,7 +2,8 @@
 title: "Keep a notebook small enough to carry"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 4
+order:
+  Analog Journaling: 4
 ---
 The best notebook is the one that's actually with you. Something pocket sized, an A6 or close to it, fits in a bag or a pocket without a second thought, so it's there when a thought is worth catching.
 

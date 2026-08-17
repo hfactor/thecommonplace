@@ -3,7 +3,8 @@ title: French Press
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 5
+order:
+  Manual Brewing: 5
 ---
 French press is ideal if you’re looking for a strong cup of coffee. Personally, I’m not a huge fan of it, but it’s definitely popular. 
 

@@ -41,6 +41,15 @@
     {{- end -}}
   {{- end -}}
 
+{{- else if eq $lt "lifelog" -}}
+  {{/* The newest entry lives exclusively at /now, not in this archive —
+       so 3 entries on disk show as 2 here. */}}
+  {{- $latest := partialCached "lifelog-latest.html" . "global" -}}
+  {{- range (where .Site.RegularPages "Section" "lifelog").ByDate.Reverse -}}
+    {{- $p := . -}}
+    {{- if ne $p.RelPermalink $latest.RelPermalink -}}{{- $pages = $pages | append $p -}}{{- end -}}
+  {{- end -}}
+
 {{- else if eq $lt "projects" -}}
   {{- range .Site.RegularPages.ByDate.Reverse -}}
     {{- $p := . -}}
@@ -66,14 +75,8 @@
        page per category, only for categories that actually have notes, so
        this list is always exactly in sync with what's been written — no
        separate file to keep in step. Ordered by whichever notebook has the
-       most recently dated note. */}}
-  {{- $termData := slice -}}
-  {{- range where .Site.Pages "Kind" "term" -}}
-    {{- $t := . -}}
-    {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
-    {{- $termData = $termData | append (dict "title" $t.Title "permalink" $t.RelPermalink "count" (len $t.Pages) "recent" $recent) -}}
-  {{- end -}}
-  {{- range sort $termData "recent" "desc" -}}
+       most recently dated note (see notebook-list.html). */}}
+  {{- range partialCached "notebook-list.html" . "global" -}}
     {{- $yamlItems = $yamlItems | append (dict "title" .title "permalink" .permalink "count" .count) -}}
   {{- end -}}
 
@@ -82,7 +85,7 @@
 {{/* ── Group page-based types by month (newest first) ── */}}
 {{- $byMonth    := dict -}}
 {{- $sortedKeys := slice -}}
-{{- if or (eq $lt "reading") (eq $lt "bookmarks") -}}
+{{- if or (eq $lt "reading") (eq $lt "bookmarks") (eq $lt "lifelog") -}}
   {{- range $pages -}}
     {{- $k := dateFormat "2006-01" .Date -}}
     {{- $existing := slice -}}
@@ -159,6 +162,25 @@
                     </div>
                   </div>
                 </div>
+              {{- end -}}
+            </div>
+          </div>
+        {{- end -}}
+      {{- end -}}
+
+      {{/* Life Logs: text paragraphs grouped by month (card view only —
+           list view stays flat, driven by list_group_by in types.yaml) */}}
+      {{- if eq $lt "lifelog" -}}
+        {{- range $sortedKeys -}}
+          {{- $k  := . -}}
+          {{- $mp := index $byMonth $k -}}
+          {{- $label := dateFormat "Jan '06" (time (printf "%s-01" $k)) -}}
+          <div class="cv-month">
+            <div class="cv-label">{{ $label }}</div>
+            <div class="cv-items">
+              {{- range $i, $p := $mp -}}
+                {{- $excerpt := $p.Plain | htmlUnescape | replaceRE "’" "'" | truncate 220 -}}
+                <a class="lg-para" data-type="lifelog" href="{{ $p.RelPermalink }}" style="--i:{{ $i }}">{{ $excerpt }}</a>
               {{- end -}}
             </div>
           </div>

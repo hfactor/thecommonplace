@@ -17,7 +17,6 @@
       "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
       "image"       (default "" .Params.image)
       "link"        (default "" .Params.link)
-      "content"     (printf "%s" .Content)
       "permalink"   .RelPermalink
     -}}
     {{- $existing := slice -}}

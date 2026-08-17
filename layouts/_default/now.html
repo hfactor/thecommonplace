@@ -3,41 +3,22 @@
 
       {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
       <h1 class="page-title">{{ .Title }}</h1>
-      <div class="sp-text">{{ .Content }}</div>
 
-      {{- $reading := where .Site.RegularPages "Params.reading-status" "reading" -}}
-      {{- if $reading -}}
-      <div class="now-reading">
-        <div class="now-reading-header">
-          <div class="now-reading-label">Currently Reading</div>
-          <a class="now-reading-link" href="{{ "reading" | relURL }}">All reading →</a>
-        </div>
-        <div class="now-reading-grid">
-          {{- range $reading -}}
-          {{- $title := .Params.localTitle | default .Title -}}
-          <div class="now-book card" data-type="reading">
-            <div class="card-cover">
-              {{ if .Params.image }}
-              <img class="card-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">
-              {{ else }}
-              <div class="card-cover-blank"></div>
-              {{ end }}
-              <div class="card-spine"></div>
-            </div>
-            <div class="now-book-title">{{ $title }}</div>
-          </div>
-          {{- end -}}
-        </div>
-      </div>
+      {{- $latest := partialCached "lifelog-latest.html" . "global" -}}
+      {{- if $latest -}}
+      <div class="sp-text">{{ $latest.Content }}</div>
+      {{- else -}}
+      <div class="sp-text">{{ .Content }}</div>
       {{- end -}}
 
-      {{ if or .Params.updated .Params.footer }}
+      <div class="now-reading">
+        <a class="now-reading-link" href="{{ "lifelog" | relURL }}">Archive →</a>
+      </div>
+
       <p class="sp-updated">
-        {{- if .Params.updated }}Updated {{ .Params.updated }}{{ end -}}
-        {{- if and .Params.updated .Params.footer }} · {{ end -}}
-        {{- with .Params.footer }}{{ . | markdownify | replaceRE `^<p>|</p>\n?$` "" | safeHTML }}{{ end -}}
+        {{- if $latest }}Updated {{ $latest.Date | dateFormat "January 2006" }} · {{ end -}}
+        Inspired by <a href="https://sive.rs/">Derek Sivers</a> and <a href="https://nownownow.com/">nownownow.com</a>.
       </p>
-      {{ end }}
 
 {{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

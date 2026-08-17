@@ -17,14 +17,20 @@
 .l-ext { display: inline-flex; align-items: center; opacity: 0.6; flex-shrink: 0; transition: opacity var(--dur-quick); }
 .l-rec { font-size: 0.75em; color: var(--rec-color); line-height: 1; flex-shrink: 0; }
 
-/* Dim siblings on hover, highlight active row */
+/* Dim siblings on hover, highlight active row — same treatment for the
+   keyboard-selected row (.kb-active) so arrow-key navigation reads
+   identically to a mouse hover instead of a separate focus style. */
 #lView:has(.l-row:hover) .l-row,
+#lView:has(.l-row.kb-active) .l-row,
 .notes-reading:has(.l-row:hover) .l-row          { opacity: 0.4; }
 #lView:has(.l-row:hover) .l-row:hover,
+#lView:has(.l-row.kb-active) .l-row.kb-active,
 .notes-reading:has(.l-row:hover) .l-row:hover    { opacity: 1; }
 #lView:has(.l-row:hover) .l-row:hover .l-title,
+#lView:has(.l-row.kb-active) .l-row.kb-active .l-title,
 .notes-reading:has(.l-row:hover) .l-row:hover .l-title { color: var(--ink); }
 #lView:has(.l-row:hover) .l-row:hover .l-ext,
+#lView:has(.l-row.kb-active) .l-row.kb-active .l-ext,
 .notes-reading:has(.l-row:hover) .l-row:hover .l-ext   { opacity: 1; }
 
 

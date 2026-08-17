@@ -3,7 +3,8 @@ title: Coffee words explained
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 12
+order:
+  Manual Brewing: 12
 ---
 | Word       | Meaning                                                                      |
 | ---------- | ---------------------------------------------------------------------------- |

@@ -31,6 +31,27 @@ const kFull  = k => { const [y,m] = k.split('-'); return `${MONTHS[+m-1].slice(0
 
 let viewMode = 'card';
 let filteredKeys = [];
+let kbIndex = -1;
+
+function kbItems() {
+  return viewMode === 'list'
+    ? [...document.querySelectorAll('#lView .l-row')]
+    : [...document.querySelectorAll('#cardView .card')];
+}
+
+function kbClear() {
+  document.querySelectorAll('.kb-active').forEach(el => el.classList.remove('kb-active'));
+  kbIndex = -1;
+}
+
+function kbSelect(items, idx) {
+  document.querySelectorAll('.kb-active').forEach(el => el.classList.remove('kb-active'));
+  kbIndex = idx;
+  const el = items[idx];
+  if (!el) return;
+  el.classList.add('kb-active');
+  el.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+}
 
 const isRec    = e => e.recommended;
 const typeCfg  = type => (typeof TYPES_CFG !== 'undefined' ? TYPES_CFG : []).find(t => t.id === type) || {};
@@ -78,6 +99,7 @@ const emptyState = () => `<div class="empty-state"><div class="empty-state-icon"
 
 function setViewMode(mode) {
   viewMode = mode;
+  kbClear();
   updateFabState();
   show();
 }
@@ -86,6 +108,7 @@ function rebuild() {
   filteredKeys = Object.keys(DATA).sort().reverse()
     .filter(k => (DATA[k] || []).some(e => entryMatches(e)));
   buildCardView();
+  kbClear();
   show();
 }
 
@@ -209,6 +232,11 @@ function cardHTML(e, idx) {
     return `<a class="fn-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="fn-card-title">${e.title}</span></a>`;
   }
 
+  // ── lifelog (life log archive — plain text paragraph, no card chrome) ──
+  if (tmpl === 'lifelog') {
+    return `<a class="lg-para" data-type="lifelog" href="${e.permalink}" ${si}>${e.summary || ''}</a>`;
+  }
+
   // ── product (uses, projects, any gallery type) ────────
   if (tmpl === 'product') {
     const src     = e.image || e.cover || '';
@@ -256,14 +284,17 @@ function cardHTML(e, idx) {
 
 // ── Card view (horizontal month groups) ──────────────────
 
-function activeGroupBy() {
+function activeGroupBy(field) {
   // Derive grouping from TYPES_CFG based on the active filter type.
-  // Mixed / everything view defaults to month.
+  // Mixed / everything view defaults to month. `field` lets list view use a
+  // different grouping than card view (list_group_by) — most types don't
+  // set it, so it falls back to the shared group_by.
+  field = field || 'group_by';
   const types = filteredKeys.flatMap(k => DATA[k] || []).map(e => e.type);
   const unique = [...new Set(types)];
   if (unique.length === 1) {
     const cfg = typeCfg(unique[0]);
-    return cfg.group_by || 'month';
+    return cfg[field] || cfg.group_by || 'month';
   }
   return 'month';
 }
@@ -403,7 +434,7 @@ function listRowHTML(e) {
 function buildList() {
   const lView = document.getElementById('lView');
   if (!lView) return;
-  const groupBy = activeGroupBy();
+  const groupBy = activeGroupBy('list_group_by');
   const sorted = k => (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day);
 
   const allEntries = filteredKeys.flatMap(k => sorted(k));
@@ -511,6 +542,24 @@ document.addEventListener('DOMContentLoaded', () => {
       closeSheet();
       const wrap = document.getElementById('shFilter');
       if (wrap) wrap.dataset.open = 'false';
+    }
+
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable) return;
+    if (document.getElementById('sheetOverlay')?.classList.contains('open')) return;
+
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      const items = kbItems();
+      if (!items.length) return;
+      e.preventDefault();
+      const dir  = (e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 1;
+      const next = Math.max(0, Math.min(items.length - 1, (kbIndex === -1 ? 0 : kbIndex + dir)));
+      kbSelect(items, next);
+    }
+
+    if ((e.key === 'Enter' || e.key === ' ') && kbIndex !== -1) {
+      const el = kbItems()[kbIndex];
+      if (el?.dataset.uid) { e.preventDefault(); openSheet(el.dataset.uid); }
     }
   });
 

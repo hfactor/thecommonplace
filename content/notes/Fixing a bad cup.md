@@ -3,7 +3,8 @@ title: Fixing a bad cup
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 11
+order:
+  Manual Brewing: 11
 ---
 A bad cup is usually a matter of extraction, strength, or both. Across moka pot, French press, AeroPress, South Indian filter, and pour-over, you can adjust five basic variables:
 

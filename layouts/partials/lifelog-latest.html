@@ -1,0 +1,9 @@
+{{- /* Returns the newest Life Log page, or "" if none exist. Computed once
+       per build (partialCached, page-independent) and shared by every
+       caller that needs to know which entry is "current" — now.html,
+       page-data.html, and section-page.html all used to derive this
+       independently. */ -}}
+{{- $desc := (where site.RegularPages "Section" "lifelog").ByDate.Reverse -}}
+{{- $latest := "" -}}
+{{- with $desc -}}{{- $latest = index . 0 -}}{{- end -}}
+{{- return $latest -}}

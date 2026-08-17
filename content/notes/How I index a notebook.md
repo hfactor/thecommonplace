@@ -2,7 +2,8 @@
 title: "How I index a notebook"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 5
+order:
+  Analog Journaling: 5
 ---
 Mine is a mix of a lot of things, closer to a diary than a strict system, split by date stamp with no fixed format and no empty space, whatever comes next just starts where the last thing ended.
 

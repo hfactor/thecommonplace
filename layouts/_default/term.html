@@ -1,3 +1,16 @@
 {{ define "main" }}
-{{ partial "notebook-render.html" (dict "pages" .Pages "title" .Title "page" .) }}
+{{- $title := .Title -}}
+{{- $ranked := slice -}}
+{{- range .Pages -}}
+  {{- $p := . -}}
+  {{- $rank := 0.0 -}}
+  {{/* Cast to float64 via mul — front matter order values parse as int
+       unless a decimal is used, and Hugo's sort breaks on a slice mixing
+       int and float64 ranks (see term.html history / roadmap ticket #1). */}}
+  {{- with index $p.Params.order $title -}}{{- $rank = mul . 1.0 -}}{{- else -}}{{- $rank = mul $p.Date.Unix 1.0 -}}{{- end -}}
+  {{- $ranked = $ranked | append (dict "page" $p "rank" $rank) -}}
+{{- end -}}
+{{- $sorted := slice -}}
+{{- range sort $ranked "rank" "asc" -}}{{- $sorted = $sorted | append .page -}}{{- end -}}
+{{ partial "notebook-render.html" (dict "pages" $sorted "title" $title "page" .) }}
 {{ end }}

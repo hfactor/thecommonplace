@@ -2,7 +2,8 @@
 title: "Why paper"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 1
+order:
+  Analog Journaling: 1
 ---
 I've used [Evernote](https://evernote.com), [Google Docs](https://docs.google.com), and still rely on [Obsidian](https://obsidian.md) for most of my work, along with a dozen to-do apps on the phone over the years. A few of them still hold to-dos from 2015. None of that failed exactly. It worked fine for projects, just never for the daily grind of noting things down.
 

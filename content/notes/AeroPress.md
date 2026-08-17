@@ -3,7 +3,8 @@ title: AeroPress
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 8
+order:
+  Manual Brewing: 8
 ---
 AeroPress is a brewing method that combines immersion brewing with pressure. You steep ground coffee in hot water inside the AeroPress, then press the brewed coffee through a paper filter and into your cup. You need an [AeroPress](https://link.amazon/B0gyzgIzh) or it's travel friendly version [AeroPress Go](https://brewinggadgets.in/products/aeropress-go-travel-coffee-press) and a [paper filter](https://link.amazon/B0aIETYlh). Unlike pour-over, the AeroPress allows the coffee to steep before you press it through the filter. 
 

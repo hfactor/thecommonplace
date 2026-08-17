@@ -44,6 +44,8 @@ ignoreFiles = [
     render = true
   [params.sections.work]
     render = true
+  [params.sections.lifelog]
+    render = true
 
 [outputFormats.SectionData]
   mediaType = "application/json"

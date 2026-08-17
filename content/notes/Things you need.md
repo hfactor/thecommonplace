@@ -3,7 +3,8 @@ title: Things you need
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 2
+order:
+  Manual Brewing: 2
 ---
 Start with a kettle. A [gooseneck kettle](https://somethingsbrewing.in/products/budan-electric-temperature-control-kettle-1l-capacity) with temperature control gives you the most control over your brew. If you don’t have one, use a regular kettle with an external [thermometer](https://link.amazon/B07JUZvp6) and a [drip pot.](https://link.amazon/B00N6YeaL)
 

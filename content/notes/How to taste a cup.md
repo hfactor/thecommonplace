@@ -3,7 +3,8 @@ title: How to taste a cup
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 10
+order:
+  Manual Brewing: 10
 ---
 Tasting is personal. Smell the coffee, take a sip, and notice the flavour, texture, and what lingers after you swallow. Let it cool too, as sweetness, acidity, and other flavors become easier to notice.
 

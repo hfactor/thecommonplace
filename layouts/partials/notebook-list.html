@@ -1,0 +1,13 @@
+{{- /* Returns notebooks as a slice of {title, permalink, count, recent},
+       sorted by each notebook's most-recently-dated note, descending.
+       Computed once per build (partialCached, page-independent) and shared
+       by every caller that needs "which notebook was touched most recently"
+       — page-data.html and section-page.html both used to derive this
+       independently. */ -}}
+{{- $termData := slice -}}
+{{- range where site.Pages "Kind" "term" -}}
+  {{- $t := . -}}
+  {{- $recent := (index (sort $t.Pages "Date" "desc") 0).Date -}}
+  {{- $termData = $termData | append (dict "title" $t.Title "permalink" $t.RelPermalink "count" (len $t.Pages) "recent" $recent) -}}
+{{- end -}}
+{{- return (sort $termData "recent" "desc") -}}

@@ -3,7 +3,8 @@ title: Aeropress Recipes
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 13
+order:
+  Manual Brewing: 13
 ---
 ##### Standard / Upright
 1. [Alan Adler](https://aeromatic.app/recipes/alan-adler-aeropress-recipe), Classic Black Coffee

@@ -3,7 +3,8 @@ title: Moka Pot
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 6
+order:
+  Manual Brewing: 6
 ---
 Moka pot makes an intense, strong coffee. All you need is the [Moka pot](https://link.amazon/A0emO9uDu) itself. The idea is simple, but the way it works is fascinating. Water in the bottom chamber heats up and creates pressure, pushing the water up through the coffee grounds and into the top chamber. The result is a rich and concentrated coffee that’s slightly cloudy, with a strong aroma that can fill the whole room. I strongly recommend a [Bialetti stovetop Moka pot](https://link.amazon/A05Z5FUcV) over other brands and electric ones. 
 

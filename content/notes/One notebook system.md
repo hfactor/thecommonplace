@@ -2,7 +2,8 @@
 title: "One notebook system"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 3
+order:
+  Analog Journaling: 3
 ---
 Keeping separate notebooks for work, personal thoughts, and projects never really works. One notebook for everything is messier, but it's the one that actually gets used.
 

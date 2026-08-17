@@ -2,7 +2,8 @@
 title: "Recommendations"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 10
+order:
+  Analog Journaling: 10
 ---
 ### Paper Tools
 

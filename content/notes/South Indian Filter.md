@@ -3,7 +3,8 @@ title: South Indian Filter
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 9
+order:
+  Manual Brewing: 9
 ---
 South Indian Filter coffee uses a [metal two-piece filter](https://link.amazon/B02LZSpnL). Hot water slowly drips through the coffee into the lower chamber, making a strong decoction that is usually mixed with hot milk and sugar.
 

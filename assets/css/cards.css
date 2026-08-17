@@ -47,7 +47,8 @@
   transition: box-shadow var(--dur-hover), transform var(--dur-hover);
   transform-origin: left center;
 }
-.card:hover .card-cover {
+.card:hover .card-cover,
+.card.kb-active .card-cover {
   transform: perspective(700px) rotateY(-4deg) translateY(-2px);
   box-shadow:
     -10px 8px 24px rgba(0,0,0,0.30),
@@ -76,7 +77,8 @@
   transition: opacity var(--dur-hover);
   z-index: 0;
 }
-.card:hover .card-cover::before { opacity: 1; }
+.card:hover .card-cover::before,
+.card.kb-active .card-cover::before { opacity: 1; }
 /* Image clips itself to the cover shape */
 .card-cover-img { width: 100%; object-fit: cover; display: block; background: var(--surface2); border-radius: var(--r-xs) 1px 1px var(--r-xs); overflow: hidden; }
 .card-cover-blank { width: 100%; aspect-ratio: 3/4; background: var(--surface2); border-radius: var(--r-xs) 1px 1px var(--r-xs); overflow: hidden; }
@@ -97,7 +99,8 @@
     -1px 1px 5px rgba(0,0,0,0.38),
     inset -2px 0 4px rgba(0,0,0,0.22);
 }
-[data-theme="ink"] .card:hover .card-cover {
+[data-theme="ink"] .card:hover .card-cover,
+[data-theme="ink"] .card.kb-active .card-cover {
   box-shadow:
     -10px 8px 28px rgba(0,0,0,0.75),
     -2px 2px 8px rgba(0,0,0,0.42),
@@ -107,7 +110,8 @@
 /* ── Bookmark card ───────────────────────────────── */
 .card[data-type="bookmarks"] { width: 210px; }
 .bm-card { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border-light); background: var(--surface); transition: border-color var(--dur-quick), box-shadow var(--dur-quick); }
-.card:hover .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
+.card:hover .bm-card,
+.card.kb-active .bm-card { border-color: var(--border); box-shadow: 0 3px 16px rgba(0,0,0,0.06); }
 .bm-bar { display: flex; align-items: center; gap: var(--space-1); padding: var(--space-1) 10px; border-bottom: 1px solid var(--border-light); background: var(--surface2); }
 .bm-dots { display: flex; gap: var(--space-1); flex-shrink: 0; }
 .bm-dots span { width: 8px; height: 8px; border-radius: var(--r-full); }
@@ -250,7 +254,25 @@
   .cv-items .floppy-card                 { width: 140px; }
   .cv-items .gc                          { width: 160px; }
   .cv-items .fn-card                     { width: 120px; }
+  .cv-items .lg-para                     { width: 220px; }
 }
+
+/* ── Life Log paragraph (archive — plain text, no card chrome) ──── */
+.lg-para {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 260px;
+  font-size: var(--text-base);
+  color: var(--ink2);
+  line-height: var(--lh-display);
+  text-decoration: none;
+  transition: color var(--dur-quick);
+}
+.lg-para:hover,
+.lg-para.kb-active { color: var(--ink); }
+.cv-items .lg-para { flex-shrink: 0; margin-bottom: 0; }
 
 /* ── Floppy disk card ─────────────────────────────────────────────────────── */
 

@@ -3,7 +3,8 @@ title: Pourover Recipes
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 14
+order:
+  Manual Brewing: 14
 ---
 1. [Tetsu Kasuya](https://instagram.com/tetsukasuya/) 4:6 Method. [Video](https://www.youtube.com/watch?v=wmCW8xSWGZY), [Text](https://honestcoffeeguide.com/brew-recipes/tetsu-kasuya-4-6-method/)
 2. [Best Pour Over Recipes, 2026](https://www.harmonycoffee.co.uk/blogs/blog/best-pourover-recipes)

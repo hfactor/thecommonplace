@@ -16,8 +16,8 @@
       "domain"   $domain
       "href"     $href
       "category" (default "" .Params.category)
-      "content"  (printf "%s" .Content)
       "summary"  (printf "%s" (.Summary | default ""))
+      "permalink" .RelPermalink
     -}}
     {{- $existing := slice -}}
     {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

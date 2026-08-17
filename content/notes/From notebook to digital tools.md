@@ -2,7 +2,8 @@
 title: "From notebook to digital tools"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 8
+order:
+  Analog Journaling: 8
 ---
 A pocket notebook doesn't have to hold everything forever. It's a good place to sketch an idea before it's ready anywhere else — a first pass, same as in [[Why paper]], before it moves into a digital tool, a bookmark, a document, wherever it actually needs to live and be found again.
 

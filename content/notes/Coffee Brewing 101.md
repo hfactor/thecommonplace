@@ -3,7 +3,8 @@ title: Coffee Brewing 101
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 1
+order:
+  Manual Brewing: 1
 ---
 Manual brewing means making coffee yourself, with control over how you make it. You decide the coffee, grind size, water, temperature and brewing time, and each of these can change how the final cup tastes. 
 

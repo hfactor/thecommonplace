@@ -2,7 +2,8 @@
 title: "Lots of inputs and a strong filter"
 date: 2026-03-05
 categories: ["Analog Journaling"]
-categories_weight: 7
+order:
+  Analog Journaling: 7
 ---
 Almost everything gets noted down, then most of it gets cancelled. It's less about capturing the right things upfront and more about reviewing later and cutting hard.
 

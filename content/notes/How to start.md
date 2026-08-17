@@ -3,7 +3,8 @@ title: How to start
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 4
+order:
+  Manual Brewing: 4
 ---
 Coffee and water are the two essentials. About 98% of your cup is water.  Start with clean RO water. For a simple baseline, aim for a pH around 7 and TDS between 75–200.
 

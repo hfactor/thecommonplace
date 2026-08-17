@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{- $lifelogPage := .Site.GetPage "/lifelog" -}}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <a class="back-link" href="{{ $lifelogPage.RelPermalink }}">&larr; Life Logs</a>
+      <h1 class="page-title">{{ .Title }}</h1>
+
+      <div class="sp-text">{{ .Content }}</div>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

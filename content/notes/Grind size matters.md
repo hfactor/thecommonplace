@@ -3,7 +3,8 @@ title: Grind size matters
 date: 2026-02-20
 categories:
   - Manual Brewing
-categories_weight: 3
+order:
+  Manual Brewing: 3
 ---
 Grind size is one of the variables we can control, whether we grind the coffee ourselves or buy it pre-ground. It affects how easily water moves through the coffee and, in turn, how the cup tastes.
 

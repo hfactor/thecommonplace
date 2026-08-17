@@ -9,10 +9,13 @@
 {{- if $term -}}
   {{ partial "notebook-render.html" (dict "pages" $term.Pages "title" $term.Title "page" $term "scrollTo" $slug) }}
 {{- else -}}
+  {{- $notesPage := .Site.GetPage "/notes" -}}
   {{ partial "readable-open.html" (dict) }}
-  {{ partial "page-title.html" (dict) }}
+  {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+  <a class="back-link" href="{{ $notesPage.RelPermalink }}">&larr; All Notes</a>
   <h1 class="page-title">{{ .Title }}</h1>
-  <div class="sp-text"><p>This note isn't filed under a notebook yet. <a href="{{ (.Site.GetPage "/notes").RelPermalink }}">Back to Notes</a></p></div>
+  <div class="sp-meta-row"><span class="sp-meta-left"><span>{{ .Date | dateFormat "Jan 2, 2006" }}</span></span></div>
+  <div class="sp-text">{{ .Content }}</div>
   {{ partial "readable-close.html" (dict "page" .) }}
 {{- end -}}
 {{ end }}

@@ -11,9 +11,10 @@ function parseWikilinks(html) {
   });
 }
 
-let _sheetPrevUrl    = null;
-let _sheetOpen       = false;
-let _sheetScrollLeft = null;
+let _sheetPrevUrl = null;
+let _sheetOpen    = false;
+let _sheetScroll  = null;
+let _sheetUid     = null;
 
 function metaLink(value, type, extraClass) {
   if (!value) return '';
@@ -31,6 +32,19 @@ function recPill(e, type) {
 function openSheet(uid) {
   const e = S[uid];
   if (!e) return;
+
+  // Entries loaded from a type's background list feed (fetched lazily from
+  // a permalink page, to let its underlying card view stay browsable) only
+  // carry lightweight display fields, not full content — that full-content
+  // duplication for every other item was the actual cost of instant modals
+  // there. If this entry has no content, it's one of those — send the user
+  // to its real page instead of opening a hollow modal.
+  if (e.content === undefined && e.permalink) {
+    window.location.href = e.permalink;
+    return;
+  }
+
+  _sheetUid = uid;
   let html = '';
   let wide = false;
 
@@ -118,7 +132,8 @@ function openSheet(uid) {
 
   if (!_sheetOpen) {
     const cv = document.getElementById('cardView');
-    _sheetScrollLeft = cv ? cv.scrollLeft : null;
+    const lv = document.getElementById('lView');
+    _sheetScroll = { left: cv ? cv.scrollLeft : 0, top: lv ? lv.scrollTop : 0 };
   }
 
   const permalink = e.permalink || null;
@@ -143,11 +158,20 @@ function closeSheet(fromPopstate = false) {
     _sheetPrevUrl = null;
   }
   document.getElementById('sheetOverlay').classList.remove('open');
-  if (_sheetScrollLeft !== null) {
+  if (_sheetScroll) {
     const cv = document.getElementById('cardView');
-    if (cv) cv.scrollLeft = _sheetScrollLeft;
-    _sheetScrollLeft = null;
+    const lv = document.getElementById('lView');
+    if (cv) cv.scrollLeft = _sheetScroll.left;
+    if (lv) lv.scrollTop = _sheetScroll.top;
+    _sheetScroll = null;
   }
+
+  if (_sheetUid) {
+    const items = kbItems();
+    const idx = items.findIndex(el => el.dataset.uid === _sheetUid);
+    if (idx !== -1) kbSelect(items, idx); else kbClear();
+  }
+  _sheetUid = null;
 }
 
 function closeSheetOutside(ev) {
