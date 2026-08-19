@@ -4,9 +4,16 @@
        still pass it), viewToggle (optional bool — adds the Latest/List
        controls, right-aligned) */ -}}
 {{- $viewToggle := .viewToggle | default false -}}
+{{- $isHome := .isHome | default false -}}
 <div class="page-head{{ with .extraClass }} {{ . }}{{ end }}">
   {{- with resources.Get "img/hiran-head.svg" -}}
-  <a href="{{ "everything" | relURL }}" class="pn-avatar" aria-label="Home">{{ .Content | safeHTML }}</a>
+  <a href="{{ "everything" | relURL }}" class="pn-avatar{{ if $isHome }} pn-avatar--home{{ end }}" aria-label="Home">{{ .Content | safeHTML }}</a>
+  {{- end -}}
+  {{- if $isHome -}}
+  <a href="{{ "about" | relURL }}" class="pn-name" aria-label="About">
+    <span class="pn-name-text">Hiran Venugopalan</span>
+    <svg class="pn-name-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg>
+  </a>
   {{- end -}}
   {{- /* Every page still needs exactly one h1 for SEO — visually hidden here
          since the visible section-switcher now lives in the footer, but kept
@@ -16,11 +23,11 @@
 
   <div class="pt-view">
     {{- if $viewToggle }}
-    <button type="button" id="latestChip" class="pt-view-latest" onclick="goLatest()" aria-label="Jump to latest">
+    <button type="button" id="latestChip" class="pt-view-latest" onclick="goLatest()" aria-label="Jump to latest" data-tooltip="Jump to latest">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="10" x2="6" y2="2"/><polyline points="2,6 6,2 10,6"/></svg>
     </button>
-    <button type="button" id="latestModeBtn" class="pt-view-mode" onclick="fabToggleView()" aria-label="Switch to list view"></button>
+    <button type="button" id="latestModeBtn" class="pt-view-mode" onclick="fabToggleView()" aria-label="Switch to list view" data-tooltip="Switch to list view"></button>
     {{- end }}
-    <button type="button" class="pt-theme" onclick="fabToggleTheme()" aria-label="Toggle theme"></button>
+    <button type="button" class="pt-theme" onclick="fabToggleTheme()" aria-label="Toggle theme" data-tooltip="Toggle theme"></button>
   </div>
 </div>

@@ -22,7 +22,7 @@
     <div class="pt-nav-menu sf-nav-menu" aria-hidden="true">
       <a class="pt-nav-link{{ if eq $cur "/everything/" }} pt-nav-link--active{{ end }}" href="{{ "everything" | relURL }}">Everything</a>
       {{- range hugo.Data.types }}
-        {{- if .in_everything }}
+        {{- if .in_dropdown }}
         <a class="pt-nav-link{{ if strings.HasPrefix $cur (printf "/%s" .id) }} pt-nav-link--active{{ end }}" href="{{ .id | relURL }}">{{ .label }}</a>
         {{- end }}
       {{- end }}

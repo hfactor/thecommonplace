@@ -42,7 +42,9 @@ function updateFabIcons() {
   const modeBtn = document.getElementById('latestModeBtn');
   if (modeBtn) {
     modeBtn.innerHTML = mode === 'list' ? ICO.grid : ICO.list;
-    modeBtn.setAttribute('aria-label', mode === 'list' ? 'Switch to card view' : 'Switch to list view');
+    const label = mode === 'list' ? 'Switch to card view' : 'Switch to list view';
+    modeBtn.setAttribute('aria-label', label);
+    modeBtn.setAttribute('data-tooltip', label);
   }
 }
 

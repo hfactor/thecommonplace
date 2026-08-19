@@ -264,14 +264,18 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   width: 260px;
+  padding-left: var(--space-2);
   font-size: var(--text-base);
   color: var(--ink2);
+  opacity: 0.8;
   line-height: var(--lh-display);
   text-decoration: none;
-  transition: color var(--dur-quick);
+  transition: color var(--dur-quick), opacity var(--dur-quick);
+  -webkit-mask-image: linear-gradient(to bottom, black 25%, rgba(0,0,0,0.2) 100%);
+  mask-image: linear-gradient(to bottom, black 25%, rgba(0,0,0,0.2) 100%);
 }
 .lg-para:hover,
-.lg-para.kb-active { color: var(--ink); }
+.lg-para.kb-active { color: var(--ink); opacity: 1; }
 .cv-items .lg-para { flex-shrink: 0; margin-bottom: 0; }
 
 /* ── Floppy disk card ─────────────────────────────────────────────────────── */

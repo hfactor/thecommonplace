@@ -408,7 +408,11 @@ const LIST_TAG = {
 function listRowHTML(e) {
   S[e.uid] = e;
   const title  = e.localTitle || e.title || '';
-  const tag    = (LIST_TAG[e.type] || (() => ''))(e);
+  // Everything (cross-type) shows the type itself (category); a single
+  // type's own page shows that type's finer-grained detail (subCategory)
+  // instead, since the type is already implied there.
+  const isEverything = typeof window.__LISTING__ !== 'undefined' && !window.__LISTING__.type;
+  const tag = isEverything ? (typeCfg(e.type).label || '') : (LIST_TAG[e.type] || (() => ''))(e);
   const rec    = isRec(e) ? '<span class="l-rec">✦</span>' : '';
   const dataUid = `data-uid="${e.uid}"`;
 

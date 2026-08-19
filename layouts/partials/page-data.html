@@ -60,11 +60,11 @@
 {{- end -}}
 {{- end -}}
 
-{{/* ── Life Logs (archive — /lifelog listing only, never Everything) ──
-     The newest entry lives exclusively at /now, not the archive, so it's
-     excluded here too — otherwise list-view on /lifelog would show 3 while
-     card-view (section-page.html, which excludes it the same way) shows 2. */}}
-{{- if eq $lt "lifelog" -}}
+{{/* ── Life Logs (in the Everything feed, and its own /lifelog archive —
+     but not the type-filter dropdown, in_dropdown is false for that).
+     The newest entry lives exclusively at /now — excluded here in both
+     Everything and the archive, not just the archive. */}}
+{{- if or (eq $lt "") (eq $lt "lifelog") -}}
 {{- $latest := partialCached "lifelog-latest.html" . "global" -}}
 {{- range (where .Site.RegularPages "Section" "lifelog").ByDate.Reverse -}}
   {{- if ne .RelPermalink $latest.RelPermalink -}}

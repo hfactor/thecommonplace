@@ -1,6 +1,9 @@
 # Content types — drives the Explore panel navigation and JS rendering.
 # id:            URL slug and filter key
-# in_everything: whether this type appears in the Explore dropdown
+# in_everything: whether this type's entries appear in the Everything feed
+# in_dropdown:   whether this type appears in the Explore/section dropdown
+#                (independent of in_everything — Life Logs is in the feed
+#                but not offered as a filter option)
 # card_template: named rendering template — book | browser | product | notebook
 # view_mode:     dedicated page view — card | gallery
 # on_click:      what happens when a card/row is clicked — sheet | external | page
@@ -16,6 +19,7 @@
 - id: reading
   label: Reading
   in_everything: true
+  in_dropdown: true
   card_template: book
   view_mode: card
   on_click: sheet
@@ -24,6 +28,7 @@
 - id: projects
   label: Projects
   in_everything: true
+  in_dropdown: true
   card_template: product
   view_mode: gallery
   on_click: page
@@ -32,6 +37,7 @@
 - id: notes
   label: Notes
   in_everything: true
+  in_dropdown: true
   card_template: notebook
   view_mode: gallery
   on_click: page
@@ -40,6 +46,7 @@
 - id: bookmarks
   label: Bookmarks
   in_everything: true
+  in_dropdown: true
   card_template: browser
   view_mode: card
   on_click: sheet
@@ -48,6 +55,7 @@
 - id: uses
   label: Uses
   in_everything: true
+  in_dropdown: true
   card_template: product
   view_mode: gallery
   on_click: sheet
@@ -55,7 +63,8 @@
 
 - id: lifelog
   label: Life Logs
-  in_everything: false
+  in_everything: true
+  in_dropdown: false
   card_template: lifelog
   view_mode: card
   on_click: page

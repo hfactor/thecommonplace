@@ -4,7 +4,8 @@
     {{- if eq .id $.ctx -}}{{- $label = .label -}}{{- end -}}
   {{- end -}}
 {{- end -}}
+{{- $isHome := eq .page.RelPermalink "/everything/" -}}
 
 <div class="page-nav">
-  {{ partial "page-title.html" (dict "title" $label "cur" .page.RelPermalink "typeNav" true "viewToggle" true) }}
+  {{ partial "page-title.html" (dict "title" $label "cur" .page.RelPermalink "typeNav" true "viewToggle" true "isHome" $isHome) }}
 </div>
