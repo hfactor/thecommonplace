@@ -255,6 +255,7 @@
   .cv-items .gc                          { width: 160px; }
   .cv-items .fn-card                     { width: 120px; }
   .cv-items .lg-para                     { width: 220px; }
+  .cv-items .torn-card                   { width: 120px; }
 }
 
 /* ── Life Log paragraph (archive — plain text, no card chrome) ──── */
@@ -277,6 +278,54 @@
 .lg-para:hover,
 .lg-para.kb-active { color: var(--ink); opacity: 1; }
 .cv-items .lg-para { flex-shrink: 0; margin-bottom: 0; }
+
+/* ── Torn-paper card (Lists) — single rough-edged sheet, centred title,
+   same tier as .fn-card (centred content on the object itself, not a
+   caption underneath it). A slight alternating tilt per --i keeps the
+   row from looking like a uniform printed grid. ── */
+.torn-card {
+  display: block;
+  width: 150px;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  transform: rotate(-1.4deg);
+  transition: transform var(--dur-hover);
+}
+.torn-card:nth-child(3n+1) { transform: rotate(1.6deg); }
+.torn-card:nth-child(3n+2) { transform: rotate(-1.8deg); }
+.torn-card:nth-child(3n)   { transform: rotate(0.8deg); }
+.torn-card:hover,
+.torn-card.kb-active { transform: rotate(0deg) translateY(-4px); }
+.torn-card-paper {
+  position: relative;
+  aspect-ratio: 0.72;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--paper-bg);
+  clip-path: polygon(
+    0% 4%, 9% 1%, 18% 5%, 27% 0%, 36% 3%, 45% 1%, 54% 4%, 63% 0%, 72% 3%, 81% 1%, 90% 4%, 100% 1%,
+    100% 100%, 0% 100%
+  );
+  box-shadow: 2px 4px 12px var(--paper-shadow);
+  transition: box-shadow var(--dur-hover);
+}
+.torn-card:hover .torn-card-paper,
+.torn-card.kb-active .torn-card-paper { box-shadow: 3px 8px 18px var(--paper-shadow); }
+.torn-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--paper-text);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.cv-items .torn-card { margin-bottom: 0; }
 
 /* ── Floppy disk card ─────────────────────────────────────────────────────── */
 

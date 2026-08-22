@@ -129,6 +129,11 @@
   --fn-cover:  #26272c;
   --fn-title:  #f2f0ea;
   --fn-thread: rgba(255, 255, 255, 0.32);
+
+  /* ── Torn paper (list cards) ─────────────────────── */
+  --paper-bg:    #f7f2e4;
+  --paper-text:  #2a2818;
+  --paper-shadow: rgba(0, 0, 0, 0.16);
 }
 
 /* ── Ink — dark ─────────────────────────────────────── */
@@ -175,4 +180,9 @@
   --fn-cover:  #37383f;
   --fn-title:  #f2f0ea;
   --fn-thread: rgba(255, 255, 255, 0.22);
+
+  /* ── Torn paper (list cards) ─────────────────────── */
+  --paper-bg:    #2b2924;
+  --paper-text:  #e9e4d2;
+  --paper-shadow: rgba(0, 0, 0, 0.45);
 }

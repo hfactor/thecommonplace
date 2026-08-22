@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{- $listsPage := .Site.GetPage "/lists" -}}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <a class="back-link" href="{{ $listsPage.RelPermalink }}">&larr; Lists</a>
+      <h1 class="page-title">{{ .Title }}</h1>
+
+      <div class="sp-meta-row">
+        <span class="sp-meta-left"><span>Updated {{ .Date | dateFormat "Jan 2, 2006" }}</span></span>
+      </div>
+
+      {{- with .Content -}}<div class="sp-text">{{ . }}</div>{{- end -}}
+
+      <div class="list-items">
+        {{- range .Params.items -}}
+          {{- if .link -}}
+          <a class="list-item list-item--link" href="{{ .link }}" target="_blank" rel="noopener">
+            <span class="list-item-title">{{ .title }}{{ if .recommended }} <span class="list-item-rec">✦</span>{{ end }}</span>
+            {{- with .note }}<span class="list-item-note">{{ . }}</span>{{- end }}
+          </a>
+          {{- else -}}
+          <div class="list-item">
+            <span class="list-item-title">{{ .title }}{{ if .recommended }} <span class="list-item-rec">✦</span>{{ end }}</span>
+            {{- with .note }}<span class="list-item-note">{{ . }}</span>{{- end }}
+          </div>
+          {{- end -}}
+        {{- end -}}
+      </div>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

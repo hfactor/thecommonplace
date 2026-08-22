@@ -1,0 +1,75 @@
+{{- /* Flat, lightweight cross-type index for cmd+K search — title/type/date/
+       permalink only, plus a small "extra" searchable string per type
+       (author, genre, domain...). Never full content, same rule as every
+       other background-loaded feed on this site. */ -}}
+{{- $items := slice -}}
+
+{{- range where site.RegularPages "Section" "reading" -}}
+  {{- if and (ne (index .Params "reading-status") "reading") (ne .Params.layout "listing") -}}
+    {{- $items = $items | append (dict
+      "title"   (or .Params.localTitle .Title)
+      "type"    "reading"
+      "date"    .Date
+      "extra"   (delimit (slice .Params.author .Params.genre .Params.language) " ")
+      "permalink" .RelPermalink
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range where site.RegularPages "Section" "bookmarks" -}}
+  {{- $domain := .Params.domain | default (replaceRE "^https?://([^/?#]+).*" "$1" (default "" .Params.href)) -}}
+  {{- $items = $items | append (dict
+    "title"   .Title
+    "type"    "bookmarks"
+    "date"    .Date
+    "extra"   $domain
+    "permalink" .RelPermalink
+  ) -}}
+{{- end -}}
+
+{{- range where site.RegularPages "Section" "projects" -}}
+  {{- if ne .Params.layout "listing" -}}
+    {{- $items = $items | append (dict
+      "title"   .Title
+      "type"    "projects"
+      "date"    .Date
+      "extra"   (default "" .Params.tagline)
+      "permalink" .RelPermalink
+    ) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range where site.RegularPages "Section" "lists" -}}
+  {{- $itemTitles := slice -}}
+  {{- range .Params.items -}}{{- $itemTitles = $itemTitles | append .title -}}{{- end -}}
+  {{- $items = $items | append (dict
+    "title"   .Title
+    "type"    "lists"
+    "date"    .Date
+    "extra"   (delimit $itemTitles " ")
+    "permalink" .RelPermalink
+  ) -}}
+{{- end -}}
+
+{{- range hugo.Data.things -}}
+  {{- $t := time (printf "%v" .date) -}}
+  {{- $items = $items | append (dict
+    "title"   .title
+    "type"    "uses"
+    "date"    $t
+    "extra"   (default "" .subCategory)
+    "permalink" (printf "/uses/?q=%s" (urlquery .title))
+  ) -}}
+{{- end -}}
+
+{{- range partialCached "notebook-list.html" . "global" -}}
+  {{- $items = $items | append (dict
+    "title"   .title
+    "type"    "notes"
+    "date"    .recent
+    "extra"   ""
+    "permalink" .permalink
+  ) -}}
+{{- end -}}
+
+{{ $items | jsonify }}

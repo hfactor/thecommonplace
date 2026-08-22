@@ -1,0 +1,29 @@
+{{ define "main" }}
+<div class="app">
+{{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" "") }}
+<main class="content"></main>
+{{ partial "site-footer.html" . }}
+</div>
+
+<div class="sheet-overlay open" id="sheetOverlay">
+  <div class="sheet" id="sheet">
+    <a class="sheet-close" href="{{ "everything" | relURL }}" aria-label="Close">✕</a>
+    <div class="sheet-inner" id="sheetInner">
+      <div class="modal-recommend">
+        <div class="modal-title">Contact me</div>
+        <p class="recommend-desc">A book, a link, a note, a correction. It can be anything. I read everything sent my way.</p>
+
+        <form id="recommendForm" class="recommend-form">
+          <textarea name="recommendation" class="recommend-input" placeholder="What's on your mind?" required rows="3"></textarea>
+          <input type="text" name="name" class="recommend-input" placeholder="Name (optional)">
+          <input type="text" name="contact" class="recommend-input" placeholder="Email, phone number, or website (optional)">
+          <input type="text" name="website" class="recommend-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="recommend-submit">Send</button>
+        </form>
+        <p class="recommend-success" id="recommendSuccess" hidden>Thanks, got it.</p>
+        <p class="recommend-error" id="recommendError" hidden>Something went wrong. Try again in a bit.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

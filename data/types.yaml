@@ -70,3 +70,12 @@
   on_click: page
   group_by: month
   list_group_by: none
+
+- id: lists
+  label: Lists
+  in_everything: true
+  in_dropdown: false
+  card_template: lists
+  view_mode: gallery
+  on_click: page
+  group_by: none

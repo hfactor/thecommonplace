@@ -237,6 +237,11 @@ function cardHTML(e, idx) {
     return `<a class="lg-para" data-type="lifelog" href="${e.permalink}" ${si}>${e.summary || ''}</a>`;
   }
 
+  // ── lists (torn paper, centred title only) ──
+  if (tmpl === 'lists') {
+    return `<a class="torn-card" data-type="lists" data-uid="${uid}" href="${e.permalink}" ${si}><div class="torn-card-paper"><span class="torn-card-title">${e.title}</span></div></a>`;
+  }
+
   // ── product (uses, projects, any gallery type) ────────
   if (tmpl === 'product') {
     const src     = e.image || e.cover || '';

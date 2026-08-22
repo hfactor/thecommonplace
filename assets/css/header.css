@@ -188,6 +188,7 @@
 
 .pt-view-latest,
 .pt-view-mode,
+.pt-search,
 .pt-theme {
   display: flex;
   align-items: center;
@@ -206,12 +207,14 @@
 }
 .pt-view-latest svg,
 .pt-view-mode svg,
+.pt-search svg,
 .pt-theme svg { display: block; }
 /* Same half-filled circle glyph for both themes — rotate it 180deg in ink
    mode so the filled half flips, showing which state is current. */
 [data-theme="ink"] .pt-theme svg { transform: rotate(180deg); }
 .pt-view-latest:hover,
 .pt-view-mode:hover,
+.pt-search:hover,
 .pt-theme:hover { color: var(--ink); background: var(--bg); }
 .pt-view-latest {
   width: 0;

@@ -69,6 +69,12 @@
     {{- if $match -}}{{- $yamlItems = $yamlItems | append $item -}}{{- end -}}
   {{- end -}}
 
+{{- else if eq $lt "lists" -}}
+  {{- range .Site.RegularPages.ByDate.Reverse -}}
+    {{- $p := . -}}
+    {{- if eq $p.Section "lists" -}}{{- $pages = $pages | append $p -}}{{- end -}}
+  {{- end -}}
+
 {{- else if eq $lt "notes" -}}
   {{/* Notebooks aren't their own content — a notebook is just a distinct
        `categories` value on a note. Hugo's taxonomy auto-generates one term
@@ -245,6 +251,21 @@
             {{- range $i, $item := $yamlItems -}}
               <a class="fn-card" href="{{ $item.permalink }}" style="--i:{{ $i }}">
                 <span class="fn-card-title">{{ $item.title }}</span>
+              </a>
+            {{- end -}}
+          </div>
+        </div>
+      {{- end -}}
+
+      {{/* Lists: torn-paper cards, one row (no grouping on their own page) */}}
+      {{- if eq $lt "lists" -}}
+        <div class="cv-month">
+          <div class="cv-items">
+            {{- range $i, $p := $pages -}}
+              <a class="torn-card" data-uid="lists/{{ $p.File.ContentBaseName }}" href="{{ $p.RelPermalink }}" style="--i:{{ $i }}">
+                <div class="torn-card-paper">
+                  <span class="torn-card-title">{{ $p.Title }}</span>
+                </div>
               </a>
             {{- end -}}
           </div>

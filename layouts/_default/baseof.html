@@ -38,6 +38,7 @@
 <body>
 {{ block "main" . }}{{ end }}
 {{ block "sheet" . }}{{ partial "sheet.html" . }}{{ end }}
+{{ partial "search.html" . }}
 
 {{ partialCached "views-data.html" . "global" }}
 {{ $js := slice
@@ -45,6 +46,8 @@
   (resources.Get "js/main.js")
   (resources.Get "js/sheet.js")
   (resources.Get "js/notes.js")
+  (resources.Get "js/recommend.js")
+  (resources.Get "js/search.js")
   | resources.Concat "js/bundle.js" | minify | fingerprint }}
 <script src="{{ $js.RelPermalink }}"></script>
 </body>

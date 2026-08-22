@@ -46,6 +46,8 @@ ignoreFiles = [
     render = true
   [params.sections.lifelog]
     render = true
+  [params.sections.lists]
+    render = true
 
 [outputFormats.SectionData]
   mediaType = "application/json"
@@ -59,6 +61,12 @@ ignoreFiles = [
   isPlainText = true
   notAlternative = true
 
+[outputFormats.SearchIndex]
+  mediaType = "application/json"
+  baseName = "search-index"
+  isPlainText = true
+  notAlternative = true
+
 [outputs]
-  home    = ["HTML", "RSS"]
+  home    = ["HTML", "RSS", "SearchIndex"]
   section = ["HTML", "RSS"]

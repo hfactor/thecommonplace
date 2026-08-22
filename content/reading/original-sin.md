@@ -3,7 +3,7 @@ title: Original Sin - Israel, Palestine and the Revenge of Old West Asia
 localTitle: 
 author: Johny Stanly
 date: 2024-11-09
-language: Malayalam
+language: English
 genre: Non-Fiction
 recommended: true
 image: /img/reading/original-sin.jpg

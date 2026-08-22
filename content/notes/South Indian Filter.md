@@ -8,6 +8,8 @@ order:
 ---
 South Indian Filter coffee uses a [metal two-piece filter](https://link.amazon/B02LZSpnL). Hot water slowly drips through the coffee into the lower chamber, making a strong decoction that is usually mixed with hot milk and sugar.
 
+For powder, I'd pick [Cothas](https://link.amazon/B03w99fH2), [Narasus](https://link.amazon/B0baJiFGy), or [Bayars](https://link.amazon/B0iWcGFkR). In South India, try a local roaster first, one made for filter with 20 to 30% chicory.
+
 |        |                                       |
 | ------ | ------------------------------------- |
 | Coffee | 40 to 50g, medium-dark to dark roast. |
