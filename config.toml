@@ -27,7 +27,7 @@ ignoreFiles = [
 
 [params]
   tagline       = "Product Designer"
-  description   = "Personal website of Hiran Venugopalan, product designer based in Bengaluru, India. Fifteen years designing products, building teams, and working across design, FOSS, and typography."
+  description   = "Hiran Venugopalan makes things where design, technology, and culture meet. Product designer, maker, home coffee brewer."
   keywords      = "product designer, UX design, open source design, FOSS, Malayalam typography, typeface designer, Bengaluru, India, Hiran Venugopalan"
   ogImage       = "/img/og-image.png"
   twitterHandle = "hfactor"
@@ -67,6 +67,15 @@ ignoreFiles = [
   isPlainText = true
   notAlternative = true
 
+# Same RSS document, just at the more conventional /feed.xml URL alongside
+# Hugo's default /index.xml — kept both since nothing has pointed at either
+# yet and there's no reason to break either.
+[outputFormats.Feed]
+  mediaType = "application/rss+xml"
+  baseName = "feed"
+  isPlainText = false
+  rel = "alternate"
+
 [outputs]
-  home    = ["HTML", "RSS", "SearchIndex"]
+  home    = ["HTML", "RSS", "Feed", "SearchIndex"]
   section = ["HTML", "RSS"]

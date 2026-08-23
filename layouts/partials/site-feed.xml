@@ -1,0 +1,31 @@
+{{- /* dict: selfURL (string) — the feed's own absolute URL, for the atom:link
+       self-reference. Shared body for the site-wide feed, rendered at both
+       /index.xml and /feed.xml.
+
+       Notes and Lists are evergreen — edited in place, no fixed "published"
+       moment — so they're excluded here. A feed reader would otherwise
+       re-surface the same note every time a typo gets fixed. Reading,
+       Bookmarks, Projects, and Life Logs are each a one-time dated entry,
+       so they're the right shape for a feed. */ -}}
+{{- $selfURL := .selfURL -}}
+{{- $pages := where site.RegularPages "Section" "!=" "" -}}
+{{- $pages = where $pages "Section" "!=" "notes" -}}
+{{- $pages = where $pages "Section" "!=" "lists" -}}
+{{- $pages = $pages | first 50 -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }}</title>
+    <link>{{ site.BaseURL }}</link>
+    <description>{{ site.Params.description }}</description>
+    <atom:link href="{{ $selfURL | absURL }}" rel="self" type="application/rss+xml" />
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Content | html }}</description>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

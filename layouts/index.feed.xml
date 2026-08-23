@@ -1,2 +1,2 @@
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML -}}
-{{- partial "site-feed.xml" (dict "selfURL" "/index.xml") | safeHTML -}}
+{{- partial "site-feed.xml" (dict "selfURL" "/feed.xml") | safeHTML -}}
