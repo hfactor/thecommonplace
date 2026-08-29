@@ -126,6 +126,26 @@
 }
 .modal-cover-link:hover .modal-ext-badge { opacity: 1; }
 
+/* Reading modal — same subtle overlay treatment as .card-ext, sitting
+   on the cover itself. Always visible (no hover-gating) so the cover's
+   click-through is obvious without needing to hover first. */
+.modal-cover-ext {
+  position: absolute;
+  bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: var(--r-full);
+  background: var(--overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: var(--bg);
+  z-index: 2;
+}
+
 /* Book 3D wrapper — flat in modal (tilt is for cards only) */
 .modal-book-3d {
   position: relative;

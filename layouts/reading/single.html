@@ -44,8 +44,9 @@ window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
       <div class="modal-book-pages"></div>
       {{- if .Params.image -}}<img class="modal-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">{{- else -}}<div class="modal-cover-blank"></div>{{- end -}}
       <div class="modal-book-spine"></div>
+      {{- if $rUrl -}}<span class="modal-cover-ext">{{ $icoExt | safeHTML }}</span>{{- end -}}
     </div>
-    {{- if $rUrl -}}<span class="modal-ext-badge">{{ $icoExt | safeHTML }}</span></a>{{- else -}}</div>{{- end -}}
+    {{- if $rUrl -}}</a>{{- else -}}</div>{{- end -}}
   <div class="modal-body-col">
     <div class="modal-type-badge">Reading</div>
     {{- if $rUrl -}}

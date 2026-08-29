@@ -40,12 +40,16 @@ window.__DATA_URL__ = "{{ "bookmarks/data.json" | relURL }}";
     <div class="bm-dots"><span></span><span></span><span></span></div>
     <span class="modal-bm-url">{{ $domain }}</span>
   </div>
-  {{- if $href -}}<a class="modal-body-col modal-body-col--link" href="{{ $href }}" target="_blank" rel="noopener">{{- else -}}<div class="modal-body-col">{{- end -}}
+  {{- /* A plain div, not an anchor — the note body can contain its own
+         markdown links, and nesting a real <a> inside another <a> is
+         invalid HTML that browsers silently mangle. Click-to-visit is
+         handled by a delegated listener in sheet.js instead. */ -}}
+  <div class="modal-body-col{{ if $href }} modal-body-col--link{{ end }}"{{ if $href }} data-href="{{ $href }}"{{ end }}>
     <div class="modal-type-badge">Bookmark</div>
     <div class="modal-title">{{ .Title }}{{ if $href }} {{ $icoExt | safeHTML }}{{ end }}</div>
     {{- with .Content -}}<div class="modal-body">{{ . }}</div>{{- end -}}
     <div class="modal-date-inline">{{ .Date | dateFormat "Jan 2006" }}</div>
-  {{- if $href -}}</a>{{- else -}}</div>{{- end -}}
+  </div>
 </div>
     </div>
   </div>

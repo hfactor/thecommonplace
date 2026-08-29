@@ -59,7 +59,8 @@ function openSheet(uid) {
     const coverInner = e.image
       ? `<img class="modal-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="modal-cover-blank"></div>`;
-    const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
+    const extBadgeOnCover = rUrl ? `<span class="modal-cover-ext">${ICO.ext}</span>` : '';
+    const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div>${extBadgeOnCover}</div>`;
     const coverCol = rUrl
       ? `<a class="modal-cover-col modal-cover-link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${coverWrap}</a>`
       : `<div class="modal-cover-col">${coverWrap}</div>`;
@@ -89,16 +90,19 @@ function openSheet(uid) {
     const dateEl = e.date
       ? `<div class="modal-date-inline">${e.date}</div>`
       : '';
-    const bodyTag   = rUrl ? 'a' : 'div';
-    const bodyAttrs = rUrl ? ` href="${withRef(rUrl)}" target="_blank" rel="noopener"` : '';
+    // Always a div, never an anchor — the note body can contain its own
+    // markdown links, and nesting a real <a> inside another <a> is invalid
+    // HTML that browsers silently mangle. Click-to-visit is handled by the
+    // delegated #sheetInner listener below instead.
+    const bodyAttrs = rUrl ? ` data-href="${withRef(rUrl)}"` : '';
     html = `<div class="modal-bm">
       <div class="modal-bm-bar">${dots}<span class="modal-bm-url">${e.domain || ''}</span></div>
-      <${bodyTag} class="modal-body-col modal-body-col--link"${bodyAttrs}>
+      <div class="modal-body-col${rUrl ? ' modal-body-col--link' : ''}"${bodyAttrs}>
         <div class="modal-type-badge">Bookmark</div>
         <div class="modal-title">${e.title} ${rUrl ? ICO.ext : ''}</div>
         ${body ? `<div class="modal-body">${body}</div>` : ''}
         ${dateEl}
-      </${bodyTag}>
+      </div>
     </div>`;
 
   } else if (e.type === 'uses') {
@@ -181,6 +185,13 @@ function closeSheetOutside(ev) {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('sheetInner')?.addEventListener('click', ev => {
     const wl = ev.target.closest('.wikilink[data-uid]');
-    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); }
+    if (wl) { ev.preventDefault(); openEntryByUid(wl.dataset.uid); return; }
+
+    // modal-body-col--link is a div, not an anchor (see openSheet's bookmark
+    // branch) — a real inner link (a note's own markdown link) still wins.
+    const bodyLink = ev.target.closest('.modal-body-col--link[data-href]');
+    if (bodyLink && !ev.target.closest('a')) {
+      window.open(bodyLink.dataset.href, '_blank', 'noopener');
+    }
   });
 });

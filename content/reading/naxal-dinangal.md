@@ -2,11 +2,11 @@
 title: Naxal Dinangal
 localTitle: നക്സൽ ദിനങ്ങൾ
 author: R K Bijuraj
-date:
+date: 2026-08-28
 language: Malayalam
 genre: Non-Fiction
-recommended:
+recommended: false
 image: /img/reading/naxal-dinangal.jpg
-link: https://amzn.to/3QZVQeY
-reading-status: reading
+link: https://link.amazon/B07tWQhtw
 ---
+കേരളത്തിലെ നക്സൽ പ്രസ്ഥനവും, അതിന്റെ ചരിത്രവും, അതുമായി ബന്ധപെട്ടുകിടക്കുന്ന സർവ്വതും ഈ ബുക്കിൽ ഉണ്ട്. ഇതിലും കൂടുതൽ ഇൻഫോർമെഷനുകൾ ഇനി പറയാൻ ഉണ്ടാവില്ല. പക്ഷെ ഭാഷയുടെ രീതി, പറയുന്ന ഓർഡർ, വീണ്ടും വീണ്ടും ആവർത്തിക്കുന്ന കാര്യങ്ങൾ, അക്കാദമിക്കിനെക്കാളും എഫ്.ഐ.ആർ രുപത്തിൽ വീണ്ടും വീണ്ടും ആവർത്തിക്കുന്ന പേരുകൾ ഒരു കല്ലുകടിയാണ്. പരന്ന വായനയല്ല, ചിതറിയൊരു എഴുത്ത് രീതിയാണ്.
