@@ -28,15 +28,14 @@
   </div>
   <a class="sf-link{{ if $notesActive }} sf-link--active{{ end }}" href="{{ "notes" | relURL }}"><span class="sf-full">Working Notes</span><span class="sf-short">Notes</span></a>
   <a class="sf-link{{ if eq $cur "/now/" }} sf-link--active{{ end }}" href="{{ "now" | relURL }}"><span class="sf-full">NowPage</span><span class="sf-short">Now</span></a>
-  <a class="sf-link{{ if eq $cur "/about/" }} sf-link--active{{ end }}" href="{{ "about" | relURL }}">About</a>
   <div class="pt-nav sf-nav sf-nav--connect">
     <button type="button" class="sf-link pt-nav-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Connect">
       <span class="sf-full">Connect</span><span class="sf-short">Contact</span>
     </button>
     <div class="pt-nav-menu sf-nav-menu" aria-hidden="true">
-      <a class="pt-nav-link" href="mailto:hiran.v@gmail.com">Email</a>
-      <a class="pt-nav-link" href="https://hiran.substack.com/subscribe?utm_source=hiran.in" target="_blank" rel="noopener">Newsletter</a>
-      <a class="pt-nav-link" href="https://topmate.io/hiran" target="_blank" rel="noopener">Book a 1:1</a>
+      <a class="pt-nav-link{{ if eq $cur "/about/" }} pt-nav-link--active{{ end }}" href="{{ "about" | relURL }}">About Me</a>
+      <a class="pt-nav-link" href="https://hiran.substack.com/subscribe?utm_source=hiran.in" target="_blank" rel="noopener">Join Newsletter</a>
+      <a class="pt-nav-link" href="https://topmate.io/hiran" target="_blank" rel="noopener">Schedule a Call</a>
     </div>
   </div>
 </nav>
