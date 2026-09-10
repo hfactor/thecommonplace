@@ -39,14 +39,14 @@ window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
     <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
     <div class="sheet-inner" id="sheetInner">
 <div class="modal-book">
-  {{- if $rUrl -}}<a class="modal-cover-col modal-cover-link" href="{{ $rUrl }}" target="_blank" rel="noopener">{{- else -}}<div class="modal-cover-col">{{- end -}}
+  <div class="modal-cover-col">
     <div class="modal-book-3d">
       <div class="modal-book-pages"></div>
       {{- if .Params.image -}}<img class="modal-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">{{- else -}}<div class="modal-cover-blank"></div>{{- end -}}
       <div class="modal-book-spine"></div>
-      {{- if $rUrl -}}<span class="modal-cover-ext">{{ $icoExt | safeHTML }}</span>{{- end -}}
     </div>
-    {{- if $rUrl -}}</a>{{- else -}}</div>{{- end -}}
+    {{- if $rUrl -}}<a class="modal-ext-btn" href="{{ $rUrl }}" target="_blank" rel="noopener">{{ $icoExt | safeHTML }} View book</a>{{- end -}}
+  </div>
   <div class="modal-body-col">
     <div class="modal-type-badge">Reading</div>
     {{- if $rUrl -}}

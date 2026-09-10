@@ -59,11 +59,9 @@ function openSheet(uid) {
     const coverInner = e.image
       ? `<img class="modal-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="modal-cover-blank"></div>`;
-    const extBadgeOnCover = rUrl ? `<span class="modal-cover-ext">${ICO.ext}</span>` : '';
-    const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div>${extBadgeOnCover}</div>`;
-    const coverCol = rUrl
-      ? `<a class="modal-cover-col modal-cover-link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${coverWrap}</a>`
-      : `<div class="modal-cover-col">${coverWrap}</div>`;
+    const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
+    const extBtn = rUrl ? `<a class="modal-ext-btn" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext} View book</a>` : '';
+    const coverCol = `<div class="modal-cover-col">${coverWrap}${extBtn}</div>`;
     const extBadge = rUrl ? `<a class="modal-ext-standalone" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext}</a>` : '';
     const titleEl = `<div class="modal-title-row">` +
       (rUrl ? `<a class="modal-title modal-title--link" href="${withRef(rUrl)}" target="_blank" rel="noopener">${title}</a>` : `<span class="modal-title">${title}</span>`) +
