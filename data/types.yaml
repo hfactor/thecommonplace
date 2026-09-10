@@ -37,7 +37,7 @@
 - id: notes
   label: Notes
   in_everything: true
-  in_dropdown: true
+  in_dropdown: false
   card_template: notebook
   view_mode: gallery
   on_click: page

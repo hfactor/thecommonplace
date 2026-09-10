@@ -254,8 +254,9 @@
   gap: 2px;
   padding: 4px;
   background: var(--surface2);
+  border: 1px solid var(--border);
   border-radius: var(--r-pill);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 .sf-link {
   display: flex;
@@ -277,8 +278,11 @@
   font-weight: var(--weight-semibold);
 }
 .sf-link--active:hover { background: var(--ink); }
+.sf-short { display: none; }
 @media (max-width: 479px) {
   .sf-link { padding: 0 var(--space-2); }
+  .sf-full { display: none; }
+  .sf-short { display: inline; }
 }
 
 /* Footer's "Everything" segment doubles as the type-switcher trigger — same
