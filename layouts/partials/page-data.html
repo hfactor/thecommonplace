@@ -168,17 +168,36 @@
 {{- end -}}
 {{- end -}}
 
-{{/* ── Notes (notebooks — one card per category, not per note) ───── */}}
+{{/* ── Notes (the /notes page's own listing) — every collection (notebook)
+     plus every individual note. "category" drives the Collections-first,
+     Notes-after grouping (group_by: category in types.yaml, same mechanism
+     Uses/Bookmarks use); "kind" tells cardHTML() which template to use. */}}
 {{- if eq $lt "notes" -}}
+{{- $key := "notebooks" -}}
 {{- range partialCached "notebook-list.html" . "global" -}}
-  {{- $key   := "notebooks" -}}
   {{- $entry := dict
     "uid"       (printf "notes/%s" (path.Base .permalink))
     "type"      "notes"
+    "kind"      "collection"
+    "category"  "Collections"
     "day"       (int (dateFormat "20060102" .recent))
     "title"     .title
     "count"     .count
     "permalink" .permalink
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- range where site.RegularPages "Section" "notes" -}}
+  {{- $entry := dict
+    "uid"       (printf "notes/%s" .File.ContentBaseName)
+    "type"      "notes"
+    "kind"      "note"
+    "category"  "Notes"
+    "day"       (int (.Date.Format "20060102"))
+    "title"     .Title
+    "permalink" .RelPermalink
   -}}
   {{- $existing := slice -}}
   {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}

@@ -76,15 +76,18 @@
   {{- end -}}
 
 {{- else if eq $lt "notes" -}}
-  {{/* Notebooks aren't their own content — a notebook is just a distinct
-       `categories` value on a note. Hugo's taxonomy auto-generates one term
-       page per category, only for categories that actually have notes, so
-       this list is always exactly in sync with what's been written — no
-       separate file to keep in step. Ordered by whichever notebook has the
-       most recently dated note (see notebook-list.html). */}}
+  {{/* A flat, merged, latest-first garden: every note (real standalone page)
+       plus every collection (a distinct `categories` value on a note — Hugo's
+       taxonomy auto-generates one term page per category, so this is always
+       exactly in sync with what's been written, no separate file to keep in
+       step). "kind" distinguishes the two for card rendering below. */}}
   {{- range partialCached "notebook-list.html" . "global" -}}
-    {{- $yamlItems = $yamlItems | append (dict "title" .title "permalink" .permalink "count" .count) -}}
+    {{- $yamlItems = $yamlItems | append (dict "kind" "collection" "title" .title "permalink" .permalink "count" .count "date" .recent) -}}
   {{- end -}}
+  {{- range where site.RegularPages "Section" "notes" -}}
+    {{- $yamlItems = $yamlItems | append (dict "kind" "note" "title" .Title "permalink" .RelPermalink "date" .Date) -}}
+  {{- end -}}
+  {{- $yamlItems = sort $yamlItems "date" "desc" -}}
 
 {{- end -}}
 
@@ -244,14 +247,21 @@
         </div>
       {{- end -}}
 
-      {{/* Notes: notebook cards in one row (no month grouping) */}}
+      {{/* Notes: a flat row mixing notebook cards and individual note cards,
+           latest-first (no month grouping) */}}
       {{- if eq $lt "notes" -}}
         <div class="cv-month">
           <div class="cv-items">
             {{- range $i, $item := $yamlItems -}}
+              {{- if eq $item.kind "collection" -}}
               <a class="fn-card" href="{{ $item.permalink }}" style="--i:{{ $i }}">
                 <span class="fn-card-title">{{ $item.title }}</span>
               </a>
+              {{- else -}}
+              <a class="note-card" href="{{ $item.permalink }}" style="--i:{{ $i }}">
+                <span class="note-card-title">{{ $item.title }}</span>
+              </a>
+              {{- end -}}
             {{- end -}}
           </div>
         </div>

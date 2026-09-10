@@ -251,12 +251,44 @@
 }
 .cv-items .fn-card { width: 150px; margin-bottom: 0; flex-shrink: 0; }
 
+/* ── Note card (individual notes, mixed into /notes alongside .fn-card
+   collections) — same footprint as .fn-card (a page from the same book),
+   just paper-coloured instead of the dark cover. ── */
+.note-card {
+  position: relative;
+  width: 150px;
+  aspect-ratio: 0.64;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--paper-bg);
+  border-radius: 3px;
+  box-shadow: -3px 4px 10px var(--paper-shadow);
+  text-decoration: none;
+  transition: box-shadow var(--dur-hover);
+}
+.note-card:hover {
+  box-shadow: -5px 8px 16px var(--paper-shadow);
+}
+.note-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--paper-text);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
 @media (max-width: 639px) {
   .cv-items .card[data-type="reading"]   { width: 130px; }
   .cv-items .card[data-type="bookmarks"] { width: 220px; height: 170px; }
   .cv-items .floppy-card                 { width: 140px; }
   .cv-items .gc                          { width: 160px; }
   .cv-items .fn-card                     { width: 120px; }
+  .cv-items .note-card                   { width: 120px; }
   .cv-items .lg-para                     { width: 220px; }
   .cv-items .torn-card                   { width: 120px; }
 }

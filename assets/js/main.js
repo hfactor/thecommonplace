@@ -227,8 +227,11 @@ function cardHTML(e, idx) {
     return `<div class="card" data-uid="${uid}" data-type="${e.type}" ${si} onclick="openSheet(this.dataset.uid)"><div class="bm-card"><div class="bm-bar">${dots}<span class="bm-url">${e.domain || ''}</span><a class="bm-ext" href="${withRef(e.href)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a></div><div class="bm-body"><div class="bm-title">${e.title}</div>${noteEl}</div></div></div>`;
   }
 
-  // ── notebook (notes — one card per category) ──────────
+  // ── notebook (notes — collections and individual notes, merged) ──
   if (tmpl === 'notebook') {
+    if (e.kind === 'note') {
+      return `<a class="note-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="note-card-title">${e.title}</span></a>`;
+    }
     return `<a class="fn-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="fn-card-title">${e.title}</span></a>`;
   }
 
@@ -317,6 +320,30 @@ function buildCardView() {
     if (!entries.length) { track.innerHTML = `<div class="cv-month">${emptyState()}</div>`; return; }
     entries.forEach(e => { S[e.uid] = e; });
     track.innerHTML = `<div class="cv-month"><div class="cv-items">${entries.map((e, i) => cardHTML(e, i)).join('')}</div></div>`;
+    return;
+  }
+
+  if (groupBy === 'kind') {
+    // Fixed group order (Collections, then Notes) with latest-first inside
+    // each group — distinct from 'category' below, which alpha-sorts both
+    // the groups and their contents (right for Uses/Bookmarks, wrong here).
+    const entries = filteredKeys.flatMap(k =>
+      (DATA[k] || []).filter(e => entryMatches(e)).sort((a, b) => b.day - a.day)
+    );
+    if (!entries.length) { track.innerHTML = `<div class="cv-month">${emptyState()}</div>`; return; }
+    entries.forEach(e => { S[e.uid] = e; });
+    const groups = {};
+    entries.forEach(e => {
+      const g = e.category || 'Other';
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(e);
+    });
+    const order = ['Collections', 'Notes'];
+    const keys = Object.keys(groups).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    track.innerHTML = keys.map(g => {
+      const cards = groups[g].map((e, i) => cardHTML(e, i)).join('');
+      return `<div class="cv-month"><div class="cv-label">${g}</div><div class="cv-items">${cards}</div></div>`;
+    }).join('');
     return;
   }
 

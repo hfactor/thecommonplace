@@ -1,0 +1,13 @@
+{{- /* Returns dict: note title -> {url, preview}. Every note is now a real
+       standalone page (no more "redirect into first collection" behaviour),
+       so url is simply the note's own permalink. Used by wikilinks-resolve.html
+       to turn [[Title]] references into working links from any note's own page. */ -}}
+{{- $canon := dict -}}
+{{- range where site.RegularPages "Section" "notes" -}}
+  {{- $p := . -}}
+  {{- $preview := $p.Plain | htmlUnescape -}}
+  {{- $preview  = replaceRE `\[\[([^\]]+)\]\]` `$1` $preview -}}
+  {{- $preview  = $preview | truncate 300 -}}
+  {{- $canon = merge $canon (dict $p.Title (dict "url" $p.RelPermalink "preview" $preview)) -}}
+{{- end -}}
+{{- return $canon -}}
