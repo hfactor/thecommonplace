@@ -1,4 +1,6 @@
 ---
+aliases:
+  - /note/my-lifetime-reading-plan/
 title: My Lifetime Reading Plan
 domain: honest-broker.com
 href: https://www.honest-broker.com/p/my-lifetime-reading-plan

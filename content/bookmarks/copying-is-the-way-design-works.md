@@ -1,4 +1,6 @@
 ---
+aliases:
+  - /note/copying-is-the-way-it-works/
 title: Copying is the way design works
 domain: matthewstrom.com
 href: https://matthewstrom.com/writing/copying/
