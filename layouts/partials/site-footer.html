@@ -2,7 +2,7 @@
 {{- $label := "Everything" -}}
 {{- if ne $cur "/everything/" -}}
   {{- range hugo.Data.types -}}
-    {{- if strings.HasPrefix $cur (printf "/%s" .id) -}}
+    {{- if and .in_dropdown (strings.HasPrefix $cur (printf "/%s" .id)) -}}
       {{- $label = .label -}}
     {{- end -}}
   {{- end -}}
