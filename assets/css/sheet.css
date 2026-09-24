@@ -224,7 +224,7 @@
 
 /* ── Shared modal typography ─────────────────────── */
 .modal-title {
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   font-weight: var(--weight-semibold);
   color: var(--ink);
   line-height: var(--lh-display);
@@ -303,7 +303,7 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
 }
 
 .modal-body {
-  font-size: var(--text-base);
+  font-size: 15px;
   color: var(--ink2);
   line-height: var(--lh-prose);
   flex: 1;
