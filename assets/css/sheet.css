@@ -55,7 +55,8 @@
 
 /* ── Inner padding ───────────────────────────────── */
 .sheet-inner { padding: 28px 28px 32px; overflow-y: auto; flex: 1; }
-/* Book/bookmark/uses modals bleed to sheet edges — no inner padding */
+/* Book/bookmark/uses modals bleed to sheet edges — no inner
+   padding, so the close button sits flush over the image corner. */
 .sheet-inner:has(.modal-book),
 .sheet-inner:has(.modal-bm),
 .sheet-inner:has(.modal-uses) { padding: 0; }

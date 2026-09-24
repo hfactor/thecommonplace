@@ -135,6 +135,7 @@ function show() {
     }
     lView.style.display = 'none';
   }
+  document.querySelector('.content')?.classList.toggle('cv-active', viewMode !== 'list');
   updateLatestVisibility();
   updateTitleTruncation();
 }
@@ -188,6 +189,47 @@ document.addEventListener('DOMContentLoaded', () => {
   const lView = document.getElementById('lView');
   if (lView) lView.addEventListener('scroll', updateLatestVisibility, { passive: true });
   window.addEventListener('scroll', updateLatestVisibility, { passive: true });
+
+  // Drag-to-pan + wheel-redirect for the horizontal card timeline. Bound to
+  // `.content`, not the narrower `#cardView` band, so panning also works
+  // from the extra vertical space around it once it's centred on tall
+  // screens — the band itself is often much shorter than the viewport.
+  const content = document.querySelector('.content');
+  if (content) {
+    let dragActive = false, dragged = false, startX = 0, startScroll = 0;
+    content.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || viewMode === 'list') return;
+      dragActive = true; dragged = false;
+      startX = e.clientX;
+      startScroll = cv.scrollLeft;
+      content.classList.add('is-dragging');
+    });
+    content.addEventListener('pointermove', e => {
+      if (!dragActive) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) dragged = true;
+      cv.scrollLeft = startScroll - dx;
+    });
+    const endDrag = () => { dragActive = false; content.classList.remove('is-dragging'); };
+    content.addEventListener('pointerup', endDrag);
+    content.addEventListener('pointercancel', endDrag);
+    content.addEventListener('pointerleave', endDrag);
+    // A drag that actually moved the track shouldn't also open the card
+    // the pointer happened to land on.
+    content.addEventListener('click', e => { if (dragged) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    content.addEventListener('wheel', e => {
+      if (viewMode === 'list' || cv.style.display === 'none') return;
+      // Inside #cardView itself, a horizontal trackpad swipe already scrolls
+      // it natively — only redirect the vertical component there, or we'd
+      // double-handle it. Outside that band there's nothing scrollable
+      // under the cursor at all, so redirect regardless of swipe direction.
+      const overTrack = cv.contains(e.target);
+      if (overTrack && Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      cv.scrollLeft += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY);
+    }, { passive: false });
+  }
 });
 
 const FLOPPY_LABEL_COLORS = ['#1c3461', '#6b1c24', '#1a4a2e', '#4a2a0a', '#2a1a4a', '#0a3a4a'];
@@ -233,6 +275,13 @@ function cardHTML(e, idx) {
       return `<a class="note-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="note-card-title">${e.title}</span></a>`;
     }
     return `<a class="fn-card" data-type="notes" data-uid="${uid}" href="${e.permalink}" ${si}><span class="fn-card-title">${e.title}</span></a>`;
+  }
+
+  // ── scenes (photo-pile card, up to 4 images stacked, title on hover) ──
+  if (tmpl === 'scenes') {
+    const imgs = (e.images || []).slice(0, 4)
+      .map(src => `<img class="sc-pile-img" src="${src}" alt="">`).join('');
+    return `<a class="card" data-type="scenes" href="${e.permalink}" ${si}><div class="sc-pile">${imgs}</div><span class="sc-pile-title">${e.title}</span></a>`;
   }
 
   // ── lifelog (life log archive — plain text paragraph, no card chrome) ──

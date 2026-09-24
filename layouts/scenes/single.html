@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{- $scenesPage := .Site.GetPage "/scenes" -}}
+{{- $link       := .Params.link | default "" -}}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <a class="back-link" href="{{ $scenesPage.RelPermalink }}">&larr; All Scenes</a>
+      <h1 class="page-title">{{ .Title }}</h1>
+
+      <div class="sp-meta-row">
+        <span class="sp-meta-left">
+          <span>{{ .Date | dateFormat "January 2006" }}</span>
+          {{- with $link -}}
+          {{- $parsed := urls.Parse . -}}
+          <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ . }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          {{- end -}}
+        </span>
+      </div>
+
+      {{/* Plain markdown images in the body, rendered as .sc-photo figures
+           by render-image.html. Goldmark wraps every standalone image in
+           its own <p> (images are inline content inside a paragraph
+           block) — left alone, that wrapper becomes the actual grid item
+           instead of the figure, always full-width regardless of the
+           figure's own split class. Strip <p> tags that wrap nothing but
+           a single figure; real text paragraphs are untouched and still
+           span full width via .sc-photos > p. */}}
+      {{- $content := .Content | replaceRE `(?s)<p>(\s*<figure class="sc-photo[^"]*">.*?</figure>\s*)</p>` "$1" -}}
+      <div class="sc-photos">{{ $content | safeHTML }}</div>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

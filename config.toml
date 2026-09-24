@@ -48,6 +48,8 @@ ignoreFiles = [
     render = true
   [params.sections.lists]
     render = true
+  [params.sections.scenes]
+    render = true
 
 [outputFormats.SectionData]
   mediaType = "application/json"

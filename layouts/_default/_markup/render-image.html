@@ -1,0 +1,11 @@
+{{- $dest := .Destination -}}
+{{- $page := .Page -}}
+{{- if eq $page.Section "scenes" -}}
+  {{- $split := eq .Title "split" -}}
+  <figure class="sc-photo{{ if $split }} sc-photo--split{{ end }}">
+    <img src="{{ $dest | safeURL }}" alt="{{ .Text }}" loading="lazy">
+    {{- with .Text -}}<figcaption><span class="sc-photo-caption">{{ . }}</span></figcaption>{{- end -}}
+  </figure>
+{{- else -}}
+  <img src="{{ $dest | safeURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }}>
+{{- end -}}

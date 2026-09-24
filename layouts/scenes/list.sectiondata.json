@@ -1,0 +1,22 @@
+{{- $months := dict -}}
+{{- range .Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "scenes" -}}
+    {{- $key    := dateFormat "2006-01" .Date -}}
+    {{- $uid    := printf "scenes/%s" .File.ContentBaseName -}}
+    {{- $images := findRE `/img/scenes/[^ )"]+\.jpg` .RawContent 4 -}}
+    {{- $entry := dict
+      "uid"       $uid
+      "type"      "scenes"
+      "day"       (int (dateFormat "2" .Date))
+      "date"      (dateFormat "Jan 2, 2006" .Date)
+      "title"     .Title
+      "images"    $images
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{ $months | jsonify }}

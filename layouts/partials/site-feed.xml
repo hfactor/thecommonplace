@@ -6,11 +6,14 @@
        moment — so they're excluded here. A feed reader would otherwise
        re-surface the same note every time a typo gets fixed. Reading,
        Bookmarks, Projects, and Life Logs are each a one-time dated entry,
-       so they're the right shape for a feed. */ -}}
+       so they're the right shape for a feed.
+
+       Scenes is excluded for now while the type is new/being tried out. */ -}}
 {{- $selfURL := .selfURL -}}
 {{- $pages := where site.RegularPages "Section" "!=" "" -}}
 {{- $pages = where $pages "Section" "!=" "notes" -}}
 {{- $pages = where $pages "Section" "!=" "lists" -}}
+{{- $pages = where $pages "Section" "!=" "scenes" -}}
 {{- $pages = $pages | first 50 -}}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>

@@ -212,6 +212,53 @@
 .cv-items .gc            { width: 200px; margin-bottom: 0; flex-shrink: 0; }
 .cv-items .gc:hover .gc-title { color: var(--accent); }
 
+/* ── Scenes (photo pile) — a loose stack of 3-4 photos from an album,
+   each keeping its own real aspect ratio (width/height: auto, capped
+   by max-width/max-height), all sharing one centre point, rotated a
+   little differently. Pure CSS: .sc-pile has a real fixed size via
+   aspect-ratio, so percentage max-width/max-height on each photo
+   resolve correctly with no JS measuring needed. Margin on the card
+   keeps piles from crowding their neighbours. ─────────────────────── */
+.cv-items .card[data-type="scenes"] { width: 180px; margin: 0 14px 0; flex-shrink: 0; display: block; text-decoration: none; color: inherit; }
+.sc-pile { position: relative; width: 100%; aspect-ratio: 4 / 5; }
+.sc-pile-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 88%;
+  max-height: 88%;
+  width: auto;
+  height: auto;
+  border-radius: var(--r-xs);
+  box-shadow: -4px 5px 14px rgba(0,0,0,0.22);
+  transition: opacity var(--dur-hover);
+}
+/* No transform change on hover — only the back photos fade in, nothing moves */
+.sc-pile-img:nth-child(1) { z-index: 4; transform: translate(-50%, -50%) rotate(-2deg); }
+.sc-pile-img:nth-child(2) { z-index: 3; opacity: 0.55; transform: translate(-50%, -50%) rotate(-6deg); }
+.sc-pile-img:nth-child(3) { z-index: 2; opacity: 0.55; transform: translate(-50%, -50%) rotate(7deg); }
+.sc-pile-img:nth-child(4) { z-index: 1; opacity: 0.55; transform: translate(-50%, -50%) rotate(-4deg); }
+.card[data-type="scenes"]:hover .sc-pile-img { opacity: 1; }
+
+/* Title stays hidden until hover — a bit of context, not a caption */
+.sc-pile-title {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--dur-med) ease, transform var(--dur-med) ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card[data-type="scenes"]:hover .sc-pile-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ── Field-note card (notebooks) — dark cover, thread-bound spine, centred title ── */
 .fn-card {
   width: 150px;

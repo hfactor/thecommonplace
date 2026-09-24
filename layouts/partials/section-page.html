@@ -75,6 +75,12 @@
     {{- if eq $p.Section "lists" -}}{{- $pages = $pages | append $p -}}{{- end -}}
   {{- end -}}
 
+{{- else if eq $lt "scenes" -}}
+  {{- range .Site.RegularPages.ByDate -}}
+    {{- $p := . -}}
+    {{- if eq $p.Section "scenes" -}}{{- $pages = $pages | append $p -}}{{- end -}}
+  {{- end -}}
+
 {{- else if eq $lt "notes" -}}
   {{/* A flat, merged, latest-first garden: every note (real standalone page)
        plus every collection (a distinct `categories` value on a note — Hugo's
@@ -94,7 +100,7 @@
 {{/* ── Group page-based types by month (newest first) ── */}}
 {{- $byMonth    := dict -}}
 {{- $sortedKeys := slice -}}
-{{- if or (eq $lt "reading") (eq $lt "bookmarks") (eq $lt "lifelog") -}}
+{{- if or (eq $lt "reading") (eq $lt "bookmarks") (eq $lt "lifelog") (eq $lt "scenes") -}}
   {{- range $pages -}}
     {{- $k := dateFormat "2006-01" .Date -}}
     {{- $existing := slice -}}
@@ -171,6 +177,31 @@
                     </div>
                   </div>
                 </div>
+              {{- end -}}
+            </div>
+          </div>
+        {{- end -}}
+      {{- end -}}
+
+      {{/* Scenes: photo-pile cards grouped by month, title revealed on hover */}}
+      {{- if eq $lt "scenes" -}}
+        {{- range $sortedKeys -}}
+          {{- $k  := . -}}
+          {{- $mp := index $byMonth $k -}}
+          {{- $label := dateFormat "Jan '06" (time (printf "%s-01" $k)) -}}
+          <div class="cv-month">
+            <div class="cv-label">{{ $label }}</div>
+            <div class="cv-items">
+              {{- range $i, $p := $mp -}}
+                {{- $images := findRE `/img/scenes/[^ )"]+\.jpg` $p.RawContent 4 -}}
+                <a class="card" data-type="scenes" href="{{ $p.RelPermalink }}" style="--i:{{ $i }}">
+                  <div class="sc-pile">
+                    {{- range first 4 $images -}}
+                    <img class="sc-pile-img" src="{{ . }}" alt="">
+                    {{- end -}}
+                  </div>
+                  <span class="sc-pile-title">{{ $p.Title }}</span>
+                </a>
               {{- end -}}
             </div>
           </div>

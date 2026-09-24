@@ -13,7 +13,7 @@ button { font-family: var(--font); }
 .app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
 .app-gallery { height: 100dvh; overflow-y: auto; overflow-x: hidden; }
 
-.content { flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: flex-start; }
+.content { flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: center; }
 
 /* ── Card view (horizontal timeline) ─────────────── */
 #cardView {
@@ -23,6 +23,11 @@ button { font-family: var(--font); }
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   margin-top: calc(var(--hdr-h) + var(--gap));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .content.cv-active { cursor: grab; }
+  .content.cv-active.is-dragging { cursor: grabbing; }
 }
 
 #cvTrack {

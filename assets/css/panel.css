@@ -29,6 +29,31 @@
 .sp-cover { width: 100%; aspect-ratio: 16/9; background: var(--surface2); border-radius: var(--r); overflow: hidden; margin-bottom: var(--gap); }
 .sp-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* ─── Scenes — photo blog grid: every photo is full-width by default.
+   Two photos only share a row when BOTH are explicitly marked to
+   split (![](img.jpg "split") in markdown) — no automatic pairing
+   by orientation. Each photo keeps its real ratio, no cropping. ── */
+.sc-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.sc-photo { margin: 0; grid-column: 1 / -1; }
+.sc-photo--split { grid-column: auto; }
+.sc-photos > p { grid-column: 1 / -1; margin: 0; }
+.sc-photo img { width: 100%; height: auto; display: block; border-radius: var(--r-sm); }
+.sc-photo figcaption {
+  margin-top: 6px;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+}
+
+@media (max-width: 639px) {
+  .sc-photos { grid-template-columns: 1fr; gap: var(--space-3); }
+  .sc-photo--split { grid-column: 1 / -1; }
+}
+
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
 .page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
