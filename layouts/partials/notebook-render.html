@@ -28,10 +28,9 @@
   {{- end -}}
 {{- end -}}
 
-{{ partial "readable-open.html" (dict) }}
+{{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
-      {{ partial "page-title.html" (dict "cur" $page.RelPermalink) }}
-      <a class="back-link" href="{{ (site.GetPage "/notes").RelPermalink }}">&larr; All Notes</a>
+      <a class="page-close" href="{{ (site.GetPage "/notes").RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
       <h1 class="page-title nb-title">{{ $title }}</h1>
 
       <div class="nb-cards" id="nbCards" data-scroll-to="{{ $scrollTo }}">
@@ -59,7 +58,7 @@
       {{- end -}}
       </div>
 
-{{ partial "readable-close.html" (dict "page" $page) }}
+{{ partial "readable-close.html" (dict "page" $page "noFooter" true) }}
 
 <script>
 (function(){

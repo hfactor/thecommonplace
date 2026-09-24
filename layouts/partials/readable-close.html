@@ -1,4 +1,6 @@
     </div>
+    {{- if not .noFooter }}
     {{ partial "site-footer.html" .page }}
+    {{- end }}
   </div>
 </div>
