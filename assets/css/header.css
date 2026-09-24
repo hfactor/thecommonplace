@@ -216,6 +216,9 @@
 .pt-view-mode:hover,
 .pt-search:hover,
 .pt-theme:hover { color: var(--ink); background: var(--bg); }
+
+/* Hidden from the UI — Cmd/Ctrl+K still opens search, just no visible button */
+.pt-search { display: none; }
 .pt-view-latest {
   width: 0;
   opacity: 0;

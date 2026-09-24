@@ -58,6 +58,16 @@
 
 .page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
 .back-link { display: inline-block; font-size: var(--text-sm); color: var(--ink2); text-decoration: none; margin-bottom: var(--space-3); transition: color var(--dur-fast); }
+
+/* Page-as-modal content pages (Notes, Projects, Scenes, notebook
+   collections) — bigger h1, tighter to what follows it, for clearer
+   hierarchy now that there's no header/back-link above it either. */
+.page-modal .page-title { font-size: var(--text-xl); margin-bottom: var(--space-3); }
+/* A standalone note reuses .nb-card-title/.nb-card-anchor (the same
+   card look a note gets inside a real collection) as its actual h1 —
+   .nb-card-anchor's own font-size otherwise wins over .page-title's,
+   since it's set directly on the text-bearing span. */
+.page-modal .page-title.nb-card-title .nb-card-anchor { font-size: var(--text-xl); }
 .back-link:hover { color: var(--ink); }
 .proj-page-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .proj-back { display: flex; align-items: center; color: var(--ink2); text-decoration: none; flex-shrink: 0; transition: color var(--dur-quick); padding: 4px 2px; }
@@ -327,7 +337,6 @@
 .nb-cards.is-collapsed .nb-card { padding: var(--space-4) var(--space-6); cursor: pointer; transition: background var(--dur-quick); }
 .nb-cards.is-collapsed .nb-card:hover { background: var(--surface2); }
 .nb-cards.is-collapsed .nb-card-title { margin: 0; }
-.nb-cards.is-collapsed .nb-card-tab-text { padding: 2px 12px; }
 
 .nb-card-tab {
   position: absolute;
@@ -335,8 +344,17 @@
   right: var(--space-4);
   transform: translateY(-100%);
   cursor: pointer;
+  text-decoration: none;
 }
 .nb-card-tab:hover .nb-card-tab-bg path { fill: var(--surface2); }
+/* A standalone note can belong to more than one collection — each gets
+   its own tab instead of cramming multiple names into one. The wrapper
+   takes over the absolute positioning; individual tabs go back to
+   sitting in normal flow, side by side. */
+.nb-card-tabs { position: absolute; top: 0; right: var(--space-4); transform: translateY(-100%); display: flex; gap: 6px; }
+.nb-card-tabs .nb-card-tab { position: static; transform: none; }
+.nb-card-tabs .nb-card-tab-text { text-decoration: none; color: var(--ink2); }
+.nb-card-tabs .nb-card-tab:hover .nb-card-tab-text { color: var(--ink); }
 .nb-card-tab-bg {
   position: absolute;
   inset: 0;
@@ -355,13 +373,16 @@
   position: relative;
   display: block;
   padding: 2px 28px;
+  min-height: 14px;
+  line-height: 14px;
   font-size: 10px;
   color: var(--ink2);
   opacity: 0.6;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
+  text-align: center;
 }
-.nb-card-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 var(--space-4); }
+.nb-card-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 var(--space-2); }
 .nb-card-anchor {
   font-family: var(--font-display);
   font-size: var(--text-md);

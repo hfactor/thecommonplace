@@ -483,7 +483,7 @@ const LIST_TAG = {
   bookmarks:  e => e.domain || '',
   uses:       e => e.subCategory || '',
   projects:   e => e.tagline || '',
-  notes:      e => `${e.count} note${e.count === 1 ? '' : 's'}`,
+  notes:      e => '',
 };
 
 function listRowHTML(e) {
@@ -527,6 +527,24 @@ function buildList() {
 
   if (groupBy === 'none') {
     lView.innerHTML = allEntries.map(e => listRowHTML(e)).join('');
+    return;
+  }
+
+  if (groupBy === 'kind') {
+    // Same fixed group order as buildCardView's 'kind' branch — Collections
+    // then Notes, latest-first inside each — so list and card view never
+    // disagree on how this type is organised.
+    const groups = {};
+    allEntries.forEach(e => {
+      const g = e.category || 'Other';
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(e);
+    });
+    const order = ['Collections', 'Notes'];
+    const keys = Object.keys(groups).sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    lView.innerHTML = keys.map(g => {
+      return `<div class="l-group"><div class="l-month-label">${g}</div>${groups[g].map(e => listRowHTML(e)).join('')}</div>`;
+    }).join('');
     return;
   }
 

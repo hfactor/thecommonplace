@@ -8,19 +8,37 @@
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
       <a class="page-close" href="{{ $notesPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
-      <h1 class="page-title">{{ .Title }}</h1>
 
-      <div class="sp-text">{{ $content }}</div>
-
-      {{- with $cats -}}
-      <div class="note-collections">
-        <span class="note-collections-label">Part of</span>
-        {{- range . -}}
-          {{- $term := site.GetPage (printf "categories/%s" (. | urlize)) -}}
-          {{- if $term -}}<a class="note-collections-link" href="{{ $term.RelPermalink }}">{{ . }}</a>{{- end -}}
-        {{- end -}}
+      <div class="nb-cards">
+        <article class="nb-card">
+          {{- if $cats -}}
+          <div class="nb-card-tabs">
+            {{- range $cats -}}
+              {{- $term := site.GetPage (printf "categories/%s" (. | urlize)) -}}
+              {{- if $term -}}
+              <a class="nb-card-tab" href="{{ $term.RelPermalink }}" data-tooltip="Part of {{ . }}">
+                <svg class="nb-card-tab-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M 0 100 L 11.047 7.94 Q 12 0 20 0 L 80 0 Q 88 0 88.953 7.94 L 100 100" vector-effect="non-scaling-stroke" />
+                </svg>
+                <span class="nb-card-tab-text">{{ . }}</span>
+              </a>
+              {{- end -}}
+            {{- end -}}
+          </div>
+          {{- else -}}
+          <span class="nb-card-tab">
+            <svg class="nb-card-tab-bg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 0 100 L 11.047 7.94 Q 12 0 20 0 L 80 0 Q 88 0 88.953 7.94 L 100 100" vector-effect="non-scaling-stroke" />
+            </svg>
+            <span class="nb-card-tab-text">Notes</span>
+          </span>
+          {{- end -}}
+          <h1 class="nb-card-title page-title">
+            <span class="nb-card-anchor">{{ .Title }}</span>
+          </h1>
+          <div class="nb-card-body sp-text">{{ $content }}</div>
+        </article>
       </div>
-      {{- end -}}
 
 {{ partial "readable-close.html" (dict "page" . "noFooter" true) }}
 {{ end }}

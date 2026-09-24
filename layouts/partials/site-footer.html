@@ -26,7 +26,7 @@
       {{- end }}
     </div>
   </div>
-  <a class="sf-link{{ if $notesActive }} sf-link--active{{ end }}" href="{{ "notes" | relURL }}"><span class="sf-full">Working Notes</span><span class="sf-short">Notes</span></a>
+  <a class="sf-link{{ if $notesActive }} sf-link--active{{ end }}" href="{{ "notes" | relURL }}">Notes</a>
   <a class="sf-link{{ if eq $cur "/now/" }} sf-link--active{{ end }}" href="{{ "now" | relURL }}"><span class="sf-full">NowPage</span><span class="sf-short">Now</span></a>
   <div class="pt-nav sf-nav sf-nav--connect">
     <button type="button" class="sf-link pt-nav-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Connect">
