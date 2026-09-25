@@ -481,7 +481,7 @@ function buildCardView() {
 const LIST_TAG = {
   reading:    e => e.genre || '',
   bookmarks:  e => e.domain || '',
-  uses:       e => e.subCategory || '',
+  uses:       e => '',
   projects:   e => e.tagline || '',
   notes:      e => '',
 };

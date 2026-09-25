@@ -288,6 +288,49 @@
   .sf-short { display: inline; }
 }
 
+/* Page-as-modal pages hide the footer by default (keeps the "full sheet"
+   feel) but it's still one hover away, mac-dock style — a thin strip
+   along the bottom edge reveals it. The strip is tall enough to cover
+   both the idle sliver and the footer's revealed position, so moving
+   the pointer from the strip onto the footer itself doesn't count as
+   leaving (:hover on a parent holds as long as the pointer is over the
+   parent OR any descendant, even one positioned outside its box). */
+.site-footer-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 90px;
+  z-index: var(--z-header);
+}
+.site-footer-dock .site-footer {
+  bottom: var(--space-6);
+  opacity: 0;
+  transform: translateX(-50%) translateY(calc(100% + var(--space-6)));
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+  pointer-events: none;
+}
+.site-footer-dock:hover .site-footer {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+/* Grabber hint so the hover strip isn't a silent dead zone. */
+.site-footer-dock::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-3);
+  transform: translateX(-50%);
+  width: 90px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--border);
+  opacity: 0.7;
+  transition: opacity var(--dur-fast);
+}
+.site-footer-dock:hover::before { opacity: 0; }
+
 /* Footer's "Everything" segment doubles as the type-switcher trigger — same
    .pt-nav/.pt-nav-toggle/.pt-nav-menu components as the old header dropdown,
    just relocated and flipped to open upward since the footer sits at the

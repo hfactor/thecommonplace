@@ -1,5 +1,9 @@
     </div>
-    {{- if not .noFooter }}
+    {{- if .footerHover }}
+    <div class="site-footer-dock">
+      {{ partial "site-footer.html" .page }}
+    </div>
+    {{- else }}
     {{ partial "site-footer.html" .page }}
     {{- end }}
   </div>

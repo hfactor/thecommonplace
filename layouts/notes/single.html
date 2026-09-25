@@ -5,9 +5,9 @@
 {{- $allNotes  := where site.RegularPages "Section" "notes" -}}
 {{- $content   := partial "wikilinks-resolve.html" (dict "content" .Content "canon" $canon "notes" $allNotes) -}}
 
+{{ partial "page-title.html" (dict "cur" .RelPermalink) }}
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
-      <a class="page-close" href="{{ $notesPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
       <a class="back-link" href="{{ $notesPage.RelPermalink }}">&larr; All Notes</a>
 
       <div class="nb-cards">
@@ -41,5 +41,5 @@
         </article>
       </div>
 
-{{ partial "readable-close.html" (dict "page" . "noFooter" true) }}
+{{ partial "readable-close.html" (dict "page" . "footerHover" true) }}
 {{ end }}

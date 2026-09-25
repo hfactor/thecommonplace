@@ -1,9 +1,8 @@
 {{ define "main" }}
 {{- $scenesPage := .Site.GetPage "/scenes" -}}
 {{- $link       := .Params.link | default "" -}}
+{{ partial "page-title.html" (dict "cur" .RelPermalink) }}
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
-
-      <a class="page-close" href="{{ $scenesPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
 
       <div class="sp-header">
         <a class="back-link" href="{{ $scenesPage.RelPermalink }}">&larr; All Scenes</a>
@@ -31,5 +30,5 @@
       {{- $content := .Content | replaceRE `(?s)<p>(\s*<figure class="sc-photo[^"]*">.*?</figure>\s*)</p>` "$1" -}}
       <div class="sc-photos">{{ $content | safeHTML }}</div>
 
-{{ partial "readable-close.html" (dict "page" . "noFooter" true) }}
+{{ partial "readable-close.html" (dict "page" . "footerHover" true) }}
 {{ end }}

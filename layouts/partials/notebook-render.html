@@ -28,9 +28,8 @@
   {{- end -}}
 {{- end -}}
 
+{{ partial "page-title.html" (dict "cur" $page.RelPermalink) }}
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
-
-      <a class="page-close" href="{{ (site.GetPage "/notes").RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
 
       <div class="sp-header">
         <a class="back-link" href="{{ (site.GetPage "/notes").RelPermalink }}">&larr; All Notes</a>
@@ -62,7 +61,7 @@
       {{- end -}}
       </div>
 
-{{ partial "readable-close.html" (dict "page" $page "noFooter" true) }}
+{{ partial "readable-close.html" (dict "page" $page "footerHover" true) }}
 
 <script>
 (function(){

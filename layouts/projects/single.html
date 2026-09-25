@@ -1,8 +1,7 @@
 {{ define "main" }}
 {{- $projectsPage := .Site.GetPage "/projects" -}}
+{{ partial "page-title.html" (dict "cur" .RelPermalink) }}
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
-
-      <a class="page-close" href="{{ $projectsPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
 
       <div class="sp-header">
         <a class="back-link" href="{{ $projectsPage.RelPermalink }}">&larr; All Projects</a>
@@ -39,5 +38,5 @@
 
       <div class="sp-text">{{ .Content }}</div>
 
-{{ partial "readable-close.html" (dict "page" . "noFooter" true) }}
+{{ partial "readable-close.html" (dict "page" . "footerHover" true) }}
 {{ end }}
