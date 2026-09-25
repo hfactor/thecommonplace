@@ -182,8 +182,10 @@
   padding: 3px 6px;
   transform: translateX(-50%) translateY(-3px);
 }
-.pt-view [data-tooltip]:hover::after {
-  transform: translateX(-50%) translateY(0);
+@media (hover: hover) {
+  .pt-view [data-tooltip]:hover::after {
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .pt-view-latest,
@@ -334,15 +336,46 @@
 /* Touch devices have no hover at all, so the strip above is both a dead
    end (the footer could never be revealed) and, worse, an invisible
    90px-tall zone at the bottom of the screen silently eating scroll
-   touches. Skip the hover mechanic there: show the footer directly, and
-   make the dock itself pass touches through everywhere except the pill. */
+   touches. There's also no room for a hover trick at all, so touch gets
+   its own affordance: a small round button bottom-right (out of the way
+   of normal scrolling/reading) that expands the footer on tap instead. */
+.footer-toggle-btn { display: none; }
 @media (hover: none) {
   .site-footer-dock { pointer-events: none; }
   .site-footer-dock::before { display: none; }
+  .footer-toggle-btn {
+    display: flex;
+    position: fixed;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    z-index: var(--z-header);
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-full);
+    background: var(--surface2);
+    border: 1px solid var(--border-light);
+    color: var(--ink2);
+    font-size: 17px;
+    pointer-events: auto;
+    transition: opacity var(--dur-fast);
+  }
   .site-footer-dock .site-footer {
+    bottom: calc(var(--space-4) + 44px + var(--space-2));
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+    pointer-events: none;
+    transition: opacity var(--dur-fast), transform var(--dur-fast);
+  }
+  .site-footer-dock.is-open .site-footer {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
     pointer-events: auto;
+  }
+  .site-footer-dock.is-open .footer-toggle-btn {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 

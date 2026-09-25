@@ -22,9 +22,14 @@
   transition: opacity var(--dur-fast), transform var(--dur-fast);
   z-index: 200;
 }
-[data-tooltip]:hover::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+/* Touch has no real hover — a tap simulates one that only clears on the
+   next tap elsewhere, so tooltips would otherwise get stuck open after
+   a single tap. Only reveal them on devices with genuine hover. */
+@media (hover: hover) {
+  [data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 @keyframes fade-in  { from { opacity: 0; }                to { opacity: 1; } }
