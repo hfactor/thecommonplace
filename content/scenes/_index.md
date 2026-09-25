@@ -1,6 +1,6 @@
 ---
 title: Scenes
-description: "Places, trips, and the photos worth keeping."
+description: "Places, moments, and things I happened to notice along the way."
 layout: listing
 listingType: scenes
 outputs: ["HTML", "SectionData"]

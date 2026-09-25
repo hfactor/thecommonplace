@@ -1,6 +1,6 @@
 ---
 title: Reading
-description: "Books I've read — fiction, non-fiction, Malayalam, English."
+description: "Books that have stayed with me, for one reason or another."
 layout: listing
 listingType: reading
 outputs: ["HTML", "RSS", "SectionData"]

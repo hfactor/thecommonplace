@@ -1,6 +1,6 @@
 ---
 title: Projects
-description: "Things made out of curiosity over the years, with good people, happy accidents, and the occasional frustration."
+description: "Things made out of curiosity, with good people, happy accidents, and the occasional frustration."
 layout: listing
 listingType: projects
 ---

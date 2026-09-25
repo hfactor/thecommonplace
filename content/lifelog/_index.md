@@ -1,6 +1,6 @@
 ---
 title: Life Logs
-description: "Life log archive — past Now updates."
+description: "Small records of what was happening, one Now at a time."
 layout: listing
 listingType: lifelog
 outputs: ["HTML", "RSS"]

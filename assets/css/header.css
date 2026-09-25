@@ -331,6 +331,21 @@
 }
 .site-footer-dock:hover::before { opacity: 0; }
 
+/* Touch devices have no hover at all, so the strip above is both a dead
+   end (the footer could never be revealed) and, worse, an invisible
+   90px-tall zone at the bottom of the screen silently eating scroll
+   touches. Skip the hover mechanic there: show the footer directly, and
+   make the dock itself pass touches through everywhere except the pill. */
+@media (hover: none) {
+  .site-footer-dock { pointer-events: none; }
+  .site-footer-dock::before { display: none; }
+  .site-footer-dock .site-footer {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+}
+
 /* Footer's "Everything" segment doubles as the type-switcher trigger — same
    .pt-nav/.pt-nav-toggle/.pt-nav-menu components as the old header dropdown,
    just relocated and flipped to open upward since the footer sits at the
