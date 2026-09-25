@@ -8,6 +8,20 @@
   {{- end -}}
 {{- end -}}
 {{- $notesActive := or (eq $cur "/notes/") (strings.HasPrefix $cur "/note/") -}}
+{{- $countFor := dict
+  "reading"   (len (where site.RegularPages "Section" "reading"))
+  "projects"  (len (where site.RegularPages "Section" "projects"))
+  "bookmarks" (len (where site.RegularPages "Section" "bookmarks"))
+  "scenes"    (len (where site.RegularPages "Section" "scenes"))
+  "uses"      (len hugo.Data.things)
+-}}
+{{- $everythingTotal := 0 -}}
+{{- range hugo.Data.types -}}
+  {{- if .in_everything -}}
+    {{- $everythingTotal = add $everythingTotal (len (where site.RegularPages "Section" .id)) -}}
+  {{- end -}}
+{{- end -}}
+{{- $everythingTotal = add $everythingTotal (len hugo.Data.things) -}}
 <nav class="site-footer">
   <div class="pt-nav sf-nav">
     <button type="button" class="sf-link pt-nav-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Switch section">
@@ -18,10 +32,10 @@
       </svg>
     </button>
     <div class="pt-nav-menu sf-nav-menu" aria-hidden="true">
-      <a class="pt-nav-link{{ if eq $cur "/everything/" }} pt-nav-link--active{{ end }}" href="{{ "everything" | relURL }}">Everything</a>
+      <a class="pt-nav-link{{ if eq $cur "/everything/" }} pt-nav-link--active{{ end }}" href="{{ "everything" | relURL }}">Everything <span class="pt-nav-count">{{ $everythingTotal }}</span></a>
       {{- range hugo.Data.types }}
         {{- if .in_dropdown }}
-        <a class="pt-nav-link{{ if strings.HasPrefix $cur (printf "/%s" .id) }} pt-nav-link--active{{ end }}" href="{{ .id | relURL }}">{{ .label }}</a>
+        <a class="pt-nav-link{{ if strings.HasPrefix $cur (printf "/%s" .id) }} pt-nav-link--active{{ end }}" href="{{ .id | relURL }}">{{ .label }} <span class="pt-nav-count">{{ index $countFor .id }}</span></a>
         {{- end }}
       {{- end }}
     </div>
