@@ -134,6 +134,13 @@
   --paper-bg:    #f7f2e4;
   --paper-text:  #2a2818;
   --paper-shadow: rgba(0, 0, 0, 0.16);
+
+  /* ── Guestbook post-its ──────────────────────────── */
+  --note-yellow-bg: #f5eed3; --note-yellow-text: #6b5c33;
+  --note-pink-bg:   #f2e0e2; --note-pink-text:   #7a5158;
+  --note-blue-bg:   #dfe8ee; --note-blue-text:   #43586a;
+  --note-green-bg:  #e2ead9; --note-green-text:  #4a5c3f;
+  --note-shadow: rgba(0, 0, 0, 0.14);
 }
 
 /* ── Ink — dark ─────────────────────────────────────── */
@@ -185,4 +192,11 @@
   --paper-bg:    #2b2924;
   --paper-text:  #e9e4d2;
   --paper-shadow: rgba(0, 0, 0, 0.45);
+
+  /* ── Guestbook post-its ──────────────────────────── */
+  --note-yellow-bg: #3a341f; --note-yellow-text: #d8c88f;
+  --note-pink-bg:   #3a2a2d; --note-pink-text:   #d9a8b2;
+  --note-blue-bg:   #22303a; --note-blue-text:   #a3c3d6;
+  --note-green-bg:  #263427; --note-green-text:  #a9c49f;
+  --note-shadow: rgba(0, 0, 0, 0.5);
 }

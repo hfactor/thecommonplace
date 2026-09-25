@@ -1,0 +1,33 @@
+{{ define "main" }}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <div class="sp-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+      </div>
+
+      <div class="gb-canvas" id="gbCanvas">
+        <button type="button" class="gb-note gb-add" id="gbAddBtn" aria-label="Add a note" hidden>
+          <span class="gb-add-text">{{ .Content | plainify }}</span>
+          <span class="gb-add-plus">+</span>
+        </button>
+        <form id="guestbookForm" class="gb-note gb-compose" hidden>
+          <textarea name="message" placeholder="Leave a message" required rows="4"></textarea>
+          <input type="text" name="name" placeholder="Name (optional)">
+          <input type="text" name="website" placeholder="Your site (optional)">
+          <input type="text" name="company" class="recommend-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="gb-compose-actions">
+            <button type="submit" class="gb-post-btn">Post it</button>
+            <button type="button" class="gb-cancel-btn" id="gbCancelBtn">Cancel</button>
+          </div>
+        </form>
+        <div class="gb-entries" id="guestbookList">
+          <div class="gb-note gb-skeleton" aria-hidden="true"></div>
+          <div class="gb-note gb-skeleton" aria-hidden="true"></div>
+          <div class="gb-note gb-skeleton" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="recommend-error" id="guestbookError" hidden>Something went wrong. Try again in a bit.</p>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

@@ -269,6 +269,9 @@
   padding: calc(var(--hdr-h) + var(--space-6)) 0 calc(var(--space-12) + var(--ftr-h));
 }
 .notes-reading:has(.nb-cards) { max-width: 720px; }
+/* The guestbook is a scattered canvas, not a prose column — let it use
+   most of the viewport instead of the standard reading width. */
+.notes-reading:has(.gb-canvas) { max-width: 1100px; padding-left: var(--gap); padding-right: var(--gap); }
 
 @media (max-width: 639px) {
   .notes-reading { padding: calc(var(--hdr-h) + var(--space-4)) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
@@ -514,6 +517,146 @@
 }
 .wl-preview-open:hover { color: var(--accent); background: var(--surface2); }
 .wl-preview-open svg { display: block; }
+
+/* ─── Guestbook — a loose corkboard of post-its rather than a list.
+   .gb-entries uses display:contents so its rendered notes become direct
+   flex items of .gb-canvas, sitting alongside the static add-tile/compose
+   card instead of forming their own separate block. Rotation and colour
+   cycle deterministically by nth-child (two different cycle lengths so
+   the pattern doesn't repeat in lockstep) — no JS randomness, so layout
+   stays stable across reloads and hydration. ── */
+.gb-canvas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-6) var(--space-5);
+  margin-top: var(--space-8);
+  padding: var(--space-2);
+}
+.gb-entries { display: contents; }
+.gb-note {
+  width: 190px;
+  min-height: 150px;
+  padding: var(--space-4);
+  border: none;
+  box-shadow: 2px 6px 14px var(--note-shadow);
+  background: var(--note-yellow-bg);
+  color: var(--note-yellow-text);
+  transition: transform var(--dur-quick);
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
+}
+.gb-entries > .gb-note:nth-child(4n+2) { background: var(--note-pink-bg); color: var(--note-pink-text); }
+.gb-entries > .gb-note:nth-child(4n+3) { background: var(--note-blue-bg); color: var(--note-blue-text); }
+.gb-entries > .gb-note:nth-child(4n)   { background: var(--note-green-bg); color: var(--note-green-text); }
+.gb-entries > .gb-note:nth-child(5n+1)  { --gb-y: 0px;    --gb-r: -3deg; }
+.gb-entries > .gb-note:nth-child(5n+2)  { --gb-y: 22px;   --gb-r: 2deg; }
+.gb-entries > .gb-note:nth-child(5n+3)  { --gb-y: -10px;  --gb-r: -1.5deg; }
+.gb-entries > .gb-note:nth-child(5n+4)  { --gb-y: 12px;   --gb-r: 2.5deg; }
+.gb-entries > .gb-note:nth-child(5n+5)  { --gb-y: -16px;  --gb-r: -2deg; }
+.gb-entries > .gb-note { transform: translateY(var(--gb-y, 0px)) rotate(var(--gb-r, 0deg)); }
+.gb-entries > .gb-note:hover { transform: translateY(calc(var(--gb-y, 0px) - 3px)) scale(1.04) rotate(0deg); z-index: 1; }
+.gb-entries > .gb-note.gb-skeleton {
+  background: var(--surface2);
+  box-shadow: none;
+  animation: gb-pulse 1.4s ease-in-out infinite;
+}
+.gb-entries > .gb-note.gb-skeleton:nth-child(2) { animation-delay: 0.15s; }
+.gb-entries > .gb-note.gb-skeleton:nth-child(3) { animation-delay: 0.3s; }
+@keyframes gb-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.gb-note-message {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  line-height: var(--lh-relaxed);
+  white-space: pre-wrap;
+  flex: 1;
+}
+.gb-note-meta { font-size: 11px; opacity: 0.7; margin-top: var(--space-3); }
+.gb-note-meta a { color: inherit; text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color var(--dur-fast); }
+.gb-note-meta a:hover { text-decoration-color: currentColor; }
+
+.gb-add {
+  width: 190px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 2px dashed var(--border);
+  background: none;
+  border-radius: var(--r-sm);
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), transform var(--dur-quick);
+}
+.gb-add[hidden] { display: none; }
+.gb-add:hover { border-color: var(--ink2); transform: translateY(-2px); }
+.gb-add-plus { font-size: 28px; line-height: 1; color: var(--ink2); }
+.gb-add:hover .gb-add-plus { color: var(--ink); }
+.gb-add-text { font-size: var(--text-sm); line-height: var(--lh-relaxed); color: var(--ink2); text-align: center; }
+
+.gb-compose {
+  width: 190px;
+  min-height: 150px;
+  padding: var(--space-4);
+  background: var(--note-yellow-bg);
+  color: var(--note-yellow-text);
+  box-shadow: 2px 6px 14px var(--note-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.gb-compose[hidden] { display: none; }
+.gb-compose textarea,
+.gb-compose input[type="text"]:not(.recommend-hp) {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: inherit;
+  background: rgba(255,255,255,0.35);
+  border: none;
+  border-radius: var(--r-xs);
+  padding: 6px 8px;
+  resize: none;
+}
+.gb-compose textarea { flex: 1; }
+.gb-compose textarea::placeholder,
+.gb-compose input::placeholder { color: inherit; opacity: 0.6; }
+.gb-compose textarea:focus,
+.gb-compose input:focus { outline: 2px solid rgba(0,0,0,0.2); }
+.gb-compose-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.gb-post-btn {
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: inherit;
+  background: rgba(255,255,255,0.4);
+  border: none;
+  border-radius: var(--r-xs);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.gb-post-btn:hover { background: rgba(255,255,255,0.6); }
+.gb-post-btn:disabled { opacity: 0.6; cursor: default; }
+.gb-cancel-btn {
+  font-family: var(--font);
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.7;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.gb-cancel-btn:hover { opacity: 1; }
+.guestbook-empty { font-size: var(--text-sm); color: var(--ink2); }
+@media (max-width: 639px) {
+  .gb-note, .gb-add, .gb-compose { width: 150px; min-height: 130px; }
+}
 
 /* ─── 404 page ───────────────────────────────────── */
 .err404-wrap { min-height: 40vh; display: flex; align-items: center; gap: var(--space-10); flex-wrap: wrap; }
