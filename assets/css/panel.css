@@ -4,8 +4,9 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-  margin-bottom: 14px;
+  margin-bottom: var(--space-6);
   font-size: var(--text-sm);
+  line-height: 1.3;
   color: var(--ink2);
   flex-wrap: nowrap;
 }
@@ -56,13 +57,26 @@
 
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
 
-.page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+.page-title { font-family: var(--font-display); font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--ink); line-height: var(--lh-display); letter-spacing: -0.02em; margin-top: 0; margin-bottom: var(--space-4); }
 .back-link { display: inline-block; font-size: var(--text-sm); color: var(--ink2); text-decoration: none; margin-bottom: var(--space-3); transition: color var(--dur-fast); }
 
 /* Page-as-modal content pages (Notes, Projects, Scenes, notebook
    collections) — bigger h1, tighter to what follows it, for clearer
    hierarchy now that there's no header/back-link above it either. */
 .page-modal .page-title { font-size: var(--text-xl); margin-bottom: var(--space-3); }
+
+/* Back-link + title + meta as one visual cluster — used on every
+   page-modal and static page (Projects, Scenes, notebook collections,
+   Now, About, Colophon, Antilibrary...). Not every page has all three
+   pieces; whichever are present sit tight against each other as one
+   group, with only the group's own margin-bottom creating the break
+   before content. Standalone Notes is the one exception — it reuses
+   the nb-card title look instead. */
+.sp-header { margin-bottom: var(--space-6); }
+.sp-header .back-link { margin-bottom: var(--space-2); }
+.sp-header .page-title { margin-bottom: 4px; }
+.sp-header .sp-meta-row,
+.sp-header .sp-updated { margin-top: 4px; margin-bottom: 0; }
 /* A standalone note reuses .nb-card-title/.nb-card-anchor (the same
    card look a note gets inside a real collection) as its actual h1 —
    .nb-card-anchor's own font-size otherwise wins over .page-title's,
@@ -199,6 +213,7 @@
 .people-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .people-with { font-size: var(--text-sm); color: var(--ink2); flex-shrink: 0; }
 .people-badge { position: relative; text-decoration: none; flex-shrink: 0; }
+.people-badge + .people-badge { margin-left: -8px; }
 .people-badge-plain { cursor: default; }
 .people-avatar { width: 36px; height: 36px; border-radius: var(--r-full); object-fit: cover; display: block; background: var(--surface2); border: 2px solid var(--bg); transition: transform var(--dur-quick) ease; }
 .people-avatar-init { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--surface2); border: 2px solid var(--bg); display: flex; align-items: center; justify-content: center; font-size: var(--text-base); color: var(--ink2); }

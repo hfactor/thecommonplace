@@ -2,7 +2,9 @@
 {{ partial "readable-open.html" (dict) }}
 
       {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
-      <h1 class="page-title">{{ .Title }}</h1>
+      <div class="sp-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+      </div>
 
       <div class="sp-text">{{ .Content }}</div>
 

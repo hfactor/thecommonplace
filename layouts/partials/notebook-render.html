@@ -31,7 +31,11 @@
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
       <a class="page-close" href="{{ (site.GetPage "/notes").RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
-      <h1 class="page-title nb-title">{{ $title }}</h1>
+
+      <div class="sp-header">
+        <a class="back-link" href="{{ (site.GetPage "/notes").RelPermalink }}">&larr; All Notes</a>
+        <h1 class="page-title nb-title">{{ $title }}</h1>
+      </div>
 
       <div class="nb-cards" id="nbCards" data-scroll-to="{{ $scrollTo }}">
       {{- range $idx, $p := $items -}}

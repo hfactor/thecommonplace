@@ -4,16 +4,20 @@
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
       <a class="page-close" href="{{ $scenesPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
-      <h1 class="page-title">{{ .Title }}</h1>
 
-      <div class="sp-meta-row">
-        <span class="sp-meta-left">
-          <span>{{ .Date | dateFormat "January 2006" }}</span>
-          {{- with $link -}}
-          {{- $parsed := urls.Parse . -}}
-          <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ . }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          {{- end -}}
-        </span>
+      <div class="sp-header">
+        <a class="back-link" href="{{ $scenesPage.RelPermalink }}">&larr; All Scenes</a>
+        <h1 class="page-title">{{ .Title }}</h1>
+
+        <div class="sp-meta-row">
+          <span class="sp-meta-left">
+            <span class="sp-meta-date">{{ .Date | dateFormat "January 2006" }}</span>
+            {{- with $link -}}
+            {{- $parsed := urls.Parse . -}}
+            <span style="opacity:0.4">·</span> <a class="sp-proj-url" href="{{ . }}" target="_blank" rel="noopener">{{ $parsed.Host }} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" style="vertical-align:middle"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            {{- end -}}
+          </span>
+        </div>
       </div>
 
       {{/* Plain markdown images in the body, rendered as .sc-photo figures

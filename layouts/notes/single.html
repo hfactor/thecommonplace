@@ -8,6 +8,7 @@
 {{ partial "readable-open.html" (dict "extraClass" "page-modal") }}
 
       <a class="page-close" href="{{ $notesPage.RelPermalink }}" aria-label="Close" onclick="if (window.history.length > 1) { history.back(); return false; }">✕</a>
+      <a class="back-link" href="{{ $notesPage.RelPermalink }}">&larr; All Notes</a>
 
       <div class="nb-cards">
         <article class="nb-card">
