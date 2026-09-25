@@ -229,6 +229,7 @@
 .sp-text a,
 .sp-updated a,
 .sp-footer a,
+.sc-photos a,
 .wikilink {
   color: var(--accent);
   text-decoration-line: underline;
@@ -240,6 +241,7 @@
 .sp-text a:hover,
 .sp-updated a:hover,
 .sp-footer a:hover,
+.sc-photos a:hover,
 .wikilink:hover { text-decoration-color: var(--accent); transition-duration: var(--dur-quick); }
 
 /* Wiki-links */
