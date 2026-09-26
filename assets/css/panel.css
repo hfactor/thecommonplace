@@ -277,6 +277,15 @@
   .notes-reading { padding: calc(var(--hdr-h) + var(--space-4)) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
 }
 
+/* Colophon rows: the fixed 160px name column leaves too little room for
+   the description on narrow screens, forcing the row (and the page)
+   wider than the viewport. Stack name over description instead. */
+@media (max-width: 639px) {
+  .colo-row { flex-wrap: wrap; gap: var(--space-1); }
+  .colo-row-name { flex: 0 0 100%; }
+  .colo-row-desc { flex: 0 0 100%; }
+}
+
 /* Antilibrary list */
 .anti-list .notes-list-item {
   display: flex;
