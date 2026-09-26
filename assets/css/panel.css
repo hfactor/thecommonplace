@@ -197,6 +197,14 @@
   .nl-item { font-size: var(--text-lg); }
 }
 
+/* uxfoss project cards */
+.colo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--gap); }
+.colo-card { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) 14px; border: 1px solid var(--border-light); border-radius: var(--r); text-decoration: none; transition: border-color var(--dur-fast), background var(--dur-fast); }
+.colo-card:hover { border-color: var(--border); background: var(--surface); }
+.colo-name { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--ink); }
+.colo-desc { font-size: var(--text-sm); color: var(--ink2); line-height: var(--lh-tight); }
+@media (max-width: 639px) { .colo-grid { grid-template-columns: 1fr; } }
+
 /* Colophon cards */
 .colo-group { margin-top: var(--gap); }
 .colo-group + .colo-group { margin-top: var(--space-8); }
