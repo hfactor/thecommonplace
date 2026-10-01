@@ -242,7 +242,7 @@
 
 /* Title stays hidden until hover — a bit of context, not a caption */
 .sc-pile-title {
-  display: block;
+  display: -webkit-box;
   margin-top: 8px;
   font-size: var(--text-sm);
   color: var(--ink2);
@@ -250,9 +250,10 @@
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity var(--dur-med) ease, transform var(--dur-med) ease;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: var(--lh-tight);
 }
 .card[data-type="scenes"]:hover .sc-pile-title {
   opacity: 1;
