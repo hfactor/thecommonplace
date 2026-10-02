@@ -1,64 +1,3 @@
-/* Avatar — always visible, always home link. Hit area is bigger than the visual
-   icon (negative margin pulls it back so layout/gap stay unaffected). */
-.pn-avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  margin: -4px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  overflow: hidden;
-  text-decoration: none;
-  transition: opacity var(--dur-fast);
-}
-.pn-avatar svg { width: 36px; height: 36px; display: block; transform: translateX(-2px); }
-.pn-avatar:hover { opacity: 0.7; }
-
-/* Home page only — no dimming/tap-highlight shade on the avatar, and a
-   name link beside it that only reveals its arrow (→ /about) on hover. */
-.pn-avatar--home { -webkit-tap-highlight-color: transparent; }
-.pn-avatar--home:hover { opacity: 1; }
-
-.pn-name {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: -4px;
-  color: var(--ink2);
-  font-size: var(--text-base);
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: color var(--dur-fast);
-}
-.pn-name:hover { color: var(--ink); }
-.pn-name-arrow {
-  opacity: 0;
-  transform: translate(-2px, 2px);
-  transition: opacity var(--dur-fast), transform var(--dur-fast);
-}
-.pn-name:hover .pn-name-arrow { opacity: 1; transform: translate(0, 0); }
-
-/* Icon + brand, one line — the same header on every page. Fixed to the top
-   of the viewport, full width, so it never scrolls away with content. */
-.page-head {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: var(--z-header);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: var(--hdr-h);
-  padding: 0 var(--space-4);
-}
-.page-head .page-title { margin-bottom: 0; }
-@media (max-width: 639px) {
-  .page-head { padding: 0 var(--space-3); }
-}
-
 /* Utility — kept in the DOM for SEO/accessibility (every page needs exactly
    one h1), removed from visual flow. */
 .sr-only {
@@ -168,84 +107,10 @@
   letter-spacing: -0.02em;
 }
 
-/* ─── View controls — List/Cards + Latest + theme, grouped inside one shared
-   rounded-edge pill on the right (danieltriendl.com reference: controls live
-   inside a contained pill, not scattered as bare icons). Icon buttons only —
-   no title/dropdown here anymore, that moved to the footer. Theme toggle
-   (.pt-theme) always renders here, on every page. List/Cards + Latest only
-   render on typeNav/section pages — List/Cards is always visible there;
-   Latest only shows once you've scrolled away from the most recent content
-   (toggled via .is-visible, see main.js). ── */
-.pt-view {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-left: auto;
-  padding: 3px;
-  background: var(--surface2);
-  border-radius: var(--r-pill);
-}
-/* These sit at the very top of the page — no room for a tooltip above,
-   so flip it below and keep it small. */
-.pt-view [data-tooltip]::after {
-  top: calc(100% + 6px);
-  bottom: auto;
-  font-size: 11px;
-  padding: 3px 6px;
-  transform: translateX(-50%) translateY(-3px);
-}
-@media (hover: hover) {
-  .pt-view [data-tooltip]:hover::after {
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-.pt-view-latest,
-.pt-view-mode,
-.pt-search,
-.pt-theme {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  appearance: none;
-  -webkit-appearance: none;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  padding: 0;
-  color: var(--ink2);
-  cursor: pointer;
-  transition: color var(--dur-fast), opacity var(--dur-fast), background var(--dur-fast);
-}
-.pt-view-latest svg,
-.pt-view-mode svg,
-.pt-search svg,
-.pt-theme svg { display: block; }
-/* Same half-filled circle glyph for both themes — rotate it 180deg in ink
-   mode so the filled half flips, showing which state is current. */
+/* Half-filled theme glyph flips in ink mode so it shows the current state. */
 [data-theme="ink"] .pt-theme svg { transform: rotate(180deg); }
-.pt-view-latest:hover,
-.pt-view-mode:hover,
-.pt-search:hover,
-.pt-theme:hover { color: var(--ink); background: var(--bg); }
 
-/* Hidden from the UI — Cmd/Ctrl+K still opens search, just no visible button */
-.pt-search { display: none; }
-.pt-view-latest {
-  width: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transition: width var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
-}
-.pt-view-latest.is-visible { width: 30px; opacity: 1; pointer-events: auto; }
-
-/* ─── Page nav — wraps .page-head for listing pages. Same width-centering as
-   .notes-reading (panel.css) so .page-head stretches identically everywhere:
-   a plain block child, full-width, letting its internal flex row (avatar |
-   title | space | menu) reach the same edges on every page. ── */
+/* ─── Page nav — wrapper around the hidden SEO h1 on listing pages. ── */
 .page-nav {
   width: 100%;
   max-width: var(--content-w);
@@ -295,100 +160,12 @@
   font-weight: var(--weight-semibold);
 }
 .sf-link--active:hover { background: var(--ink); }
+.sf-link--active .pt-nav-caret { color: inherit; }
 .sf-short { display: none; }
 @media (max-width: 479px) {
   .sf-link { padding: 0 var(--space-2); }
   .sf-full { display: none; }
   .sf-short { display: inline; }
-}
-
-/* Page-as-modal pages hide the footer by default (keeps the "full sheet"
-   feel) but it's still one hover away, mac-dock style — a thin strip
-   along the bottom edge reveals it. The strip is tall enough to cover
-   both the idle sliver and the footer's revealed position, so moving
-   the pointer from the strip onto the footer itself doesn't count as
-   leaving (:hover on a parent holds as long as the pointer is over the
-   parent OR any descendant, even one positioned outside its box). */
-.site-footer-dock {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 90px;
-  z-index: var(--z-header);
-}
-.site-footer-dock .site-footer {
-  bottom: var(--space-6);
-  opacity: 0;
-  transform: translateX(-50%) translateY(calc(100% + var(--space-6)));
-  transition: opacity var(--dur-fast), transform var(--dur-fast);
-  pointer-events: none;
-}
-.site-footer-dock:hover .site-footer {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
-}
-/* Grabber hint so the hover strip isn't a silent dead zone. */
-.site-footer-dock::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: var(--space-3);
-  transform: translateX(-50%);
-  width: 90px;
-  height: 4px;
-  border-radius: var(--r-pill);
-  background: var(--border);
-  opacity: 0.7;
-  transition: opacity var(--dur-fast);
-}
-.site-footer-dock:hover::before { opacity: 0; }
-
-/* Touch devices have no hover at all, so the strip above is both a dead
-   end (the footer could never be revealed) and, worse, an invisible
-   90px-tall zone at the bottom of the screen silently eating scroll
-   touches. There's also no room for a hover trick at all, so touch gets
-   its own affordance: a small round button bottom-right (out of the way
-   of normal scrolling/reading) that expands the footer on tap instead. */
-.footer-toggle-btn { display: none; }
-@media (hover: none) {
-  .site-footer-dock { pointer-events: none; }
-  .site-footer-dock::before { display: none; }
-  .footer-toggle-btn {
-    display: flex;
-    position: fixed;
-    right: var(--space-4);
-    bottom: var(--space-4);
-    z-index: var(--z-header);
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--r-full);
-    background: var(--surface2);
-    border: 1px solid var(--border-light);
-    color: var(--ink2);
-    font-size: 17px;
-    pointer-events: auto;
-    transition: opacity var(--dur-fast);
-  }
-  .site-footer-dock .site-footer {
-    bottom: calc(var(--space-4) + 44px + var(--space-2));
-    opacity: 0;
-    transform: translateX(-50%) translateY(8px);
-    pointer-events: none;
-    transition: opacity var(--dur-fast), transform var(--dur-fast);
-  }
-  .site-footer-dock.is-open .site-footer {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-    pointer-events: auto;
-  }
-  .site-footer-dock.is-open .footer-toggle-btn {
-    opacity: 0;
-    pointer-events: none;
-  }
 }
 
 /* Footer's "Everything" segment doubles as the type-switcher trigger — same
@@ -404,7 +181,8 @@
 }
 /* Connect sits at the right end of the footer pill — open its menu rightward
    from the same anchor instead of overflowing past the screen edge. */
-.sf-nav--connect .sf-nav-menu {
+.sf-nav--connect .sf-nav-menu,
+.sf-nav--settings .sf-nav-menu {
   left: auto;
   right: 0;
   transform-origin: bottom right;
@@ -418,3 +196,31 @@
 /* ── ?q= filter back button ─────────────────────── */
 .q-back-btn { position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%); z-index: calc(var(--z-sheet) - 5); display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-sm); color: var(--ink2); text-decoration: none; animation: fade-in var(--dur-base) ease; transition: color var(--dur-quick); }
 .q-back-btn:hover { color: var(--ink); }
+
+/* ─── Merged bar — header and footer are one pill now: logo | nav | settings.
+   The settings popover reuses the .pt-nav-menu component and opens upward
+   like the other two. ── */
+.sf-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--r-full);
+  overflow: hidden;
+  transition: opacity var(--dur-fast);
+}
+.sf-avatar svg { width: 26px; height: 26px; display: block; }
+.sf-avatar:hover { opacity: 0.7; }
+.sf-divider { width: 1px; height: 16px; flex-shrink: 0; margin: 0 2px; background: var(--border); }
+.sf-icon-btn { width: 32px; padding: 0; color: var(--ink2); }
+.sf-icon-btn:hover { color: var(--ink); }
+.sf-pop-item { width: 100%; border: none; background: none; text-align: left; cursor: pointer; align-items: center; }
+.sf-pop-item[hidden] { display: none; }
+.sf-pop-ico { display: flex; align-items: center; color: var(--ink2); }
+.sf-pop-latest { display: none; }
+.sf-pop-latest.is-visible { display: flex; }
+@media (max-width: 479px) {
+  .site-footer { gap: 0; max-width: calc(100vw - 16px); }
+}

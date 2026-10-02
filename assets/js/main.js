@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
   if (listOnly) {
     viewMode = 'list';
-    document.getElementById('latestModeBtn')?.style.setProperty('display', 'none');
+    document.getElementById('sfModeRow')?.setAttribute('hidden', '');
     document.getElementById('cardView')?.style.setProperty('display', 'none');
   }
   if (typeof updateFabState !== 'undefined') updateFabState();

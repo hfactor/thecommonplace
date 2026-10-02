@@ -30,5 +30,5 @@
       {{- $content := .Content | replaceRE `(?s)<p>(\s*<figure class="sc-photo[^"]*">.*?</figure>\s*)</p>` "$1" -}}
       <div class="sc-photos">{{ $content | safeHTML }}</div>
 
-{{ partial "readable-close.html" (dict "page" . "footerHover" true) }}
+{{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

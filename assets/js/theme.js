@@ -40,12 +40,9 @@ function updateFabIcons() {
   // Mode button shows the icon for the mode you'd switch TO, not the current one
   const mode = vm === 'list' ? 'list' : 'card';
   const modeBtn = document.getElementById('latestModeBtn');
-  if (modeBtn) {
-    modeBtn.innerHTML = mode === 'list' ? ICO.grid : ICO.list;
-    const label = mode === 'list' ? 'Switch to card view' : 'Switch to list view';
-    modeBtn.setAttribute('aria-label', label);
-    modeBtn.setAttribute('data-tooltip', label);
-  }
+  if (modeBtn) modeBtn.innerHTML = mode === 'list' ? ICO.grid : ICO.list;
+  const modeLabel = document.getElementById('latestModeLabel');
+  if (modeLabel) modeLabel.textContent = mode === 'list' ? 'Card view' : 'List view';
 }
 
 // Alias so main.js can call this after setViewMode
