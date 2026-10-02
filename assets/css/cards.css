@@ -219,7 +219,7 @@
    aspect-ratio, so percentage max-width/max-height on each photo
    resolve correctly with no JS measuring needed. Margin on the card
    keeps piles from crowding their neighbours. ─────────────────────── */
-.cv-items .card[data-type="scenes"] { width: 180px; margin: 0 14px 0; flex-shrink: 0; display: block; text-decoration: none; color: inherit; }
+.cv-items .card[data-type="scenes"] { position: relative; width: 180px; margin: 0 14px 0; flex-shrink: 0; display: block; text-decoration: none; color: inherit; }
 .sc-pile { position: relative; width: 100%; aspect-ratio: 4 / 5; }
 .sc-pile-img {
   position: absolute;
@@ -240,8 +240,15 @@
 .sc-pile-img:nth-child(4) { z-index: 1; opacity: 0.55; transform: translate(-50%, -50%) rotate(-4deg); }
 .card[data-type="scenes"]:hover .sc-pile-img { opacity: 1; }
 
-/* Title stays hidden until hover — a bit of context, not a caption */
+/* Title stays hidden until hover — a bit of context, not a caption.
+   Out of flow (absolute, just below the pile) so the hidden title's height
+   doesn't count toward the card's height and push the pile off the track's
+   vertical centre. */
 .sc-pile-title {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   display: -webkit-box;
   margin-top: 8px;
   font-size: var(--text-sm);
