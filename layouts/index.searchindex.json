@@ -39,6 +39,16 @@
   {{- end -}}
 {{- end -}}
 
+{{- range where site.RegularPages "Section" "scenes" -}}
+  {{- $items = $items | append (dict
+    "title"   .Title
+    "type"    "scenes"
+    "date"    .Date
+    "extra"   ""
+    "permalink" .RelPermalink
+  ) -}}
+{{- end -}}
+
 {{- range where site.RegularPages "Section" "lists" -}}
   {{- $itemTitles := slice -}}
   {{- range .Params.items -}}{{- $itemTitles = $itemTitles | append .title -}}{{- end -}}
