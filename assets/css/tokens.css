@@ -34,7 +34,6 @@
   --r-full: 50%;
 
   /* ── Layout ─────────────────────────────────────── */
-  --hdr-h:     68px; /* header height (52px) + top offset (16px) */
   --ftr-h:     76px; /* fixed footer pill height + bottom offset — content
                          needs this much clearance so the pill never overlaps
                          the last line of text */

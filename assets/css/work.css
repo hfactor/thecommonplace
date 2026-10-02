@@ -2,7 +2,7 @@
 
 /* Extra breathing room below the nav before the page starts */
 .notes-reading:has(.work-header) {
-  padding-top: calc(var(--hdr-h) + var(--space-12) * 1.15);
+  padding-top: calc(var(--space-12) * 1.15);
 }
 
 /* Header: eyebrow + name; intro runs full width below */

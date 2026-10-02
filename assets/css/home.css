@@ -9,7 +9,7 @@
 }
 
 @media (max-width: 639px) {
-  .notes-reading.home-reading { padding-top: var(--hdr-h); }
+  .notes-reading.home-reading { padding-top: var(--space-8); }
 }
 
 /* ─── Paragraphs ─────────────────────────────────── */
