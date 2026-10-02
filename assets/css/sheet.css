@@ -519,11 +519,20 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
 }
 .search-close:hover { color: var(--ink); }
 
+/* Fixed to exactly six rows so the start screen and any search (however
+   many results) always give the same box height; extra results scroll, and
+   unlike the rest of the site this list keeps a visible scrollbar. */
+.search-overlay { --sr-row: 36px; }
 .search-results {
   overflow-y: auto;
   padding: 8px;
+  box-sizing: border-box;
+  height: calc(var(--sr-row) * 6 + 16px);
+  scrollbar-width: auto; /* undo the global hide; the webkit rules below style it */
 }
-.search-results:empty { padding: 0; }
+.search-results::-webkit-scrollbar { display: block; width: 6px; }
+.search-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.search-results::-webkit-scrollbar-track { background: transparent; }
 
 .search-suggestions {
   display: flex;
@@ -560,9 +569,10 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
 }
 .search-result {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
-  padding: 8px 10px;
+  height: var(--sr-row);
+  padding: 0 10px;
   border-radius: var(--r-xs);
   text-decoration: none;
   color: inherit;
@@ -583,6 +593,57 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
   white-space: nowrap;
   flex-shrink: 0;
 }
+#searchHome[hidden] { display: none; }
+button.search-result { width: 100%; border: none; background: none; font-family: inherit; text-align: left; cursor: pointer; }
+
+/* Footer: the shortcut hint on the left, a small icon pill (view, theme)
+   on the right — same idea as the old header's contained icon pill. */
+.search-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--border-light);
+}
+.search-hint { font-size: 12px; color: var(--ink2); }
+.search-hint kbd {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--ink2);
+}
+@media (hover: none) { .search-hint { visibility: hidden; } }
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface2);
+  border-radius: var(--r-pill);
+}
+.search-act {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.search-act:hover { background: var(--bg); color: var(--ink); }
+.search-act[hidden] { display: none; }
+.search-act span { display: flex; }
+.search-act-latest { display: none; }
+.search-act-latest.is-visible { display: flex; }
 .search-empty {
   padding: 28px 16px;
   color: var(--ink2);
@@ -593,5 +654,5 @@ a.modal-date-inline:hover { color: var(--accent); opacity: 1; }
 @media (max-width: 639px) {
   .search-overlay { padding: 0; align-items: flex-start; }
   .search-box { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
-  .search-results { flex: 1; }
+  .search-results { flex: 1; height: auto; }
 }

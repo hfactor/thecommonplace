@@ -41,8 +41,17 @@ function updateFabIcons() {
   const mode = vm === 'list' ? 'list' : 'card';
   const modeBtn = document.getElementById('latestModeBtn');
   if (modeBtn) modeBtn.innerHTML = mode === 'list' ? ICO.grid : ICO.list;
-  const modeLabel = document.getElementById('latestModeLabel');
-  if (modeLabel) modeLabel.textContent = mode === 'list' ? 'Card view' : 'List view';
+  const dark = document.documentElement.getAttribute('data-theme') === 'ink';
+  const themeBtn = document.getElementById('themeAction');
+  if (themeBtn) {
+    const t = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    themeBtn.setAttribute('aria-label', t); themeBtn.setAttribute('title', t);
+  }
+  const viewBtn = document.getElementById('viewAction');
+  if (viewBtn) {
+    const m = mode === 'list' ? 'Switch to card view' : 'Switch to list view';
+    viewBtn.setAttribute('aria-label', m); viewBtn.setAttribute('title', m);
+  }
 }
 
 // Alias so main.js can call this after setViewMode

@@ -5,6 +5,24 @@
       <input type="text" id="searchInput" class="search-input" placeholder="Search" autocomplete="off" spellcheck="false">
       <button type="button" class="search-close" onclick="closeSearch()" aria-label="Close search">✕</button>
     </div>
-    <div class="search-results" id="searchResults"></div>
+    <div class="search-results">
+      <div id="searchHome">
+        <a class="search-result" href="{{ "about" | relURL }}"><span class="search-result-title">About Page</span></a>
+        <a class="search-result" href="{{ "antilibrary" | relURL }}"><span class="search-result-title">Antilibrary</span></a>
+        <a class="search-result" href="{{ "projects" | relURL }}"><span class="search-result-title">Projects</span></a>
+        <a class="search-result" href="{{ "notes" | relURL }}"><span class="search-result-title">Working Notes</span></a>
+        <button type="button" class="search-result" id="searchThisMonth" data-query=""><span class="search-result-title">This month</span><span class="search-result-meta"></span></button>
+        <button type="button" class="search-result" id="searchLastMonth" data-query=""><span class="search-result-title">Last month</span><span class="search-result-meta"></span></button>
+      </div>
+      <div id="searchResults"></div>
+    </div>
+    <div class="search-footer">
+      <span class="search-hint" aria-hidden="true"><kbd id="searchHintKey">&#8984;K</kbd></span>
+      <div class="search-actions">
+        <button type="button" class="search-act search-act-latest" id="latestChip" title="Jump to latest" aria-label="Jump to latest" onclick="closeSearch(); goLatest()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="10" x2="6" y2="2"/><polyline points="2,6 6,2 10,6"/></svg></button>
+        <button type="button" class="search-act" id="viewAction" title="Switch to list view" aria-label="Switch to list view" onclick="closeSearch(); fabToggleView()" hidden><span id="latestModeBtn"></span></button>
+        <button type="button" class="search-act" id="themeAction" title="Switch to dark theme" aria-label="Switch to dark theme" onclick="fabToggleTheme()"><span class="pt-theme"></span></button>
+      </div>
+    </div>
   </div>
 </div>

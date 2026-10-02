@@ -600,7 +600,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
   if (listOnly) {
     viewMode = 'list';
-    document.getElementById('sfModeRow')?.setAttribute('hidden', '');
+    const viewAction = document.getElementById('viewAction');
+    if (viewAction) { viewAction.dataset.listOnly = '1'; viewAction.hidden = true; }
     document.getElementById('cardView')?.style.setProperty('display', 'none');
   }
   if (typeof updateFabState !== 'undefined') updateFabState();

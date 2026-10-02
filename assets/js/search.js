@@ -2,7 +2,6 @@
 
 let searchIndex = null;
 let searchIndexPromise = null;
-let searchResultsCache = [];
 let searchActiveIdx = -1;
 
 function loadSearchIndex() {
@@ -25,7 +24,31 @@ function openSearch() {
   const input = document.getElementById('searchInput');
   input.value = '';
   document.getElementById('searchResults').innerHTML = '';
+  searchActiveIdx = -1;
+  const home = document.getElementById('searchHome');
+  if (home) home.hidden = false;
+  setMonthShortcuts();
+  // List/Card only makes sense on pages that actually have a feed.
+  const viewAction = document.getElementById('viewAction');
+  if (viewAction && !viewAction.dataset.listOnly) viewAction.hidden = !(document.getElementById('lView') || document.getElementById('cardView'));
+  if (typeof updateFabIcons === 'function') updateFabIcons();
+  const hint = document.getElementById('searchHintKey');
+  if (hint) hint.textContent = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? '\u2318K' : 'Ctrl K';
   setTimeout(() => input.focus(), 10);
+}
+
+// "This month" / "Last month" aren't pages, they're one-click searches that
+// fill the box with a month the existing time-jump matching already understands.
+function setMonthShortcuts() {
+  const now = new Date();
+  [['searchThisMonth', 0], ['searchLastMonth', -1]].forEach(([id, offset]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const d = new Date(now.getFullYear(), now.getMonth() + offset, 1);
+    const label = `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+    el.dataset.query = label.toLowerCase();
+    el.querySelector('.search-result-meta').textContent = label;
+  });
 }
 
 function closeSearch() {
@@ -98,10 +121,13 @@ function buildSuggestions(q) {
 
 function renderSearchResults() {
   const resultsEl = document.getElementById('searchResults');
-  if (!resultsEl || !searchIndex) return;
+  if (!resultsEl) return;
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const home = document.getElementById('searchHome');
+  if (home) home.hidden = !!q;
 
-  if (!q) { resultsEl.innerHTML = ''; searchResultsCache = []; searchActiveIdx = -1; return; }
+  if (!q) { resultsEl.innerHTML = ''; searchActiveIdx = -1; return; }
+  if (!searchIndex) return;
 
   const suggestions = buildSuggestions(q);
   const items = searchIndex
@@ -109,7 +135,6 @@ function renderSearchResults() {
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 30);
 
-  searchResultsCache = items;
   searchActiveIdx = -1;
 
   if (!suggestions.length && !items.length) {
@@ -141,8 +166,15 @@ function renderSearchResults() {
   });
 }
 
+// Arrow keys walk whichever list is on screen: the start screen's pages and
+// preferences when the box is empty, search results once something is typed.
+function searchNavNodes() {
+  const sel = '#searchHome:not([hidden]) .search-result, #searchResults .search-result';
+  return Array.from(document.querySelectorAll(sel)).filter(n => n.offsetParent !== null);
+}
+
 function setSearchActive(idx) {
-  const nodes = document.querySelectorAll('#searchResults .search-result');
+  const nodes = searchNavNodes();
   nodes.forEach(n => n.classList.remove('kb-active'));
   if (idx >= 0 && idx < nodes.length) {
     nodes[idx].classList.add('kb-active');
@@ -166,14 +198,15 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeSearch(); return; }
   if (e.key === 'ArrowDown') {
     e.preventDefault();
-    setSearchActive(Math.min(searchActiveIdx + 1, searchResultsCache.length - 1));
+    setSearchActive(Math.min(searchActiveIdx + 1, searchNavNodes().length - 1));
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
     setSearchActive(Math.max(searchActiveIdx - 1, 0));
   } else if (e.key === 'Enter') {
-    if (searchActiveIdx >= 0 && searchResultsCache[searchActiveIdx]) {
+    const nodes = searchNavNodes();
+    if (searchActiveIdx >= 0 && nodes[searchActiveIdx]) {
       e.preventDefault();
-      window.location.href = searchResultsCache[searchActiveIdx].permalink;
+      nodes[searchActiveIdx].click();
     }
   }
 });
@@ -185,4 +218,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   overlay.addEventListener('click', e => { if (e.target === overlay) closeSearch(); });
   input.addEventListener('input', renderSearchResults);
+  document.querySelectorAll('#searchHome [data-query]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.query;
+      renderSearchResults();
+      input.focus();
+    });
+  });
 });

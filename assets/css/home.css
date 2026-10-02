@@ -12,13 +12,6 @@
   .notes-reading.home-reading { padding-top: var(--hdr-h); }
 }
 
-/* ─── Header row — same page-head as everywhere else, just no title and
-   nudged down a little since it's sitting inside the vertically-centered block ── */
-.page-head--home {
-  margin-top: var(--space-6);
-  margin-bottom: var(--space-6);
-}
-
 /* ─── Paragraphs ─────────────────────────────────── */
 .home-p {
   font-family: var(--font);
