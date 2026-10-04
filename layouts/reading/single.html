@@ -40,11 +40,13 @@ window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
     <div class="sheet-inner" id="sheetInner">
 <div class="modal-book">
   <div class="modal-cover-col">
+    {{- if $rUrl -}}<a class="modal-cover-hit" href="{{ $rUrl }}" target="_blank" rel="noopener" aria-label="View book">{{- end -}}
     <div class="modal-book-3d">
       <div class="modal-book-pages"></div>
       {{- if .Params.image -}}<img class="modal-cover-img" src="{{ .Params.image }}" alt="{{ $title }}">{{- else -}}<div class="modal-cover-blank"></div>{{- end -}}
       <div class="modal-book-spine"></div>
     </div>
+    {{- if $rUrl -}}</a>{{- end -}}
     {{- if $rUrl -}}<a class="modal-ext-btn" href="{{ $rUrl }}" target="_blank" rel="noopener">{{ $icoExt | safeHTML }} View book</a>{{- end -}}
   </div>
   <div class="modal-body-col">

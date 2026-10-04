@@ -59,7 +59,8 @@ function openSheet(uid) {
     const coverInner = e.image
       ? `<img class="modal-cover-img" src="${e.image}" alt="${title}">`
       : `<div class="modal-cover-blank"></div>`;
-    const coverWrap = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
+    const coverBook = `<div class="modal-book-3d"><div class="modal-book-pages"></div>${coverInner}<div class="modal-book-spine"></div></div>`;
+    const coverWrap = rUrl ? `<a class="modal-cover-hit" href="${withRef(rUrl)}" target="_blank" rel="noopener" aria-label="View book">${coverBook}</a>` : coverBook;
     const extBtn = rUrl ? `<a class="modal-ext-btn" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext} View book</a>` : '';
     const coverCol = `<div class="modal-cover-col">${coverWrap}${extBtn}</div>`;
     const extBadge = rUrl ? `<a class="modal-ext-standalone" href="${withRef(rUrl)}" target="_blank" rel="noopener">${ICO.ext}</a>` : '';
