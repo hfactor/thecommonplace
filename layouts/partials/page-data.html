@@ -140,7 +140,6 @@
   {{- $t   := time (printf "%v" .date) -}}
   {{- $key := dateFormat "2006-01" $t -}}
   {{- $uid := printf "uses/%s" (urlize .title) -}}
-  {{- $isRec := eq (lower (printf "%v" (default "" .recommended))) "yes" -}}
   {{- $entry := dict
     "uid"         $uid
     "type"        "uses"
@@ -151,7 +150,6 @@
     "year"        (dateFormat "2006" $t)
     "href"        (default "" .href)
     "image"       (default "" .image)
-    "recommended" $isRec
     "note"        (default "" .note)
   -}}
   {{- $existing := slice -}}

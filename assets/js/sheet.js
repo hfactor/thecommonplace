@@ -121,7 +121,7 @@ function openSheet(uid) {
       <div class="modal-body-col">
         <div class="modal-type-badge">Uses</div>
         ${usesTitleEl}
-        <div class="modal-meta">${[metaLink(e.subCategory, 'uses'), recPill(e, 'uses')].filter(Boolean).join('')}</div>
+        <div class="modal-meta">${[metaLink(e.subCategory, 'uses')].filter(Boolean).join('')}</div>
         ${e.note ? `<div class="modal-body">${e.note}</div>` : ''}
         ${dateEl}
       </div>

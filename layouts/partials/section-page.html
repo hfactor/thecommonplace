@@ -65,7 +65,6 @@
     {{- $item := . -}}
     {{- $match := true -}}
     {{- with index $filt "subCategory" -}}{{- if ne (default "Other" $item.subCategory) . -}}{{- $match = false -}}{{- end -}}{{- end -}}
-    {{- with index $filt "recommended" -}}{{- if ne (lower (printf "%v" (default "" $item.recommended))) "yes" -}}{{- $match = false -}}{{- end -}}{{- end -}}
     {{- if $match -}}{{- $yamlItems = $yamlItems | append $item -}}{{- end -}}
   {{- end -}}
 
@@ -266,7 +265,6 @@
             {{- range $i, $item := $yamlItems -}}
               {{- $uid    := printf "uses/%s" (urlize $item.title) -}}
               {{- $subcat := default "Other" $item.subCategory -}}
-              {{- $rec    := eq (lower (printf "%v" (default "" $item.recommended))) "yes" -}}
               <div class="gc gc--uses" data-type="uses" data-subcat="{{ $subcat }}" data-uid="{{ $uid }}" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
                 <div class="gc-img-wrap">
                   {{- if $item.image -}}<img class="gc-img" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">{{- else -}}<div class="gc-img-blank"></div>{{- end -}}

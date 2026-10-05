@@ -106,7 +106,6 @@ YAML-driven, not markdown content files.
 | `date` | When added |
 | `href` | Product link |
 | `image` | Product image URL |
-| `recommended` | `yes` / `no` |
 | `note` | Short description, shown on hover |
 
 ---
