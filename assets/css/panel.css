@@ -106,7 +106,7 @@
 /* On /now this line sits at the very end of the page (after Currently
    Reading), not right under the title — needs the same generous top
    clearance the old standalone .sp-footer line had. */
-.now-reading + .sp-updated { margin-top: var(--space-10); }
+.now-reading + .sp-updated { margin-top: var(--space-6); }
 .sp-rule { border: none; border-top: 1px solid var(--border-light); margin: 22px 0 26px; }
 .sp-text { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-prose); }
 .sp-text p { margin-bottom: 18px; }
@@ -329,8 +329,14 @@
 .now-reading { margin-top: var(--space-10); }
 .now-reading-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--space-4); }
 .now-reading-label { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.06em; }
-.now-reading-link { font-size: var(--text-sm); color: var(--ink2); text-decoration: none; transition: color var(--dur-fast); }
-.now-reading-link:hover { color: var(--ink); }
+.now-reading-link {
+  display: inline-flex; align-items: center;
+  padding: 6px 14px;
+  font-size: var(--text-sm); color: var(--ink2); text-decoration: none;
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+.now-reading-link:hover { color: var(--ink); border-color: var(--ink2); }
 .now-reading-grid { display: flex; gap: var(--space-4); flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: var(--space-2); scroll-snap-type: x mandatory; }
 .now-reading-grid::-webkit-scrollbar { display: none; }
 .now-book { width: 180px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-2); scroll-snap-align: start; margin-bottom: 0; }
