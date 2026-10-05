@@ -274,7 +274,9 @@
   width: 100%;
   max-width: var(--content-w);
   margin: 0 auto;
-  padding: var(--space-12) 0 calc(var(--space-12) + var(--ftr-h));
+  /* No header above any more, so the top gap scales with the viewport to
+     keep text pages sitting slightly below centre-top, not hugging the edge. */
+  padding: clamp(56px, 11vh, 112px) 0 calc(var(--space-12) + var(--ftr-h));
 }
 .notes-reading:has(.nb-cards) { max-width: 720px; }
 /* The guestbook is a scattered canvas, not a prose column — let it use
@@ -282,7 +284,7 @@
 .notes-reading:has(.gb-canvas) { max-width: 1100px; padding-left: var(--gap); padding-right: var(--gap); }
 
 @media (max-width: 639px) {
-  .notes-reading { padding: var(--space-8) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
+  .notes-reading { padding: var(--space-12) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
 }
 
 /* Colophon rows: the fixed 160px name column leaves too little room for
