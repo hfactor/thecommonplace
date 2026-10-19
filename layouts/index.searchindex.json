@@ -4,13 +4,15 @@
        other background-loaded feed on this site. */ -}}
 {{- $items := slice -}}
 
+{{- /* A book with a localTitle is indexed under that title, so its English
+       title goes into "extra" to stay searchable in English too. */ -}}
 {{- range where site.RegularPages "Section" "reading" -}}
   {{- if and (ne (index .Params "reading-status") "reading") (ne .Params.layout "listing") -}}
     {{- $items = $items | append (dict
       "title"   (or .Params.localTitle .Title)
       "type"    "reading"
       "date"    .Date
-      "extra"   (delimit (slice .Params.author .Params.genre .Params.language) " ")
+      "extra"   (delimit (cond (ne (default "" .Params.localTitle) "") (slice .Title .Params.author .Params.genre .Params.language) (slice .Params.author .Params.genre .Params.language)) " ")
       "permalink" .RelPermalink
     ) -}}
   {{- end -}}
