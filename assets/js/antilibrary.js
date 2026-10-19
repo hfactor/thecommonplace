@@ -88,15 +88,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Everything on the page comes from the sheet, newest first.
+  // The placeholder rows in the page stay until the sheet answers (or fails).
   function loadLive() {
-    if (!live) { syncEmpty(); return; }
+    if (!live) { items.innerHTML = ''; items.removeAttribute('aria-busy'); syncEmpty(); return; }
     fetch(ANTILIBRARY_ENDPOINT)
       .then(res => res.json())
       .then(entries => {
         items.innerHTML = entries.filter(e => e.title).map(itemHTML).join('');
+        items.removeAttribute('aria-busy');
         syncEmpty();
       })
-      .catch(() => syncEmpty('Couldn’t load the list right now. Try again in a bit.'));
+      .catch(() => {
+        items.innerHTML = '';
+        items.removeAttribute('aria-busy');
+        syncEmpty('Couldn’t load the list right now. Try again in a bit.');
+      });
   }
 
   const fields = document.getElementById('alFields');

@@ -40,7 +40,12 @@
           <p class="al-msg" id="alMsg" role="status" hidden></p>
         </form>
 
-        <ul class="al-items" id="alItems"></ul>
+        {{- /* Placeholder rows until the sheet answers; JS replaces them. */}}
+        <ul class="al-items" id="alItems" aria-busy="true">
+          <li class="al-item al-skeleton" aria-hidden="true"><div class="al-body"><div class="al-line"><span class="al-sk al-sk-ico"></span><span class="al-sk al-sk-title"></span></div><div class="al-line"><span class="al-sk al-sk-sub"></span></div></div><span class="al-sk al-sk-state"></span></li>
+          <li class="al-item al-skeleton" aria-hidden="true"><div class="al-body"><div class="al-line"><span class="al-sk al-sk-ico"></span><span class="al-sk al-sk-title"></span></div><div class="al-line"><span class="al-sk al-sk-sub"></span></div></div><span class="al-sk al-sk-state"></span></li>
+          <li class="al-item al-skeleton" aria-hidden="true"><div class="al-body"><div class="al-line"><span class="al-sk al-sk-ico"></span><span class="al-sk al-sk-title"></span></div><div class="al-line"><span class="al-sk al-sk-sub"></span></div></div><span class="al-sk al-sk-state"></span></li>
+        </ul>
         <p class="al-empty" id="alEmpty" hidden>Nothing here yet. Be the first to add something.</p>
       </div>
 
