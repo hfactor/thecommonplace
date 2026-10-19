@@ -8,12 +8,15 @@
  * the form on /antilibrary/. Everyone reads the list back from here.
  *
  * Sheet columns (row 1 is a header row, tab named "Antilibrary"):
- *   A date | B title | C detail | D kind | E recommendedBy | F status | G link | H url
+ *   A date | B title | C detail | D kind | E recommendedBy | F status | G link | H url | I found
  *   detail = author, OTT/director, or the visitor's comment (depends on kind)
  *   link   = the visitor's own link, shown on their name (for kind "Link" it
  *            is the page they recommended, and goes on the title instead)
  *   url    = YOUR page about it on hiran.in (a /path or http(s) address); once
  *            the status is "completed" it turns the title into a link
+ *   found  = type "yes" or leave it blank. "yes" makes the line under the title
+ *            read "Found through <E>" instead of "Recommended by <E>" — for things
+ *            you came across yourself: a bookstore, someone's shelf, a newsletter
  *
  * The Sheet is the only source for the page. New recommendations arrive with
  * status "suggested". You manage the rest by editing the Sheet directly — no
@@ -31,8 +34,8 @@
  * 3. Deploy > New deployment > type "Web app".
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 4. Copy the /exec URL into ANTILIBRARY_ENDPOINT at the top of
- *    assets/js/antilibrary.js.
+ * 4. Copy the /exec URL (or just the deployment ID) into
+ *    ANTILIBRARY_DEPLOYMENT at the top of assets/js/antilibrary.js.
  * 5. After editing this script: Deploy > Manage deployments > edit the
  *    existing deployment > bump the version.
  *
@@ -53,7 +56,7 @@ function doGet(e) {
   const entries = rows
     .map(row => ({
       date: row[0], title: row[1], detail: row[2], kind: row[3],
-      recommendedBy: row[4], status: row[5], link: row[6], url: row[7],
+      recommendedBy: row[4], status: row[5], link: row[6], url: row[7], found: row[8],
     }))
     .filter(entry => entry.title)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -67,6 +70,7 @@ function doGet(e) {
       status: STATUS_KEYS[String(entry.status).toLowerCase().replace(/\s+/g, '')] || 'suggested',
       link: String(entry.link || ''),
       url: String(entry.url || ''),
+      found: /^(yes|y|true)$/i.test(String(entry.found).trim()),
     }));
 
   return ContentService
@@ -103,7 +107,7 @@ function doPost(e) {
   cache.put(cacheKey, '1', RATE_LIMIT_SECONDS);
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  sheet.appendRow([new Date(), title, detail, kind, recommendedBy, 'suggested', link, '']);
+  sheet.appendRow([new Date(), title, detail, kind, recommendedBy, 'suggested', link, '', '']);
 
   return ContentService.createTextOutput('ok');
 }

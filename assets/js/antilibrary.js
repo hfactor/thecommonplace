@@ -64,7 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `<a href="${escapeHTML(own)}" target="_blank" rel="noopener nofollow">${name}</a>`
       : name;
     const by = e.detail ? `<span class="al-by">${escapeHTML(e.detail)}</span>` : '';
-    const from = name ? `<span class="al-from">Recommended by <strong>${nameHTML}</strong></span>` : '';
+    // found ("yes" in the sheet) switches the wording for things I came across myself.
+    const via = e.found ? 'Found through' : 'Recommended by';
+    const from = name ? `<span class="al-from">${via} <strong>${nameHTML}</strong></span>` : '';
     const sub = by || from ? `<div class="al-line al-line--sub">${by}${by && from ? '<span class="al-dot" aria-hidden="true">·</span>' : ''}${from}</div>` : '';
     return `<li class="al-item">
       <div class="al-body">
