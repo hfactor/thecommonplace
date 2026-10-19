@@ -143,7 +143,7 @@ function show() {
 // Fades a title with a mask only once it's actually clipped — see the
 // .is-truncated notes in list.css/panel.css for why this can't be pure CSS.
 function updateTitleTruncation() {
-  document.querySelectorAll('.l-title-text, .anti-title').forEach(el => {
+  document.querySelectorAll('.l-title-text').forEach(el => {
     el.classList.toggle('is-truncated', el.scrollWidth > el.clientWidth + 1);
   });
 }
@@ -673,8 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Runs independently of the DATA/rebuild path above — covers static pages
-// like /antilibrary that never call show()/rebuild() but still have
-// truncatable titles (.anti-title).
+// that never call show()/rebuild() but still have truncatable titles.
 document.addEventListener('DOMContentLoaded', updateTitleTruncation);
 window.addEventListener('resize', updateTitleTruncation);
 

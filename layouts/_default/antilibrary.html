@@ -8,16 +8,41 @@
 
       <div class="sp-text">{{ .Content }}</div>
 
-      {{- $books := where hugo.Data.antilibrary "title" "ne" "" -}}
-      {{- $books = sort $books "date" "desc" -}}
-      <ul class="notes-list anti-list">
-        {{- range $books }}
-        <li class="notes-list-item">
-          <span class="anti-title">{{ .title }}</span>
-          {{- if .author }}<span class="anti-author">{{ .author }}</span>{{- end }}
-        </li>
-        {{- end }}
-      </ul>
+      {{- /* Status labels, shown as the icon's hover tooltip. Single source for the
+             server-rendered rows and the JS-rendered ones. */ -}}
+      {{- $labels := dict "suggested" "Suggested" "collected" "Collected" "completed" "Completed" -}}
+      {{- $icons := dict "suggested" (partial "al-icon.html" "suggested") "collected" (partial "al-icon.html" "collected") "completed" (partial "al-icon.html" "completed") -}}
+      {{- $kindIcons := dict "Book" (partial "al-kind-icon.html" "Book") "Film/Series" (partial "al-kind-icon.html" "Film/Series") "Link" (partial "al-kind-icon.html" "Link") "Other" (partial "al-kind-icon.html" "Other") -}}
+      <script>window.AL_ICONS = {{ $icons | jsonify | safeJS }}; window.AL_LABELS = {{ $labels | jsonify | safeJS }}; window.AL_KIND_ICONS = {{ $kindIcons | jsonify | safeJS }};</script>
+
+      <div class="al-wrap" id="alWrap">
+        <form id="alForm" class="al-form recommend-form" autocomplete="off">
+          <h2 class="al-form-title">Add to my Antilibrary</h2>
+          <div class="al-grid">
+            <label class="al-f">
+              <span>Type</span>
+              <select name="kind" class="recommend-input al-select">
+                <option value="Book">Book</option>
+                <option value="Film/Series">Film / Series</option>
+                <option value="Link">Link</option>
+                <option value="Other">Others</option>
+              </select>
+            </label>
+            <div class="al-fields" id="alFields">
+              <label class="al-f al-f--title"><span id="alF1Label">Title</span><input type="text" name="f1" class="recommend-input" maxlength="300"></label>
+              <label class="al-f al-f--wide"><span id="alF2Label">Author</span><input type="text" name="f2" class="recommend-input" maxlength="200"></label>
+            </div>
+            <label class="al-f al-f--name"><span>Your name</span><input type="text" name="recommendedBy" class="recommend-input" maxlength="100" autocomplete="name"></label>
+            <label class="al-f al-f--c2"><span id="alLinkLabel">Your link (optional)</span><input type="url" name="link" class="recommend-input" maxlength="500"></label>
+            <div class="al-f al-f--add"><span aria-hidden="true">&nbsp;</span><button type="submit" class="recommend-submit">Add</button></div>
+          </div>
+          <input type="text" name="company" class="recommend-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="al-msg" id="alMsg" role="status" hidden></p>
+        </form>
+
+        <ul class="al-items" id="alItems"></ul>
+        <p class="al-empty" id="alEmpty" hidden>Nothing here yet. Be the first to add something.</p>
+      </div>
 
 {{ partial "readable-close.html" (dict "page" .) }}
 {{ end }}

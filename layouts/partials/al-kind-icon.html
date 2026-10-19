@@ -1,0 +1,11 @@
+{{- /* Type icons for the antilibrary list, one per kind. Takes the kind
+       ("Book", "Film/Series"; everything else, Link and Other,
+       shares the chain icon). Serialised
+       to JS in antilibrary.html so live rows match. */ -}}
+{{- if eq . "Book" -}}
+<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3A1.5 1.5 0 0 1 5 1.5h7.5v10.5H5a1.5 1.5 0 0 0-1.5 1.5V3Z"/><path d="M3.5 13.5A1.5 1.5 0 0 0 5 15h7.5v-3"/></svg>
+{{- else if eq . "Film/Series" -}}
+<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.75" y="3" width="12.5" height="10" rx="1.75"/><path d="M6.75 6v4l3.25-2z" fill="currentColor"/></svg>
+{{- else -}}
+<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 9.5l3-3"/><path d="M7.4 4.6l.8-.8a2.5 2.5 0 0 1 3.5 3.5l-.8.8"/><path d="M8.6 11.4l-.8.8a2.5 2.5 0 0 1-3.5-3.5l.8-.8"/></svg>
+{{- end -}}

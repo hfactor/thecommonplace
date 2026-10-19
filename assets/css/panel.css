@@ -238,6 +238,7 @@
 .sp-updated a,
 .sp-footer a,
 .sc-photos a,
+.al-from a,
 .wikilink {
   color: var(--accent);
   text-decoration-line: underline;
@@ -250,6 +251,7 @@
 .sp-updated a:hover,
 .sp-footer a:hover,
 .sc-photos a:hover,
+.al-from a:hover,
 .wikilink:hover { text-decoration-color: var(--accent); transition-duration: var(--dur-quick); }
 
 /* Wiki-links */
@@ -279,9 +281,6 @@
   padding: clamp(56px, 11vh, 112px) 0 calc(var(--space-12) + var(--ftr-h));
 }
 .notes-reading:has(.nb-cards) { max-width: 720px; }
-/* The guestbook is a scattered canvas, not a prose column — let it use
-   most of the viewport instead of the standard reading width. */
-.notes-reading:has(.gb-canvas) { max-width: 1100px; padding-left: var(--gap); padding-right: var(--gap); }
 
 @media (max-width: 639px) {
   .notes-reading { padding: var(--space-12) var(--gap-sm) calc(var(--space-10) + var(--ftr-h)); }
@@ -296,35 +295,110 @@
   .colo-row-desc { flex: 0 0 100%; }
 }
 
-/* Antilibrary list */
-.anti-list .notes-list-item {
+/* ─── Antilibrary — public list of what I haven't read, watched or listened
+   to yet, mostly recommended by visitors. Sits in the standard reading column
+   and follows the site's own patterns: the recommend-* form look (sheet.css)
+   and flat rows with hairline separators (like the colophon). Each entry:
+   type icon + title, then author · recommended by, status icon on the right. ── */
+.al-wrap { margin-top: var(--space-8); }
+.al-form {
+  margin: 0 0 var(--space-8);
+  padding: var(--space-4);
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-sm);
+}
+.al-form-title { font-family: var(--font-display); font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--ink); letter-spacing: -0.01em; margin: 0; }
+.al-form .recommend-input { background: var(--bg); padding: 8px 12px; }
+.al-form .recommend-input:focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+/* Row 1: Type | Title | Author. Row 2: Your name | Link | Add. Four columns
+   so the edges of both rows line up: Your name sits under Type, Link spans
+   under Title and Author, Add under Author's right end. */
+.al-grid { display: grid; grid-template-columns: 150px 1.7fr 1fr auto; gap: var(--space-3); }
+.al-fields { display: contents; }
+.al-fields[hidden] { display: none; }
+.al-f { display: flex; flex-direction: column; gap: 4px; min-width: 0; font-size: 13px; color: var(--ink2); }
+.al-grid .al-f { grid-column: 1; }
+.al-grid .al-f--title { grid-column: 2; }
+.al-grid .al-f--wide { grid-column: 3 / 5; }
+.al-grid .al-f--name { grid-column: 1; }
+.al-grid .al-f--c2 { grid-column: 2 / 4; }
+.al-grid .al-f--add { grid-column: 4; }
+.al-f--add .recommend-submit { flex: 1; align-self: stretch; padding: 0 22px; }
+.al-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238a8a8a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.al-msg { font-size: var(--text-sm); color: var(--ink2); margin: 0; }
+.al-msg[hidden] { display: none; }
+
+.al-empty { font-size: var(--text-sm); color: var(--ink2); margin: 0; padding: 14px 0; border-top: 1px solid var(--border-light); }
+.al-empty[hidden] { display: none; }
+.al-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-light); }
+.al-item {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-3) 0;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
 }
-.anti-title {
-  font-size: var(--text-base);
-  color: var(--ink2);
+.al-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.al-line { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.al-line--sub { font-size: 12px; color: var(--ink2); flex-wrap: wrap; row-gap: 2px; }
+.al-dot { opacity: 0.7; }
+.al-type { display: inline-flex; color: var(--ink2); opacity: 0.6; }
+.al-type svg { display: block; }
+.al-title { font-size: var(--text-base); color: var(--ink2); line-height: var(--lh-tight); transition: color var(--dur-fast); }
+a.al-title { text-decoration: none; }
+a.al-title:hover { color: var(--ink); }
+.al-from strong { font-weight: var(--weight-normal); color: var(--ink); }
+/* A linked title carries the site's standard external-link arrow (.l-ext). */
+.al-title .l-ext { margin-left: 6px; vertical-align: 1px; }
+a.al-title:hover .l-ext { opacity: 1; }
+.al-state { position: relative; display: inline-flex; flex: 0 0 auto; cursor: default; }
+/* Hover/focus tooltip explaining the status. Right-aligned to the icon so it
+   never runs off the edge of the reading column. */
+.al-state::after {
+  content: attr(data-tip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: max-content;
+  max-width: 280px;
+  padding: 6px 10px;
+  font-size: 12px;
   line-height: var(--lh-tight);
-  letter-spacing: -0.01em;
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  text-align: left;
+  color: var(--bg);
+  background: var(--ink);
+  border-radius: var(--r-xs);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(2px);
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+  z-index: 2;
 }
-/* Fade mask only when JS confirms actual clipping — see .l-title-text note
-   in list.css for why this can't be unconditional. */
-.anti-title.is-truncated {
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
-  mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
-}
-.anti-author {
-  font-size: var(--text-sm);
-  color: var(--ink2);
-  white-space: nowrap;
-  flex-shrink: 0;
+.al-state:hover::after, .al-state:focus-visible::after { opacity: 1; transform: none; }
+.al-state:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 50%; }
+.al-state svg { display: block; }
+.al-state--suggested { color: var(--ink2); }
+.al-state--collected { color: var(--ink); }
+.al-state--completed { color: var(--accent); }
+
+@media (max-width: 639px) {
+  .al-grid { grid-template-columns: 1fr; }
+  .al-grid .al-f, .al-grid .al-f--title, .al-grid .al-f--wide, .al-grid .al-f--name, .al-grid .al-f--c2, .al-grid .al-f--add { grid-column: 1; }
+  .al-f--add > span { display: none; }
+  .al-f--add .recommend-submit { flex: 0 0 auto; align-self: flex-start; padding: 9px 22px; }
+  .al-line--sub { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .al-line--sub .al-dot { display: none; }
 }
 
 /* ─── Now page — currently reading ──────────────── */
@@ -542,146 +616,6 @@
 }
 .wl-preview-open:hover { color: var(--accent); background: var(--surface2); }
 .wl-preview-open svg { display: block; }
-
-/* ─── Guestbook — a loose corkboard of post-its rather than a list.
-   .gb-entries uses display:contents so its rendered notes become direct
-   flex items of .gb-canvas, sitting alongside the static add-tile/compose
-   card instead of forming their own separate block. Rotation and colour
-   cycle deterministically by nth-child (two different cycle lengths so
-   the pattern doesn't repeat in lockstep) — no JS randomness, so layout
-   stays stable across reloads and hydration. ── */
-.gb-canvas {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--space-6) var(--space-5);
-  margin-top: var(--space-8);
-  padding: var(--space-2);
-}
-.gb-entries { display: contents; }
-.gb-note {
-  width: 190px;
-  min-height: 150px;
-  padding: var(--space-4);
-  border: none;
-  box-shadow: 2px 6px 14px var(--note-shadow);
-  background: var(--note-yellow-bg);
-  color: var(--note-yellow-text);
-  transition: transform var(--dur-quick);
-  display: flex;
-  flex-direction: column;
-  z-index: 0;
-}
-.gb-entries > .gb-note:nth-child(4n+2) { background: var(--note-pink-bg); color: var(--note-pink-text); }
-.gb-entries > .gb-note:nth-child(4n+3) { background: var(--note-blue-bg); color: var(--note-blue-text); }
-.gb-entries > .gb-note:nth-child(4n)   { background: var(--note-green-bg); color: var(--note-green-text); }
-.gb-entries > .gb-note:nth-child(5n+1)  { --gb-y: 0px;    --gb-r: -3deg; }
-.gb-entries > .gb-note:nth-child(5n+2)  { --gb-y: 22px;   --gb-r: 2deg; }
-.gb-entries > .gb-note:nth-child(5n+3)  { --gb-y: -10px;  --gb-r: -1.5deg; }
-.gb-entries > .gb-note:nth-child(5n+4)  { --gb-y: 12px;   --gb-r: 2.5deg; }
-.gb-entries > .gb-note:nth-child(5n+5)  { --gb-y: -16px;  --gb-r: -2deg; }
-.gb-entries > .gb-note { transform: translateY(var(--gb-y, 0px)) rotate(var(--gb-r, 0deg)); }
-.gb-entries > .gb-note:hover { transform: translateY(calc(var(--gb-y, 0px) - 3px)) scale(1.04) rotate(0deg); z-index: 1; }
-.gb-entries > .gb-note.gb-skeleton {
-  background: var(--surface2);
-  box-shadow: none;
-  animation: gb-pulse 1.4s ease-in-out infinite;
-}
-.gb-entries > .gb-note.gb-skeleton:nth-child(2) { animation-delay: 0.15s; }
-.gb-entries > .gb-note.gb-skeleton:nth-child(3) { animation-delay: 0.3s; }
-@keyframes gb-pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-.gb-note-message {
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  line-height: var(--lh-relaxed);
-  white-space: pre-wrap;
-  flex: 1;
-}
-.gb-note-meta { font-size: 11px; opacity: 0.7; margin-top: var(--space-3); }
-.gb-note-meta a { color: inherit; text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color var(--dur-fast); }
-.gb-note-meta a:hover { text-decoration-color: currentColor; }
-
-.gb-add {
-  width: 190px;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  border: 2px dashed var(--border);
-  background: none;
-  border-radius: var(--r-sm);
-  padding: var(--space-4);
-  cursor: pointer;
-  transition: color var(--dur-fast), border-color var(--dur-fast), transform var(--dur-quick);
-}
-.gb-add[hidden] { display: none; }
-.gb-add:hover { border-color: var(--ink2); transform: translateY(-2px); }
-.gb-add-plus { font-size: 28px; line-height: 1; color: var(--ink2); }
-.gb-add:hover .gb-add-plus { color: var(--ink); }
-.gb-add-text { font-size: var(--text-sm); line-height: var(--lh-relaxed); color: var(--ink2); text-align: center; }
-
-.gb-compose {
-  width: 190px;
-  min-height: 150px;
-  padding: var(--space-4);
-  background: var(--note-yellow-bg);
-  color: var(--note-yellow-text);
-  box-shadow: 2px 6px 14px var(--note-shadow);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-.gb-compose[hidden] { display: none; }
-.gb-compose textarea,
-.gb-compose input[type="text"]:not(.recommend-hp) {
-  width: 100%;
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  color: inherit;
-  background: rgba(255,255,255,0.35);
-  border: none;
-  border-radius: var(--r-xs);
-  padding: 6px 8px;
-  resize: none;
-}
-.gb-compose textarea { flex: 1; }
-.gb-compose textarea::placeholder,
-.gb-compose input::placeholder { color: inherit; opacity: 0.6; }
-.gb-compose textarea:focus,
-.gb-compose input:focus { outline: 2px solid rgba(0,0,0,0.2); }
-.gb-compose-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
-.gb-post-btn {
-  font-family: var(--font);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: inherit;
-  background: rgba(255,255,255,0.4);
-  border: none;
-  border-radius: var(--r-xs);
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.gb-post-btn:hover { background: rgba(255,255,255,0.6); }
-.gb-post-btn:disabled { opacity: 0.6; cursor: default; }
-.gb-cancel-btn {
-  font-family: var(--font);
-  font-size: 12px;
-  color: inherit;
-  opacity: 0.7;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.gb-cancel-btn:hover { opacity: 1; }
-.guestbook-empty { font-size: var(--text-sm); color: var(--ink2); }
-@media (max-width: 639px) {
-  .gb-note, .gb-add, .gb-compose { width: 150px; min-height: 130px; }
-}
 
 /* ─── 404 page ───────────────────────────────────── */
 .err404-wrap { min-height: 40vh; display: flex; align-items: center; gap: var(--space-10); flex-wrap: wrap; }

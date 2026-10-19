@@ -117,7 +117,6 @@ YAML-driven, not markdown content files.
 | `data/types.yaml` | Type system config — drives Explore panel, card rendering, and list routing |
 | `data/things.yaml` | `/uses` page |
 | `data/newsletter.yaml` | Newsletter entries in Everything view |
-| `data/antilibrary.yml` | `/antilibrary` page |
 | `data/uxfoss.yml` | `/uxfoss` page |
 | `data/colophon.yaml` | `/colophon` page |
 
@@ -148,6 +147,13 @@ The slide-in side panel. Used for reading and bookmark detail views. Rendered em
 
 ### `layouts/_default/uses.html`
 Gallery grid layout for `/uses`. Reads from `hugo.Data.things`, builds category filter buttons from the active categories found in data, renders cards. Filter is pure JS (toggles `hidden` attribute).
+
+### Antilibrary (`/antilibrary`)
+A public list of things to read, watch or listen to, mostly recommended by visitors. Layout: `layouts/_default/antilibrary.html`; behaviour: `assets/js/antilibrary.js`; styles: the antilibrary block in `panel.css`; icons: `partials/al-icon.html` (status) and `partials/al-kind-icon.html` (type).
+
+- **One source: a Google Sheet** behind an Apps Script web app (`scripts/antilibrary-apps-script.gs.js`). Visitors add entries through the form; you edit status and links in the Sheet. Deploy the script and paste the `/exec` URL (or just the deployment ID) into `ANTILIBRARY_DEPLOYMENT` in `antilibrary.js`. Until it's set the list is empty and the form says adding isn't switched on yet. The page renders client-side; there is no build-time data.
+- **Types:** Book, Film/Series, Link, Other. The form's fields change with the type; Link needs a link, every other type can carry an optional one.
+- **Status** (per entry, not a filter): `suggested` → `collected` → `completed`. Set it in the Sheet. In the Sheet, `link` is the visitor's own link and goes on their name (for the Link type it's the recommended page, so it goes on the title), and `url` is your own page about it (a site path or an http(s) address): once the entry is `completed` it turns the title into a link, with the site's external-link arrow.
 
 ### `layouts/projects/list.html`
 Gallery grid for `/projects`. Reads Hugo pages sorted by `order` param. Same visual grid as uses.
