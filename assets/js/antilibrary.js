@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Every other type can carry an optional link too.
   const KINDS = {
     'Book':        { f1: 'Title', f2: 'Author' },
-    'Film/Series': { f1: 'Title', f2: 'OTT or director' },
+    'Film/Series': { f1: 'Title', f2: 'OTT or other details' },
     'Link':        null,
     'Other':       { f1: 'Title', f2: 'Comment' },
   };
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fields.hidden = isLink;
     form.f1.required = !isLink;
     form.link.required = isLink;
-    document.getElementById('alLinkLabel').textContent = isLink ? 'Link' : 'Your link (optional)';
+    document.getElementById('alLinkLabel').textContent = isLink ? 'Link' : 'Your link';
     if (cfg) {
       document.getElementById('alF1Label').textContent = cfg.f1;
       document.getElementById('alF2Label').textContent = cfg.f2;

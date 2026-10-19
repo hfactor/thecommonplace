@@ -9,7 +9,7 @@
  *
  * Sheet columns (row 1 is a header row, tab named "Antilibrary"):
  *   A date | B title | C detail | D kind | E recommendedBy | F status | G link | H url | I found
- *   detail = author, OTT/director, or the visitor's comment (depends on kind)
+ *   detail = author, OTT or other details, or the visitor's comment (depends on kind)
  *   link   = the visitor's own link, shown on their name (for kind "Link" it
  *            is the page they recommended, and goes on the title instead)
  *   url    = YOUR page about it on hiran.in (a /path or http(s) address); once
