@@ -256,6 +256,9 @@
 /* Type badge — subtle, just a label */
 .modal-type-row { display: flex; align-items: flex-start; gap: 8px; }
 .modal-title-row { display: flex; align-items: baseline; gap: 6px; }
+/* The Uses popup keeps its category tag beside the "Uses" label, so the tag
+   pill and the label text need to share a centre line. */
+.modal-uses .modal-type-row { align-items: center; }
 .modal-type-badge {
   font-size: var(--text-sm);
   color: var(--ink2);

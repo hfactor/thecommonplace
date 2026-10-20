@@ -119,9 +119,8 @@ function openSheet(uid) {
     html = `<div class="modal-uses">
       <div class="modal-uses-img-col">${imgWrapped}</div>
       <div class="modal-body-col">
-        <div class="modal-type-badge">Uses</div>
+        <div class="modal-type-row"><div class="modal-type-badge">Uses</div>${metaLink(e.subCategory, 'uses')}</div>
         ${usesTitleEl}
-        <div class="modal-meta">${[metaLink(e.subCategory, 'uses')].filter(Boolean).join('')}</div>
         ${e.note ? `<div class="modal-body">${e.note}</div>` : ''}
         ${dateEl}
       </div>
