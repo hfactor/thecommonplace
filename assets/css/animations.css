@@ -1,6 +1,10 @@
 /* ─── Page entrance — one slow fade-up, used on every page ── */
 @keyframes page-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.app { animation: page-in var(--dur-entrance) ease both; }
+/* `backwards`, not `both`: once the fade-up ends there's nothing left to fill. A
+   filling transform animation makes .app the containing block for the fixed
+   footer pill, which then sits at the bottom of the whole page on any screen
+   where .app grows taller than the viewport (phones, list view). */
+.app { animation: page-in var(--dur-entrance) ease backwards; }
 
 /* Custom tooltips */
 [data-tooltip] { position: relative; }

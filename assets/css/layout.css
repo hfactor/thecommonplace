@@ -102,6 +102,22 @@ button { font-family: var(--font); }
   /* On mobile, section pages scroll the full page */
   body:has(#lView) .app { overflow-y: auto; height: auto; min-height: 100dvh; }
   body:has(#lView) .content { overflow: visible; }
+
+  /* Everything on a phone: a normal vertical feed instead of one long
+     sideways strip. Months stack top to bottom (label behind the first
+     card, like the list view) and each month's cards run one per row,
+     centred. */
+  .content--feed #cardView { height: auto; margin: 0; overflow: visible; }
+  .content--feed #cvTrack { flex-direction: column; height: auto; padding: var(--space-8) var(--gap-sm) 120px; }
+  .content--feed .cv-month { display: block; padding: 40px 0 var(--space-8); border-right: none; border-bottom: 1px solid var(--border-light); }
+  .content--feed .cv-month:last-child { border-bottom: none; }
+  .content--feed .cv-label { top: 0; bottom: auto; font-size: calc(var(--text-jumbo) * 1.35); }
+  .content--feed .cv-items { flex-direction: column; align-items: center; gap: var(--space-6); }
+  .content--feed .cv-items .card[data-type="scenes"] { margin: 0; }
+  /* The whole timeline is in the page at once, so let the browser skip layout
+     and paint for months that are far off-screen; it remembers each month's
+     real height once it has been seen. */
+  .content--feed .cv-month { content-visibility: auto; contain-intrinsic-size: auto 1300px; }
 }
 
 

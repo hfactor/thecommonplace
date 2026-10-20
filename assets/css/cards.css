@@ -267,6 +267,22 @@
   transform: translateY(0);
 }
 
+/* Phones have no hover, so the Scenes title and the Uses label are always
+   shown. Scenes: back in the flow under the pile (it was absolutely
+   positioned and ended up behind the next card). Uses: fills the strip
+   under the picture that used to sit empty until hover. */
+@media (max-width: 639px) {
+  .sc-pile-title { position: static; margin-top: var(--space-3); opacity: 1; transform: none; }
+  .gc-uses-label {
+    opacity: 1;
+    transform: none;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
 /* ── Field-note card (notebooks) — dark cover, thread-bound spine, centred title ── */
 .fn-card {
   width: 150px;
@@ -339,7 +355,11 @@
 
 @media (max-width: 639px) {
   .cv-items .card[data-type="reading"]   { width: 130px; }
-  .cv-items .card[data-type="bookmarks"] { width: 220px; height: 170px; }
+  /* Phones: the note is cut to two smaller lines (three on wider screens). The
+     card is as tall as its content instead of a fixed 170px. */
+  .cv-items .card[data-type="bookmarks"] { width: 220px; height: auto; }
+  .cv-items .card[data-type="bookmarks"] .bm-card { height: auto; }
+  .cv-items .card[data-type="bookmarks"] .bm-note { -webkit-line-clamp: 2; font-size: 12px; line-height: 1.4; }
   .cv-items .floppy-card                 { width: 140px; }
   .cv-items .gc                          { width: 160px; }
   .cv-items .fn-card                     { width: 120px; }
@@ -525,7 +545,8 @@
 @media (max-width: 639px) {
   .floppy-label-body { padding: 4px 6px 6px; gap: 2px; }
   .floppy-name { font-size: var(--text-sm); }
-  .floppy-tagline { font-size: var(--text-sm); }
+  /* Title only on phones; the description is for wider screens. */
+  .floppy-tagline { display: none; }
 }
 
 /* Write-protect tab — bottom left */

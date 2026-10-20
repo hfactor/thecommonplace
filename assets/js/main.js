@@ -148,8 +148,15 @@ function updateTitleTruncation() {
   });
 }
 
+// On a phone the Everything card view is a normal vertical feed (see
+// .content--feed in layout.css), so it scrolls the page, not the sideways track.
+function isVerticalFeed() {
+  return !!document.querySelector('.content--feed') && window.matchMedia('(max-width: 639px)').matches;
+}
+
 function goLatest() {
   const cv = document.getElementById('cardView');
+  if (cv && isVerticalFeed()) { window.scrollTo({ top: 0, behavior: 'smooth' }); updateLatestVisibility(); return; }
   if (cv) cv.scrollTo({ left: 0, behavior: 'smooth' });
   const lView = document.getElementById('lView');
   if (lView) lView.scrollTo({ top: 0, behavior: 'smooth' });
@@ -165,7 +172,9 @@ function updateLatestVisibility() {
   const cv    = document.getElementById('cardView');
   const lView = document.getElementById('lView');
   let atLatest = true;
-  if (viewMode === 'list') {
+  if (viewMode !== 'list' && isVerticalFeed()) {
+    atLatest = window.scrollY <= 4;
+  } else if (viewMode === 'list') {
     atLatest = (!lView || lView.scrollTop <= 4) && window.scrollY <= 4;
   } else {
     atLatest = !cv || cv.scrollLeft <= 4;
@@ -198,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (content) {
     let dragActive = false, dragged = false, startX = 0, startScroll = 0;
     content.addEventListener('pointerdown', e => {
-      if (e.pointerType !== 'mouse' || e.button !== 0 || viewMode === 'list') return;
+      if (e.pointerType !== 'mouse' || e.button !== 0 || viewMode === 'list' || isVerticalFeed()) return;
       dragActive = true; dragged = false;
       startX = e.clientX;
       startScroll = cv.scrollLeft;
@@ -219,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     content.addEventListener('click', e => { if (dragged) { e.preventDefault(); e.stopPropagation(); } }, true);
 
     content.addEventListener('wheel', e => {
-      if (viewMode === 'list' || cv.style.display === 'none') return;
+      if (viewMode === 'list' || cv.style.display === 'none' || isVerticalFeed()) return;
       // Inside #cardView itself, a horizontal trackpad swipe already scrolls
       // it natively — only redirect the vertical component there, or we'd
       // double-handle it. Outside that band there's nothing scrollable
@@ -244,6 +253,17 @@ function floppySticker() {
   return '';
 }
 
+// Images are painted newest first: the first few (top of the page, left of the
+// strip) load straight away at high priority so the first screen is never
+// empty, and everything after them stays lazy. The budget resets every time the
+// cards are rebuilt. The Scenes pile only spends it on its front photo.
+const EAGER_IMAGES = 6;
+let _eagerLeft = EAGER_IMAGES;
+function imgLoad() {
+  if (_eagerLeft > 0) { _eagerLeft--; return 'loading="eager" fetchpriority="high" decoding="async"'; }
+  return 'loading="lazy" decoding="async"';
+}
+
 function cardHTML(e, idx) {
   const uid  = e.uid;
   const si   = `style="--i:${idx || 0}"`;
@@ -255,7 +275,7 @@ function cardHTML(e, idx) {
   if (tmpl === 'book') {
     const title = e.localTitle || e.title;
     const img   = e.image
-      ? `<img class="card-cover-img" src="${e.image}" alt="${title}">`
+      ? `<img class="card-cover-img" src="${e.image}" alt="${title}" ${imgLoad()}>`
       : `<div class="card-cover-blank"></div>`;
     const extBadge = e.link ? `<a class="card-ext" href="${withRef(e.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICO.ext}</a>` : '';
     // Both recEl and extBadge inside card-cover so they tilt with the 3D hover
@@ -280,7 +300,7 @@ function cardHTML(e, idx) {
   // ── scenes (photo-pile card, up to 4 images stacked, title on hover) ──
   if (tmpl === 'scenes') {
     const imgs = (e.images || []).slice(0, 4)
-      .map(src => `<img class="sc-pile-img" src="${src}" alt="">`).join('');
+      .map((src, k) => `<img class="sc-pile-img" src="${src}" alt="" ${k === 0 ? imgLoad() : 'loading="lazy" decoding="async"'}>`).join('');
     return `<a class="card" data-type="scenes" href="${e.permalink}" ${si}><div class="sc-pile">${imgs}</div><span class="sc-pile-title">${e.title}</span></a>`;
   }
 
@@ -297,7 +317,7 @@ function cardHTML(e, idx) {
   // ── product (uses, projects, any gallery type) ────────
   if (tmpl === 'product') {
     const src     = e.image || e.cover || '';
-    const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
+    const img     = src ? `<img class="gc-img" src="${src}" alt="${e.title}" ${imgLoad()}>` : `<div class="gc-img-blank"></div>`;
     const rec     = isRec(e) ? `<span class="gc-rec">✦</span>` : '';
     const meta    = e.subCategory || e.year || '';
     const tagline = e.tagline ? `<span class="gc-tagline">${e.tagline}</span>` : '';
@@ -321,7 +341,7 @@ function cardHTML(e, idx) {
 
     if (e.type === 'uses') {
       const src = e.image || '';
-      const img = src ? `<img class="gc-img" src="${src}" alt="${e.title}" loading="lazy">` : `<div class="gc-img-blank"></div>`;
+      const img = src ? `<img class="gc-img" src="${src}" alt="${e.title}" ${imgLoad()}>` : `<div class="gc-img-blank"></div>`;
       return `<div class="gc gc--uses" data-type="uses" data-uid="${uid}" ${si} onclick="openSheet(this.dataset.uid)"><div class="gc-img-wrap">${img}</div><div class="gc-uses-label">${e.title}</div></div>`;
     }
 
@@ -359,6 +379,7 @@ function activeGroupBy(field) {
 function buildCardView() {
   const track = document.getElementById('cvTrack');
   if (!track) return;
+  _eagerLeft = EAGER_IMAGES;
 
   const groupBy = activeGroupBy();
 

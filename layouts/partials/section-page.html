@@ -111,12 +111,16 @@
 {{- end -}}
 
 {{/* ── Page shell ────────────────────────────────────── */}}
+{{/* Newest first: the first 6 card images load straight away at high priority
+     (so the first screen is never empty); the rest are lazy. $.Scratch imgN
+     counts images in render order. */}}
+{{- $.Scratch.Set "imgN" 0 -}}
 
 <div class="app">
 
 {{ partial "page-nav.html" (dict "page" . "ctx" "section" "activeType" $lt) }}
 
-<main class="content">
+<main class="content content--feed">
   <div id="cardView">
     <div id="cvTrack">
 
@@ -135,7 +139,7 @@
                 {{- $isRec := or (eq $p.Params.recommended true) (eq (lower (printf "%v" (default "" $p.Params.recommended))) "yes") -}}
                 <div class="card" data-uid="{{ $uid }}" data-type="reading" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
                   <div class="card-cover">
-                    {{- if $p.Params.image -}}<img class="card-cover-img" src="{{ $p.Params.image }}" alt="{{ $title }}">{{- else -}}<div class="card-cover-blank"></div>{{- end -}}
+                    {{- if $p.Params.image -}}{{- $n := int ($.Scratch.Get "imgN") -}}{{- $.Scratch.Set "imgN" (add $n 1) -}}<img class="card-cover-img" src="{{ $p.Params.image }}" alt="{{ $title }}" {{ if lt $n 6 }}loading="eager" fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">{{- else -}}<div class="card-cover-blank"></div>{{- end -}}
                     <div class="card-spine"></div>
                   </div>
                   {{- if $isRec -}}<svg class="card-rec" viewBox="0 0 12 28" xmlns="http://www.w3.org/2000/svg" aria-label="Recommended"><path d="M0 0h12v28l-6-6-6 6z" fill="#A67C00"/></svg><span class="card-rec-label">Recommended</span>{{- end -}}
@@ -195,8 +199,10 @@
                 {{- $images := findRE `/img/scenes/[^ )"]+\.jpg` $p.RawContent 4 -}}
                 <a class="card" data-type="scenes" href="{{ $p.RelPermalink }}" style="--i:{{ $i }}">
                   <div class="sc-pile">
-                    {{- range first 4 $images -}}
-                    <img class="sc-pile-img" src="{{ . }}" alt="">
+                    {{- range $k, $src := first 4 $images -}}
+                    {{- $eager := false -}}
+                    {{- if eq $k 0 -}}{{- $n := int ($.Scratch.Get "imgN") -}}{{- $.Scratch.Set "imgN" (add $n 1) -}}{{- $eager = lt $n 6 -}}{{- end -}}
+                    <img class="sc-pile-img" src="{{ $src }}" alt="" {{ if $eager }}loading="eager" fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">
                     {{- end -}}
                   </div>
                   <span class="sc-pile-title">{{ $p.Title }}</span>
@@ -267,7 +273,7 @@
               {{- $subcat := default "Other" $item.subCategory -}}
               <div class="gc gc--uses" data-type="uses" data-subcat="{{ $subcat }}" data-uid="{{ $uid }}" style="--i:{{ $i }}" onclick="openSheet(this.dataset.uid)">
                 <div class="gc-img-wrap">
-                  {{- if $item.image -}}<img class="gc-img" src="{{ $item.image }}" alt="{{ $item.title }}" loading="lazy">{{- else -}}<div class="gc-img-blank"></div>{{- end -}}
+                  {{- if $item.image -}}{{- $n := int ($.Scratch.Get "imgN") -}}{{- $.Scratch.Set "imgN" (add $n 1) -}}<img class="gc-img" src="{{ $item.image }}" alt="{{ $item.title }}" {{ if lt $n 6 }}loading="eager" fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">{{- else -}}<div class="gc-img-blank"></div>{{- end -}}
                 </div>
                 <div class="gc-uses-label">{{ $item.title }}</div>
               </div>
