@@ -17,6 +17,7 @@ function openSearch() {
   const overlay = document.getElementById('searchOverlay');
   if (!overlay) return;
   overlay.classList.add('open');
+  liftAboveKeyboard();
   // A fast typist can enter a query before this fetch resolves — the
   // 'input' listener will have already bailed out (no searchIndex yet)
   // and won't fire again on its own, so re-render once loading finishes.
@@ -34,7 +35,25 @@ function openSearch() {
   if (typeof updateFabIcons === 'function') updateFabIcons();
   const hint = document.getElementById('searchHintKey');
   if (hint) hint.textContent = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? '\u2318K' : 'Ctrl K';
-  setTimeout(() => input.focus(), 10);
+  // On a touch screen the keyboard would cover the sheet the moment it opened,
+  // so it only comes up when the box is tapped.
+  if (!window.matchMedia('(hover: none)').matches) setTimeout(() => input.focus(), 10);
+}
+
+// Phones: when the on-screen keyboard opens, lift the sheet to sit just above
+// it (the sheet is pinned to the bottom, which the keyboard would cover)
+// instead of stretching it over the whole screen. Where the browser already
+// shrinks the page for the keyboard this works out to 0.
+function liftAboveKeyboard() {
+  const overlay = document.getElementById('searchOverlay');
+  if (!overlay) return;
+  const vv = window.visualViewport;
+  const kb = vv ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
+  overlay.style.setProperty('--kb', Math.round(kb) + 'px');
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', liftAboveKeyboard);
+  window.visualViewport.addEventListener('scroll', liftAboveKeyboard);
 }
 
 // "This month" / "Last month" aren't pages, they're one-click searches that
@@ -55,6 +74,7 @@ function closeSearch() {
   const overlay = document.getElementById('searchOverlay');
   if (!overlay) return;
   overlay.classList.remove('open');
+  overlay.style.setProperty('--kb', '0px');
   searchActiveIdx = -1;
 }
 

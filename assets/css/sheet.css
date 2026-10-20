@@ -646,9 +646,15 @@ button.search-result { width: 100%; border: none; background: none; font-family:
 }
 
 @media (max-width: 639px) {
-  .search-overlay { padding: 0; align-items: flex-start; }
-  .search-box { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
-  .search-results { flex: 1; height: auto; }
+  /* A bottom sheet over the page with the same content as on desktop. --kb is
+     the on-screen keyboard's height (set by search.js), so the sheet sits just
+     above the keyboard and shrinks to fit, instead of going full screen. */
+  .search-overlay { --sheet-max: min(88dvh, calc(100dvh - var(--kb, 0px) - 12px)); padding: 0 0 var(--kb, 0px); align-items: flex-end; }
+  .search-box { max-width: 100%; height: auto; max-height: var(--sheet-max); border-radius: 16px 16px 0 0; animation: slide-up var(--dur-reveal) ease; }
+  .search-results { flex: 0 1 auto; max-height: calc(var(--sheet-max) - 130px); }
+  /* Bigger touch targets for the close button and the view / theme icons. */
+  .search-close { min-width: 44px; min-height: 44px; }
+  .search-act { width: 40px; height: 40px; }
 }
 
 .modal-cover-hit { display: block; color: inherit; text-decoration: none; }
