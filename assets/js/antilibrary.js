@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const form  = document.getElementById('alForm');
   const msg   = document.getElementById('alMsg');
   const empty = document.getElementById('alEmpty');
+  const toggle = document.getElementById('alToggle');
+  const phone = window.matchMedia('(max-width: 639px)');
   if (!items || !form) return;
 
   const live = ANTILIBRARY_DEPLOYMENT !== 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
@@ -105,6 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  // On phones the form starts collapsed behind its heading; on wider screens
+  // it is always open and the heading is just a heading.
+  function setOpen(open) {
+    form.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(phone.matches ? open : true));
+  }
+  toggle.addEventListener('click', () => { if (phone.matches) setOpen(!form.classList.contains('is-open')); });
+  phone.addEventListener('change', () => setOpen(form.classList.contains('is-open')));
+  setOpen(false);
+
   const fields = document.getElementById('alFields');
   function syncFields() {
     const kind = form.kind.value;
@@ -172,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.f2.value = '';
         form.link.value = '';
         say('Added. Thank you!');
+        if (phone.matches) setOpen(false);
       })
       .catch(() => say('Something went wrong. Try again in a bit.'))
       .finally(() => { btn.disabled = false; });

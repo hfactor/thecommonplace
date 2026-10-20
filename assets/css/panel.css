@@ -315,6 +315,22 @@
 /* Row 1: Type | Title | Author. Row 2: Your name | Link | Add. Four columns
    so the edges of both rows line up: Your name sits under Type, Link spans
    under Title and Author, Add under Author's right end. */
+.al-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: default;
+  pointer-events: none; /* only a real button on phones, see the mobile block */
+}
+.al-toggle-ico { display: none; }
 .al-grid { display: grid; grid-template-columns: 150px 1.7fr 1fr auto; gap: var(--space-3); }
 .al-fields { display: contents; }
 .al-fields[hidden] { display: none; }
@@ -406,6 +422,13 @@ a.al-title:hover .l-ext { opacity: 1; }
 .al-state--completed { color: var(--accent); }
 
 @media (max-width: 639px) {
+  /* On phones the heading is a button that opens the fields underneath. */
+  .al-toggle { cursor: pointer; pointer-events: auto; padding: var(--space-1) 0; }
+  .al-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--r-xs); }
+  .al-toggle-ico { display: inline-flex; font-size: 22px; line-height: 1; font-weight: var(--weight-normal); color: var(--ink2); }
+  .al-toggle-ico::before { content: "+"; }
+  .al-toggle[aria-expanded="true"] .al-toggle-ico::before { content: "\2212"; }
+  .al-form:not(.is-open) .al-grid { display: none; }
   .al-grid { grid-template-columns: 1fr; }
   .al-grid .al-f, .al-grid .al-f--title, .al-grid .al-f--wide, .al-grid .al-f--name, .al-grid .al-f--c2, .al-grid .al-f--add { grid-column: 1; }
   .al-f--add > span { display: none; }
