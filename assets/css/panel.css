@@ -43,7 +43,11 @@
 .sc-photo { margin: 0; grid-column: 1 / -1; }
 .sc-photo--split { grid-column: auto; }
 .sc-photos > p { grid-column: 1 / -1; margin: 0; }
+/* Anything that isn't a photo takes the full row. Without this, a heading or a
+   list falls into one cell of the two-column grid and sits beside its neighbour. */
+.sc-photos > h2, .sc-photos > h3, .sc-photos > h4, .sc-photos > ul, .sc-photos > ol, .sc-photos > blockquote { grid-column: 1 / -1; }
 .sc-photo img { width: 100%; height: auto; display: block; border-radius: var(--r-sm); }
+.sc-note { margin-top: var(--space-6); font-size: var(--text-sm); color: var(--ink2); }
 .sc-photo figcaption {
   margin-top: 6px;
   font-size: var(--text-sm);
@@ -238,6 +242,7 @@
 .sp-updated a,
 .sp-footer a,
 .sc-photos a,
+.sc-note a,
 .al-from a,
 .wikilink {
   color: var(--accent);
@@ -251,6 +256,7 @@
 .sp-updated a:hover,
 .sp-footer a:hover,
 .sc-photos a:hover,
+.sc-note a:hover,
 .al-from a:hover,
 .wikilink:hover { text-decoration-color: var(--accent); transition-duration: var(--dur-quick); }
 
