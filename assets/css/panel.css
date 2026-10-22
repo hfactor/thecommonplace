@@ -55,8 +55,7 @@
 }
 
 @media (max-width: 639px) {
-  .sc-photos { grid-template-columns: 1fr; gap: var(--space-3); }
-  .sc-photo--split { grid-column: 1 / -1; }
+  .sc-photos { gap: var(--space-3); }
 }
 
 .sp-kicker { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--ink2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
