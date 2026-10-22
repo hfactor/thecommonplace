@@ -8,13 +8,16 @@
        Bookmarks, Projects, and Life Logs are each a one-time dated entry,
        so they're the right shape for a feed.
 
-       Scenes is excluded for now while the type is new/being tried out. */ -}}
+       Scenes are included along with the other dated types. Their images are root-relative, so they're made absolute below
+       for feed readers. */ -}}
 {{- $selfURL := .selfURL -}}
 {{- $pages := where site.RegularPages "Section" "!=" "" -}}
 {{- $pages = where $pages "Section" "!=" "notes" -}}
 {{- $pages = where $pages "Section" "!=" "lists" -}}
 {{- $pages = where $pages "Section" "!=" "scenes" -}}
-{{- $pages = $pages | first 50 -}}
+{{- $scenes := where site.RegularPages "Section" "scenes" -}}
+{{- $pages = ($pages | union $scenes).ByDate.Reverse | first 50 -}}
+{{- $base := strings.TrimSuffix "/" site.BaseURL -}}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ site.Title }}</title>
@@ -27,7 +30,9 @@
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Content | html }}</description>
+      {{- $content := .Content -}}
+      {{- if eq .Section "scenes" -}}{{- $content = $content | replaceRE `(src|href)="/` (printf `${1}="%s/` $base) -}}{{- end -}}
+      <description>{{ $content | html }}</description>
     </item>
     {{ end }}
   </channel>
