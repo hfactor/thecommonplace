@@ -16,8 +16,8 @@
 {{- end -}}
 
 {{- /* Title */}}
-{{- $title := printf "%s — %s" .Title $siteName -}}
-{{- if $isHome -}}{{- $title = printf "%s — %s" $siteName $tagline -}}{{- end -}}
+{{- $title := printf "%s - %s" .Title $siteName -}}
+{{- if $isHome -}}{{- $title = printf "%s - %s" $siteName $tagline -}}{{- end -}}
 
 {{- /* Description: page-level → site fallback → summary fallback */}}
 {{- $desc := .Params.description | default site.Params.description -}}

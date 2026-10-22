@@ -26,7 +26,7 @@ ignoreFiles = [
   bookmarks = "/bookmarks/:slug"
 
 [params]
-  tagline       = "Product Designer"
+  tagline       = "Making and learning to make things"
   description   = "Hiran Venugopalan makes things where design, technology, and culture meet. Product designer, maker, home coffee brewer."
   keywords      = "product designer, UX design, open source design, FOSS, Malayalam typography, typeface designer, Bengaluru, India, Hiran Venugopalan"
   ogImage       = "/img/og-image.png"
