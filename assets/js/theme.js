@@ -47,6 +47,21 @@ function updateFabIcons() {
     const t = dark ? 'Switch to light theme' : 'Switch to dark theme';
     themeBtn.setAttribute('aria-label', t); themeBtn.setAttribute('title', t);
   }
+  // Desktop bar buttons: same icons and labels as the ⌘K overlay actions.
+  const barTheme = document.querySelector('.sf-theme-btn');
+  if (barTheme) {
+    const t = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    barTheme.setAttribute('aria-label', t); barTheme.setAttribute('title', t);
+  }
+  const barView = document.querySelector('.sf-view-btn');
+  if (barView) {
+    const listOnly = typeof window.__LISTING__ !== 'undefined' && window.__LISTING__.listOnly;
+    barView.hidden = listOnly || !(document.getElementById('lView') || document.getElementById('cardView'));
+    const m = mode === 'list' ? 'Switch to card view' : 'Switch to list view';
+    barView.setAttribute('aria-label', m); barView.setAttribute('title', m);
+    const ico = barView.querySelector('.sf-view-ico');
+    if (ico) ico.innerHTML = mode === 'list' ? ICO.grid : ICO.list;
+  }
   const viewBtn = document.getElementById('viewAction');
   if (viewBtn) {
     const m = mode === 'list' ? 'Switch to card view' : 'Switch to list view';
