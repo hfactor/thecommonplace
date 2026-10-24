@@ -12,7 +12,8 @@
       "title"   (or .Params.localTitle .Title)
       "type"    "reading"
       "date"    .Date
-      "extra"   (delimit (cond (ne (default "" .Params.localTitle) "") (slice .Title .Params.author .Params.genre .Params.language) (slice .Params.author .Params.genre .Params.language)) " ")
+      "extra"   (delimit (cond (ne (default "" .Params.localTitle) "") (slice .Title .Params.author) (slice .Params.author)) " ")
+      "labels"  (slice (default "" .Params.genre) (default "" .Params.language))
       "permalink" .RelPermalink
     ) -}}
   {{- end -}}
@@ -69,7 +70,8 @@
     "title"   .title
     "type"    "uses"
     "date"    $t
-    "extra"   (default "" .subCategory)
+    "extra"   ""
+    "labels"  (slice (default "" .subCategory))
     "permalink" (printf "/uses/?q=%s" (urlquery .title))
   ) -}}
 {{- end -}}

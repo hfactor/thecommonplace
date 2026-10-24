@@ -3,6 +3,19 @@
 let searchIndex = null;
 let searchIndexPromise = null;
 let searchActiveIdx = -1;
+let searchLevel = 'home'; // 'home' | 'popular' — the start screen has one level down
+
+// Shows the start screen or its Popular Searches level. Typing hides both.
+function setSearchLevel(level) {
+  searchLevel = level;
+  const q = (document.getElementById('searchInput')?.value || '').trim();
+  const home = document.getElementById('searchHome');
+  const pop = document.getElementById('searchPopular');
+  if (home) home.hidden = !!q || level !== 'home';
+  if (pop) pop.hidden = !!q || level !== 'popular';
+  searchActiveIdx = -1;
+  searchNavNodes().forEach(n => n.classList.remove('kb-active'));
+}
 
 function loadSearchIndex() {
   if (searchIndexPromise) return searchIndexPromise;
@@ -26,8 +39,7 @@ function openSearch() {
   input.value = '';
   document.getElementById('searchResults').innerHTML = '';
   searchActiveIdx = -1;
-  const home = document.getElementById('searchHome');
-  if (home) home.hidden = false;
+  setSearchLevel('home');
   setMonthShortcuts();
   // List/Card only makes sense on pages that actually have a feed.
   const viewAction = document.getElementById('viewAction');
@@ -76,19 +88,23 @@ function closeSearch() {
   overlay.classList.remove('open');
   overlay.style.setProperty('--kb', '0px');
   searchActiveIdx = -1;
+  searchLevel = 'home';
 }
 
 const SEARCH_MONTHS = MONTHS.map(m => m.toLowerCase());
 
 const searchTypeLabel = id => (typeof TYPES_CFG !== 'undefined' && (TYPES_CFG.find(t => t.id === id) || {}).label) || id;
 
-// title/extra: broad substring match (expected for free text).
+// title/extra: broad substring match (expected for free text). labels: word-start.
 // type/month/year: prefix match only — an infix hit ("ma" inside "bookmarks")
 // isn't what "type as a search value" means, and short month prefixes are
 // surfaced as suggestions instead of silently exploding the result list.
 function itemMatches(it, q) {
   const hay = [it.title, it.extra].filter(Boolean).join(' ').toLowerCase();
   if (hay.includes(q)) return true;
+  // Genre, language and category match from the start of a word only, so
+  // "fiction" doesn't also find "non-fiction" (labelStartsWith, in main.js).
+  if ((it.labels || []).some(l => l && labelStartsWith(l.toLowerCase(), q))) return true;
   if (/^[a-z]/.test(q) && searchTypeLabel(it.type).toLowerCase().startsWith(q)) return true;
 
   const d = new Date(it.date);
@@ -143,8 +159,7 @@ function renderSearchResults() {
   const resultsEl = document.getElementById('searchResults');
   if (!resultsEl) return;
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  const home = document.getElementById('searchHome');
-  if (home) home.hidden = !!q;
+  setSearchLevel(searchLevel);
 
   if (!q) { resultsEl.innerHTML = ''; searchActiveIdx = -1; return; }
   if (!searchIndex) return;
@@ -189,7 +204,7 @@ function renderSearchResults() {
 // Arrow keys walk whichever list is on screen: the start screen's pages and
 // preferences when the box is empty, search results once something is typed.
 function searchNavNodes() {
-  const sel = '#searchHome:not([hidden]) .search-result, #searchResults .search-result';
+  const sel = '#searchHome:not([hidden]) .search-result, #searchPopular:not([hidden]) .search-result, #searchResults .search-result';
   return Array.from(document.querySelectorAll(sel)).filter(n => n.offsetParent !== null);
 }
 
@@ -215,7 +230,12 @@ document.addEventListener('keydown', e => {
 
   if (!isOpen) return;
 
-  if (e.key === 'Escape') { closeSearch(); return; }
+  if (e.key === 'Escape') {
+    // One level down, Escape goes back before it closes.
+    if (searchLevel === 'popular' && !document.getElementById('searchInput').value.trim()) { setSearchLevel('home'); return; }
+    closeSearch();
+    return;
+  }
   if (e.key === 'ArrowDown') {
     e.preventDefault();
     setSearchActive(Math.min(searchActiveIdx + 1, searchNavNodes().length - 1));
@@ -238,6 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   overlay.addEventListener('click', e => { if (e.target === overlay) closeSearch(); });
   input.addEventListener('input', renderSearchResults);
+  document.getElementById('searchPopularOpen')?.addEventListener('click', () => setSearchLevel('popular'));
+  document.getElementById('searchPopularBack')?.addEventListener('click', () => setSearchLevel('home'));
   document.querySelectorAll('#searchHome [data-query]').forEach(btn => {
     btn.addEventListener('click', () => {
       input.value = btn.dataset.query;

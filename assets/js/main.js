@@ -56,10 +56,20 @@ function kbSelect(items, idx) {
 const isRec    = e => e.recommended;
 const typeCfg  = type => (typeof TYPES_CFG !== 'undefined' ? TYPES_CFG : []).find(t => t.id === type) || {};
 
-const _urlQ = new URLSearchParams(location.search).get('q') || '';
+const _urlParams = new URLSearchParams(location.search);
+const _urlQ = _urlParams.get('q') || '';
+// Exact-label filters from the URL, e.g. ?language=Malayalam&genre=Fiction&recommended=yes
+// (used by the ⌘K Popular Searches); all of them must match.
+const _urlF = {
+  language:    _urlParams.get('language') || '',
+  genre:       _urlParams.get('genre') || '',
+  subCategory: _urlParams.get('subcategory') || '',
+  recommended: /^(1|yes|true)$/i.test(_urlParams.get('recommended') || ''),
+};
+const _hasUrlF = !!(_urlF.language || _urlF.genre || _urlF.subCategory || _urlF.recommended);
 
 function injectQBackBtn() {
-  if (!_urlQ) return;
+  if (!_urlQ && !_hasUrlF) return;
   const btn = document.createElement('a');
   btn.className = 'q-back-btn';
   btn.href = location.pathname;
@@ -68,6 +78,11 @@ function injectQBackBtn() {
   document.body.appendChild(btn);
 }
 injectQBackBtn();
+
+function labelStartsWith(label, q) {
+  const esc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('(^|[^a-z0-9-])' + esc).test(label);
+}
 
 function entryMatches(e) {
   if (typeof window.__LISTING__ !== 'undefined') {
@@ -82,14 +97,24 @@ function entryMatches(e) {
     if (f.recommended && !isRec(e))                       return false;
     if (f.year        && e.year        !== String(f.year)) return false;
   }
+  if (_urlF.language    && (e.language    || '').toLowerCase() !== _urlF.language.toLowerCase())    return false;
+  if (_urlF.genre       && (e.genre       || '').toLowerCase() !== _urlF.genre.toLowerCase())       return false;
+  if (_urlF.subCategory && (e.subCategory || '').toLowerCase() !== _urlF.subCategory.toLowerCase()) return false;
+  if (_urlF.recommended && !isRec(e)) return false;
   if (_urlQ) {
     const q = _urlQ.toLowerCase();
     if (q === 'recommended') {
       if (!isRec(e)) return false;
     } else {
-      const hay = [e.title, e.localTitle, e.author, e.language, e.genre, e.subCategory, e.domain]
+      // Free text (title, author, domain) matches anywhere. Labels (genre,
+      // language, category) match from the start of a word only, with a
+      // hyphen counting as part of the word, so "fiction" doesn't also pull
+      // in "non-fiction".
+      const text = [e.title, e.localTitle, e.author, e.domain]
         .filter(Boolean).join(' ').toLowerCase();
-      if (!hay.includes(q)) return false;
+      const labelHit = [e.language, e.genre, e.subCategory].filter(Boolean)
+        .some(v => labelStartsWith(v.toLowerCase(), q));
+      if (!text.includes(q) && !labelHit) return false;
     }
   }
   return true;

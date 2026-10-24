@@ -7,12 +7,22 @@
     </div>
     <div class="search-results">
       <div id="searchHome">
-        <a class="search-result" href="{{ "about" | relURL }}"><span class="search-result-title">About Page</span></a>
+        <button type="button" class="search-result" id="searchPopularOpen"><span class="search-result-title">Popular Searches</span><span class="search-result-meta" aria-hidden="true">&rsaquo;</span></button>
         <a class="search-result" href="{{ "antilibrary" | relURL }}"><span class="search-result-title">Antilibrary</span></a>
         <a class="search-result" href="{{ "projects" | relURL }}"><span class="search-result-title">Projects</span></a>
         <a class="search-result" href="{{ "notes" | relURL }}"><span class="search-result-title">Working Notes</span></a>
+        <a class="search-result" href="{{ "about" | relURL }}"><span class="search-result-title">About</span></a>
         <button type="button" class="search-result" id="searchThisMonth" data-query=""><span class="search-result-title">This month</span><span class="search-result-meta"></span></button>
         <button type="button" class="search-result" id="searchLastMonth" data-query=""><span class="search-result-title">Last month</span><span class="search-result-meta"></span></button>
+      </div>
+      <div id="searchPopular" hidden>
+        <button type="button" class="search-result search-back" id="searchPopularBack"><span class="search-result-title"><span aria-hidden="true">&larr;</span> Popular Searches</span></button>
+        <a class="search-result" href="{{ "reading/?language=Malayalam&genre=Fiction&recommended=yes" | relURL }}"><span class="search-result-title">Malayalam Fiction Recommendations</span><span class="search-result-meta">Reading</span></a>
+        <a class="search-result" href="{{ "reading/?language=English&genre=Fiction&recommended=yes" | relURL }}"><span class="search-result-title">English Fiction Recommendations</span><span class="search-result-meta">Reading</span></a>
+        <a class="search-result" href="{{ "reading/?genre=Comics&recommended=yes" | relURL }}"><span class="search-result-title">Comic Recommendations</span><span class="search-result-meta">Reading</span></a>
+        <a class="search-result" href="{{ "reading/?genre=Non-Fiction&recommended=yes" | relURL }}"><span class="search-result-title">Non-Fiction Recommendations</span><span class="search-result-meta">Reading</span></a>
+        <a class="search-result" href="{{ "uses/?q=Brewing" | relURL }}"><span class="search-result-title">Brewing Tools</span><span class="search-result-meta">Uses</span></a>
+        <a class="search-result" href="{{ "uses/?q=Analog" | relURL }}"><span class="search-result-title">Analog Tools</span><span class="search-result-meta">Uses</span></a>
       </div>
       <div id="searchResults"></div>
     </div>
