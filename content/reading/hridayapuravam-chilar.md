@@ -4,7 +4,7 @@ localTitle: ഹൃദയപൂർവ്വം ചിലർ
 author: Sathyan Anthikad
 date: 2026-04-30
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/hridayapuravam-chilar.jpg
 link: https://amzn.to/4nnxh7A

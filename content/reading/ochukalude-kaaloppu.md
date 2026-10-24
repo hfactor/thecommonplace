@@ -4,7 +4,7 @@ localTitle: ഒച്ചുകളുടെ കാലൊപ്പ്
 author: P F Mathews
 date: 2026-04-27
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/ochukalude-kaaloppu.jpg
 link: https://amzn.to/4no9i8h

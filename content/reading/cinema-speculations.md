@@ -4,7 +4,7 @@ localTitle:
 author: Quentin Tarantino
 date: 2024-09-04
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/cinema-speculations.jpg
 link: https://amzn.to/4eKtXxG

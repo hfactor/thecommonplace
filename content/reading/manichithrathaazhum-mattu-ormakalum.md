@@ -4,7 +4,7 @@ localTitle: മണിച്ചിത്രത്താഴും മറ്റ് 
 author: Fazil
 date: 2024-08-16
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/manichithrathaazhum-mattu-ormakalum.jpg
 link: https://www.mbibooks.com/product/manichithrathaazhum-mattu-ormakalum/

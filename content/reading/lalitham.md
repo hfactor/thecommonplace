@@ -4,7 +4,7 @@ localTitle: ലളിതം
 author: BELBIN P. BABY
 date: 2024-06-12
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/lalitham.jpg
 link: https://dcbookstore.com/books/lalitham-kpac-lalithayude-kathapathrangaliloode

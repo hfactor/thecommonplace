@@ -4,7 +4,7 @@ localTitle: മോട്ടോർ സൈക്കിൾ ഡയറീസ് �
 author: SHOBHEENDRAN
 date: 2024-10-10
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/motor-cycle-diaries-johinoppam.jpg
 link: https://www.mbibooks.com/product/motorcycle-diaries-johninoppam/

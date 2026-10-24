@@ -4,7 +4,7 @@ localTitle: ദൈവത്തെ ശല്യപ്പെടുത്തരു�
 author: Innocent
 date: 2025-08-22
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/daivathe-shalyappedutharuth.jpg
 link: https://dcbookstore.com/books/daivathe-salyappedutharuthu

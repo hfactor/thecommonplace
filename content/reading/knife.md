@@ -4,7 +4,7 @@ localTitle:
 author: Salman Rushdie
 date: 2025-05-04
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/knife.jpg
 link: https://amzn.to/4dF354w

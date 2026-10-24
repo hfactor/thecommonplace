@@ -4,7 +4,7 @@ localTitle:
 author: Anthony Bourdain
 date: 2026-10-02
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/kitchen-confidential.jpg
 link: https://www.amazon.in/Kitchen-Confidential-Anthony-Bourdain-ebook/dp/B004U9J9GS

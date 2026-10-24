@@ -4,7 +4,7 @@ localTitle: ജോൺ ഏബ്രഹാം
 author: SHAJI K N
 date: 2024-07-21
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/john-abraham.jpg
 link: https://www.mbibooks.com/product/john-abraham/

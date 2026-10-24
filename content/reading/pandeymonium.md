@@ -4,7 +4,7 @@ localTitle:
 author: Piyush Pandey
 date: 2023-06-15
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/pandeymonium.jpg
 link: https://amzn.to/4dXJ8Uq

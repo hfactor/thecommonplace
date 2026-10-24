@@ -4,7 +4,7 @@ localTitle:
 author: B.Jeyamohan
 date: 2023-09-11
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/stories-of-the-true.jpg
 link: https://amzn.to/4gsHKdv

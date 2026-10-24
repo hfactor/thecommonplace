@@ -4,7 +4,7 @@ localTitle: ഷഹബാസ് ലൈവ്
 author: Shahbaz Aman
 date: 2024-08-17
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/shahabaz-live.jpg
 link: https://amzn.to/3AGqy4z

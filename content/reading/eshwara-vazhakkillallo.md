@@ -4,7 +4,7 @@ localTitle: ഈശ്വരാ വഴക്കില്ലല്ലോ!
 author: Salimkumar
 date: 2025-11-09
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/eshwara-vazhakkillallo.jpg
 link: https://amzn.to/4rKeLYd

@@ -4,7 +4,7 @@ localTitle: ഒരു പോലീസ് സർജന്റെ ഓർമ്മ�
 author: Dr.B.UMADATHAN
 date: 2022-07-05
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/oru-policekarante-ormakurippukal.jpg
 link: https://amzn.to/3Ndkun1

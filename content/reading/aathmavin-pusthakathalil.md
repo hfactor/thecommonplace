@@ -4,7 +4,7 @@ localTitle: ആത്മാവിൻ പുസ്തകത്താളിൽ
 author: Kamal
 date: 2025-03-11
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: false
 image: /img/reading/aathmavin-pusthakathalil.jpg
 link: https://amzn.to/3Ij9TI8

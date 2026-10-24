@@ -4,7 +4,7 @@ localTitle:
 author: Perumal Murugan
 date: 2026-06-24
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/the-land-and-the-shadows.jpg
 link: https://amzn.to/4eaWsGt

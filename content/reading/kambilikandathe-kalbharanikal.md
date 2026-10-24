@@ -4,7 +4,7 @@ localTitle: കമ്പിളികണ്ടത്തെ കൽഭരണിക�
 author: Babu Abraham
 date: 2026-05-25
 language: Malayalam
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/kambilikandathe-kalbharanikal.jpg
 link: https://amzn.to/4x7t3Wh

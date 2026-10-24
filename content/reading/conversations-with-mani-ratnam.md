@@ -4,7 +4,7 @@ localTitle:
 author: Baradwaj Rangan
 date: 2022-01-16
 language: English
-genre: Memoir
+genre: Non-Fiction
 recommended: true
 image: /img/reading/conversations-with-mani-ratnam.jpg
 link: https://amzn.to/3XlYjjh
