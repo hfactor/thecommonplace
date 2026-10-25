@@ -1,0 +1,107 @@
+# Personal Websites — one entry per site, shown alphabetically on /personal-web/.
+# title: the site or person's name
+# url:   the site's home page (https://…), never a single page of it
+# tags:  optional list from: Portfolio, Blog, Digital Garden (a site can have more than one),
+#        shown under the title. Photography, art, projects and resume sites are all Portfolio.
+- title: Akshay S Dinesh
+  url: https://asd.learnlearn.in/
+  tags: [Blog]
+- title: Anish Anilkumar
+  url: https://anishanilkumar.com/
+  tags: [Portfolio]
+- title: Ark Arjun
+  url: https://arkives.in/
+  tags: [Blog, Portfolio]
+- title: Arun Sajeev
+  url: https://www.inspiredmonster.com/
+  tags: [Portfolio]
+- title: Balasankar C
+  url: https://balasankarc.in/
+  tags: [Blog]
+- title: Ershad Kunnakkadan
+  url: https://ershadk.com/
+  tags: [Portfolio]
+- title: Jishnu Mohan
+  url: https://j15h.nu/
+  tags: [Portfolio]
+- title: Jithin V Mohan
+  url: https://jithinvmohan.wordpress.com/
+  tags: [Blog]
+- title: Kailash Nadh
+  url: https://nadh.in/
+  tags: [Portfolio, Blog]
+- title: Kavya Manohar
+  url: https://kavyamanohar.com/
+  tags: [Blog]
+- title: Mehar
+  url: https://wiki.meharmp.in/
+  tags: [Digital Garden]
+- title: Nandaja
+  url: https://nandaja.com/
+  tags: [Portfolio]
+- title: Rajeesh KV
+  url: https://rajeeshknambiar.wordpress.com/
+  tags: [Blog]
+- title: Sanjay Krishna
+  url: https://sjaykh.in/
+  tags: [Blog, Digital Garden]
+- title: Santhosh Thottingal
+  url: https://thottingal.in/
+  tags: [Blog, Digital Garden, Portfolio]
+- title: Stultus
+  url: https://stultus.in/
+  tags: [Blog, Digital Garden]
+- title: Anand Subramanian
+  url: https://theanand.com/
+  tags: [Blog]
+- title: Binny V A
+  url: https://binnyva.com/
+  tags: [Portfolio, Digital Garden]
+- title: Melvin Thambi
+  url: https://www.melvinthambi.com/
+  tags: [Portfolio]
+- title: Derek Sivers
+  url: https://sive.rs/
+  tags: [Blog]
+- title: Ajay Menon
+  url: https://ajm0.dev/
+  tags: [Portfolio, Blog]
+- title: Rasmus Andersson
+  url: https://rsms.me/
+  tags: [Portfolio]
+- title: Christin George
+  url: https://christingeorge.com/
+  tags: [Digital Garden]
+- title: Niyas V
+  url: https://www.niyasv.com/
+  tags: [Portfolio]
+- title: InspiredMonster OS
+  url: https://www.inspiredos.com/
+  tags: [Portfolio]
+- title: Deepak Thomas
+  url: https://think.dj/
+  tags: [Portfolio]
+- title: Deepu Pradeep
+  url: https://deepupradeep.com/
+  tags: [Portfolio, Blog]
+- title: Hari Shanker R
+  url: https://hari.blog/
+  tags: [Blog]
+- title: Akhil Unnikrishnan
+  url: https://akhilunnikrishnan.com/
+  tags: [Blog]
+- title: Navendu Pottekkat
+  url: https://navendu.me/
+  tags: [Blog]
+- title: Thejesh GN
+  url: https://thejeshgn.com/
+  tags: [Blog]
+- title: Tanvi Bhakta
+  url: https://tanvibhakta.in/
+  tags: [Portfolio, Blog]
+- title: Drew
+  url: https://drew.coffee/
+  tags: [Blog]
+- title: Steph Ango
+  url: https://stephango.com/
+  tags: [Blog, Portfolio]

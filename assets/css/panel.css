@@ -372,6 +372,23 @@
 .al-skeleton:nth-child(3) .al-sk { animation-delay: 0.3s; }
 @keyframes al-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .al-sk { animation: none; } }
+.pw-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0 0 var(--space-6); }
+.pw-btn { cursor: pointer; font-family: inherit; }
+.pw-btn--ghost { padding: 7px 15px; font-weight: var(--weight-semibold); background: none; color: var(--ink); border: 1px solid var(--border); border-radius: var(--r-sm); font-size: var(--text-sm); transition: border-color var(--dur-fast), color var(--dur-fast); }
+.pw-btn--ghost:hover { border-color: var(--ink); }
+.pw-btn--ghost:disabled { opacity: 0.5; cursor: default; }
+.pw-form[hidden] { display: none; }
+.pw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.pw-grid .pw-wide { grid-column: 1 / -1; }
+.pw-add .recommend-submit { align-self: flex-start; padding: 9px 22px; }
+.pw-nav { margin-left: auto; align-self: center; }
+.pw-nav-btn { padding: 4px 10px; font: inherit; font-size: 12px; line-height: 1.4; color: var(--ink2); border: 1px solid var(--border); border-radius: var(--r-pill); transition: color var(--dur-fast), border-color var(--dur-fast); }
+.pw-nav-btn:hover, .pt-nav--open .pw-nav-btn { color: var(--ink); border-color: var(--ink); }
+.pw-item[hidden] { display: none; }
+.pw-ico { flex: 0 0 16px; width: 16px; height: 16px; border-radius: 3px; display: block; }
+.pw-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; flex: 0 1 auto; }
+.pw-tag { font-size: 12px; line-height: 1; padding: 4px 8px; color: color-mix(in srgb, var(--accent) 72%, transparent); background: color-mix(in srgb, var(--accent) 9%, transparent); border-radius: var(--r-pill); }
+@media (max-width: 639px) { .pw-grid { grid-template-columns: 1fr; } }
 .al-empty { font-size: var(--text-sm); color: var(--ink2); margin: 0; padding: 14px 0; border-top: 1px solid var(--border-light); }
 .al-empty[hidden] { display: none; }
 .al-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-light); }

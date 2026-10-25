@@ -1,0 +1,62 @@
+{{ define "main" }}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <div class="sp-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+      </div>
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      {{- $icoExt := `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8L8 2M8 2H4M8 2V6" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>` -}}
+
+      <div class="al-wrap pw-wrap">
+        <div class="pw-cta">
+          <button type="button" class="recommend-submit pw-btn" id="pwSubmitToggle" aria-expanded="false" aria-controls="pwForm">Submit a site</button>
+          <button type="button" class="pw-btn pw-btn--ghost" id="pwRandom">Visit Random Personal Web</button>
+          {{- $all := hugo.Data.personalweb -}}
+          <div class="pt-nav pw-nav" id="pwNav">
+            <button type="button" class="pt-nav-toggle pw-nav-btn" id="pwFilterBtn" aria-haspopup="true" aria-expanded="false" aria-label="Filter by type">
+              <span id="pwFilterLabel">All</span>
+              <svg class="pt-nav-caret" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+                <line x1="1" y1="5" x2="9" y2="5"/>
+                <line class="pt-nav-caret-v" x1="5" y1="1" x2="5" y2="9"/>
+              </svg>
+            </button>
+            <div class="pt-nav-menu pw-nav-menu" id="pwFilterMenu" role="menu" aria-hidden="true">
+              <a class="pt-nav-link pt-nav-link--active" href="#" role="menuitem" data-tag="" data-label="All">All <span class="pt-nav-count">{{ len $all }}</span></a>
+              {{- range slice "Portfolio" "Blog" "Digital Garden" }}
+              {{- $t := . }}
+              {{- $n := 0 }}{{ range $all }}{{ if in .tags $t }}{{ $n = add $n 1 }}{{ end }}{{ end }}
+              <a class="pt-nav-link" href="#" role="menuitem" data-tag="{{ $t }}" data-label="{{ $t }}">{{ $t }} <span class="pt-nav-count">{{ $n }}</span></a>
+              {{- end }}
+            </div>
+          </div>
+        </div>
+
+        <form id="pwForm" class="al-form recommend-form pw-form" autocomplete="off" hidden>
+          <h2 class="al-form-title">Suggest a personal website</h2>
+          <div class="pw-grid">
+            <label class="al-f pw-wide"><span>Link</span><input type="url" name="link" class="recommend-input" maxlength="500" placeholder="https://" required></label>
+            <label class="al-f"><span>Your name (optional)</span><input type="text" name="recommendedBy" class="recommend-input" maxlength="100" autocomplete="name"></label>
+            <div class="al-f pw-add"><span aria-hidden="true">&nbsp;</span><button type="submit" class="recommend-submit">Submit</button></div>
+          </div>
+          <input type="text" name="company" class="recommend-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="al-msg" id="pwMsg" role="status" hidden></p>
+        </form>
+
+        <ul class="al-items pw-items" id="pwItems">
+          {{- range sort hugo.Data.personalweb "title" }}
+          <li class="al-item pw-item" data-tags="{{ delimit .tags "|" }}">
+            <div class="al-body">
+              <div class="al-line"><img class="pw-ico" src="https://www.google.com/s2/favicons?domain={{ (urls.Parse .url).Host }}&amp;sz=64" width="16" height="16" alt="" loading="lazy" referrerpolicy="no-referrer"><a class="al-title" href="{{ .url }}" target="_blank" rel="noopener">{{ .title }}<span class="l-ext" aria-hidden="true">{{ $icoExt | safeHTML }}</span></a></div>
+            </div>
+            {{- with .tags }}<div class="pw-tags">{{ range . }}<span class="pw-tag">{{ . }}</span>{{ end }}</div>{{ end }}
+          </li>
+          {{- end }}
+        </ul>
+        {{- if not hugo.Data.personalweb }}<p class="al-empty">Nothing here yet.</p>{{ end }}
+      </div>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}
