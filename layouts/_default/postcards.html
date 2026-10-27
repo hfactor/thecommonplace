@@ -1,0 +1,26 @@
+{{ define "main" }}
+{{ partial "readable-open.html" (dict) }}
+
+      {{ partial "page-title.html" (dict "cur" .RelPermalink) }}
+      <div class="sp-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+      </div>
+
+      <div class="sp-text">{{ .Content }}</div>
+
+      <div class="al-wrap pc-wrap">
+        <ul class="al-items pc-items">
+          {{- range sort hugo.Data.postcards "date" "desc" }}
+          <li class="al-item pc-item">
+            <span class="pc-when">{{ time.Format "Jan 2006" (time.AsTime (printf "%s-01" .date)) }}</span>
+            <span class="pc-head"><span class="pc-code" title="Post office code">{{ .code }}</span><span class="al-dot" aria-hidden="true">·</span><span class="al-title pc-place">{{ .location }}</span></span>
+            <span class="pc-ratio" title="{{ .received }} of {{ .sent }} arrived (counts only the cards the receiver has confirmed)" aria-label="{{ .received }} of {{ .sent }} arrived">{{ .received }}/{{ .sent }}</span>
+          </li>
+          {{- end }}
+        </ul>
+        {{- if not hugo.Data.postcards }}<p class="al-empty">Nothing here yet.</p>{{ end }}
+      </div>
+      <p class="pc-note">Work in progress. Names and addresses stay private and are never shared.</p>
+
+{{ partial "readable-close.html" (dict "page" .) }}
+{{ end }}

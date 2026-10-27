@@ -389,6 +389,23 @@
 .pw-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; flex: 0 1 auto; }
 .pw-tag { font-size: 12px; line-height: 1; padding: 4px 8px; color: color-mix(in srgb, var(--accent) 72%, transparent); background: color-mix(in srgb, var(--accent) 9%, transparent); border-radius: var(--r-pill); }
 @media (max-width: 639px) { .pw-grid { grid-template-columns: 1fr; } }
+.pc-items > .pc-item {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  grid-template-areas: "when head ratio";
+  column-gap: var(--space-6);
+  align-items: baseline;
+  justify-content: start;
+  padding: 16px 0;
+}
+.pc-when, .pc-ratio { font-size: 12px; color: var(--ink2); }
+.pc-when  { grid-area: when; }
+.pc-ratio { grid-area: ratio; justify-self: end; }
+.pc-note { margin-top: var(--space-6); font-size: var(--text-sm); color: var(--ink2); }
+.pc-head  { grid-area: head; display: flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
+.pc-code  { font-size: var(--text-base); color: var(--ink); font-variant-numeric: tabular-nums; }
+.pc-head .al-dot { color: var(--ink2); }
+@media (max-width: 639px) { .pc-items > .pc-item { grid-template-columns: 78px 1fr auto; column-gap: var(--space-3); } }
 .al-empty { font-size: var(--text-sm); color: var(--ink2); margin: 0; padding: 14px 0; border-top: 1px solid var(--border-light); }
 .al-empty[hidden] { display: none; }
 .al-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-light); }

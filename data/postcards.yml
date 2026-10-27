@@ -1,0 +1,31 @@
+# Post Cards — one entry per batch of cards posted, newest first on /post-cards/.
+# date:         month and year it was posted, as YYYY-MM
+# code:         the post office code (PIN or postal code) of where it was posted
+# location:     the place
+# sent:         how many cards went out
+# received:     how many cards the receiver has acknowledged (shown first, as received/sent)
+- date: 2026-10
+  code: "302006"
+  location: Station Road, Jaipur
+  sent: 6
+  received: 0
+- date: 2026-10
+  code: "305001"
+  location: Ajmer Head Post Office
+  sent: 11
+  received: 3
+- date: 2026-07
+  code: "238882"
+  location: Far East Shopping Centre, Singapore
+  sent: 6
+  received: 3
+- date: 2025-08
+  code: "560008"
+  location: HAL 2nd Stage Post Office
+  sent: 24
+  received: 17
+- date: 2026-03
+  code: "560038"
+  location: Indiranagar
+  sent: 5
+  received: 4
