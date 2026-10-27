@@ -389,23 +389,58 @@
 .pw-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; flex: 0 1 auto; }
 .pw-tag { font-size: 12px; line-height: 1; padding: 4px 8px; color: color-mix(in srgb, var(--accent) 72%, transparent); background: color-mix(in srgb, var(--accent) 9%, transparent); border-radius: var(--r-pill); }
 @media (max-width: 639px) { .pw-grid { grid-template-columns: 1fr; } }
-.pc-items > .pc-item {
-  display: grid;
-  grid-template-columns: 120px 1fr auto;
-  grid-template-areas: "when head ratio";
-  column-gap: var(--space-6);
-  align-items: baseline;
-  justify-content: start;
-  padding: 16px 0;
+/* Post Cards: each entry is the back of an Indian post card, 14:9. Your note fills the
+   left; after the divider, on the right: the postmark where the stamp goes, two address
+   lines (the post office name, then how many arrived) and the six PIN boxes. */
+.pc-cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-6); }
+.pc-card {
+  --pc-paper: #F0E2B6; --pc-ink: #2b2416; --pc-ink2: #6a5f45; --pc-line: #5a3a1e; --pc-seal: #1f4aa8;
+  position: relative; display: grid; grid-template-columns: 1fr 1fr; aspect-ratio: 14 / 9;
+  background: var(--pc-paper); color: var(--pc-ink2);
+  border: 1px solid rgba(60, 45, 10, 0.12); border-radius: 0; box-shadow: var(--shadow-sm);
+  transform: rotate(-0.4deg);
 }
-.pc-when, .pc-ratio { font-size: 12px; color: var(--ink2); }
-.pc-when  { grid-area: when; }
-.pc-ratio { grid-area: ratio; justify-self: end; }
+.pc-card:nth-child(even) { transform: rotate(0.4deg); }
+.pc-card::before { content: ""; position: absolute; left: 50%; top: 10%; bottom: 8%; border-left: 1px solid var(--pc-line); }
+.pc-msg { padding: 28px 26px 28px 30px; }
+.pc-text { margin: 0; font-size: var(--text-sm); line-height: 1.7; color: var(--pc-ink2); }
+.pc-addr { position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 28px 9% 26px; }
+.pc-line { display: flex; align-items: flex-end; min-height: 36px; margin: 0; padding-bottom: 5px; border-bottom: 1px solid var(--pc-line); line-height: 1.3; }
+.pc-line + .pc-line { margin-top: 2px; }
+.pc-place { font-size: var(--text-base); color: var(--pc-ink); }
+.pc-arrived { font-size: var(--text-sm); color: var(--pc-ink2); }
+.pc-pin { display: flex; margin-top: 22px; }
+.pc-pin span { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; box-sizing: border-box; border: 1px solid var(--pc-line); font-size: var(--text-base); color: var(--pc-ink); font-variant-numeric: tabular-nums; }
+.pc-pin span + span { margin-left: -1px; }
+.pc-pin-label { margin-top: 6px; font-size: 11px; color: var(--pc-line); }
+/* A greeting card: white-grey paper, one open surface, no divider, address lines or PIN boxes. */
+.pc-greeting { --pc-paper: #F4F4F2; --pc-ink: #2b2b2b; --pc-ink2: #6a6a66; --pc-seal: #1f4aa8; grid-template-columns: 1fr; border-color: rgba(0, 0, 0, 0.09); }
+.pc-greeting::before { display: none; }
+.pc-greeting .pc-msg { display: flex; flex-direction: column; padding: 28px 150px 26px 30px; }
+.pc-gplace { margin: 0 0 10px; font-family: var(--font-display); font-size: var(--text-md); line-height: 1.3; color: var(--pc-ink); }
+.pc-gfoot { margin: auto 0 0; padding-top: 12px; font-size: var(--text-sm); color: var(--pc-ink2); }
+/* The seal: a double-ringed postmark in blue ink where the stamp goes, month on top, post office code below. */
+.pc-seal { position: absolute; top: 7%; right: 6%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 92px; height: 92px; box-sizing: border-box; border: 1.5px solid color-mix(in srgb, var(--pc-seal) 75%, transparent); border-radius: 50%; box-shadow: inset 0 0 0 4px var(--pc-paper), inset 0 0 0 5px color-mix(in srgb, var(--pc-seal) 45%, transparent); color: color-mix(in srgb, var(--pc-seal) 90%, transparent); transform: rotate(-8deg); }
+.pc-seal-date { font-size: 10px; letter-spacing: 0.1em; line-height: 1; }
+.pc-seal-code { font-size: var(--text-base); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+@media (max-width: 639px) {
+  .pc-msg { padding: 16px 12px 16px 16px; }
+  .pc-greeting .pc-msg { padding: 16px 96px 14px 16px; }
+  .pc-gplace { font-size: 15px; margin-bottom: 6px; }
+  .pc-gfoot { font-size: 11px; }
+  .pc-text { font-size: 12px; line-height: 1.55; }
+  .pc-addr { padding: 0 14px 9% 12px; }
+  .pc-line { min-height: 26px; padding-bottom: 3px; }
+  .pc-place { font-size: 13px; }
+  .pc-arrived { font-size: 11px; }
+  .pc-pin { margin-top: 14px; }
+  .pc-pin-label { font-size: 10px; }
+  .pc-pin span { width: 22px; height: 22px; font-size: 11px; }
+  .pc-seal { width: 64px; height: 64px; box-shadow: inset 0 0 0 3px var(--pc-paper), inset 0 0 0 4px color-mix(in srgb, var(--pc-seal) 45%, transparent); }
+  .pc-seal-date { font-size: 8px; }
+  .pc-seal-code { font-size: 10px; }
+}
 .pc-note { margin-top: var(--space-6); font-size: var(--text-sm); color: var(--ink2); }
-.pc-head  { grid-area: head; display: flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
-.pc-code  { font-size: var(--text-base); color: var(--ink); font-variant-numeric: tabular-nums; }
-.pc-head .al-dot { color: var(--ink2); }
-@media (max-width: 639px) { .pc-items > .pc-item { grid-template-columns: 78px 1fr auto; column-gap: var(--space-3); } }
 .al-empty { font-size: var(--text-sm); color: var(--ink2); margin: 0; padding: 14px 0; border-top: 1px solid var(--border-light); }
 .al-empty[hidden] { display: none; }
 .al-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-light); }

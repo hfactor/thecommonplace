@@ -9,13 +9,39 @@
       <div class="sp-text">{{ .Content }}</div>
 
       <div class="al-wrap pc-wrap">
-        <ul class="al-items pc-items">
+        <ul class="pc-cards">
           {{- range sort hugo.Data.postcards "date" "desc" }}
-          <li class="al-item pc-item">
-            <span class="pc-when">{{ time.Format "Jan 2006" (time.AsTime (printf "%s-01" .date)) }}</span>
-            <span class="pc-head"><span class="pc-code" title="Post office code">{{ .code }}</span><span class="al-dot" aria-hidden="true">·</span><span class="al-title pc-place">{{ .location }}</span></span>
-            <span class="pc-ratio" title="{{ .received }} of {{ .sent }} arrived (counts only the cards the receiver has confirmed)" aria-label="{{ .received }} of {{ .sent }} arrived">{{ .received }}/{{ .sent }}</span>
+          {{- if eq (.type | default "") "greeting" }}
+          <li class="pc-card pc-greeting">
+            <div class="pc-msg">
+              <p class="pc-gplace">{{ .location }}</p>
+              {{- with .note }}<p class="pc-text">{{ . }}</p>{{ end }}
+              <p class="pc-gfoot">{{ .received }} of {{ .sent }} confirmed delivered</p>
+            </div>
+            <span class="pc-seal">
+              <span class="pc-seal-date">{{ time.Format "Jan 2006" (time.AsTime (printf "%s-01" .date)) | upper }}</span>
+              <span class="pc-seal-code">{{ .code }}</span>
+            </span>
           </li>
+          {{- else }}
+          <li class="pc-card">
+            <div class="pc-msg">
+              {{- with .note }}<p class="pc-text">{{ . }}</p>{{ end }}
+            </div>
+            <div class="pc-addr">
+              <span class="pc-seal">
+                <span class="pc-seal-date">{{ time.Format "Jan 2006" (time.AsTime (printf "%s-01" .date)) | upper }}</span>
+                <span class="pc-seal-code">{{ .code }}</span>
+              </span>
+              <p class="pc-line pc-place">{{ .location }}</p>
+              <p class="pc-line pc-arrived">{{ .received }} of {{ .sent }} confirmed delivered</p>
+              <div class="pc-pin" role="img" aria-label="Post office code {{ .code }}">
+                {{- range split .code "" }}<span>{{ . }}</span>{{ end -}}
+              </div>
+              <span class="pc-pin-label" aria-hidden="true">पिन PIN</span>
+            </div>
+          </li>
+          {{- end }}
           {{- end }}
         </ul>
         {{- if not hugo.Data.postcards }}<p class="al-empty">Nothing here yet.</p>{{ end }}

@@ -3,29 +3,37 @@
 # code:         the post office code (PIN or postal code) of where it was posted
 # location:     the place
 # sent:         how many cards went out
+# type:         optional, `greeting` for a greeting card (shown in white-grey, without the PIN boxes); leave out for a post card
+# note:         optional, a few lines about the day, shown on the left of the card
 # received:     how many cards the receiver has acknowledged (shown first, as received/sent)
 - date: 2026-10
   code: "302006"
   location: Station Road, Jaipur
+  note: "Friends asked for postcards on my way back from Ajmer, so the station post box got a batch. Half written in a crowd, half on a moving train. Ugly cards, happy postman."
   sent: 6
   received: 0
 - date: 2026-10
   code: "305001"
   location: Ajmer Head Post Office
+  note: "Should’ve bought cards before the trip. The Head Post Office made up for it: a grand old building, and curious staff wondering what I was writing on so many cards."
   sent: 11
   received: 3
 - date: 2026-07
   code: "238882"
   location: Far East Shopping Centre, Singapore
+  note: "Greeting cards cost a fortune here. Sent one to myself. Still waiting."
+  type: greeting
   sent: 6
   received: 3
 - date: 2025-08
   code: "560008"
   location: HAL 2nd Stage Post Office
+  note: "Last time, they were puzzled by the price of a printed greeting card. This time, by why I needed so many. Slow post office, lovely people."
   sent: 24
   received: 17
 - date: 2026-03
   code: "560038"
   location: Indiranagar
+  note: "Had a few cards left, so I wrote random things to random people on a nice day. No occasion needed."
   sent: 5
   received: 4
