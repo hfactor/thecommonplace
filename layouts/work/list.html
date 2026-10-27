@@ -6,7 +6,7 @@
 
       <div class="work-header">
         <h1 class="work-title">
-          <span class="work-title-eyebrow">Professional Experience</span>
+          <span class="work-title-eyebrow">Design, Product &amp; Technology</span>
           <span class="work-title-name">Hiran Venugopalan</span>
         </h1>
       </div>
@@ -15,21 +15,31 @@
       {{- with .Params.experience }}
       <div class="work-timeline">
         <div class="work-section-label">Experience</div>
-        <div class="work-role-rail">
+        <div class="work-roles">
           {{- range . }}
-          {{- $current := strings.Contains .dates "Present" }}
           <div class="work-role">
             <div class="work-role-head">
               <span class="work-role-title">{{ .role }}</span>
               <span class="work-role-org">{{ .org }}</span>
               <span class="work-role-dates">{{ .dates }}</span>
             </div>
-            <p class="work-role-body">{{ .body }}</p>
-            {{- if not $current }}
-            <button type="button" class="work-role-case" data-work-modal-open>
-              <svg class="work-role-case-icon" viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M5 6.5V4.5a2 2 0 0 1 4 0v2"/></svg>
-              Ask about this
-            </button>
+            {{- range .paras }}
+            <p class="work-role-body">{{ . }}</p>
+            {{- end }}
+            {{- if .private }}<button type="button" class="work-role-case" data-work-modal-open data-role="{{ .role }}" data-org="{{ .org }}" aria-label="Inquire about this role"><svg class="work-role-case-icon" viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M5 6.5V4.5a2 2 0 0 1 4 0v2"/></svg>Inquire</button>{{ end }}
+            {{- with .quote }}
+            {{- $parts := split .name " " }}
+            {{- $initials := upper (printf "%s%s" (substr (index $parts 0) 0 1) (substr (index $parts (sub (len $parts) 1)) 0 1)) }}
+            <figure class="work-quote">
+              <blockquote class="work-quote-text">{{ .text }}</blockquote>
+              <figcaption class="work-quote-by">
+                <span class="work-quote-avatar" aria-hidden="true">{{ $initials }}</span>
+                <span class="work-quote-who">
+                  {{ if .href }}<a class="work-quote-name" href="{{ .href }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}<span class="work-quote-name">{{ .name }}</span>{{ end }}
+                  <span class="work-quote-role">{{ .role }}</span>
+                </span>
+              </figcaption>
+            </figure>
             {{- end }}
           </div>
           {{- end }}
@@ -40,27 +50,36 @@
       {{- with .Params.community }}
       <div class="work-community">
         <div class="work-section-label">Communities</div>
+        {{- with $.Params.community_intro }}<p class="work-community-intro">{{ . }}</p>{{ end }}
+        <div class="work-community-grid">
         {{- range . }}
         <div class="work-community-item">
           <div class="work-community-head">
             <span class="work-community-name">{{ .name }}</span>
-            <span class="work-community-dates">{{ .dates }}</span>
+            <span class="work-community-meta">
+              {{- with .role }}<span class="work-community-role">{{ . }}</span>{{ end -}}
+              <span class="work-community-dates">{{ .dates }}</span>
+            </span>
           </div>
-          <p class="work-community-body">{{ .body }}</p>
+          {{- range .paras }}
+          <p class="work-community-body">{{ . }}</p>
+          {{- end }}
         </div>
         {{- end }}
+        </div>
       </div>
       {{- end }}
 
       {{- with .Params.tags }}
       <div class="work-tags-wrap">
-        <div class="work-section-label">Focus Areas</div>
+        <div class="work-section-label">Areas of focus</div>
         <div class="work-tags">{{ delimit . " · " }}</div>
       </div>
       {{- end }}
 
       <div class="work-contact">
-        <div class="work-section-label">Contact</div>
+        <div class="work-section-label">Get in touch</div>
+        <p class="work-contact-copy">Interested in where design, product and technology meet. Always open to conversations about ambitious products, interesting problems and teams doing things differently, especially at established, remote-first startups where design helps shape what gets built.</p>
         <a class="work-contact-link" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
       </div>
 
@@ -70,24 +89,36 @@
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
           </button>
 
-          <div class="work-modal-body" id="workModalGate">
-            <div class="work-modal-label" id="workModalLabel">
-              <svg class="work-cases-lock" viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="8" height="6" rx="1.5"/><path d="M5 6.5V4.5a2 2 0 0 1 4 0v2"/></svg>
-              Ask About This
-            </div>
-            <p class="work-modal-copy">Most of my work has been on long-term product platforms and isn't documented publicly. Enter the password if you have it, or reach out directly.</p>
-            <form class="work-gate-form" id="workGateForm">
-              <input type="password" class="work-gate-input" id="workGatePassword" placeholder="Password" autocomplete="off">
-              <button type="submit" class="work-gate-submit">View</button>
-            </form>
-            <div class="work-modal-or">or</div>
-            <a class="work-contact-link" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
-          </div>
+          <div class="wm-body" id="workModalGate">
+            <h2 class="wm-title" id="workModalLabel" data-wm-intro>Inquire about this work</h2>
+            <p class="wm-copy" data-wm-intro>Most of my work has been on long-term product platforms and isn't documented publicly. Enter the password if you have it, or share your interest and I'll get back to you.</p>
 
-          <div class="work-modal-body" id="workModalNoAccess" hidden>
-            <h3 class="work-interest-heading">Looks like you don't have access yet.</h3>
-            <p class="work-interest-copy">If you'd like to continue the conversation, feel free to email me. I'll share the work that's most relevant.</p>
-            <a class="work-interest-btn" href="mailto:hiran.v@gmail.com">hiran.v@gmail.com</a>
+            <form class="wm-form" id="workInterestForm">
+              <label class="wm-field">
+                <span class="wm-label">Work email</span>
+                <input type="email" class="wm-input" id="workInterestEmail" autocomplete="email" placeholder="you@company.com" required>
+              </label>
+              <label class="wm-field">
+                <span class="wm-label">Message <span class="wm-optional">(optional)</span></span>
+                <textarea class="wm-input wm-textarea" id="workInterestMessage" rows="3" placeholder="What are you building, or what would you like to see?"></textarea>
+              </label>
+              <input type="text" name="company" id="workInterestCompany" class="wm-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button type="submit" class="wm-primary" id="workInterestSubmit">Send message</button>
+              <p class="wm-hint" id="workInterestHint" hidden></p>
+            </form>
+            <div class="wm-done" id="workInterestDone" role="status" hidden>
+              <h3 class="wm-done-title">Thanks, got it.</h3>
+              <p class="wm-copy">I'll get back to you on the email you shared.</p>
+            </div>
+
+            <div class="wm-alt" data-wm-intro>
+              <button type="button" class="wm-toggle" id="workGateToggle" aria-expanded="false">Have a password?</button>
+              <form class="wm-gate" id="workGateForm" hidden>
+                <input type="password" class="wm-input" id="workGatePassword" placeholder="Password" autocomplete="off" aria-label="Password">
+                <button type="submit" class="wm-secondary work-gate-submit">View</button>
+              </form>
+              <p class="wm-error" id="workGateError" role="alert" hidden>That password isn't right.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -95,20 +126,47 @@
 {{ partial "readable-close.html" (dict "page" .) }}
 <script>
 (function () {
-  var backdrop  = document.getElementById('workModalBackdrop');
-  var closeBtn  = document.getElementById('workModalClose');
-  var gate      = document.getElementById('workModalGate');
-  var noAccess  = document.getElementById('workModalNoAccess');
-  var gateForm  = document.getElementById('workGateForm');
-  var triggers  = document.querySelectorAll('[data-work-modal-open]');
+  // Apps Script web app that emails inquiries (see scripts/work-inquiry-apps-script.gs.js).
+  // Paste the /exec URL or just the deployment ID. Until it's set, submitting says it isn't switched on yet.
+  var WORK_INQUIRY_DEPLOYMENT = 'AKfycbzTxpvHJjYrif1Nw1BHGW5X0xU30sLRDAZNd48wXKklh7OuRovqdQlwXzfBw8A3EaZT';
+  var live = WORK_INQUIRY_DEPLOYMENT !== 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
+  var endpoint = WORK_INQUIRY_DEPLOYMENT.indexOf('http') === 0
+    ? WORK_INQUIRY_DEPLOYMENT
+    : 'https://script.google.com/macros/s/' + WORK_INQUIRY_DEPLOYMENT + '/exec';
 
-  function openModal() {
-    gate.hidden = false;
-    noAccess.hidden = true;
+  var backdrop   = document.getElementById('workModalBackdrop');
+  var closeBtn   = document.getElementById('workModalClose');
+  var gateForm   = document.getElementById('workGateForm');
+  var gateError  = document.getElementById('workGateError');
+  var gateToggle = document.getElementById('workGateToggle');
+  var interest   = document.getElementById('workInterestForm');
+  var submitBtn  = document.getElementById('workInterestSubmit');
+  var hint       = document.getElementById('workInterestHint');
+  var done       = document.getElementById('workInterestDone');
+  var triggers   = document.querySelectorAll('[data-work-modal-open]');
+  var about = '';
+
+  function setIntro(show) {
+    document.querySelectorAll('[data-wm-intro]').forEach(function (el) { el.hidden = !show; });
+  }
+
+  function openModal(e) {
+    var role = e.currentTarget.dataset.role, org = e.currentTarget.dataset.org;
+    about = role && org ? role + ' at ' + org : '';
     gateForm.reset();
+    interest.reset();
+    setIntro(true);
+    interest.hidden = false;
+    done.hidden = true;
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send message';
+    hint.hidden = true;
+    gateError.hidden = true;
+    gateForm.hidden = true;
+    gateToggle.setAttribute('aria-expanded', 'false');
     gateForm.querySelector('.work-gate-submit').disabled = false;
     backdrop.hidden = false;
-    document.getElementById('workGatePassword').focus();
+    document.getElementById('workInterestEmail').focus();
   }
 
   function closeModal() {
@@ -127,14 +185,47 @@
     if (e.key === 'Escape' && !backdrop.hidden) closeModal();
   });
 
+  gateToggle.addEventListener('click', function () {
+    var open = gateForm.hidden;
+    gateForm.hidden = !open;
+    gateToggle.setAttribute('aria-expanded', String(open));
+    gateError.hidden = true;
+    if (open) document.getElementById('workGatePassword').focus();
+  });
+
   gateForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var btn = gateForm.querySelector('.work-gate-submit');
     btn.disabled = true;
     setTimeout(function () {
-      gate.hidden = true;
-      noAccess.hidden = false;
+      gateError.hidden = false;
+      btn.disabled = false;
     }, 450);
+  });
+
+  interest.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('workInterestEmail').value.trim();
+    var message = document.getElementById('workInterestMessage').value.trim();
+    if (document.getElementById('workInterestCompany').value) return; // honeypot
+    if (!live) { hint.hidden = false; hint.textContent = 'Submissions aren\'t switched on yet.'; return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    fetch(endpoint, { method: 'POST', body: JSON.stringify({ email: email, message: message, about: about }) })
+      .then(function (res) { return res.text(); })
+      .then(function (text) {
+        if (text !== 'ok' && text !== 'duplicate') throw new Error(text);
+        setIntro(false);
+        interest.hidden = true;
+        done.hidden = false;
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send message';
+        hint.hidden = false;
+        hint.textContent = 'That didn\'t go through. Please try again.';
+      });
   });
 })();
 </script>

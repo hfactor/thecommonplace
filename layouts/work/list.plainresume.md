@@ -16,8 +16,9 @@
 ### {{ .role }} · {{ .org }}
 {{ .dates }}
 
-{{ .body }}
-{{ end }}
+{{ range .paras }}{{ . }}
+
+{{ end }}{{ end }}
 {{ with .Params.beyond }}
 ## Beyond work
 
