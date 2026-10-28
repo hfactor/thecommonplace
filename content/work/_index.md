@@ -4,26 +4,20 @@ description: "Product design leader with 16 years of experience building design 
 tags:
   - "Product Design"
   - "Design Leadership"
+  - "Product Direction"
   - "Product Strategy"
-  - "Product Development"
-  - "Team Building"
-  - "People Management"
-  - "Roadmap Planning"
-  - "Interaction Design"
-  - "Information Architecture"
+  - "Building Design Teams"
+  - "Cross-functional Leadership"
+  - "Enterprise Product"
   - "Design Systems"
-  - "Enterprise Software"
-  - "Workflow Automation"
-  - "Data Visualisation"
-  - "SaaS"
-  - "Open Source"
-  - "Community Building"
+  - "Team Management"
+  - "Open Source & Community"
 community_intro: "My work extends beyond products and organisations into open-source software, language computing and design communities."
 community:
   - name: "Kerala Designers Collaborative"
     dates: "2018 – 2023"
     paras:
-      - "A volunteer-led community connecting 3,000+ designers across Kerala to share knowledge, learn from one another and strengthen the design ecosystem."
+      - "A volunteer-led community connecting 3,000+ designers across Kerala to share knowledge and strengthen the design ecosystem."
   - name: "Swathanthra Malayalam Computing"
     dates: "2007 – Present"
     paras:
@@ -51,6 +45,7 @@ experience:
     quote:
       text: "Passionate about learning and creating value throughout the entire product lifecycle."
       name: "Nicola Junior Vitto"
+      image: "/img/people/nic.jpg"
       role: "EVP and Chief Product Officer · Kaleyra"
       href: "https://www.linkedin.com/in/nicolajuniorvitto/"
     paras:
@@ -63,6 +58,7 @@ experience:
     quote:
       text: "Hiran set a clear and ambitious vision for Quintype’s products and consistently pushed them toward world-class standards."
       name: "Irfan Rafeek"
+      image: "/img/people/irfan.jpg"
       role: "Senior Product Designer · Quintype"
       href: "https://www.linkedin.com/in/irfan-rafeek-70246455/"
     paras:
@@ -75,6 +71,7 @@ experience:
     quote:
       text: "His ability to understand a product, its users and the market deeply, and provide specific actionable insights…"
       name: "Unnikrishnan KP"
+      image: "/img/people/unni.jpg"
       role: "Engineering Lead · Bang the Table"
       href: "https://www.linkedin.com/in/unnitallman/"
     paras:

@@ -5,7 +5,14 @@
 .notes-reading:has(.work-header) { padding-top: calc(var(--space-12) * 1.15); }
 
 /* Header: eyebrow + name; intro runs full width below */
-.work-header { margin-bottom: var(--space-3); }
+.work-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
 .work-title { margin-bottom: 0; }
 .work-title-eyebrow {
   display: block;
@@ -333,3 +340,21 @@ a.work-quote-name:hover { color: var(--accent); }
 .wm-done .wm-copy { margin-bottom: 0; }
 .wm-form[hidden], .wm-hint[hidden], .wm-done[hidden] { display: none; }
 .wm-title[hidden], .wm-copy[hidden], .wm-alt[hidden] { display: none; }
+img.work-quote-avatar { width: 40px; height: 40px; object-fit: cover; }
+
+/* Resume download, on the name line */
+.work-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-size: var(--text-sm);
+  color: var(--ink2);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-xs);
+  text-decoration: none;
+}
+.work-resume:hover { color: var(--ink); border-color: var(--border); }
+.work-resume svg { width: 12px; height: 12px; stroke: currentColor; }
