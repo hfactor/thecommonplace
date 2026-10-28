@@ -43,6 +43,13 @@ const SPREADSHEET_ID = 'REPLACE_WITH_YOUR_SHEET_ID';
 const SHEET_NAME = 'Inquiries';
 const RATE_LIMIT_SECONDS = 120;
 
+// Stops visitor text being run as a spreadsheet formula (a leading = + - @ makes
+// Sheets evaluate the cell). A leading apostrophe stores it as plain text; the
+// apostrophe itself isn't kept in the cell.
+function safeCell(v) {
+  return typeof v === 'string' && /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+}
+
 function doGet() {
   return ContentService.createTextOutput('ok');
 }
@@ -83,7 +90,7 @@ function doPost(e) {
     sheet = book.insertSheet(SHEET_NAME);
     sheet.appendRow(['date', 'email', 'message', 'about']);
   }
-  sheet.appendRow([new Date(), email, message, about]);
+  sheet.appendRow([new Date(), safeCell(email), safeCell(message), safeCell(about)]);
 
   return ContentService.createTextOutput('ok');
 }

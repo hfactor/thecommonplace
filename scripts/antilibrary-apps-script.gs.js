@@ -50,6 +50,13 @@ const MAX_ENTRIES_RETURNED = 300;
 // Sheet text (case and spaces ignored) -> the keys the page uses.
 const STATUS_KEYS = { suggested: 'suggested', collected: 'collected', completed: 'completed' };
 
+// Stops visitor text being run as a spreadsheet formula (a leading = + - @ makes
+// Sheets evaluate the cell). A leading apostrophe stores it as plain text; the
+// apostrophe itself isn't kept in the cell.
+function safeCell(v) {
+  return typeof v === 'string' && /^[=+\-@\t\r]/.test(v) ? "'" + v : v;
+}
+
 function doGet(e) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
   const rows = sheet.getDataRange().getValues().slice(1); // drop header
@@ -107,7 +114,7 @@ function doPost(e) {
   cache.put(cacheKey, '1', RATE_LIMIT_SECONDS);
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  sheet.appendRow([new Date(), title, detail, kind, recommendedBy, 'suggested', link, '', '']);
+  sheet.appendRow([new Date(), safeCell(title), safeCell(detail), safeCell(kind), safeCell(recommendedBy), 'suggested', safeCell(link), '', '']);
 
   return ContentService.createTextOutput('ok');
 }

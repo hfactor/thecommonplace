@@ -7,6 +7,7 @@
       </div>
 
       <div class="sp-text">{{ .Content }}</div>
+      <p class="pc-ask-wrap"><button type="button" class="pc-ask" id="pcModalOpen">Share your address</button></p>
 
       <div class="al-wrap pc-wrap">
         <ul class="pc-cards">
@@ -48,5 +49,105 @@
       </div>
       <p class="pc-note">Work in progress. Names and addresses stay private and are never shared.</p>
 
+      <div class="work-modal-backdrop" id="pcModalBackdrop" hidden>
+        <div class="work-modal" role="dialog" aria-modal="true" aria-labelledby="pcModalLabel">
+          <button type="button" class="work-modal-close" id="pcModalClose" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+          </button>
+          <div class="wm-body">
+            <h2 class="wm-title" id="pcModalLabel" data-pc-intro>Want a postcard?</h2>
+            <p class="wm-copy" data-pc-intro>Share your postal address and I'll send one from the next post office I find. Only I see it, and it's never shared.</p>
+            <form class="wm-form" id="pcForm">
+              <label class="wm-field">
+                <span class="wm-label">Name</span>
+                <input type="text" class="wm-input" id="pcName" autocomplete="name" required>
+              </label>
+              <label class="wm-field">
+                <span class="wm-label">Postal address</span>
+                <textarea class="wm-input wm-textarea" id="pcAddress" rows="4" autocomplete="street-address" placeholder="House, street, city, PIN or postal code, country" required></textarea>
+              </label>
+              <label class="wm-field">
+                <span class="wm-label">Email <span class="wm-optional">(optional)</span></span>
+                <input type="email" class="wm-input" id="pcEmail" autocomplete="email">
+              </label>
+              <input type="text" name="company" id="pcCompany" class="wm-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button type="submit" class="wm-primary" id="pcSubmit">Send address</button>
+              <p class="wm-hint" id="pcHint" hidden></p>
+            </form>
+            <div class="wm-done" id="pcDone" role="status" hidden>
+              <h3 class="wm-done-title">Thanks, got it.</h3>
+              <p class="wm-copy">A postcard is on its way, eventually. Let me know when it arrives.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
 {{ partial "readable-close.html" (dict "page" .) }}
+<script>
+(function () {
+  // Apps Script web app that logs addresses (see scripts/postcard-address-apps-script.gs.js).
+  // Paste the /exec URL or just the deployment ID. Until it's set, submitting says it isn't switched on yet.
+  var PC_DEPLOYMENT = 'AKfycbw8w0ZbBQEg2oRyGD007mFmguKGacIR4KUU5uOFQYlXdyoQ-8S9B-wTzXqQmS68-IrWdg';
+  var live = PC_DEPLOYMENT !== 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
+  var endpoint = PC_DEPLOYMENT.indexOf('http') === 0
+    ? PC_DEPLOYMENT
+    : 'https://script.google.com/macros/s/' + PC_DEPLOYMENT + '/exec';
+
+  var backdrop = document.getElementById('pcModalBackdrop');
+  var form     = document.getElementById('pcForm');
+  var submit   = document.getElementById('pcSubmit');
+  var hint     = document.getElementById('pcHint');
+  var done     = document.getElementById('pcDone');
+
+  function setIntro(show) {
+    document.querySelectorAll('[data-pc-intro]').forEach(function (el) { el.hidden = !show; });
+  }
+  function openModal() {
+    form.reset();
+    setIntro(true);
+    form.hidden = false;
+    done.hidden = true;
+    hint.hidden = true;
+    submit.disabled = false;
+    submit.textContent = 'Send address';
+    backdrop.hidden = false;
+    document.getElementById('pcName').focus();
+  }
+  function closeModal() { backdrop.hidden = true; }
+
+  document.getElementById('pcModalOpen').addEventListener('click', openModal);
+  document.getElementById('pcModalClose').addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function (e) { if (e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !backdrop.hidden) closeModal();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (document.getElementById('pcCompany').value) return; // honeypot
+    if (!live) { hint.hidden = false; hint.textContent = 'Submissions aren\'t switched on yet.'; return; }
+    var body = {
+      name: document.getElementById('pcName').value.trim(),
+      address: document.getElementById('pcAddress').value.trim(),
+      email: document.getElementById('pcEmail').value.trim()
+    };
+    submit.disabled = true;
+    submit.textContent = 'Sending…';
+    fetch(endpoint, { method: 'POST', body: JSON.stringify(body) })
+      .then(function (res) { return res.text(); })
+      .then(function (text) {
+        if (text !== 'ok' && text !== 'duplicate') throw new Error(text);
+        setIntro(false);
+        form.hidden = true;
+        done.hidden = false;
+      })
+      .catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Send address';
+        hint.hidden = false;
+        hint.textContent = 'That didn\'t go through. Please try again.';
+      });
+  });
+})();
+</script>
 {{ end }}
