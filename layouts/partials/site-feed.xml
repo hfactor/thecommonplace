@@ -8,30 +8,81 @@
        Bookmarks, Projects, and Life Logs are each a one-time dated entry,
        so they're the right shape for a feed.
 
-       Scenes are included along with the other dated types. Their images are root-relative, so they're made absolute below
-       for feed readers. */ -}}
+       Section feeds (/reading/index.xml etc.) pass their own pages, title and
+       link, and reuse the same item markup.
+
+       Each type adds its own front-matter bits: Reading gets its meta (author,
+       genre, recommended, cover, link) after the review, Bookmarks lead with the
+       bookmarked link, Projects end with a link to the project. Titles are
+       prefixed with the type (not for Projects). Root-relative links and images
+       in the content are made absolute for feed readers. */ -}}
 {{- $selfURL := .selfURL -}}
-{{- $pages := where site.RegularPages "Section" "!=" "" -}}
-{{- $pages = where $pages "Section" "!=" "notes" -}}
-{{- $pages = where $pages "Section" "!=" "lists" -}}
-{{- $pages = where $pages "Section" "!=" "scenes" -}}
-{{- $scenes := where site.RegularPages "Section" "scenes" -}}
-{{- $pages = ($pages | union $scenes).ByDate.Reverse | first 50 -}}
+{{- $title := site.Title -}}
+{{- $link := site.BaseURL -}}
+{{- $desc := site.Params.description -}}
+{{- $pages := slice -}}
+{{- if isset . "pages" -}}
+  {{- $pages = .pages.ByDate.Reverse | first 50 -}}
+  {{- $title = .title -}}
+  {{- $link = .link -}}
+  {{- $desc = .description -}}
+{{- else -}}
+  {{- $pages = where site.RegularPages "Section" "!=" "" -}}
+  {{- $pages = where $pages "Section" "!=" "notes" -}}
+  {{- $pages = where $pages "Section" "!=" "lists" -}}
+  {{- $pages = where $pages "Section" "!=" "scenes" -}}
+  {{- $scenes := where site.RegularPages "Section" "scenes" -}}
+  {{- $pages = ($pages | union $scenes).ByDate.Reverse | first 50 -}}
+{{- end -}}
+{{- /* Items dated before this keep the original feed format, so readers that
+       already have them see no change. */ -}}
+{{- $cutoff := time.AsTime "2026-10-30" -}}
 {{- $base := strings.TrimSuffix "/" site.BaseURL -}}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.Title }}</title>
-    <link>{{ site.BaseURL }}</link>
-    <description>{{ site.Params.description }}</description>
+    <title>{{ $title }}</title>
+    <link>{{ $link }}</link>
+    <description>{{ $desc }}</description>
     <atom:link href="{{ $selfURL | absURL }}" rel="self" type="application/rss+xml" />
     {{ range $pages }}
+    {{- $page := . -}}
+    {{- $itemTitle := .Title -}}
+    {{- $head := "" -}}
+    {{- $foot := "" -}}
+    {{- $href := .Params.href | default "" -}}
+    {{- $new := ge .Date.Unix $cutoff.Unix -}}
+    {{- $dom := .Params.domain | default (replaceRE `^https?://([^/?#]+).*` "$1" $href) -}}
+    {{- if not $new -}}
+    {{- else if eq .Section "reading" -}}
+      {{- $itemTitle = printf "Reading: %s" .Title -}}
+      {{- $by := slice -}}
+      {{- with .Params.author }}{{ $by = $by | append (printf "by %s" .) }}{{ end -}}
+      {{- with .Params.genre }}{{ $by = $by | append . }}{{ end -}}
+      {{- if or (eq (printf "%v" .Params.recommended) "true") (eq (printf "%v" .Params.recommended) "yes") }}{{ $by = $by | append "✦ Recommended" }}{{ end -}}
+      {{- with .Params.image }}{{ $foot = printf `<p><img src="%s" alt="Cover of %s" width="160"></p>` (. | absURL) $page.Title }}{{ end -}}
+      {{- with $by }}{{ $foot = printf "%s<p>%s</p>" $foot (delimit . " · ") }}{{ end -}}
+      {{- with .Params.link }}{{ $foot = printf `%s<p><a href="%s">View book →</a></p>` $foot . }}{{ end -}}
+    {{- else if eq .Section "bookmarks" -}}
+      {{- $itemTitle = printf "Bookmark: %s" .Title -}}
+      {{- if $href }}{{ $head = printf `<p><a href="%s">%s →</a></p>` $href $dom }}{{ end -}}
+    {{- else if eq .Section "projects" -}}
+      {{- if $href }}{{ $foot = printf `<p><a href="%s">View project →</a></p>` $href }}{{ end -}}
+    {{- else if eq .Section "lifelog" -}}
+      {{- $itemTitle = printf "Life Log: %s" .Title -}}
+    {{- else if eq .Section "scenes" -}}
+      {{- $itemTitle = printf "Scene: %s" .Title -}}
+    {{- end -}}
+    {{- $content := printf "%s%s%s" $head .Content $foot -}}
+    {{- if $new -}}
+      {{- $content = $content | replaceRE `(src|href)="/([^/])` (printf `${1}="%s/${2}` $base) -}}
+    {{- else if eq .Section "scenes" -}}
+      {{- $content = $content | replaceRE `(src|href)="/` (printf `${1}="%s/` $base) -}}
+    {{- end }}
     <item>
-      <title>{{ .Title }}</title>
+      <title>{{ $itemTitle }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <guid>{{ .Permalink }}</guid>
-      {{- $content := .Content -}}
-      {{- if eq .Section "scenes" -}}{{- $content = $content | replaceRE `(src|href)="/` (printf `${1}="%s/` $base) -}}{{- end -}}
       <description>{{ $content | html }}</description>
     </item>
     {{ end }}

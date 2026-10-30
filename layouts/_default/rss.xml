@@ -1,0 +1,2 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML -}}
+{{- partial "site-feed.xml" (dict "selfURL" (printf "%sindex.xml" .RelPermalink) "pages" .RegularPages "title" (printf "%s — %s" site.Title .Title) "link" .Permalink "description" (.Description | default (printf "%s from %s" .Title site.Title))) | safeHTML -}}
