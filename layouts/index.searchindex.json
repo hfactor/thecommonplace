@@ -25,7 +25,8 @@
     "title"   .Title
     "type"    "bookmarks"
     "date"    .Date
-    "extra"   $domain
+    "extra"   (delimit (slice $domain (.Plain | htmlUnescape | truncate 200)) " ")
+    "labels"  (slice (default "" .Params.category))
     "permalink" .RelPermalink
   ) -}}
 {{- end -}}
