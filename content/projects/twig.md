@@ -1,6 +1,6 @@
 ---
 title: "Twig"
-date: 2026-09-25
+date: 2026-10-26
 href: "https://github.com/hfactor/twig"
 cover: "/img/projects/twig.png"
 tagline: "Text-first mind mapping"
