@@ -1,7 +1,7 @@
 ---
 title: Vaadivaasal - The Arena
 localTitle: 
-author: Appupen C.S. Chellappa, Perumal Murugan
+author: Appupen, C.S. Chellappa, Perumal Murugan
 date: 2025-02-15
 language: English
 genre: Comics
