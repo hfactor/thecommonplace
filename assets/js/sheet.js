@@ -52,7 +52,9 @@ function openSheet(uid) {
     wide = true;
     const title  = e.localTitle || e.title;
     const rUrl   = e.link || e.url;
-    const metaParts = [e.author, e.language, e.genre].filter(Boolean)
+    // Several authors are comma-separated in the front matter: one pill each.
+    const authors = (e.author || '').split(',').map(a => a.trim()).filter(Boolean);
+    const metaParts = [...authors, e.language, e.genre].filter(Boolean)
       .map(v => metaLink(v, 'reading')).join('');
     const recTag = recPill(e, 'reading');
     const body   = parseWikilinks(e.content || '');

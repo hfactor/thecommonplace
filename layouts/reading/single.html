@@ -58,7 +58,7 @@ window.__DATA_URL__ = "{{ "reading/data.json" | relURL }}";
     {{- end -}}
     <div class="modal-meta">
       {{- $parts := slice -}}
-      {{- with .Params.author -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
+      {{- range split (.Params.author | default "") "," -}}{{- with strings.TrimSpace . -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}{{- end -}}
       {{- with .Params.language -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
       {{- with .Params.genre -}}{{- $parts = $parts | append (printf `<a class="modal-meta-tag" href="/reading/?q=%s">%s</a>` (urlquery .) (htmlEscape .)) -}}{{- end -}}
       {{- delimit $parts "" | safeHTML -}}
