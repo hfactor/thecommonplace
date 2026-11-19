@@ -1,5 +1,6 @@
 ---
 title: Vaadivasal
+localTitle: வாடிவாசல்
 author: C.S. Chellappa
 date: 2025-02-20
 language: Tamil
