@@ -10,20 +10,20 @@
   {{- end -}}
 {{- end -}}
 {{- $notesActive := or (eq $cur "/notes/") (strings.HasPrefix $cur "/note/") -}}
-{{- $countFor := dict
-  "reading"   (len (where site.RegularPages "Section" "reading"))
-  "projects"  (len (where site.RegularPages "Section" "projects"))
-  "bookmarks" (len (where site.RegularPages "Section" "bookmarks"))
-  "scenes"    (len (where site.RegularPages "Section" "scenes"))
-  "uses"      (len hugo.Data.things)
--}}
+{{- /* Every count here comes from the Everything feed (the same data page-data.html hands
+       to the page), so a number can never disagree with what the page lists: Reading is
+       the 143 books listed, not the 148 files (the book being read now and the four
+       filter pages aren't entries). The Everything total is the sum of every type; the
+       section dropdown shows only the types with in_dropdown. */ -}}
+{{- $feed := partialCached "feed-months.html" (dict "page" . "lt" "") "everything-feed" -}}
+{{- $countFor := dict -}}
 {{- $everythingTotal := 0 -}}
-{{- range hugo.Data.types -}}
-  {{- if .in_everything -}}
-    {{- $everythingTotal = add $everythingTotal (len (where site.RegularPages "Section" .id)) -}}
+{{- range $feed -}}
+  {{- range . -}}
+    {{- $everythingTotal = add $everythingTotal 1 -}}
+    {{- $countFor = merge $countFor (dict .type (add (index $countFor .type | default 0) 1)) -}}
   {{- end -}}
 {{- end -}}
-{{- $everythingTotal = add $everythingTotal (len hugo.Data.things) -}}
 <nav class="site-footer">
   {{- with resources.Get "img/hiran-head.svg" }}
   <a class="sf-avatar" href="{{ "everything" | relURL }}" aria-label="Home">{{ .Content | safeHTML }}</a>

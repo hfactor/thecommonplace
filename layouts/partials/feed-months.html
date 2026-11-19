@@ -1,0 +1,278 @@
+{{- /* The Everything feed's entries, grouped by month: { "YYYY-MM": [entry, ...] }.
+       Takes {page, lt} (lt = the listing type, "" for the combined Everything
+       feed). page-data.html turns this into the DATA constant the list/card
+       views read, and the footer counts it, so the Everything count is always
+       exactly the number of entries the feed lists. */ -}}
+{{- $page := .page -}}
+{{- $lt := .lt -}}
+{{- $months := dict -}}
+
+{{/* ── Reading ───────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "reading") -}}
+{{- range $page.Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if and (eq $s "reading") (ne (index .Params "reading-status") "reading") (ne .Params.layout "listing") -}}
+    {{- $key := dateFormat "2006-01" .Date -}}
+    {{- $uid := printf "reading/%s" .File.ContentBaseName -}}
+    {{- $entry := dict
+      "uid"         $uid
+      "type"        "reading"
+      "day"         (int (dateFormat "2" .Date))
+      "title"       .Title
+      "date"        (dateFormat "Jan 2, 2006" .Date)
+      "author"      (default "" .Params.author)
+      "localTitle"  (default "" .Params.localTitle)
+      "language"    (default "" .Params.language)
+      "genre"       (default "" .Params.genre)
+      "recommended" (or (eq .Params.recommended true) (eq (lower (printf "%v" (default "" .Params.recommended))) "yes"))
+      "image"       (default "" .Params.image)
+      "link"        (default "" .Params.link)
+      "content"     (printf "%s" .Content)
+      "permalink"   .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Bookmarks ──────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "bookmarks") -}}
+{{- range $page.Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "bookmarks" -}}
+    {{- $key  := dateFormat "2006-01" .Date -}}
+    {{- $uid  := printf "bookmarks/%s" .File.ContentBaseName -}}
+    {{- $href   := default "" .Params.href -}}
+    {{- $domain := replaceRE "^https?://([^/?#]+).*" "$1" $href -}}
+    {{- if .Params.domain -}}{{- $domain = .Params.domain -}}{{- end -}}
+    {{- $entry := dict
+      "uid"      $uid
+      "type"     "bookmarks"
+      "day"      (int (dateFormat "2" .Date))
+      "title"    .Title
+      "date"     (dateFormat "Jan 2, 2006" .Date)
+      "domain"   $domain
+      "href"     $href
+      "category" (default "" .Params.category)
+      "content"  (printf "%s" .Content)
+      "summary"  (printf "%s" (.Summary | default ""))
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Scenes ─────────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "scenes") -}}
+{{- range $page.Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "scenes" -}}
+    {{- $key    := dateFormat "2006-01" .Date -}}
+    {{- $uid    := printf "scenes/%s" .File.ContentBaseName -}}
+    {{- $images := findRE `/img/scenes/[^ )"]+\.jpg` .RawContent 4 -}}
+    {{- with .Params.pile }}{{- $images = . -}}{{ end -}}
+    {{- $entry := dict
+      "uid"       $uid
+      "type"      "scenes"
+      "day"       (int (dateFormat "2" .Date))
+      "date"      (dateFormat "Jan 2, 2006" .Date)
+      "title"     .Title
+      "images"    $images
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Life Logs (in the Everything feed, and its own /lifelog archive —
+     but not the type-filter dropdown, in_dropdown is false for that).
+     The newest entry lives exclusively at /now — excluded here in both
+     Everything and the archive, not just the archive. */}}
+{{- if or (eq $lt "") (eq $lt "lifelog") -}}
+{{- $latest := partialCached "lifelog-latest.html" $page "global" -}}
+{{- range (where $page.Site.RegularPages "Section" "lifelog").ByDate.Reverse -}}
+  {{- if ne .RelPermalink $latest.RelPermalink -}}
+    {{- $key := dateFormat "2006-01" .Date -}}
+    {{- $uid := printf "lifelog/%s" .File.ContentBaseName -}}
+    {{- $entry := dict
+      "uid"       $uid
+      "type"      "lifelog"
+      "day"       (int (dateFormat "2" .Date))
+      "title"     .Title
+      "date"      (dateFormat "Jan 2, 2006" .Date)
+      "summary"   (.Plain | htmlUnescape | replaceRE "’" "'" | truncate 220)
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Lists (curated lists — own page ungrouped, Everything groups by
+     month since the mixed-type Everything context always defaults to
+     month grouping regardless of a type's own group_by) ────────── */}}
+{{- if or (eq $lt "") (eq $lt "lists") -}}
+{{- range $page.Site.RegularPages -}}
+  {{- $s := .Section -}}
+  {{- if eq $s "lists" -}}
+    {{- $key := dateFormat "2006-01" .Date -}}
+    {{- $uid := printf "lists/%s" .File.ContentBaseName -}}
+    {{- $entry := dict
+      "uid"       $uid
+      "type"      "lists"
+      "day"       (int (dateFormat "2" .Date))
+      "title"     .Title
+      "date"      (dateFormat "Jan 2, 2006" .Date)
+      "permalink" .RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Uses (things.yaml) ────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "uses") -}}
+{{- range hugo.Data.things -}}
+  {{- $t   := time (printf "%v" .date) -}}
+  {{- $key := dateFormat "2006-01" $t -}}
+  {{- $uid := printf "uses/%s" (urlize .title) -}}
+  {{- $entry := dict
+    "uid"         $uid
+    "type"        "uses"
+    "day"         (int (dateFormat "2" $t))
+    "title"       (default "" .title)
+    "subCategory" (default "Other" .subCategory)
+    "date"        (dateFormat "Jan 2, 2006" $t)
+    "year"        (dateFormat "2006" $t)
+    "href"        (default "" .href)
+    "image"       (default "" .image)
+    "note"        (default "" .note)
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Projects ───────────────────────────────────────── */}}
+{{- if or (eq $lt "") (eq $lt "projects") -}}
+{{- range where $page.Site.RegularPages "Section" "projects" -}}
+  {{- $key := dateFormat "2006-01" .Date -}}
+  {{- $uid := printf "projects/%s" .File.ContentBaseName -}}
+  {{- $collabs := slice -}}
+  {{- range .Params.collaborators -}}
+    {{- $src := "" -}}
+    {{- if .image -}}{{- $src = .image -}}{{- else if .github -}}{{- $src = printf "https://github.com/%s.png?size=32" .github -}}{{- end -}}
+    {{- $collabs = $collabs | append (dict "src" $src "name" (default "" .name)) -}}
+  {{- end -}}
+  {{- $entry := dict
+    "uid"       $uid
+    "type"      "projects"
+    "day"       (int (dateFormat "2" .Date))
+    "title"     .Title
+    "date"      (dateFormat "Jan 2, 2006" .Date)
+    "year"      (dateFormat "Jan 2006" .Date)
+    "cover"     (default "" .Params.cover)
+    "tagline"   (default "" .Params.tagline)
+    "href"      (default "" .Params.href)
+    "category"  (default "" .Params.category)
+    "permalink" .RelPermalink
+    "content"   (printf "%s" .Content)
+    "collabs"   $collabs
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Notes (the /notes page's own listing) — every collection (notebook)
+     plus every individual note. "category" drives the Collections-first,
+     Notes-after grouping (group_by: category in types.yaml, same mechanism
+     Uses/Bookmarks use); "kind" tells cardHTML() which template to use. */}}
+{{- if eq $lt "notes" -}}
+{{- $key := "notebooks" -}}
+{{- range partialCached "notebook-list.html" $page "global" -}}
+  {{- $entry := dict
+    "uid"       (printf "notes/%s" (path.Base .permalink))
+    "type"      "notes"
+    "kind"      "collection"
+    "category"  "Collections"
+    "day"       (int (dateFormat "20060102" .recent))
+    "title"     .title
+    "count"     .count
+    "permalink" .permalink
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- range where site.RegularPages "Section" "notes" -}}
+  {{- $entry := dict
+    "uid"       (printf "notes/%s" .File.ContentBaseName)
+    "type"      "notes"
+    "kind"      "note"
+    "category"  "Notes"
+    "day"       (int (.Date.Format "20060102"))
+    "title"     .Title
+    "permalink" .RelPermalink
+  -}}
+  {{- $existing := slice -}}
+  {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+  {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+{{- end -}}
+{{- end -}}
+
+{{/* ── Notes in the combined Everything feed ───────────
+     One card per notebook, not per note — avoids a busy writing week flooding
+     the feed with individual entries. Each notebook is auto-bumped to the
+     month of its most recently dated note, but only counting notes whose
+     PRIMARY category is that notebook — a note filed under two notebooks
+     (e.g. Craft + Focus) can only ever bump the one it primarily belongs to,
+     never both at once. No manual curation needed. */}}
+{{- if eq $lt "" -}}
+{{- $primaryCatNotes := dict -}}
+{{- range where $page.Site.RegularPages "Section" "notes" -}}
+  {{- $p    := . -}}
+  {{- $cats := $p.Params.categories -}}
+  {{- with $cats -}}
+    {{- $primary := index . 0 -}}
+    {{- $existing := slice -}}
+    {{- with index $primaryCatNotes $primary -}}{{- $existing = . -}}{{- end -}}
+    {{- $primaryCatNotes = merge $primaryCatNotes (dict $primary ($existing | append $p)) -}}
+  {{- end -}}
+{{- end -}}
+{{- range where $page.Site.Pages "Kind" "term" -}}
+  {{- $t := . -}}
+  {{- $primaryMembers := index $primaryCatNotes $t.Title -}}
+  {{- if $primaryMembers -}}
+    {{- $latest := index (sort $primaryMembers "Date" "desc") 0 -}}
+    {{- $key := dateFormat "2006-01" $latest.Date -}}
+    {{- $entry := dict
+      "uid"       (printf "notes/%s" (path.Base $t.RelPermalink))
+      "type"      "notes"
+      "day"       (int (dateFormat "2" $latest.Date))
+      "title"     $t.Title
+      "date"      (dateFormat "Jan 2, 2006" $latest.Date)
+      "count"     (len $t.Pages)
+      "permalink" $t.RelPermalink
+    -}}
+    {{- $existing := slice -}}
+    {{- with index $months $key -}}{{- $existing = . -}}{{- end -}}
+    {{- $months = merge $months (dict $key ($existing | append $entry)) -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+{{- return $months -}}
