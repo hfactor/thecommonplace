@@ -27,6 +27,10 @@
 
 {{- /* OG image — absolute URL */}}
 {{- $image := .Params.ogImage | default site.Params.ogImage | default "" -}}
+{{- /* Scenes: the first photo in the scene is its share image, unless the page sets ogImage */}}
+{{- if and (eq .Section "scenes") (not .IsSection) (not .Params.ogImage) -}}
+  {{- with findRE `/img/scenes/[^ )"]+\.(jpg|png)` .RawContent 1 -}}{{- $image = index . 0 -}}{{- end -}}
+{{- end -}}
 {{- $image  = $image | absURL -}}
 
 {{- /* Keywords */}}
