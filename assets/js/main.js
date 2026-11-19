@@ -325,7 +325,7 @@ function cardHTML(e, idx) {
   // ── scenes (photo-pile card, up to 4 images stacked, title on hover) ──
   if (tmpl === 'scenes') {
     const imgs = (e.images || []).slice(0, 4)
-      .map((src, k) => `<img class="sc-pile-img" src="${src}" alt="" ${k === 0 ? imgLoad() : 'loading="lazy" decoding="async"'}>`).join('');
+      .map((src, k) => `<img class="sc-pile-img" src="${src}" alt="" onload="if(this.naturalHeight>this.naturalWidth)this.classList.add('sc-pile-img--tall')" ${k === 0 ? imgLoad() : 'loading="lazy" decoding="async"'}>`).join('');
     return `<a class="card" data-type="scenes" href="${e.permalink}" ${si}><div class="sc-pile">${imgs}</div><span class="sc-pile-title">${e.title}</span></a>`;
   }
 

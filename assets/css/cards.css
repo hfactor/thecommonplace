@@ -225,14 +225,16 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  max-width: 88%;
-  max-height: 88%;
-  width: auto;
+  width: 88%;
+  aspect-ratio: 4 / 3;
   height: auto;
+  object-fit: cover;
   border-radius: var(--r-xs);
   box-shadow: -4px 5px 14px rgba(0,0,0,0.22);
   transition: opacity var(--dur-hover);
 }
+/* Portrait photos are cropped 3:4 instead (same height as a landscape one is wide, so the stack stays even) */
+.sc-pile-img--tall { width: 66%; aspect-ratio: 3 / 4; }
 /* No transform change on hover — only the back photos fade in, nothing moves */
 .sc-pile-img:nth-child(1) { z-index: 4; transform: translate(-50%, -50%) rotate(-2deg); }
 .sc-pile-img:nth-child(2) { z-index: 3; opacity: 0.55; transform: translate(-50%, -50%) rotate(-6deg); }

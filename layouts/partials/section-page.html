@@ -202,7 +202,8 @@
                     {{- range $k, $src := first 4 $images -}}
                     {{- $eager := false -}}
                     {{- if eq $k 0 -}}{{- $n := int ($.Scratch.Get "imgN") -}}{{- $.Scratch.Set "imgN" (add $n 1) -}}{{- $eager = lt $n 6 -}}{{- end -}}
-                    <img class="sc-pile-img" src="{{ $src }}" alt="" {{ if $eager }}loading="eager" fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">
+                    {{- $cfg := imageConfig (printf "static%s" $src) -}}
+                    <img class="sc-pile-img{{ if gt $cfg.Height $cfg.Width }} sc-pile-img--tall{{ end }}" src="{{ $src }}" alt="" {{ if $eager }}loading="eager" fetchpriority="high"{{ else }}loading="lazy"{{ end }} decoding="async">
                     {{- end -}}
                   </div>
                   <span class="sc-pile-title">{{ $p.Title }}</span>
