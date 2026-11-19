@@ -1,0 +1,4 @@
+{{- /* Old addresses from the previous site that now live elsewhere. One page per line in data/redirects.yaml. */ -}}
+{{- range $old, $new := hugo.Data.redirects }}
+  {{- $.AddPage (dict "path" (strings.TrimPrefix "/" $old) "kind" "page" "title" $old "url" $old "layout" "redirect" "params" (dict "redirectTo" $new) "sitemap" (dict "disable" true)) }}
+{{- end }}

@@ -1,0 +1,4 @@
+{{- /* Old /library/<Title-Slug>/ addresses redirect to their /reading/ pages. One page per line in data/library_redirects.yaml. */ -}}
+{{- range $old, $new := hugo.Data.library_redirects }}
+  {{- $.AddPage (dict "path" $old "kind" "page" "title" $old "url" (printf "/library/%s/" $old) "layout" "redirect" "params" (dict "redirectTo" $new) "sitemap" (dict "disable" true)) }}
+{{- end }}
