@@ -8,7 +8,7 @@ pile:
   - /img/scenes/madurai-10.jpg
   - /img/scenes/madurai-15.jpg
 ---
-Madurai had been on our list for a long time, and when we finally went, the plan was simple. We were going to eat. The Vande Bharat, 20672 and 20671, took us there and back, with a little over 50 hours in between. Our room at [Gopuram Grand](https://www.google.com/maps/place/Gopuram+Grand/@9.9197268,78.1177974,17z/data=!3m1!4b1!4m6!3m5!1s0x3b00c5a9049a68ab:0x8a8291547438e713!8m2!3d9.9197268!4d78.1177974) was hardly 50 metres from the Meenakshi Amman Temple’s west gate, so the temple was on our doorstep and the food list was in our pocket. My [Google Maps list of Madurai](https://www.google.com/maps/%409.9220756,78.1130602,14.83z/data=!4m3!11m2!2s4jqQ-Zy2IAeMAlx7mgwqwfX1H2Acyw!3e3) has every place in this post.
+Madurai had been on our list for a long time, and when we finally went, the plan was simple. We were going to eat. The Vande Bharat, 20672 and 20671, took us there and back, with a little over 50 hours in between. Our room at [Gopuram Grand](https://www.google.com/maps/place/Gopuram+Grand/@9.9197268,78.1177974,17z/data=!3m1!4b1!4m6!3m5!1s0x3b00c5a9049a68ab:0x8a8291547438e713!8m2!3d9.9197268!4d78.1177974) was hardly 50 metres from the Meenakshi Amman Temple’s west gate, so the temple was on our doorstep and the food list was in our pocket. My [Google Maps list of Madurai](https://maps.app.goo.gl/4SG3LHypNkL9PZ8E7) has every place in this post.
 
 ![Signboards from Gopu Iyengar, Nagapatnam and Janani](/img/scenes/madurai-1.jpg)
 
