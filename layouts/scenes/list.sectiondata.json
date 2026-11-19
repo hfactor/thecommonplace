@@ -5,6 +5,7 @@
     {{- $key    := dateFormat "2006-01" .Date -}}
     {{- $uid    := printf "scenes/%s" .File.ContentBaseName -}}
     {{- $images := findRE `/img/scenes/[^ )"]+\.jpg` .RawContent 4 -}}
+    {{- with .Params.pile }}{{- $images = . -}}{{ end -}}
     {{- $entry := dict
       "uid"       $uid
       "type"      "scenes"
